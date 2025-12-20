@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tout Pwodwi | Les Cayes Dropshipping Deal</title>
+    
+    <link rel="stylesheet" href="base.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+    <style>
+        /* ==================== Styles Globaux et Couleurs ==================== */
+        :root {
+            --bleu-marin: #001f3f; 
+            --kaki: #8fbc8f;              
+            --gri-clair: #f0f0f0;         
+            --noir-texte: #333;           
+            --blanc-fond: #ffffff;        
+            --rouge-alerte: #e74c3c; 
+            --vert-menu: #004D40; 
+            --vert-succes: #27ae60;
+            --orange-attente: #f39c12; 
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gri-clair);
+            color: var(--noir-texte);
+            margin: 0;
+            padding-bottom: 70px; 
+        }
+        
+        #main-content {
+            padding: 15px; 
+        }
+
+        /* Titre principal */
+        .section-title {
+            font-size: 1.6em;
+            margin: 0 0 15px 0; 
+            font-weight: 900; 
+            color: var(--bleu-marin);
+            text-align: left;
+            padding-left: 5px;
+            border-left: 5px solid var(--kaki); 
+            line-height: 1.2;
+        }
+        
+        /* Titre des catégories */
+        .category-title {
+            font-size: 1.4em;
+            color: var(--bleu-marin);
+            margin: 30px 0 15px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--kaki);
+            font-weight: bold;
+        }
+
+        /* Conteneur de la grille (Assurer 2 colonnes par défaut sur mobile) */
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Deux colonnes égales, OBLIGATOIRE */
+            gap: 15px; /* Espace entre les cartes */
+            margin-top: 15px; 
+            padding: 0;
+        }
+        
+        /* Media query pour les grands écrans (plus de colonnes) */
+        @media (min-width: 600px) {
+             .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+        }
+        
+        /* Media query pour les très grands écrans */
+        @media (min-width: 900px) {
+             .product-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+
+        /* Styles des cartes (Casier Carré) */
+        .product-card {
+            background-color: var(--blanc-fond);
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+            cursor: pointer; 
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            scroll-margin-top: 100px; 
+        }
+
+        .product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Conteneur pour l'image (Rapport d'aspect carré) */
+        .image-container {
+            width: 100%; 
+            height: 0;
+            padding-bottom: 100%; /* Créer une zone carrée pour l'image */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .product-details {
+            flex-grow: 1; 
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .product-details h3 {
+            font-size: 1.1em; 
+            color: var(--vert-menu);
+            margin: 0 0 5px 0;
+            font-weight: bold;
+            line-height: 1.2;
+            min-height: 40px; 
+        }
+        
+        .product-price {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--rouge-alerte);
+            margin: 5px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .product-price span {
+            font-size: 0.7em; 
+            color: #888;
+            font-weight: normal;
+        }
+        
+        /* Zone d'actions (Boutons ADD/REMOVE) */
+        .cart-actions {
+            padding: 0 10px 10px 10px;
+            display: flex;
+            flex-direction: column; 
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .cart-actions p {
+            font-size: 0.8em;
+            text-align: center;
+            margin: 0 0 5px 0;
+        }
+
+        /* Styles des Boutons d'Action */
+        .add-to-cart-btn, .remove-from-cart-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 8px 5px; 
+            border: none;
+            border-radius: 5px; 
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, opacity 0.3s;
+            height: auto;
+            box-sizing: border-box;
+            line-height: 1.2; 
+        }
+
+        .add-to-cart-btn {
+            background-color: var(--kaki); 
+            color: var(--bleu-marin);
+        }
+        
+        .remove-from-cart-btn {
+            background-color: var(--rouge-alerte); 
+            color: var(--blanc-fond);
+        }
+        
+        /* Indicateur de Statut */
+        .status-indicator {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: var(--blanc-fond);
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 0.7em;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        /* Style spécifique pour Précommande (Orange) */
+        .status-indicator.preorder {
+            background-color: var(--orange-attente);
+        }
+        
+        /* Style spécifique pour Disponible (Vert) */
+        .status-indicator.available {
+            background-color: var(--rouge-alerte);
+        }
+
+
+        /* Conteneur Panier Flottant et Modales (inchangés) */
+        #cart-icon-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+        }
+        
+        #cart-icon {
+            display: flex;
+            align-items: center;
+            background-color: var(--orange-attente);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        #cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--rouge-alerte);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7em;
+            font-weight: bold;
+            min-width: 10px;
+            text-align: center;
+            line-height: 1;
+        }
+
+        /* Toast */
+        #toast-notification {
+            visibility: hidden; 
+            min-width: 250px;
+            background-color: var(--vert-succes); 
+            color: var(--blanc-fond);
+            text-align: center;
+            border-radius: 8px;
+            padding: 12px;
+            position: fixed;
+            z-index: 2000; 
+            left: 15px;
+            top: 15px; 
+            bottom: unset; 
+            transform: translateY(-100%); 
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s; 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            font-weight: bold;
+        }
+        
+        #toast-notification.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0); 
+        }
+        
+        #toast-notification.remove {
+             background-color: var(--rouge-alerte);
+        }
+        
+        /* Modales */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 3000; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow-y: auto; 
+            background-color: rgba(0, 0, 0, 0.8); 
+        }
+
+        .modal-content {
+            background-color: var(--blanc-fond);
+            margin: 5% auto; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            width: 90%; 
+            max-width: 600px; 
+            animation-duration: 0.4s;
+            position: relative; 
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 30px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            z-index: 3010;
+        }
+        .close:hover, .close:focus {
+            color: var(--rouge-alerte);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        /* Styles de la Modale DÉTAIL PRODUIT (Agrandissement) */
+        #product-detail-modal .modal-content {
+            max-width: 90%; 
+            margin: 5% auto;
+            padding: 0;
+        }
+        
+        #product-detail-content {
+            display: flex;
+            flex-direction: column; 
+        }
+
+        #detail-image-container {
+            width: 100%;
+            height: 0;
+            /* MODIFICATION: Passage au ratio 1:1 */
+            padding-bottom: 100%; 
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px 10px 0 0; /* Coins arrondis en haut */
+        }
+        
+        #detail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+
+        #detail-info {
+            padding: 20px;
+            text-align: left;
+        }
+
+        #detail-info h2 {
+            color: var(--bleu-marin);
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        
+        /* Style du badge dans la modale */
+        .detail-status-badge {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: var(--blanc-fond);
+        }
+        
+        .detail-status-badge.preorder {
+             background-color: var(--orange-attente);
+        }
+        
+        .detail-status-badge.available {
+             background-color: var(--vert-succes);
+        }
+
+
+        .detail-add-btn {
+            background-color: var(--kaki);
+            color: var(--bleu-marin);
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        .detail-add-btn:disabled {
+             background-color: #ccc;
+             cursor: not-allowed;
+             color: #666;
+        }
+        
+        /* Media Query pour les grands écrans dans la modale produit */
+        @media (min-width: 768px) {
+            #product-detail-content {
+                flex-direction: row; 
+            }
+            #detail-image-container {
+                width: 50%;
+                /* Ajustement pour garder le carré sur les grands écrans */
+                padding-bottom: 50%;
+                height: auto;
+                border-radius: 10px 0 0 10px;
+            }
+            #detail-info {
+                width: 50%;
+            }
+        }
+        
+        /* Styles de la Modale Panier */
+        .cart-total-line {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-top: 1px dashed #eee;
+            font-size: 1em;
+            color: var(--noir-texte);
+        }
+        
+        /* Style pour le Grand Total dans la Modale Panier */
+        .cart-total-line.grand-total {
+            border-top: 2px solid var(--bleu-marin);
+            margin-top: 10px;
+            padding-top: 10px;
+            font-size: 1.5em; /* Plus grand */
+            font-weight: 900; /* Plus gras */
+            color: var(--rouge-alerte); /* Couleur d'alerte/importante */
+            background-color: var(--gri-clair);
+            border-radius: 5px;
+            padding: 10px;
+        }
+        
+        .cart-item-detail {
+            border-bottom: 1px dotted #ccc;
+            padding: 8px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .item-name {
+            font-weight: bold;
+            color: var(--vert-menu);
+        }
+        
+        .item-price {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        /* Style du bouton de Checkout (Lien de Contact) */
+        #checkout-btn-link {
+            text-decoration: none; /* Enlève le soulignement du lien */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--vert-succes); /* Couleur de contact/WhatsApp */
+            color: var(--blanc-fond);
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            width: 100%;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            gap: 10px;
+            box-sizing: border-box; 
+        }
+        
+        #checkout-btn-link:disabled {
+             background-color: #ccc;
+             cursor: not-allowed;
+             color: #666;
+        }
+
+
+        /* Footer inchangé */
+              #main-footer .material-icons {
+            color: var(--vert-menu); 
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+ <main id="main-content">
+    
+    <h1 class="section-title">Atik ou ka achte oswa kòmande</h1>
+
+    <h2 class="category-title">Disponib</h2>
+    <p style="text-align; color: #888; margin-bottom: 15px;">Pwodwi ki make "disponib" yo nan wout pou rive oswa yo deja disponib. Nou mete pri yo an goud pou fasilitasyon ak rapidite.</p>
+    <div id="available-products-list" class="product-grid">
+    </div>
+    
+    <h2 class="category-title">Sou kòmand (Précommande)</h2>
+    <p style="text-align; color: #888; margin-bottom: 15px;">Pwodwi sa yo mande pou yon pèman avans pou nou lanse kòmand lan.</p>
+    <div id="preorder-products-list" class="product-grid">
+    </div>
+
+</main>
+
+    <div id="toast-notification">
+        <span class="material-icons">check_circle</span>
+        <span id="toast-message"></span>
+    </div>
+    
+    <div id="cart-icon-container">
+        <div id="cart-icon">
+            <span class="material-icons">shopping_cart</span>
+            <span id="cart-count">0</span>
+        </div>
+    </div>
+    
+    <div id="product-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close detail-close-btn">&times;</span>
+            <div id="product-detail-content">
+                <div id="detail-image-container">
+                    <img id="detail-image" src="" alt="pwodwi agrandi">
+                </div>
+                <div id="detail-info">
+                    <span id="detail-status-badge" class="detail-status-badge" style="display:none;"></span>
+                    <h2 id="detail-name">Non pwodui</h2>
+                    <p id="detail-description">Deskripsyon konplè.</p>
+                    <p id="detail-price" style="font-size: 1.6em; font-weight: bold; color: var(--rouge-alerte);"></p>
+                    <button class="detail-add-btn">
+                        <span class="material-icons">add_shopping_cart</span>
+                        Ajoute nan panye
+                    </button>
+                    <p style="font-size: 0.8em; margin-top: 10px; color: var(--vert-menu);">yon sèl ki genyen nan atik sa ka achte.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close cart-close-btn">&times;</span>
+            <h2>panye w (atik: <span id="modal-cart-count">0</span>)</h2>
+            <div id="cart-summary">
+            </div>
+            
+            <div class="cart-total-line">
+                <span>total atik:</span>
+                <span id="modal-subtotal">0 HTG</span>
+            </div>
+            <div class="cart-total-line">
+                <span>total frè livrezon:</span>
+                <span id="modal-delivery">0 HTG</span>
+            </div>
+            <div class="cart-total-line">
+                <span>taks (0%):</span>
+                <span>0 HTG</span>
+            </div>
+            <div class="cart-total-line grand-total">
+                <span>gran total:</span>
+                <span id="modal-grandtotal">0 HTG</span>
+            </div>
+            
+            <a href="contact.html" id="checkout-btn-link">
+                <span class="material-icons">send</span> 
+                Kontakte sèvis asistans lan pou verifikasyon e pèman.
+            </a>
+            
+            </div>
+    </div>
+    
+    <footer id="main-footer">
+        <a href="accueil.html" class="nav-item">
+            <span class="material-icons">home</span>
+            <p>Akèy</p>
+        </a>
+        <a href="decouvrir.html" class="nav-item">
+            <span class="material-icons">info</span>
+            <p>Dekouvri</p>
+        </a>
+        <a href="transaction.html" class="nav-item">
+            <span class="material-icons">list_alt</span>
+            <p>Tranzaksyon</p>
+        </a>
+        <a href="deal.html" class="nav-item active">
+            <span class="material-icons">flash_on</span>
+            <span id="deal-badge" class="cart-badge-nav">0</span> 
+            <p>Deal</p>
+        </a>
+        <a href="moncompte.html" class="nav-item">
+            <span class="material-icons">person</span >
+            <p>Kont mwen</p>
+        </a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const availableListElement = document.getElementById('available-products-list');
+            const preorderListElement = document.getElementById('preorder-products-list');
+            const cartCountElement = document.getElementById('cart-count'); 
+            const dealBadgeElement = document.getElementById('deal-badge'); 
+            const cartIcon = document.getElementById('cart-icon');
+            const toastNotification = document.getElementById('toast-notification');
+            const toastMessage = document.getElementById('toast-message');
+            
+            // Éléments de la Modale PANIER
+            const cartModal = document.getElementById('cart-modal');
+            const cartCloseBtn = document.getElementsByClassName('cart-close-btn')[0];
+            const modalCartCount = document.getElementById('modal-cart-count');
+            const cartSummary = document.getElementById('cart-summary');
+            const modalSubtotal = document.getElementById('modal-subtotal');
+            const modalDelivery = document.getElementById('modal-delivery');
+            const modalGrandTotal = document.getElementById('modal-grandtotal');
+            const checkoutBtnLink = document.getElementById('checkout-btn-link'); // Remplacé par le lien
+            
+            // Éléments de la Modale DÉTAIL PRODUIT
+            const detailModal = document.getElementById('product-detail-modal');
+            const detailCloseBtn = document.getElementsByClassName('detail-close-btn')[0];
+            const detailImage = document.getElementById('detail-image');
+            const detailName = document.getElementById('detail-name');
+            const detailDescription = document.getElementById('detail-description');
+            const detailPrice = document.getElementById('detail-price');
+            const detailAddBtn = document.querySelector('.detail-add-btn');
+            const detailStatusBadge = document.getElementById('detail-status-badge');
+
+// --- Base de données de produits (Séparée en deux blocs) ---
+// BLOC 1 : Produits disponibles (Achat immédiat)
+const AVAILABLE_PRODUCTS = [
+    { id: 'P001', name: 'Telefòn Tecno 128 GB 2 SIM (Foto Ultra HD)', priceHTG: 14300, deliveryFeeHTG: 500, description: 'Telefòn Tecno 128 GB, 2 SIM. Li kenbe chaj, li pran foto ultra HD ak efè flou dèyè. An bon eta ak tout akseswa. 3 jou garanti.', imageSrc: '30c.jpg', isPreorder: false },
+    { id: 'P002', name: 'Pòch kado pou Tekno 128 GB', priceHTG: 0, deliveryFeeHTG: 0, description: 'Pòch modèn inik sa a se yon kado GRATIS pou tout moun ki achte telefòn Tecno 128 GB a.', imageSrc: '30cp.jpg', isPreorder: false },
+    { id: 'P003', name: 'Kit kamera konplè an bon eta pou kreyatè kontni', priceHTG: 25900, deliveryFeeHTG: 0, description: 'Kamera rezolisyon 4k, konplè ak (2) batri & chajè manyèl, 2 valiz de pwoteksyon, yon kat memwa 64 gb, yon lektè SD Card, yon green screen, yon mikwo filè 5 mèt ak yon trepye. Garanti 3 jou sou tout ekipman, batri yo full garanti', imageSrc: 'camera.jpg', isPreorder: false },
+    { id: 'P004', name: 'Kostim 2 pyès pou sitwayen', priceHTG: 12000, deliveryFeeHTG: 250, description: 'yon kostim 2 pyès pou gason, ideyal pou maryaj ak moman solanèl. li fèt ak twal fen.', imageSrc: 'Vès.jpg', isPreorder: false },
+    { id: 'P005', name: 'Pwoteksyon zòrèy timoun', priceHTG: 750, deliveryFeeHTG: 50, description: 'yon pwoteksyon pou zòrèy timoun lè l ap benyen pou evite dlo tonbe nan zòrèy yo.', imageSrc: 'Pwo.jpg', isPreorder: false },
+    { id: 'P006', name: 'Limyè pou animasyon chanm', priceHTG: 1100, deliveryFeeHTG: 0, description: 'yon limyè ak divès koulè pou animasyon chanm. ou ka branche l nan backup usb ou.', imageSrc: 'Limyè.jpg', isPreorder: false },
+    { id: 'P007', name: 'Cover telefòn Tecno', priceHTG: 1300, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè wouj grena e blan ladan. Pwoteksyon elegan.', imageSrc: 'tekno.jpg', isPreorder: false },
+    { id: 'P008', name: 'Cover telefòn Tecno (Blan & Wouj)', priceHTG: 1300, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè blan e wouj grena ladan. Rezistan ak elegan.', imageSrc: 'tecno2.jpg', isPreorder: false },
+    { id: 'P009', name: 'pòch samsung galaxy a12', priceHTG: 1800, deliveryFeeHTG: 0, description: 'yon etui telefòn pou samsung galaxy a12 pou sitwayen ki vle mete tèt yo an valè.', imageSrc: 'A12.jpg', isPreorder: false },
+    { id: 'P010', name: 'Etòf kimen pou savonnen', priceHTG: 250, deliveryFeeHTG: 0, description: 'yon ètòf trè rafine pou lave kò w, li fè anpil kim. ideyal pou benyen ak konfò.', imageSrc: 'Etòf.jpg', isPreorder: false },
+    { id: 'P011', name: 'Mikwofòn filè', priceHTG: 3900, deliveryFeeHTG: 100, description: 'yon mikwofòn a fil pou fè videyo. Ou ka konekte l ak kamera oswa telefòn ou.', imageSrc: 'micro3.jpg', isPreorder: false },
+    { id: 'P012', name: 'Zanno dore 18 pyès', priceHTG: 1600, deliveryFeeHTG: 0, description: 'yon seri 18 pyès zanno dore pou mete nan zòrèy pou moman espesyal. trè elegant.', imageSrc: 'Zanno.jpg', isPreorder: false },
+    { id: 'P013', name: 'Souri a fil', priceHTG: 700, deliveryFeeHTG: 0, description: 'souri dokazyon longè 1 mèt pou òdinatè w.', imageSrc: 'souris.jpg', isPreorder: false },
+    { id: 'P014', name: 'Flash SWAT chinwa (Rechajab)', priceHTG: 3900, deliveryFeeHTG: 100, description: 'Yon flash ekstèn ki tire lwen. Li rechargeable epi li gen yon ti lanp nan manch li.', imageSrc: 'flash.jpg', isPreorder: false },
+    { id: 'P015', name: 'Lamp rechajab Type C', priceHTG: 1900, deliveryFeeHTG: 0, description: 'Yon lanp rechargeable ak detèktè mouvman, li limen otomatikman nan fènwa.', imageSrc: 'lamp.jpg', isPreorder: false },
+    { id: 'P016', name: 'Tablo manyetik efasab (35.4" x 23.6")', priceHTG: 13800, deliveryFeeHTG: 500, description: "Tablo ak kad aliminyòm, ou ka fikse l nan mi. Li ak tout makè ak bwòs li.", imageSrc: 'board.jpg', isPreorder: false },
+            ];
+
+// BLOC 2 : Produits en précommande (Paiement préalable)
+const PREORDER_PRODUCTS = [
+    { id: 'P017', name: 'Lektè kat memwa an USB', priceHTG: 1700, deliveryFeeHTG: 200, description: 'Yon ti aparèy pratik pou li kat memwa ou sou telefòn oswa òdinatè. Pa bezwen batri, li rapid anpil.', imageSrc: 'reader.jpg', isPreorder: true },
+    { id: 'P027', name: 'Band stretch pou chofè zuzu', priceHTG: 700, deliveryFeeHTG: 0, description: "Band sa ka detire, regle e sipòte yon pwa jiska 30 liv (yon sak diri 9 mamit).", imageSrc: 'moto.jpg', isPreorder: true },
+    { id: 'P018', name: 'Kostim 3 pyès pou gwo zotobre', priceHTG: 11500, deliveryFeeHTG: 500, description: 'Yon kostim konplè (vès, jilè, pantalon). Pou sitwayen ki vle parèt byen nan gwo okazyon.', imageSrc: 'suit.jpg', isPreorder: true },
+    { id: 'P019', name: 'Mayo pèsonalize pou antrepriz ou', priceHTG: 1490, deliveryFeeHTG: 800, description: 'Mayo Polo bon kalite ou ka pèsonalize ak pwòp logo dizay ou e tou kòmande. Gen 14 koulè e pri ki afiche yo se pou inite.', imageSrc: 'polo.jpg', isPreorder: true },
+    { id: 'P020', name: 'Ekoutè filè san batri', priceHTG: 1700, deliveryFeeHTG: 100, description: 'Yon bèl kas ki bay bon son pou w tande mizik ak konfò. Li gen koulè nwa ak blan ladan l.', imageSrc: 'headset_white.jpg', isPreorder: true },
+    { id: 'P021', name: 'Ekoutè e mikwo pou live', priceHTG: 1850, deliveryFeeHTG: 250, description: 'Ekoutè lejè ak tout mikwo, ideyal pou moun k ap travay nan biwo oswa k ap pran kou sou entènèt.', imageSrc: 'headset_black.jpg', isPreorder: true },
+    { id: 'P022', name: 'Ekoutè gaming Type-C e jack', priceHTG: 1900, deliveryFeeHTG: 200, description: 'Ekoutè e mikwo spesyal pou kreyatè kontni. Son klè e mikwo detachab.', imageSrc: 'gaming_buds.jpg', isPreorder: true },
+    { id: 'P023', name: 'Limyè entèlijan 12W / detèktè mouvman', priceHTG: 1450, deliveryFeeHTG: 0, description: 'Yon anpoul ki limen sèlman lè l wè moun ap pase epi l etenn pou kont li. Ekonomize kouran lakay ou.', imageSrc: 'smart_bulb.jpg', isPreorder: true },
+    { id: 'P024', name: '2 pcs daypè tisu koton ki pa jetab', priceHTG: 1700, deliveryFeeHTG: 300, description: 'Yon pake (2) aypè koton ki pa jetab. Ou ka lave epi itilize yo anpil fwa.', imageSrc: 'diaper.jpg', isPreorder: true },
+    { id: 'P025', name: 'Sipò an kui pou sitwayen', priceHTG: 1600, deliveryFeeHTG: 0, description: 'Yon bon sipò an kwi pou gason, ki tache nan sentiwon pou mete telefòn ak pyès ou.', imageSrc: 'pòch.jpg', isPreorder: true },
+    { id: 'P026', name: 'Douch elektrik pòtab', priceHTG: 5900, deliveryFeeHTG: 500, description: "Yon douch elektrik fasil pou itilize. Li mache avèk yon bokit dlo sèlman.", imageSrc: 'elektrik.jpg', isPreorder: true }
+];
+
+const ALL_PRODUCTS = [...AVAILABLE_PRODUCTS, ...PREORDER_PRODUCTS];
+
+            // Fonction utilitaire pour la capitalisation (selon vos règles)
+            const capitalizeText = (text) => {
+                if (!text) return '';
+                // Appliquer la règle: Majuscule au début de la phrase/titre seulement.
+                return text.charAt(0).toUpperCase() + text.slice(1);
+            };
+
+            // --- Fonction TOAST Notification ---
+            const showToast = (message, isRemoval = false) => {
+                toastMessage.textContent = capitalizeText(message);
+                
+                toastNotification.classList.remove('show', 'remove');
+
+                if (isRemoval) {
+                    toastNotification.classList.add('remove');
+                }
+                
+                toastNotification.classList.add('show');
+                
+                setTimeout(() => {
+                    toastNotification.classList.remove('show');
+                    toastNotification.classList.remove('remove'); 
+                }, 3000); 
+            };
+
+
+            // --- Fonctions Panier (Cart) ---
+
+            const loadCart = () => {
+                try {
+                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+                } catch (e) {
+                    return [];
+                }
+            };
+
+            const saveCart = (cart) => {
+                localStorage.setItem('lescayes_cart', JSON.stringify(cart));
+                updateCartUI(cart);
+            };
+
+            const updateCartUI = (cart) => {
+                const count = cart.length;
+                
+                cartCountElement.textContent = count;
+                cartCountElement.style.display = count > 0 ? 'block' : 'none';
+
+                dealBadgeElement.textContent = count;
+                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
+
+                // Mise à jour de l'état du lien de checkout (désactivé si panier vide)
+                if (checkoutBtnLink) {
+                    checkoutBtnLink.style.pointerEvents = count > 0 ? 'auto' : 'none';
+                    checkoutBtnLink.style.opacity = count > 0 ? '1' : '0.5';
+                }
+            };
+
+            const addToCart = (product) => {
+                const cart = loadCart();
+                // Vérifier s'il y a déjà un article de ce produit dans le panier
+                const count = cart.filter(item => item.id === product.id).length;
+                
+                // Restriction: 1 seule quantité par type de produit
+                if (count > 0) {
+                    showToast(`ou deja gen yon sèl atik ${product.name} nan panier ou.`, true);
+                    return false;
+                }
+                
+                const item = { ...product, cartId: `${product.id}-${Date.now()}` }; 
+                cart.push(item); 
+                saveCart(cart);
+                
+                renderProducts(); 
+                showToast(`nouvo pwodwi ajoute nan panier avèk siksè!`);
+                return true;
+            };
+
+            const removeFromCart = (productId) => {
+                let cart = loadCart();
+                
+                // Trouver l'index de la dernière occurrence (car on retire une seule quantité)
+                const index = cart.map(item => item.id).lastIndexOf(productId);
+
+                if (index !== -1) {
+                    const removedItem = cart[index];
+                    cart.splice(index, 1); // Retirer la dernière occurrence
+                    saveCart(cart);
+                    
+                    renderProducts(); 
+                    showToast(`pwodwi retire nan panier a avèk siksè.`, true);
+                }
+            };
+            
+            const countProductInCart = (productId) => {
+                const cart = loadCart();
+                return cart.filter(item => item.id === productId).length;
+            };
+            
+            // --- Modale Panier (Calculs et Rendu) ---
+
+            const renderCartModal = (cart) => {
+                let totalPrices = 0;
+                let totalDelivery = 0;
+                
+                // Calculer les totaux
+                cart.forEach(item => {
+                    totalPrices += item.priceHTG;
+                    totalDelivery += item.deliveryFeeHTG;
+                });
+                
+                const grandTotal = totalPrices + totalDelivery;
+                
+                modalCartCount.textContent = cart.length;
+                cartSummary.innerHTML = ''; 
+
+                if (cart.length === 0) {
+                    cartSummary.innerHTML = '<p style="text-align: center; color: #999; padding: 10px;">panier ou vid.</p>';
+                    modalSubtotal.textContent = '0 HTG';
+                    modalDelivery.textContent = '0 HTG';
+                    modalGrandTotal.textContent = '0 HTG';
+                    
+                    // Désactiver le lien de checkout
+                    if (checkoutBtnLink) {
+                       checkoutBtnLink.style.pointerEvents = 'none';
+                       checkoutBtnLink.style.opacity = '0.5';
+                    }
+                    return { total: 0, count: 0 };
+                }
+                
+                // Activer le lien de checkout
+                if (checkoutBtnLink) {
+                    checkoutBtnLink.style.pointerEvents = 'auto';
+                    checkoutBtnLink.style.opacity = '1';
+                }
+
+                // Regrouper les produits pour affichage (comme 1x, car restriction 1)
+                const groupedItems = cart.reduce((acc, item) => {
+                    if (!acc[item.id]) {
+                        acc[item.id] = { ...item, quantity: 0 };
+                    }
+                    acc[item.id].quantity++;
+                    return acc;
+                }, {});
+
+
+                Object.values(groupedItems).forEach(item => {
+                    const linePrice = item.priceHTG * item.quantity;
+                    
+                    const deliveryText = item.deliveryFeeHTG === 0 
+                        ? 'gratis' 
+                        : `${item.deliveryFeeHTG.toLocaleString('fr-HT')} HTG`;
+                        
+                    const statusText = item.isPreorder ? ' (Sou kòmand)' : ' (Disponib)';
+                        
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'cart-item-detail';
+                    
+
+                    itemDiv.innerHTML = `
+                        <span class="item-name">${item.quantity} x ${capitalizeText(item.name)}${statusText}</span>
+                        <span class="item-price">
+                            ${linePrice.toLocaleString('fr-HT')} HTG 
+                            (+ ${deliveryText} livrezon)
+                        </span>
+                    `;
+                    cartSummary.appendChild(itemDiv);
+                });
+
+                
+                modalSubtotal.textContent = totalPrices.toLocaleString('fr-HT') + ' HTG';
+                modalDelivery.textContent = totalDelivery.toLocaleString('fr-HT') + ' HTG';
+                modalGrandTotal.textContent = grandTotal.toLocaleString('fr-HT') + ' HTG';
+                
+                return { total: grandTotal, count: cart.length };
+            };
+
+
+            // --- Fonctions Rendu (Rendering) ---
+
+            const createProductCard = (product) => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.id = `product-${product.id}`;
+                
+                const countInCart = countProductInCart(product.id);
+                
+                const deliveryText = product.deliveryFeeHTG === 0 
+                    ? 'livrezon gratis' 
+                    : `+ ${product.deliveryFeeHTG.toLocaleString('fr-HT')} HTG livrezon`;
+
+                const capitalizedName = capitalizeText(product.name);
+                
+                const statusClass = product.isPreorder ? 'preorder' : 'available';
+                const statusText = product.isPreorder ? 'Sou kòmand' : 'Disponib';
+
+
+                card.innerHTML = `
+                    <div class="image-container" data-id="${product.id}">
+                        <span class="status-indicator ${statusClass}">${statusText}</span>
+                        <img src="${product.imageSrc}" alt="${product.name}" class="product-image">
+                    </div>
+                    <div class="product-details">
+                        <h3>${capitalizedName}</h3>
+                        <p class="product-price">
+                            <span class="price-amount">${product.priceHTG.toLocaleString('fr-HT')} HTG</span> 
+                            <span>(${deliveryText})</span>
+                        </p>
+                    </div>
+                        
+                    <div class="cart-actions">
+                        ${countInCart > 0 ? 
+                            `<p style="font-weight:bold; color:var(--vert-succes); margin: 0 0 5px 0;">${countInCart} nan panier</p>` :
+                            ''
+                        }
+                        
+                        <button class="add-to-cart-btn" data-id="${product.id}" ${countInCart > 0 ? 'disabled' : ''}>
+                            <span class="material-icons">add_shopping_cart</span>
+                            Add to cart
+                        </button>
+                        
+                        ${countInCart > 0 ? 
+                            `<button class="remove-from-cart-btn" data-id="${product.id}">
+                                <span class="material-icons">remove_shopping_cart</span>
+                                retire atik la
+                            </button>` : 
+                            ''
+                        }
+                    </div>
+                `;
+                
+                // Événement pour l'agrandissement (clic sur la carte entière)
+                card.addEventListener('click', (e) => {
+                    // S'assurer que le clic n'est pas sur un bouton d'action
+                    // Utilisation de .closest pour vérifier si l'élément cliqué ou un de ses parents est un bouton d'action
+                    if (!e.target.closest('.add-to-cart-btn') && !e.target.closest('.remove-from-cart-btn')) {
+                         showProductDetail(product);
+                    }
+                });
+
+
+                // Événements pour le panier (boutons)
+                const addToCartBtn = card.querySelector('.add-to-cart-btn');
+                if (addToCartBtn) {
+                    addToCartBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Empêche l'ouverture de la modale détail
+                        addToCart(product);
+                    });
+                }
+                
+                const removeFromCartBtn = card.querySelector('.remove-from-cart-btn');
+                if (removeFromCartBtn) {
+                    removeFromCartBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Empêche l'ouverture de la modale détail
+                        removeFromCart(product.id);
+                    });
+                }
+
+
+                return card;
+            };
+
+            const renderProducts = () => {
+                availableListElement.innerHTML = ''; 
+                preorderListElement.innerHTML = '';
+                
+                // Rendu des produits disponibles
+                AVAILABLE_PRODUCTS.forEach(product => {
+                    availableListElement.appendChild(createProductCard(product));
+                });
+                
+                // Rendu des produits en précommande
+                PREORDER_PRODUCTS.forEach(product => {
+                    preorderListElement.appendChild(createProductCard(product));
+                });
+            };
+            
+            // --- Logique DÉTAIL PRODUIT (Agrandissement) ---
+            
+            const showProductDetail = (product) => {
+                // Remplir la modale
+                detailImage.src = product.imageSrc;
+                detailImage.alt = product.name;
+                detailName.textContent = capitalizeText(product.name);
+                detailDescription.textContent = capitalizeText(product.description);
+                
+                const deliveryText = product.deliveryFeeHTG === 0 
+                    ? 'livrezon gratis' 
+                    : `+ ${product.deliveryFeeHTG.toLocaleString('fr-HT')} HTG frè livrezon`;
+
+                detailPrice.innerHTML = `${product.priceHTG.toLocaleString('fr-HT')} HTG <span style="font-size: 0.6em; color: #888; font-weight: normal;">(${deliveryText})</span>`;
+                
+                // Gérer le badge de statut
+                const statusClass = product.isPreorder ? 'preorder' : 'available';
+                const statusText = product.isPreorder ? 'Sou kòmand' : 'Disponib';
+                
+                detailStatusBadge.textContent = statusText;
+                detailStatusBadge.className = `detail-status-badge ${statusClass}`;
+                detailStatusBadge.style.display = 'inline-block';
+
+                
+                // Mettre à jour le bouton d'ajout
+                const countInCart = countProductInCart(product.id);
+                detailAddBtn.disabled = countInCart > 0;
+                detailAddBtn.textContent = countInCart > 0 
+                    ? `atik la deja nan panier ou` 
+                    : `ajoute nan panier`;
+                
+                // Supprimer et recréer l'écouteur d'événement pour éviter les multiples attaches
+                const oldAddBtn = document.querySelector('.detail-add-btn');
+                const newAddBtn = oldAddBtn.cloneNode(true);
+                oldAddBtn.parentNode.replaceChild(newAddBtn, oldAddBtn);
+                
+                // Ajouter le nouvel écouteur d'événement
+                if (countInCart === 0) {
+                    newAddBtn.addEventListener('click', () => {
+                        if (addToCart(product)) {
+                            detailModal.style.display = 'none';
+                        }
+                    });
+                }
+
+                // Afficher la modale
+                detailModal.style.display = 'block';
+            };
+
+
+            // --- Événements Modales ---
+
+            // Ouverture du panier
+            cartIcon.addEventListener('click', () => {
+                const cart = loadCart();
+                renderCartModal(cart);
+                cartModal.style.display = 'block';
+            });
+            
+            // Fermeture des modales
+            cartCloseBtn.onclick = function() { cartModal.style.display = 'none'; }
+            detailCloseBtn.onclick = function() { detailModal.style.display = 'none'; }
+            
+            // Clic en dehors des modales
+            window.onclick = function(event) {
+                if (event.target == cartModal) { cartModal.style.display = 'none'; }
+                if (event.target == detailModal) { detailModal.style.display = 'none'; }
+            }
+            
+            // Le bouton de checkout n'a plus d'écouteur JS car c'est un lien direct (transaction.html)
+
+
+            // --- Initialisation Finale ---
+            
+            renderProducts();
+            updateCartUI(loadCart());
+            
+        });
+    </script>
+</body>
+</html>

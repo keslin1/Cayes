@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tranzaksyon | les cayes dropshipping</title>
+    
+    <link rel="stylesheet" href="base.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+    <style>
+        /* ==================== Styles Globaux et Couleurs (Repris) ==================== */
+        :root {
+            --bleu-marin: #001f3f; 
+            --kaki: #8fbc8f;              
+            --gri-clair: #f0f0f0;         
+            --noir-texte: #333;           
+            --blanc-fond: #ffffff;        
+            --rouge-alerte: #e74c3c;
+            --vert-info: #00897b; 
+            --vert-fond: #e0f2f1; 
+            --vert-menu: #004D40; 
+            --vert-succes: #27ae60;
+            --orange-attente: #f39c12;
+            
+            /* Couleurs harmonisées */
+            --jaune-pale: #fffacd; 
+            --vert-turquoise: #40e0d0; 
+            
+            /* Couleur spécifique pour le titre "Nouvo Tranzaksyon" */
+            --rouge-grenat: #800000;
+            
+            /* --whatsapp-vert a été retiré car le bouton n'existe plus. */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gri-clair);
+            color: var(--noir-texte);
+            margin: 0;
+            padding-bottom: 70px; /* Conserver pour le footer */
+        }
+        
+        #main-content {
+            padding: 20px 15px;
+        }
+
+        /* ==================== Styles Spécifiques à la Page (Mis à jour) ==================== */
+        
+        /* Titre principal de la page */
+        #page-main-title {
+            font-size: 1.8em;
+            margin: 0 0 10px 0;
+            font-weight: 900; 
+            color: var(--rouge-grenat); 
+            text-align: center;
+        }
+
+        .consignes-box {
+            background-color: var(--vert-fond);
+            /* Bordure renforcée bleu marine */
+            border-left: 5px solid var(--bleu-marin); 
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            font-size: 1em; 
+        }
+        .consignes-box strong {
+            color: var(--rouge-alerte); /* Rouge pour insister sur la sécurité */
+        }
+        
+        .consignes-box p {
+            line-height: 1.4;
+        }
+
+
+        /* Style pour le bouton WhatsApp (Supprimé du corps de page, mais style conservé au cas où) */
+        /*
+        #whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--vert-succes); 
+            color: var(--blanc-fond);
+            padding: 15px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 20px 0;
+            box-shadow: 0 4px var(--vert-menu);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        */
+
+        /* Conteneur des options de paiement (style repris du formulaire) */
+        #payment-info-container {
+             padding: 15px;
+             background-color: var(--blanc-fond);
+             border-radius: 8px;
+             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        #payment-info-container h3 {
+            font-size: 1.4em; 
+            color: var(--bleu-marin); 
+            margin-top: 0;
+            text-align: center;
+        }
+
+
+        #payment-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .payment-option {
+            background-color: var(--gri-clair);
+            border: 2px solid var(--gri-clair);
+            border-radius: 6px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); 
+        }
+
+        .payment-option:hover {
+            border-color: var(--vert-turquoise); 
+            background-color: #e8f8f7; 
+        }
+
+        .payment-option img {
+            width: 80%;
+            max-width: 120px;
+            height: auto;
+            display: block;
+            margin: 5px auto;
+        }
+
+        .payment-option p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+            font-weight: bold;
+            color: var(--bleu-marin);
+        }
+
+
+        /* ==================== Modal (pour les infos de paiement) ==================== */
+        .modal {
+            display: none; 
+            position: fixed;
+            z-index: 2000; 
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6); 
+        }
+
+        .modal-content {
+            background-color: var(--blanc-fond);
+            margin: 15% auto; 
+            padding: 20px;
+            border: none;
+            width: 80%; 
+            max-width: 400px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .close-btn {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: var(--rouge-alerte);
+        }
+        
+        .modal-content h3 {
+            color: var(--vert-info);
+            margin-top: 5px;
+        }
+        .modal-content strong {
+            color: var(--rouge-alerte);
+            display: block;
+            font-size: 1.4em; 
+            margin: 10px 0;
+        }
+        
+        .modal-content p {
+            font-size: 0.95em;
+            line-height: 1.3;
+        }
+
+        /* Le style #floating-whatsapp a été supprimé */
+
+
+        /* Styles du Footer (inchangés) */
+        #main-footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--blanc-fond); 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: var(--vert-menu); 
+            font-size: 0.75em;
+            padding: 5px;
+            position: relative;
+        }
+        
+        #main-footer .material-icons {
+            color: var(--vert-menu); 
+            font-size: 24px;
+        }
+        
+        .nav-item.active .material-icons {
+            color: var(--kaki); 
+        }
+        
+        .cart-badge-nav {
+            position: absolute;
+            top: 0;
+            right: 10px; 
+            background-color: var(--rouge-alerte);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 0.65em;
+            font-weight: bold;
+            min-width: 10px;
+            text-align: center;
+            line-height: 1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <main id="main-content">
+        
+        <h2 id="page-main-title">Tranzaksyon</h2>
+
+        <div class="consignes-box">
+                <p>
+                    <strong>Tout tranzaksyon</strong> dwe fèt avèk asistans nou sou Whatsapp pou rezon <strong>sekirite</strong>. Tanpri, fè pèman sou yonn nan nimewo ki afiche anba yo e soumèt tout prèv pèman ak detay tranzaksyon yo sou Whatsapp. 
+                    Ou ka jwenn kontak asistant nou nan meni <strong>KONT MWEN</strong>.
+                </p>
+            </p>
+        </div>
+        
+        <hr style="border: 0; height: 1px; background-color: #ccc; margin: 30px 0;">
+
+        <div id="payment-info-container">
+            <h3>Mwayen w' ka fè pèman</h3>
+                        <p style="text-align: center; font-size: 0.9em; color: var(--bleu-marin);">Klike sou bouton pèman pou wè detay transfè yo.</p>
+
+            <div id="payment-options">
+                <div class="payment-option" data-type="Natcash">
+                    <img src="natcash1.png" alt="logo natcash">
+                    <p>Natcash</p>
+                </div>
+                <div class="payment-option" data-type="MonCash">
+                    <img src="img0.png" alt="logo moncash">
+                    <p>Moncash</p>
+                </div>
+                <div class="payment-option" data-type="Sogebank">
+                    <img src="img6.png" alt="logo sogebank">
+                    <p>Sogebank (sèlman pou fakti)</p>
+                </div>
+        </div>
+
+
+    </main>
+
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3 id="modal-title"></h3>
+            <p id="modal-instructions"></p>
+            <p>Non kont lan: <strong>Kes* Ben*</strong></p>
+            <p id="modal-details"></p>
+        </div>
+    </div>
+
+
+    <footer id="main-footer">
+        <a href="accueil.html" class="nav-item">
+            <span class="material-icons">home</span>
+            <p>Akèy</p>
+        </a>
+        <a href="decouvrir.html" class="nav-item">
+            <span class="material-icons">info</span>
+            <p>Dekouvri</p>
+        </a>
+        <a href="transaction.html" class="nav-item active">
+            <span class="material-icons">list_alt</span>
+            <p>Tranzaksyon</p>
+        </a>
+        <a href="deal.html" class="nav-item">
+            <span class="material-icons">flash_on</span>
+            <span id="deal-badge" class="cart-badge-nav">0</span> 
+            <p>Deal</p>
+        </a>
+        <a href="moncompte.html" class="nav-item">
+            <span class="material-icons">person</span>
+            <p>Kont mwen</p>
+        </a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const paymentOptions = document.querySelectorAll('.payment-option');
+            const dealBadgeElement = document.getElementById('deal-badge');
+            
+            // Modal elements
+            const modal = document.getElementById('payment-modal');
+            const closeBtn = document.querySelector('.close-btn');
+            const modalTitle = document.getElementById('modal-title');
+            const modalInstructions = document.getElementById('modal-instructions');
+            const modalDetails = document.getElementById('modal-details');
+            
+            // --- Logique d'affichage des détails de paiement ---
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const paymentType = option.getAttribute('data-type');
+                    showPaymentDetails(paymentType);
+                });
+            });
+
+            function showPaymentDetails(type) {
+                // Application de la capitalisation au début de phrase/titre
+                modalTitle.textContent = `Enfòmasyon pou pèman pa ${type}`;
+                
+                let instructionsHTML = '';
+                let detailsHTML = '';
+                
+                switch(type) {
+                    case 'Natcash':
+                        instructionsHTML = "Tanpri, voye transfè w la sou nimewo sa a :";
+                        detailsHTML = "Nimewo transfè Natcash : <strong>35 60 88 69</strong>";
+                        break;
+                    case 'MonCash':
+                        instructionsHTML = "Tanpri, voye transfè w la sou nimewo sa a :";
+                        detailsHTML = "Nimewo transfè Moncash : <strong>31 01 39 68</strong>";
+                        break;
+                    case 'Sogebank':
+                        instructionsHTML = "Mwayen sa a disponib sèlman pou pèman fakti. Kontakte sèvis kliyan an avan tout transfè.";
+                        detailsHTML = ""; 
+                        break;
+                    default:
+                        instructionsHTML = "Chwazi yon mwayen pèman pou w wè detay yo.";
+                        modalDetails.innerHTML = "";
+                        return;
+                }
+                
+                modalInstructions.textContent = instructionsHTML;
+                modalDetails.innerHTML = detailsHTML;
+                modal.style.display = 'block';
+            }
+
+            closeBtn.onclick = () => {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = (event) => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            // --- Logique du Badge du panier (Footer) ---
+            const loadCart = () => {
+                try {
+                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+                } catch (e) {
+                    return [];
+                }
+            };
+
+            const updateBadgeUI = () => {
+                const cart = loadCart();
+                const count = cart.length;
+                dealBadgeElement.textContent = count;
+                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
+            };
+
+
+            // Initialisation
+            updateBadgeUI(); 
+        });
+    </script>
+</body>
+</html>

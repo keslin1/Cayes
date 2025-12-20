@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akèy - Les Cayes Dropshipping</title>
+    
+    <link rel="stylesheet" href="base.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+    <link rel="manifest" href="/manifest.json">
+    
+    <meta name="apple-mobile-web-app-title" content="LCDrop">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="/logo2.png">
+    <style>
+        /* ================= styles spécifiques et améliorés ================= */
+        
+        :root {
+            --bleu-marin: #001f3f; 
+            --kaki: #8fbc8f;              
+            --gri-clair: #f0f0f0;         
+            --noir-texte: #333;           
+            --blanc-fond: #ffffff;        
+            --rouge-alerte: #e74c3c; 
+            --vert-menu: #004D40; 
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gri-clair);
+            color: var(--noir-texte);
+            margin: 0;
+            padding-bottom: 70px; 
+        }
+
+        /* Titres */
+        .section-title {
+            font-size: 1.6em;
+            margin: 25px 0 15px 0;
+            font-weight: 900; 
+            color: var(--bleu-marin);
+            text-align: left;
+            padding-left: 5px;
+            border-left: 5px solid var(--kaki); 
+            
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* NOUVEAU: En-tête de localisation (MODIFIÉ) */
+        #location-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            padding: 10px 15px;
+            background-color: var(--blanc-fond); 
+            color: var(--bleu-marin);
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        #location-header .location-icon {
+            color: var(--kaki); 
+        }
+        .dropdown-icon {
+            color: var(--bleu-marin);
+        }
+        
+        /* Barre de Recherche (Ajustement pour la fonction de recherche) */
+        #search-bar {
+            display: flex;
+            align-items: center;
+            background-color: var(--gri-clair);
+            border-radius: 25px;
+            padding: 8px 15px;
+            margin: 10px 15px 0 15px;
+        }
+
+        #search-bar .material-icons {
+            color: #666;
+            margin-right: 10px;
+            cursor: pointer; /* Indique que l'icône est cliquable pour la recherche */
+        }
+        
+        #search-bar input[type="text"] {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            font-size: 1em;
+            outline: none;
+            color: var(--noir-texte);
+        }
+        
+        /* Contwa à rebours */
+        #countdown-timer {
+            text-align: center;
+            background: linear-gradient(to right, #40E0D0, #FFFF00); 
+            color: var(--bleu-marin); 
+            padding: 10px 0; 
+            border-radius: 0px; 
+            font-size: 1em;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+            font-weight: bold;
+            font-style: italic; 
+        }
+        
+        #countdown-timer p {
+            margin: 0;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        #timer-value {
+            color: #FF0000; 
+            margin-top: 5px; 
+            font-size: 1.2em; 
+            font-weight: 900; 
+            font-style: normal; 
+        }
+
+        /* Kourousèl */
+        #banner-carousel {
+            overflow-x: scroll; 
+            height: 120px; 
+            position: relative;
+            margin: 20px 0;
+            padding: 0 0 0 15px; 
+            scroll-snap-type: x mandatory; 
+            -webkit-overflow-scrolling: touch; 
+            scrollbar-width: none; 
+        }
+
+        #banner-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .carousel-container {
+            height: 100%;
+            display: flex;
+        }
+        
+        .carousel-item {
+            min-width: calc(100vw - 30px); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blanc-fond);
+            text-align: center;
+            padding: 15px 25px; 
+            position: relative;
+            border-radius: 15px; 
+            margin-right: 15px; 
+            flex-shrink: 0;
+            scroll-snap-align: start; 
+        }
+        
+        .carousel-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.55); 
+            z-index: 1;
+        }
+        
+        /* AJUSTEMENTS BANNER TEXT */
+        .banner-text {
+            position: relative;
+            z-index: 2; 
+            text-align: center; 
+            width: 100%; 
+        }
+
+        .banner-text h1 {
+            font-size: 1.1em; 
+            text-shadow: 1px 1px 3px #000; 
+            margin: 0;
+            font-weight: 900; 
+            text-transform: uppercase; 
+        }
+        .banner-text p {
+            font-size: 0.75em; 
+            margin-top: 5px;
+            text-shadow: 1px 1px 2px #000;
+        }
+        
+        /* Cartes produits */
+        #deal-products {
+            display: flex;
+            overflow-x: scroll; 
+            gap: 15px;
+            padding: 10px 15px 10px 0; 
+            scroll-snap-type: x mandatory; 
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        #deal-products::-webkit-scrollbar {
+            display: none;
+        }
+
+        #deal-products .product-card-link {
+             scroll-snap-align: start; 
+             text-decoration: none; 
+             color: inherit; 
+        }
+        
+        #deal-products .product-card-link:first-child {
+            margin-left: 15px;
+        }
+
+        #main-content {
+            padding: 0 15px; 
+        }
+
+        .product-card {
+            min-width: 160px;
+            background-color: var(--blanc-fond); 
+            border-radius: 12px; 
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
+            transition: transform 0.2s;
+            text-align: center;
+        }
+        
+        .product-card img {
+            width: 100%;
+            height: 100px; 
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: var(--bleu-marin);
+            margin: 5px 0;
+        }
+
+        .stock {
+            font-size: 0.8em;
+            margin-bottom: 5px;
+            color: var(--kaki); 
+            font-weight: 600;
+        }
+
+        .btn-ajouter {
+            background-color: var(--kaki); 
+            color: var(--bleu-marin); 
+            border: 2px solid var(--bleu-marin); 
+            padding: 8px 15px;
+            border-radius: 20px; 
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            display: flex; 
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Style de l'icône dans le bouton "Mete nan panye" */
+        .btn-ajouter .material-icons {
+            font-size: 18px;
+            margin-right: 5px;
+            color: var(--bleu-marin); 
+        }
+        
+        #main-content > p {
+            background-color: var(--gri-clair); 
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .material-icons {
+            font-family: 'Material Icons';
+        }
+        
+        /* Footer Styles */
+        #main-footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--blanc-fond); 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: var(--vert-menu); 
+            font-size: 0.75em;
+            padding: 5px;
+            position: relative; 
+        }
+        
+        #main-footer .material-icons {
+            color: var(--vert-menu); 
+            font-size: 24px;
+        }
+        
+        .nav-item.active .material-icons {
+            color: var(--kaki); 
+        }
+
+        /* Style du Badge de Notification (pour Deal) */
+        .cart-badge-nav {
+            position: absolute;
+            top: 0;
+            right: 10px; 
+            background-color: var(--rouge-alerte);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 0.65em;
+            font-weight: bold;
+            min-width: 10px;
+            text-align: center;
+            line-height: 1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            display: none; 
+        }
+        
+    </style>
+</head>
+<body>
+
+    <header id="main-header">
+        <div class="header-content">
+            
+            <div id="location-header">
+                <span class="material-icons location-icon">location_on</span>
+                <span id="address-info">Les Cayes Dropshipping, haïti-sud</span> 
+                <span class="material-icons dropdown-icon">arrow_drop_down</span>
+            </div>
+            
+            <div id="search-bar">
+                <span class="material-icons" id="search-icon">search</span>
+                <input type="text" id="search-input" placeholder="Chèche sou sit la...">
+            </div>
+            
+            <div id="countdown-timer" style="margin-top: 15px;">
+                <p>Pwochen okazyon pou kòmand, se ap nan:</p>
+                <div id="timer-value"><span id="timer-display"></span></div>
+            </div>
+        </div>
+    </header>
+
+    <section id="banner-carousel">
+        <div class="carousel-container">
+            
+            <div class="carousel-item active" style="background-image: url('pro.jpg');">
+                <div class="banner-text">
+                    <h1>oumenm tou w ka gen yon store</h1>
+                    <p>chwazi pwodui ou vle vann yo, nap achte pou ou e livre w yo.</p>
+                </div>
+            </div>
+            
+            <div class="carousel-item" style="background-image: url('mache.jpg');">
+                <div class="banner-text">
+                    <h1>La rareté est terminée</h1>
+                    <p>nenpòt materyèl oswa pwodui w paka jwenn sou mache a.</p>
+                </div>
+            </div>
+            
+            <div class="carousel-item" style="background-image: url('kontr.png');">
+                <div class="banner-text">
+                    <h1>achte zouti modèn pou travay</h1>
+                    <p>pou devni pi pèfòman nan metye w lan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main id="main-content">
+        <h2 class="section-title"> 
+            Pwodui flash vant
+            <a href="deal.html" class="scroll-indicator" aria-label="Voir plus de produits">
+                <span class="material-icons">arrow_forward</span>
+            </a>
+        </h2>
+        
+        <div id="deal-products">
+            <a href="deal.html#P001" class="product-card-link">
+                <div class="product-card">
+                    <img src="camera.jpg" alt="kamera konplè ak trépied an bon eta">
+                    <p class="price">Kamera konplè</p>
+                    <p class="stock">Pri: 25 900 HTG</p>
+                    <button class="btn-ajouter">
+                        <span class="material-icons">shopping_cart</span>
+                        Add to cart
+                    </button>
+                </div>
+            </a>
+            
+            <a href="deal.html#P002" class="product-card-link">
+                <div class="product-card">
+                    <img src="Vès.jpg" alt="kostim 2 pyès pou sitwayen">
+                    <p class="price">Kostim 2 pyès</p>
+                    <p class="stock">Pri: 12 000 HTG</p>
+                    <button class="btn-ajouter">
+                        <span class="material-icons">shopping_cart</span>
+                        Add to cart
+                    </button>
+                </div>
+            </a>
+            
+            <a href="deal.html#P003" class="product-card-link">
+                <div class="product-card">
+                    <img src="Pwo.jpg" alt="pwoteksyon zòrèy pou benyen">
+                    <p class="price">Pwoteksyon zòrèy</p>
+                    <p class="stock">Pri: 750 HTG</p>
+                    <button class="btn-ajouter">
+                        <span class="material-icons">shopping_cart</span>
+                        mete nan panye
+                    </button>
+                </div>
+            </a>
+        </div>
+
+        <h2 class="section-title" style="margin-top: 30px;">Sèvis dropshipping nou an</h2>
+        <p>Les Cayes Dropshipping se yon platfòm e-commerce ki rann acha sou entènèt pi senp e pi sekirize.
+<strong>Nou se premye chwa antreprenè nan sud</strong> kap chèche solisyon pratik pou achte e resevwa pwodui sot aletranje.</p>
+        
+    </main>
+
+    <footer id="main-footer">
+        <a href="accueil.html" class="nav-item active">
+            <span class="material-icons">home</span>
+            <p>Akèy</p>
+        </a>
+        <a href="decouvrir.html" class="nav-item">
+            <span class="material-icons">info</span>
+            <p>Dekouvri</p>
+        </a>
+        <a href="transaction.html" class="nav-item">
+            <span class="material-icons">list_alt</span>
+            <p>Tranzaksyon</p>
+        </a>
+        <a href="deal.html" class="nav-item">
+            <span class="material-icons">flash_on</span>
+            <span id="deal-badge" class="cart-badge-nav">0</span> <p>Deal</p>
+        </a>
+        <a href="moncompte.html" class="nav-item">
+            <span class="material-icons">person</span >
+            <p>Kont mwen</p>
+        </a>
+        
+    </footer>
+<script>
+        // Fonction pour mettre en majuscule la première lettre d'une chaîne
+        function capitalizeFirstLetter(string) {
+            if (!string) return '';
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // ================= 1. gère le kourousèl =================
+            const bannerCarousel = document.getElementById('banner-carousel'); 
+            const items = document.querySelectorAll('.carousel-item');
+            const itemsLength = items.length;
+            let currentIndex = 0;
+
+            function updateCarouselPosition() {
+                if (items.length === 0) return;
+                const itemWidth = items[0].getBoundingClientRect().width; 
+                const itemFullWidth = itemWidth + 15; 
+                const scrollDistance = currentIndex * itemFullWidth; 
+
+                bannerCarousel.scrollTo({
+                    left: scrollDistance,
+                    behavior: 'smooth'
+                });
+            }
+
+            function nextSlide() {
+                currentIndex = (currentIndex + 1) % itemsLength;
+                updateCarouselPosition();
+            }
+
+            updateCarouselPosition(); 
+            setInterval(nextSlide, 10000); 
+
+
+            // ================= 2. gère la barre de recherche (Recherche Google ciblée) =================
+            const searchInput = document.getElementById('search-input');
+            const searchIcon = document.getElementById('search-icon');
+            const siteUrl = 'lescayesdropshipping.com'; 
+
+            function executeSearch() {
+                const query = searchInput.value.trim();
+                if (query) {
+                    const searchUrl = `https://www.google.com/search?q=site%3A${siteUrl}+${encodeURIComponent(query)}`;
+                    window.open(searchUrl, '_self'); 
+                }
+            }
+
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    executeSearch();
+                }
+            });
+
+            searchIcon.addEventListener('click', executeSearch);
+            
+            
+            // ================= 3. gère le kontwa à rebous (15 JOU PÈSISTAN) =================
+            const timerDisplay = document.getElementById('timer-display');
+            const countdownStorageKey = 'countdownTargetDate'; 
+
+            let targetDate;
+            const storedTarget = localStorage.getItem(countdownStorageKey);
+            const nowTime = new Date().getTime();
+            
+            // Nou fikse entèval la sou 15 jou
+            const intervalDurationMs = 15 * 24 * 60 * 60 * 1000;
+
+            if (storedTarget) {
+                targetDate = new Date(storedTarget);
+                
+                // Si dat la pa valid, nou rekòmanse li
+                if (isNaN(targetDate.getTime())) {
+                    targetDate = new Date(nowTime + intervalDurationMs);
+                    localStorage.setItem(countdownStorageKey, targetDate.toString());
+                }
+            } else {
+                // Premye fwa, nou kreye dat la epi nou sove l
+                targetDate = new Date(nowTime + intervalDurationMs);
+                localStorage.setItem(countdownStorageKey, targetDate.toString());
+            }
+
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = targetDate.getTime() - now;
+
+                if (distance < 0) {
+                    timerDisplay.innerHTML = "Okazyon: Pako gen okazyon ki prevwa pou mwa sa";
+                    clearInterval(countdownInterval);
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                timerDisplay.innerHTML = `${days} jou-${hours} è-${minutes} mnt- ${seconds} sd`;
+            }
+            
+            updateCountdown();
+            const countdownInterval = setInterval(updateCountdown, 1000);
+            
+            
+            // ================= 4. gère le badge persistant du panier (deal) =================
+            const dealBadgeElement = document.getElementById('deal-badge');
+
+            const loadCart = () => {
+                try {
+                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+                } catch (e) {
+                    return [];
+                }
+            };
+
+            const updateBadgeUI = () => {
+                const cart = loadCart();
+                const count = cart.length;
+                dealBadgeElement.textContent = count;
+                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
+            };
+
+            updateBadgeUI(); 
+            
+            
+            // ================= 5. met à jour l'adresse de localisation (personnalisation) =================
+            const addressInfoElement = document.getElementById('address-info');
+            const userStorageKey = 'user_profile_data';
+
+            const loadProfile = () => {
+                try {
+                    return JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                } catch (e) {
+                    return {};
+                }
+            };
+
+            const updateLocationHeader = () => {
+                const profile = loadProfile();
+                const defaultAddress = 'les Cayes Dropshipping, haïti-sud';
+                
+                if (profile.address && profile.address.trim() !== '') {
+                    const firstLine = profile.address.split('\n')[0].trim();
+                    
+                    let namePart = '';
+                    if (profile.nom) {
+                         namePart = profile.nom.split(' ')[0];
+                    } else if (profile.email) {
+                         namePart = profile.email.split('@')[0];
+                    }
+                    
+                    const capitalizedName = namePart ? capitalizeFirstLetter(namePart) : 'Zanmi';
+                    const capitalizedAddressLine = capitalizeFirstLetter(firstLine);
+                    
+                    addressInfoElement.textContent = `${capitalizedName}, ${capitalizedAddressLine}...`;
+                } else {
+                    addressInfoElement.textContent = capitalizeFirstLetter(defaultAddress);
+                }
+            };
+            
+            updateLocationHeader();
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+/* ================= base.css (estil jeneral ak re-inisyalizasyon) ================= */
+
+/* Definisyon koulè yo */
+:root {
+    --bleu-marin: #001f3f;        
+    --kaki: #8fbc8f;              
+    --gri-fonse: #e0e0e0;         
+    --noir-texte: #333;           
+    --blanc-fond: #ffffff;        
+    --gri-clair: #f0f0f0;         
+}
+
+/* Re-inisyalizasyon */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    font-family: sans-serif;
+}
+
+/* Estil jeneral kò paj la */
+body {
+    background-color: var(--gri-fonse); 
+    color: var(--noir-texte);
+    padding-bottom: 65px; 
+    line-height: 1.6;
+}
+
+/* Contenu principal (pour ajouter une marge latérale) */
+#main-content {
+    padding: 0 15px; /* Marge à gauche et à droite pour le contenu principal */
+}
+
+/* Estil jeneral header */
+#main-header {
+    background-color: var(--blanc-fond);
+    border-bottom: 1px solid #ccc;
+    padding: 10px 15px;
+}
+
+/* Estil jeneral ba rechèch la */
+#search-bar {
+    display: flex;
+    align-items: center;
+    background-color: var(--gri-clair); 
+    border-radius: 25px; 
+    padding: 5px 10px;
+}
+
+#search-bar input {
+    border: none;
+    background: none;
+    outline: none;
+    flex-grow: 1;
+    padding: 5px;
+    color: var(--noir-texte);
+}
+
+/* FOOTER (Pye Paj Navigasyon) - Règle finale pour les icônes */
+#main-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--blanc-fond);
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0; 
+    z-index: 1000;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--noir-texte);
+    font-size: 0.7em;
+    padding: 0 5px; 
+}
+
+/* Règle CRUCIALE de correction des icônes pour s'assurer qu'elles apparaissent */
+.nav-item .material-icons {
+    font-size: 24px;
+    color: #666; 
+    line-height: 1; 
+    height: 24px; 
+    margin-bottom: 2px; 
+    /* Ajout du font-family pour une robustesse maximale */
+    font-family: 'Material Icons'; 
+    font-weight: normal; 
+    font-style: normal;
+    display: inline-block;
+}
+
+/* Koulè ikòn ak tèks ki aktif */
+.nav-item.active .material-icons,
+.nav-item.active p {
+    color: var(--bleu-marin); 
+    font-weight: bold;
+}

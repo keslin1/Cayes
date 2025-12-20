@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sèvis Kliyan - Les Cayes Dropshipping</title>
+    
+    <link rel="stylesheet" href="base.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+    <style>
+        /* ================= styles pour contact.html ================= */
+        :root {
+            --bleu-marin: #001f3f; 
+            --kaki: #8fbc8f;              
+            --gri-clair: #f0f0f0;         
+            --noir-texte: #333;           
+            --blanc-fond: #ffffff;        
+            --rouge-alerte: #e74c3c;
+            --vert-menu: #004D40; 
+            --vert-whatsapp: #25D366; 
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gri-clair);
+            color: var(--noir-texte);
+            margin: 0;
+            padding-bottom: 70px;
+            text-align: center;
+        }
+
+        #main-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: calc(100vh - 130px);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--blanc-fond);
+            border-bottom: 1px solid var(--gri-clair);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .header-top h1 {
+            font-size: 1.5em;
+            margin: 0;
+            color: var(--bleu-marin);
+        }
+        
+        .contact-card {
+            background-color: var(--blanc-fond);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .contact-card h2 {
+            color: var(--bleu-marin);
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+        
+        .contact-card h3 {
+            color: var(--kaki);
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            font-weight: normal;
+        }
+
+        .contact-card p {
+            margin-bottom: 30px;
+            font-size: 1.05em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Bouton WhatsApp */
+        .whatsapp-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--vert-whatsapp);
+            color: var(--blanc-fond);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 15px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #1DA851; 
+        }
+
+        .whatsapp-btn .material-icons {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .details-note {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: var(--bleu-marin);
+            font-weight: bold;
+        }
+
+        /* Footer Styles (similaire au moncompte.html) */
+        #main-footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--blanc-fond); 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: var(--vert-menu); 
+            font-size: 0.75em;
+            padding: 5px;
+            position: relative;
+        }
+        
+        #main-footer .material-icons {
+            color: var(--vert-menu); 
+            font-size: 24px;
+        }
+        
+        .nav-item.active .material-icons {
+            color: var(--kaki); 
+        }
+
+        .cart-badge-nav {
+            position: absolute;
+            top: 0;
+            right: 10px; 
+            background-color: var(--rouge-alerte);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 0.65em;
+            font-weight: bold;
+            min-width: 10px;
+            text-align: center;
+            line-height: 1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-top">
+        <h1>Sèvis kliyan</h1>
+    </header>
+
+    <main id="main-content">
+        
+        <div class="contact-card">
+            <h2>Kontakte nou dirèkteman! 🫡🥰🤩</h2>
+            <p>Pou kesyon sou kòmand ou, enfòmasyon pwodwi, oswa nenpòt lòt sipò, nou sigjere w itilize whatsapp pou yon repons rapid.</p>
+            
+            <a href="https://wa.me/50931013968" class="whatsapp-btn" target="_blank">
+                <span class="material-icons">chat</span>
+                Text nou sou Whatsapp
+            </a>
+            </div>
+        
+    </main>
+
+    <footer id="main-footer">
+        <a href="accueil.html" class="nav-item">
+            <span class="material-icons">home</span>
+            <p>Akèy</p>
+        </a>
+        <a href="decouvrir.html" class="nav-item">
+            <span class="material-icons">info</span>
+            <p>Dekouvri</p>
+        </a>
+        <a href="transaction.html" class="nav-item">
+            <span class="material-icons">list_alt</span>
+            <p>Tranzaksyon</p>
+        </a>
+        <a href="deal.html" class="nav-item">
+            <span class="material-icons">flash_on</span>
+            <span id="deal-badge" class="cart-badge-nav">0</span>
+            <p>Deal</p>
+        </a>
+        <a href="moncompte.html" class="nav-item">
+            <span class="material-icons">person</span>
+            <p>Kont mwen</p>
+        </a>
+    </footer>
+
+    <script>
+        // Script pour gérer le badge du panier
+        document.addEventListener('DOMContentLoaded', () => {
+            const dealBadgeElement = document.getElementById('deal-badge');
+            const loadCart = () => {
+                try {
+                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+                } catch (e) {
+                    return [];
+                }
+            };
+            const updateBadgeUI = () => {
+                const count = loadCart().length;
+                dealBadgeElement.textContent = count;
+                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
+            };
+            updateBadgeUI();
+        });
+    </script>
+</body>
+</html>

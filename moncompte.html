@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kont mwen - Les Cayes Dropshipping</title>
+    
+    <link rel="stylesheet" href="base.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+    <style>
+        /* ================= styles de base pour moncompte.html ================= */
+        :root {
+            --bleu-marin: #001f3f; 
+            --kaki: #8fbc8f;              
+            --gri-clair: #f0f0f0;         
+            --noir-texte: #333;           
+            --blanc-fond: #ffffff;        
+            --rouge-alerte: #e74c3c;
+            --vert-menu: #004D40; 
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gri-clair);
+            color: var(--noir-texte);
+            margin: 0;
+            padding-bottom: 70px;
+        }
+
+        #main-content {
+            padding: 15px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background-color: var(--blanc-fond);
+            border-bottom: 1px solid var(--gri-clair);
+        }
+
+        .header-top h1 {
+            /* Application de la règle de capitalisation au commencement d'un titre */
+            font-size: 1.5em;
+            margin: 0;
+            color: var(--bleu-marin);
+        }
+        
+        .header-top .icon-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-top .icon-right .material-icons {
+            font-size: 28px;
+            color: var(--bleu-marin);
+            margin-left: 15px;
+        }
+        
+        .section-title {
+            font-size: 1.1em; 
+            font-weight: 600;
+            margin: 25px 0 10px 0;
+            color: var(--noir-texte);
+            padding-left: 0;
+            border-left: none;
+        }
+
+        /* Cadres d'informations (similaires aux cartes de l'exemple) */
+        .info-card, .action-card {
+            background-color: var(--blanc-fond);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        
+        .info-card {
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+        }
+
+        .info-card-line {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+        
+        .info-card-line .material-icons {
+            margin-right: 15px;
+            color: var(--kaki); 
+            font-size: 20px;
+        }
+        
+        .info-card-line strong {
+            font-weight: bold;
+            color: var(--bleu-marin);
+            margin-right: 5px;
+        }
+        
+        /* Boutons d'action */
+        .action-card {
+            text-decoration: none;
+            color: var(--noir-texte);
+            justify-content: space-between;
+            padding: 18px 15px;
+        }
+
+        .action-card .material-icons.left {
+            margin-right: 15px;
+            color: var(--bleu-marin);
+            font-size: 24px;
+        }
+        
+        .action-card .material-icons.right {
+            color: #ccc;
+        }
+        
+        .action-card span {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        /* Formulaire */
+        #profile-form {
+            background-color: var(--blanc-fond);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        #profile-form label {
+            display: block;
+            margin-bottom: 5px;
+            margin-top: 15px;
+            font-weight: 600;
+            color: var(--bleu-marin);
+        }
+
+        #profile-form input[type="text"], 
+        #profile-form input[type="email"], 
+        #profile-form input[type="tel"],
+        #profile-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid var(--gri-clair);
+            border-radius: 6px;
+            box-sizing: border-box; 
+            font-size: 1em;
+        }
+
+        #profile-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        #save-profile-btn {
+            background-color: var(--kaki); 
+            color: var(--bleu-marin); 
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px; 
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+            font-size: 1.1em;
+        }
+        
+        /* Footer Styles */
+        #main-footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--blanc-fond); 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: var(--vert-menu); 
+            font-size: 0.75em;
+            padding: 5px;
+            position: relative;
+        }
+        
+        #main-footer .material-icons {
+            color: var(--vert-menu); 
+            font-size: 24px;
+        }
+        
+        .nav-item.active .material-icons {
+            color: var(--kaki); 
+        }
+
+        .cart-badge-nav {
+            position: absolute;
+            top: 0;
+            right: 10px; 
+            background-color: var(--rouge-alerte);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 0.65em;
+            font-weight: bold;
+            min-width: 10px;
+            text-align: center;
+            line-height: 1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header-top">
+        <h1>Kont mwen</h1>
+        <div class="icon-right">
+            <span class="material-icons">notifications</span>
+            <span class="material-icons">person</span> 
+        </div>
+    </header>
+
+    <main id="main-content">
+        
+        <h2 class="section-title">Enfòmasyon pèsonèl</h2>
+        
+        <div class="info-card">
+            <div class="info-card-line">
+                <span class="material-icons">person</span>
+                <strong>Non:</strong> 
+                <span id="profile-name-display">Chaje...</span>
+            </div>
+            <div class="info-card-line">
+                <span class="material-icons">email</span>
+                <strong>Imèl:</strong> 
+                <span id="profile-email-display">Chaje...</span>
+            </div>
+            <div class="info-card-line">
+                <span class="material-icons">phone</span>
+                <strong>Telefòn:</strong> 
+                <span id="profile-phone-display">Chaje...</span>
+            </div>
+            <div class="info-card-line">
+                <span class="material-icons">location_on</span>
+                <strong>Adrès:</strong> 
+                <span id="profile-address-display">Chaje...</span>
+            </div>
+            
+        </div>
+        
+        <h2 class="section-title">Aksyon</h2>
+        
+        <a href="#profile-form" class="action-card">
+            <span>
+                <span class="material-icons left">edit</span>
+                Mete pwofil mwen ajou
+            </span>
+            <span class="material-icons right">chevron_right</span>
+        </a>
+        
+        <a href="contact.html" class="action-card">
+            <span>
+                <span class="material-icons left">support_agent</span>
+                Sèvis kliyan
+            </span>
+            <span class="material-icons right">chevron_right</span>
+        </a>
+        
+        <h2 class="section-title" id="form-title">mete pwofil mwen ajou</h2>
+        
+        <form id="profile-form" action="https://getform.io/f/akkpolva" method="POST">
+            
+            <input type="hidden" name="form_type" value="user_profile_update">
+            
+            <label for="nom">Non konplè (pou livrezon)</label>
+            <input type="text" id="nom" name="nom" required>
+
+            <label for="email">Adrès imèl (obligatwa)</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="phone">Telefòn whatsapp</label>
+            <input type="tel" id="phone" name="phone" placeholder="+509 xx xxxx xxxx">
+            
+            <label for="address">Adrès detaye (egzanp: Simon, toupre Hotel Josafa)</label>
+            <textarea id="address" name="address" required></textarea>
+
+            <button type="submit" id="save-profile-btn">Anrejistre e voye enfo w yo ale</button>
+        </form>
+        
+    </main>
+
+    <footer id="main-footer">
+        <a href="accueil.html" class="nav-item">
+            <span class="material-icons">home</span>
+            <p>Akèy</p>
+        </a>
+        <a href="decouvrir.html" class="nav-item">
+            <span class="material-icons">info</span>
+            <p>Dekouvri</p>
+        </a>
+        <a href="transaction.html" class="nav-item">
+            <span class="material-icons">list_alt</span>
+            <p>Tranzaksyon</p>
+        </a>
+        <a href="deal.html" class="nav-item">
+            <span class="material-icons">flash_on</span>
+            <span id="deal-badge" class="cart-badge-nav">0</span>
+            <p>Deal</p>
+        </a>
+        <a href="moncompte.html" class="nav-item active">
+            <span class="material-icons">person</span>
+            <p>Kont mwen</p>
+        </a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const userStorageKey = 'user_profile_data';
+            const form = document.getElementById('profile-form');
+            const saveButton = document.getElementById('save-profile-btn');
+            
+            // Éléments d'affichage
+            const profileNameDisplay = document.getElementById('profile-name-display');
+            const profileEmailDisplay = document.getElementById('profile-email-display');
+            const profilePhoneDisplay = document.getElementById('profile-phone-display');
+            const profileAddressDisplay = document.getElementById('profile-address-display');
+            
+            // Champs du formulaire
+            const inputNom = document.getElementById('nom');
+            const inputEmail = document.getElementById('email');
+            const inputPhone = document.getElementById('phone');
+            const inputAddress = document.getElementById('address');
+            
+            // Charge le profil depuis localStorage
+            const loadProfile = () => {
+                try {
+                    return JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                } catch (e) {
+                    return {};
+                }
+            };
+
+            // Met à jour l'affichage et remplit le formulaire avec les données sauvegardées
+            const updateUI = () => {
+                const profile = loadProfile();
+                
+                // 1. Remplir les champs du formulaire
+                inputNom.value = profile.nom || '';
+                inputEmail.value = profile.email || '';
+                inputPhone.value = profile.phone || '';
+                inputAddress.value = profile.address || '';
+
+                // 2. Mettre à jour l'affichage
+                // S'assurer que chaque mot de chaque commencement de phrase a une majuscule
+                const formatText = (text, defaultText) => {
+                     // Utiliser la première lettre en majuscule, sauf si le texte est vide
+                    if (!text) return defaultText;
+                    return text.charAt(0).toUpperCase() + text.slice(1);
+                };
+                
+                profileNameDisplay.textContent = formatText(profile.nom, 'non w pako anrejistre');
+                profileEmailDisplay.textContent = profile.email || 'imèl ou pako anrejistre';
+                profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
+                profileAddressDisplay.textContent = formatText(profile.address ? profile.address.replace(/\n/g, ', ') : '', 'adrès ou pako anrejistre');
+                
+                // Mettre à jour le texte du bouton et du titre du formulaire
+                if (profile.nom || profile.email) {
+                    saveButton.textContent = 'Mete pwofil mwen ajou e voye bay admin';
+                    document.getElementById('form-title').textContent = 'mete pwofil mwen ajou';
+                } else {
+                    saveButton.textContent = 'Anrejistre e voye bay administrasyon an';
+                    document.getElementById('form-title').textContent = 'Anrejistre pwofil mwen';
+                }
+            };
+            
+            // Gère la soumission du formulaire
+            form.addEventListener('submit', function(e) {
+                const profileData = {
+                    nom: inputNom.value.trim(),
+                    email: inputEmail.value.trim(),
+                    phone: inputPhone.value.trim(),
+                    address: inputAddress.value.trim()
+                };
+
+                // Sauvegarder dans le stockage local avant l'envoi du formulaire externe
+                localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+                
+                // Afficher un message de confirmation
+                alert('Pwofil ou anrejistre avèk siksè e ale vèr administrasyon an!');
+                
+                // Le formulaire continue sa soumission vers getform.io
+            });
+            
+            // Initialisation du badge du panier (pour le footer)
+            const dealBadgeElement = document.getElementById('deal-badge');
+            const loadCart = () => {
+                try {
+                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+                } catch (e) {
+                    return [];
+                }
+            };
+            const updateBadgeUI = () => {
+                const count = loadCart().length;
+                dealBadgeElement.textContent = count;
+                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
+            };
+
+            // Initialiser l'interface utilisateur
+            updateUI();
+            updateBadgeUI();
+
+        });
+    </script>
+</body>
+</html>

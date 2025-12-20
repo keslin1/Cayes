@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dekouvri Sèvis - Les Cayes Dropshipping</title>
+    
+    <link rel="stylesheet" href="base.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+
+    <style>
+        /* ==================== Styles Globaux et Couleurs ==================== */
+        
+        :root {
+            --bleu-marin: #001f3f; 
+            --kaki: #8fbc8f;              
+            --gri-clair: #f0f0f0;         
+            --noir-texte: #333;           
+            --blanc-fond: #ffffff;        
+            --rouge-alerte: #e74c3c;
+            --vert-info: #00897b; 
+            --vert-fond: #e0f2f1; 
+            --vert-menu: #004D40; 
+            --orange-attente: #f39c12; 
+            
+            /* Couleurs pour le Dégradé Spécifique */
+            --jaune-pale: #fffacd; 
+            --vert-turquoise: #40e0d0; 
+            
+            /* Couleurs des boîtes */
+            --info-fond: #e0f2f1; 
+            --remak-fond: #fff3e0; 
+            
+            /* Nouvelle couleur de fond pour l'onglet Actif */
+            --active-tab-bg: var(--vert-info); 
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--gri-clair);
+            color: var(--noir-texte);
+            margin: 0;
+            padding-bottom: 70px; /* Espace pour le footer fixe */
+        }
+        
+        #main-content {
+            padding: 20px 15px;
+        }
+
+        /* ==================== Animation du Contenu (Onglet) ==================== */
+        
+        @keyframes slideInFromRight {
+            0% { opacity: 0; transform: translateX(50px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: slideInFromRight 0.5s ease-out; 
+        }
+
+        /* ==================== Animation des Éléments de Liste (Scroll Reveal / Rebond) ==================== */
+
+        @keyframes bounceInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(100px) scale(0.8);
+            }
+            60% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.05); /* Petit rebond vers le haut */
+            }
+            80% {
+                transform: translateY(5px) scale(0.98);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .condition-list > li {
+            margin-bottom: 25px;
+            line-height: 1.4;
+            counter-increment: list-counter; 
+            padding-left: 30px; 
+            position: relative;
+            
+            /* Propriétés pour l'état initial masqué */
+            opacity: 0; 
+            transform: translateY(100px); 
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .condition-list > li.reveal {
+            opacity: 1;
+            /* Utilisation d'une fonction de temps pour l'effet élastique */
+            animation: bounceInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; 
+        }
+
+        /* La première consigne n'a pas d'animation si elle est immédiatement visible au chargement de l'onglet */
+        /* La logique JavaScript gérera l'application à partir du deuxième élément */
+
+
+        /* ==================== Styles du Tableau de Bord (Dashboard/Onglets) - MOBILE ==================== */
+        
+        #service-dashboard {
+            display: flex;
+            justify-content: space-between;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 15px 0 20px 0; 
+            border-radius: 8px;
+            /* Dégradé demandé */
+            background: linear-gradient(to right, var(--jaune-pale), var(--vert-turquoise));
+        }
+
+        .dashboard-tab {
+            flex-grow: 1;
+            text-align: center;
+            padding: 12px 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+            color: var(--bleu-marin);
+            background-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .dashboard-tab.active {
+            background-color: var(--bleu-marin); 
+            color: var(--blanc-fond); 
+            border-bottom: 3px solid var(--vert-turquoise); 
+        }
+        
+        #main-section-image {
+            width: 100%;
+            max-height: 200px; 
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 0px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--gri-clair); 
+        }
+
+        /* ==================== Styles de Titres et Sections ==================== */
+        
+        .section-title {
+            font-size: 1.8em;
+            margin: 25px 0 15px 0;
+            font-weight: 900; 
+            color: var(--bleu-marin);
+            text-align: left;
+            padding-left: 5px;
+            border-left: 5px solid var(--kaki); 
+            line-height: 1.2;
+        }
+        
+        h3 {
+            font-size: 1.2em;
+            color: var(--kaki);
+            border-bottom: 2px solid var(--gri-clair);
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+        
+        /* Conteneurs de liste */
+        .condition-list {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        
+        .condition-list > li::before {
+            content: counter(list-counter) ".";
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: var(--rouge-alerte);
+            font-size: 1.2em;
+        }
+
+        /* Styles des boîtes d'information */
+        .info-box {
+            display: flex;
+            align-items: flex-start;
+            background-color: var(--info-fond); 
+            border-left: 4px solid var(--vert-info);
+            padding: 10px;
+            margin: 10px 0 10px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        
+        /* Style Avertissement (Warning) */
+        .info-box[data-type="warning"] {
+            background-color: #fce4e4; 
+            border-left: 4px solid var(--rouge-alerte);
+        }
+        .info-box[data-type="warning"] .material-icons {
+            color: var(--rouge-alerte);
+        }
+
+        /* Style Liste (List) */
+        .info-box[data-type="list"] .material-icons {
+             color: var(--vert-info);
+        }
+
+        .info-box .material-icons {
+            font-size: 18px;
+            margin-right: 8px;
+            margin-top: 2px;
+        }
+        
+        /* Styles Remarque */
+        .remak-box {
+            background-color: var(--remak-fond); 
+            border-left: 4px solid #ff9800; 
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .remak-box .material-icons {
+            font-size: 16px; 
+            margin-right: 5px; 
+            color: #ff9800;
+            margin-top: 2px;
+        }
+
+        strong {
+            color: var(--bleu-marin);
+            font-weight: 700; 
+        }
+        
+        /* ==================== Styles PC (Media Query pour écrans > 768px) ==================== */
+
+        @media (min-width: 768px) {
+            
+            #main-content {
+                display: flex;
+                flex-direction: row-reverse; 
+                gap: 20px;
+                padding: 20px 30px; 
+            }
+
+            #side-menu {
+                flex-grow: 1; 
+                max-width: 300px;
+                order: 1; 
+                padding: 0;
+                border-radius: 10px;
+                align-self: flex-start; 
+                position: sticky; 
+                top: 20px; 
+                height: fit-content;
+                background: linear-gradient(to bottom right, var(--jaune-pale), var(--vert-turquoise));
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            }
+            
+            #content-wrapper {
+                flex-grow: 3; 
+                order: 2; 
+                background-color: var(--blanc-fond);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            }
+            
+            #main-section-image {
+                max-height: 250px; 
+            }
+
+            #service-dashboard {
+                display: block; 
+                margin: 0;
+                box-shadow: none;
+                background: transparent;
+                border-radius: 10px;
+            }
+
+            .dashboard-tab {
+                display: block;
+                border-bottom: 1px solid rgba(0, 31, 63, 0.1); 
+                text-align: left;
+                padding: 15px 20px;
+                font-size: 1em;
+                background: transparent;
+                color: var(--bleu-marin); 
+            }
+
+            .dashboard-tab.active {
+                background-color: var(--bleu-marin); 
+                color: var(--blanc-fond); 
+                border-left: 5px solid var(--vert-turquoise); 
+                border-bottom: 1px solid var(--bleu-marin); 
+            }
+        }
+        
+        /* ==================== Footer Styles ==================== */
+        #main-footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--blanc-fond); 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: var(--vert-menu); 
+            font-size: 0.75em;
+            padding: 5px;
+            position: relative; 
+        }
+        
+        #main-footer .material-icons {
+            color: var(--vert-menu); 
+            font-size: 24px;
+        }
+        
+        .nav-item.active .material-icons {
+            color: var(--kaki); 
+        }
+        
+        .cart-badge-nav {
+            position: absolute;
+            top: 0;
+            right: 10px; 
+            background-color: var(--rouge-alerte);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 0.65em;
+            font-weight: bold;
+            min-width: 10px;
+            text-align: center;
+            line-height: 1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            display: none; 
+        }
+        
+    </style>
+</head>
+<body>
+
+    <main id="main-content">
+        
+        <div id="side-menu">
+            <div id="service-dashboard">
+                <div id="tab-conditions" class="dashboard-tab active" data-target="section-kondisyon" data-image="img26.jpg">
+                    Kondisyon sèvis nou
+                </div>
+                <div id="tab-avantages" class="dashboard-tab" data-target="section-avantaj" data-image="img5.jpg">
+                    Poukisa si se pa nou, ou riske?
+                </div>
+            </div>
+        </div>
+        
+        <div id="content-wrapper">
+            
+            <img src="img26.jpg" alt="imaj ki reprezente kondisyon sèvis yo" id="main-section-image">
+
+            <section id="section-kondisyon" class="tab-content active">
+                <h2 class="section-title">Kondisyon jeneral pou sèvi ak nou</h2>
+                
+                <ol class="condition-list" style="counter-reset: list-counter 0;">
+                    
+                    <li id="condition-1">
+                        <h3>Acha e pèman :</h3>
+                        Nou achte pou ou san ou pa peye anyen pou <strong>sèvis acha a</strong>.
+                        <br>Ou peye an goud nan yon to fiks <strong>135 gds</strong> pou pri atik ou yo vini an $ sou platfòm etranje wap achte an.
+                        <div class="info-box" data-type="info">
+                            <span class="material-icons">info</span> 
+                            <p style="margin: 0;">Mwayen nou plis privilejye pou lanse kòmand ou an pi rapid aprè pèman, se <strong>Natcash</strong> osinon <strong>cash</strong>.</p>
+                        </div>
+                    </li>
+
+                    <li id="condition-2">
+                        <h3>Pwotokòl acha :</h3>
+                        Pou moun kap achte plizyè atik oswa machandiz, se panye w pou voye ba nou. Nou lanse order an pou ou nan moman okazyon. Ou paka kòmande dirèkteman nan adrès sèvis lan.
+                        <div class="info-box" data-type="warning"> 
+                            <span class="material-icons">warning</span> 
+                            <p style="margin: 0;"><strong>Rezon</strong> : Nou regroupe kòmand yo epi nou voye yo an Ayiti nan yon sèl stòk par okazyon pou nou ka gen kontwòl total sou eta ak suivi tout koli kliyan yo.</p>
+                        </div>
+                    </li>
+                    
+                    <li id="condition-3">
+                        <h3>Frè e livrezon :</h3>
+                        Frè enpòtasyon an se <strong>6 dola (usd) pa liv (lbs)</strong>. 
+                        <br>Ou resevwa kòmand ou yo <strong>12 a 18 jou</strong> apre li fin rive nan adrès konpayi an Etazini. Ansuit ou pa bezwen plede ekri n a chak fwa pou mande n' kijan sa ye.
+                    </li>
+
+                    <li id="condition-4">
+                        <h3>Bagay entèdi :</h3>
+                        Nou <strong>pa pote</strong> materyèl ladwàn pa aksepte. Tout kliyan ki gen kòmand nan men nou se nan Sud yap resevwa yo.
+                        <div class="info-box" data-type="list">
+                            <span class="material-icons">list</span> 
+                            <p style="margin: 0;"><strong>Lis bagay entèdi</strong> : Kagoul, sex-toy, materyèl enflamab, materyèl militè, fo lajan, batri lithium, dwon, dwòg.</p>
+                        </div>
+                    </li>
+                    
+                    <li id="condition-5">
+                        <h3>Limit :</h3>
+                        Nou <strong>pa livre</strong> atik ki pa sòti nan lòd acha pa nou.
+                        <br>Yon pakè ki vin nan adrès konpayi an sou non Les Cayes Dropshipping ap peye yon frè siplemantè pou jesyon ak livrezon l.
+                    </li>
+
+                    <li id="condition-6">
+                        <h3>Resevwa koli w :</h3>
+                        Ou peye <strong>fakti enpòtasyon an 3 jou alavans</strong> anvan nou livre w koli w. Tout kòmand ki peze ant 1 a 3 liv koute 24 dola fiks. Kalite atik ou yo depann de kalite founisè w chwazi sou platfòm wap achte an.
+                    </li>
+<li id="condition-7">
+    <h3>Kontwòl :</h3>
+    Toujou <strong>verifye disponiblite atik</strong> wap achte sou sit nou an (èske yo disponib osinon précommande).
+    
+    <div style="margin-top: 15px; padding: 10px; border-left: 3px solid #ff4d4d; background-color: #ffe6e6; font-style: italic; font-size: 0.95em; border-radius: 0 5px 5px 0; color: #333;">
+        <strong>Endis :</strong> Pou w genyen sit lan sou fòm aplikasyon sou ekran telefòn ou, ale nan 3 ti pwen anlè adwat ki prezante konsa (⋮) osinon konsa (⬇️). Klike sou li epi desann anba nèt wap jwenn opsyon ki maké <strong>ajouter sur écran d'accueil</strong> (oswa "add to home screen"). Peze sou li epi konfime "ajouter".
+    </div>
+</li>
+
+                    
+                </ol>
+            </section>
+            
+            <section id="section-avantaj" class="tab-content">
+                <h2 class="section-title">Poukisa w ka pran sèvis Les Cayes Dropshipping lan?</h2>
+                
+                <ul style="list-style: disc; padding-left: 20px;">
+                    <li>
+                        <h3>Sekirite e suivi :</h3>
+                        Ou gen aksè dirèk ak whatsapp nou pou <strong>suiv koli w</strong>.
+                        <br>Ou ka suiv kòmand lan ak e-mail oswa nimewo whatsapp, depi lè nou achte l, anbake, jis li rive nan men w. Sètadi, nou voye mesaj baw a <strong>chak etap</strong> kòmand ou an.
+                    </li>
+
+                    <li>
+                        <h3>Acha pro :</h3>
+                        Nap achte sou entènèt depi <strong>2019</strong>.
+                        <br>Nou garanti erè pa janm soti nan nou (<strong>défaut de commande</strong>). Wòl nou se achte e pote sa ou chwazi a.
+                    </li>
+
+                    <li>
+    <h3>Jere pwoblèm nou ak transparans :</h3>
+    
+    <p>
+        Si gen yon pwoblèm ak atik ou yo (sa ki pako rive n'), kontrèman ak anpil lòt sèvis, ou konn egzakteman ki kote pou w ale. Si gen yon pwoblèm, <strong>nou pap lage w</strong>.
+    </p>
+
+    <div class="remak-box" style="
+        background-color: #ffe0b2; /* Couleur orange clair */
+        border: 2px solid #ff9800; /* Bordure orange */
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 8px;
+        font-size: 0.95em;
+        line-height: 1.4;
+    ">
+        <p style="font-weight: 900; color: #e65100; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
+             <span class="material-icons" style="font-size: 1.2em;">info</span>
+        </p>
+
+        <p>
+          Sèvis Les Cayes Dropshipping itilize yon depo etranjè pou resevwa kòmand ou yo, nou pa gen pwòp adrès nou pou resepsyon koli USA.
+          Sèvis dropshipping nou an repoze sou yon modèl <strong>Open Source</strong> nan fonksyònman li: nou ba ou tout <strong>suivi pwodui w yo an tan reyèl</strong>.
+        </p>
+    </div>
+</section>
+
+
+        </div>
+    </main>
+
+    <footer id="main-footer">
+        <a href="accueil.html" class="nav-item">
+            <span class="material-icons">home</span>
+            <p>Akèy</p>
+        </a>
+        <a href="decouvrir.html" class="nav-item active">
+            <span class="material-icons">info</span>
+            <p>Dekouvri</p>
+        </a>
+        <a href="transaction.html" class="nav-item">
+            <span class="material-icons">list_alt</span>
+            <p>Tranzaksyon</p>
+        </a>
+        <a href="deal.html" class="nav-item">
+            <span class="material-icons">flash_on</span>
+            <span id="deal-badge" class="cart-badge-nav">0</span> <p>Deal</p>
+        </a>
+        <a href="moncompte.html" class="nav-item">
+            <span class="material-icons">person</span>
+            <p>Kont mwen</p>
+        </a>
+    </footer>
+
+       <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dealBadgeElement = document.getElementById('deal-badge'); 
+            const tabs = document.querySelectorAll('.dashboard-tab');
+            const contents = document.querySelectorAll('.tab-content');
+            const mainImage = document.getElementById('main-section-image');
+            const mediaQuery = window.matchMedia('(min-width: 768px)');
+            
+            // Fonction pour gérer l'affichage des contenus des onglets
+            const setActiveTab = (selectedTab) => {
+                const targetId = selectedTab.getAttribute('data-target');
+                const targetImageSrc = selectedTab.getAttribute('data-image');
+
+                // 1. Désactiver tous les onglets et contenus
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // 2. Activer l'onglet cliqué
+                selectedTab.classList.add('active');
+
+                // 3. Afficher le contenu cible
+                const targetContent = document.getElementById(targetId);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                    
+                    // Réinitialiser l'animation des éléments de liste lors du changement d'onglet
+                    targetContent.querySelectorAll('.condition-list > li').forEach(li => {
+                        li.classList.remove('reveal');
+                        // L'observer est permanent, il suffit de retirer la classe 'reveal' pour qu'il la remette quand l'élément entre en vue.
+                    });
+                }
+                
+                // 4. Mettre à jour l'image
+                if (mainImage && targetImageSrc) {
+                     mainImage.src = targetImageSrc;
+                     mainImage.alt = selectedTab.textContent.trim() + " imaj";
+                }
+            };
+
+            // --- Logique d'apparition progressive permanente au défilement (Scroll Reveal / Rebond) ---
+            
+            // Cible les éléments de liste (consignes)
+            const listItems = document.querySelectorAll('.condition-list > li'); 
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const isIntersecting = entry.isIntersecting;
+                    const item = entry.target;
+                    
+                    // Déclenche l'animation de rebond si l'élément entre en vue
+                    if (isIntersecting) {
+                        // Pour que l'animation se rejoue, on s'assure qu'elle n'est pas déjà jouée
+                        if (!item.classList.contains('reveal')) {
+                             item.classList.add('reveal');
+                        }
+                    } 
+                    // Supprime la classe 'reveal' lorsque l'élément quitte l'écran (montée ou descente)
+                    // Cela permet à l'animation de se rejouer la prochaine fois qu'il entre en vue
+                    else {
+                        item.classList.remove('reveal');
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                // Threshold à 0.1 pour un déclenchement dès qu'une petite partie est visible
+                threshold: 0.1 
+            });
+
+            // Observer chaque élément de la liste
+            listItems.forEach(item => {
+                // Nous commençons l'observation à partir du DEUXIÈME élément (index 1) si la première consigne est toujours visible
+                // Pour que la première consigne soit visible sans animation au chargement initial :
+                if (item.id === 'condition-1') {
+                    // Supprimer les styles initiaux pour le premier élément
+                    item.style.opacity = 1;
+                    item.style.transform = 'none';
+                    return; 
+                }
+                observer.observe(item);
+            });
+            
+            // --- Initialisation et Gestion des Clics ---
+
+            // Initialiser le premier onglet actif et l'animation
+            setActiveTab(document.querySelector('.dashboard-tab.active'));
+
+            // Logique de navigation par onglets (MOBILE & PC)
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    setActiveTab(tab);
+
+                    // Si on est sur mobile, défilement vers le tableau de bord
+                    if (!mediaQuery.matches) {
+                         document.getElementById('service-dashboard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+
+            // --- Gère le badge persistant du panier (deal) ---
+            const loadCart = () => {
+                try {
+                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+                } catch (e) {
+                    return [];
+                }
+            };
+
+            const updateBadgeUI = () => {
+                const cart = loadCart();
+                const count = cart.length;
+                dealBadgeElement.textContent = count;
+                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
+            };
+
+            updateBadgeUI(); 
+        });
+    </script>
+</body>
+</html>
