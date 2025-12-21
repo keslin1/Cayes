@@ -109,12 +109,12 @@
             padding: 18px 15px;
             width: 100%;
             box-sizing: border-box;
+            cursor: pointer;
         }
 
         .action-card.locked {
             opacity: 0.6;
             background-color: #f9f9f9;
-            pointer-events: none; /* Bloke klik la lè li fèmen */
         }
 
         .action-card .material-icons.left {
@@ -196,11 +196,17 @@
             text-decoration: none;
             color: var(--vert-menu); 
             font-size: 0.75em;
+            padding: 5px;
+            position: relative;
         }
-
-        .nav-item.active {
-            font-weight: bold;
-            color: var(--bleu-marin);
+        
+        #main-footer .material-icons {
+            color: var(--vert-menu); 
+            font-size: 24px;
+        }
+        
+        .nav-item.active .material-icons {
+            color: var(--kaki); 
         }
     </style>
 </head>
@@ -332,9 +338,11 @@
             const inputPhone = document.getElementById('phone');
             const inputAddress = document.getElementById('address');
 
+            let isProfileComplete = false;
+
             const updateUI = () => {
                 const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-                const isProfileComplete = profile.nom && profile.email;
+                isProfileComplete = !!(profile.nom && profile.email);
 
                 if (isProfileComplete) {
                     profileNameDisplay.textContent = profile.nom;
@@ -342,20 +350,25 @@
                     profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
                     profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
                     
-                    // DEBLOKE BOUTON AN
                     entrepreneurBtn.classList.remove('locked');
-                    entrepreneurBtn.style.pointerEvents = "auto";
                     document.getElementById('lock-icon').textContent = 'chevron_right';
-                    entrepreneurBtn.href = "pack.html";
                     formContainer.style.display = 'none';
                 } else {
-                    // BLOKE BOUTON AN
                     entrepreneurBtn.classList.add('locked');
-                    entrepreneurBtn.style.pointerEvents = "none";
                     document.getElementById('lock-icon').textContent = 'lock';
                     formContainer.style.display = 'block';
                 }
             };
+
+            // Jere klik sou bouton antrepriz la
+            entrepreneurBtn.addEventListener('click', (e) => {
+                if (!isProfileComplete) {
+                    alert('Ou dwe anrejistre enfòmasyon kont ou an pou ou ka gen aksè a sèvis devlopman antrepriz la.');
+                    formContainer.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    window.location.href = "pack.html";
+                }
+            });
 
             editProfileBtn.addEventListener('click', () => {
                 formContainer.style.display = 'block';
@@ -363,11 +376,11 @@
             });
 
             form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Anpeche paj la rafrechi
+                e.preventDefault(); // Anpeche paj la rafrechi imedyatman
                 
-                const btn = document.getElementById('save-profile-btn');
-                btn.textContent = "Ap anrejistre...";
-                btn.disabled = true;
+                const saveBtn = document.getElementById('save-profile-btn');
+                saveBtn.textContent = "Ap anrejistre...";
+                saveBtn.disabled = true;
 
                 const profileData = {
                     nom: inputNom.value.trim(),
@@ -376,7 +389,7 @@
                     address: inputAddress.value.trim()
                 };
 
-                // 1. Voye done yo sou Getform nan background la
+                // Voye done yo sou Getform nan background la
                 fetch("https://getform.io/f/akkpolva", {
                     method: "POST",
                     body: new FormData(form),
@@ -385,20 +398,19 @@
                     },
                 })
                 .then(response => {
-                    // 2. Menm si gen repons oswa non, nou anrejistre lokalman pou debloke koze a
-                    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-                    updateUI(); // Debloke kadna a imedyatman
-                    alert('Bravo! Pwofil ou anrejistre epi seksyon Antrepriz la debloke.');
-                })
-                .catch(error => {
-                    // Si gen erè rezo, nou toujou anrejistre lokalman pou pa bloke itilizatè a
                     localStorage.setItem(userStorageKey, JSON.stringify(profileData));
                     updateUI();
-                    console.log("Erè Getform, men done sove lokalman.");
+                    alert('Bravo! Pwofil ou anrejistre avèk siksè. Kounye a ou ka devlope antrepriz ou.');
+                })
+                .catch(error => {
+                    // Si gen erè rezo, nou sove l lokalman kanmenm pou itilizatè a ka avanse
+                    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+                    updateUI();
+                    alert('Done yo sove lokalman. N ap senkronize yo pi ta.');
                 })
                 .finally(() => {
-                    btn.textContent = "Anrejistre";
-                    btn.disabled = false;
+                    saveBtn.textContent = "Anrejistre";
+                    saveBtn.disabled = false;
                 });
             });
 
