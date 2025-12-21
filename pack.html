@@ -3,279 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pake sèvis - Les Cayes Dropshipping</title>
-    <link rel="stylesheet" href="base.css"> 
+    <title>Pake Sèvis - Les Cayes Dropshipping</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
     <style>
         :root {
-            --fon-nwa: #0a0e14;
+            --fon-gri: #2c2f33;
             --ka-gri: #1a1f26;
-            --bleu-marin: #001f3f; 
-            --kaki: #8fbc8f;              
-            --blanc-fond: #ffffff;        
-            --orange-vues: #ff9800;
-            --rouge-power: #f44336;
+            --wise-blue: #00b9ff;
+            --wise-orange: #ff9800;
+            --blanc: #ffffff;
+            --vèt-pwo: #70ad47;
+            --vèt-check: #4caf50;
+            --orange-marketing: #ed7d31;
+            --bleu-marketing: #00b0f0;
+            --gris-plan: #a5a5a5;
+            --rose-pale: #ff99cc;
         }
 
         body {
             font-family: 'Century Gothic', AppleGothic, sans-serif;
-            background-color: var(--fon-nwa);
+            background-color: var(--fon-gri);
             color: #e0e0e0;
             margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-bottom: 50px;
+            padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
-            padding: 20px 15px;
             width: 100%;
             max-width: 500px;
-            box-sizing: border-box;
+            position: relative;
         }
 
+        /* --- LOGIK ROULÈT --- */
+        .section-wrapper {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+        }
+
+        .hidden-section {
+            display: none;
+            opacity: 0;
+            transform: translateX(100px);
+        }
+
+        .show-section {
+            display: block;
+            animation: slideIn 0.6s forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- STYLES SÈVIS WISE --- */
         .header-section {
             text-align: center;
             margin-bottom: 30px;
         }
 
         .main-title {
-            color: var(--blanc-fond);
-            font-size: 1.6em;
+            color: var(--blanc);
+            font-size: 1.8em;
             margin-bottom: 10px;
         }
 
         .subtitle {
             color: #b0b0b0;
-            font-size: 0.9em;
+            font-size: 0.95em;
             line-height: 1.4;
-            margin-bottom: 15px;
         }
 
-        /* Phrase d'appel à l'action en gras avec flèche */
-        .cta-text {
-            font-weight: bold;
-            color: var(--orange-vues);
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .arrow-down {
-            display: block;
-            font-size: 20px;
-            margin-bottom: 15px;
-            animation: bounce 2s infinite;
-        }
-
-        .agent-box {
+        .pricing-grid {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            margin-bottom: 35px;
+            gap: 25px;
+            margin-bottom: 20px;
         }
 
-        /* Animation de pulsion sur l'image chaque 2 secondes */
+        .pricing-card {
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+        }
+
+        .card-blue { background: linear-gradient(135deg, #0056b3, #00b9ff); }
+        .card-orange { background: linear-gradient(135deg, #e67e22, #ff9800); }
+
+        .card-header {
+            padding: 20px;
+            text-align: center;
+            color: var(--blanc);
+            font-size: 1.4em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .card-body {
+            background-color: var(--blanc);
+            margin: 0 15px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            color: #333;
+            font-size: 0.85em;
+            margin-bottom: 12px;
+        }
+
+        .feature-item .material-icons {
+            font-size: 18px;
+            margin-right: 10px;
+            color: var(--vèt-check);
+            font-weight: bold;
+        }
+
+        .card-footer {
+            padding: 20px;
+            text-align: center;
+            color: var(--blanc);
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            opacity: 0.7;
+            font-size: 1em;
+            display: block;
+        }
+
+        .current-price {
+            font-size: 1.8em;
+            font-weight: bold;
+            display: block;
+            margin: 5px 0;
+        }
+
+        .select-btn {
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid var(--blanc);
+            color: var(--blanc);
+            padding: 10px 30px;
+            border-radius: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .select-btn:hover { background-color: var(--blanc); color: #000; }
+
+        /* --- STYLES MARKETING --- */
+        .toggle-arrow {
+            font-size: 50px;
+            color: var(--rose-pale);
+            cursor: pointer;
+            animation: bounceIn 2s infinite;
+            display: block;
+            margin: 10px auto;
+        }
+
+        .plan-container {
+            margin-bottom: 40px;
+            position: relative;
+            width: 100%;
+            text-align: center;
+        }
+
+        .hex-header {
+            padding: 15px;
+            color: var(--blanc);
+            font-weight: bold;
+            font-size: 1.2em;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 100%, 0% 100%, 0% 25%);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hex-card {
+            background-color: var(--blanc);
+            clip-path: polygon(50% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%, 0% 15%);
+            padding: 50px 20px;
+            color: #333;
+            margin-top: -25px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .plan-bulldozer .hex-header {
+            z-index: 2;
+            margin-bottom: -15px;
+        }
+
+        .stars-row .material-icons { font-size: 24px; }
+
+        .views-text {
+            color: var(--rose-pale);
+            font-weight: bold;
+            font-size: 1.5em;
+            margin: 10px 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        .desc-text { font-size: 0.85em; color: #666; margin: 10px 0; }
+        .price-text { font-size: 2em; font-weight: bold; margin: 10px 0; }
+
+        .btn-select-mkt {
+            padding: 10px 20px;
+            border-radius: 5px;
+            color: var(--blanc);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .plan-premium .hex-header, .plan-premium .btn-select-mkt { background-color: var(--vèt-pwo); }
+        .plan-premium .stars-row { color: var(--vèt-pwo); }
+
+        .plan-ascension .hex-header, .plan-ascension .btn-select-mkt { background-color: var(--orange-marketing); }
+        .plan-ascension .stars-row { color: var(--orange-marketing); }
+
+        .plan-magnitude .hex-header, .plan-magnitude .btn-select-mkt { background-color: var(--bleu-marketing); }
+        .plan-magnitude .stars-row { color: var(--bleu-marketing); }
+
+        .plan-bulldozer .hex-header, .plan-bulldozer .btn-select-mkt { background-color: var(--gris-plan); }
+        .plan-bulldozer .stars-row { color: var(--gris-plan); }
+
+        .agent-section {
+            text-align: center;
+            margin-top: 50px;
+        }
+
         .agent-img {
-            width: 200px; 
-            height: 200px;
+            width: 180px;
+            height: 180px;
             border-radius: 20px;
             object-fit: cover;
-            border: 3px solid var(--orange-vues);
-            margin-bottom: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-            animation: pulse 2s infinite ease-in-out;
+            border: 4px solid var(--blanc);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: transform 0.3s;
         }
 
-        .contact-animation-link {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 40px;
-            width: 200px;
-            color: var(--orange-vues);
-        }
+        .agent-img:hover { transform: scale(1.05); }
 
-        .wa-icon {
-            font-size: 24px;
-            animation: blink 1.5s infinite ease-in-out;
-            margin-right: 8px;
-        }
-
-        .animated-text {
-            font-size: 0.75em;
+        .cta-agent {
             font-weight: bold;
-            opacity: 0;
-            animation: fadeInOut 5s infinite;
-        }
-
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-5px);}
-            60% {transform: translateY(-3px);}
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-
-        @keyframes fadeInOut {
-            0%, 20% { opacity: 0; }
-            40%, 80% { opacity: 1; }
-            100% { opacity: 0; }
-        }
-
-        .plan-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .plan-card {
-            background: var(--ka-gri);
-            border-radius: 18px;
-            padding: 15px;
-            border-left: 5px solid;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .plan-icon-box {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            border-radius: 12px;
-            margin-right: 12px;
-        }
-
-        .plan-info { flex: 1; text-align: left; }
-
-        .plan-info h3 {
-            margin: 0 0 3px 0;
-            font-size: 1em;
-            color: var(--kaki);
-        }
-
-        .plan-info p {
-            margin: 0;
-            font-size: 0.8em;
-            color: #aaa;
-        }
-
-        .price-container {
-            text-align: right;
-            min-width: 105px;
-        }
-
-        .views-count {
+            color: var(--rose-pale);
+            margin-top: 20px;
             display: block;
-            font-size: 0.75em;
-            color: var(--orange-vues);
-            margin-bottom: 4px;
-            font-weight: bold;
         }
 
-        .plan-price-only {
-            background: var(--kaki);
-            color: var(--bleu-marin);
-            padding: 5px 9px;
-            border-radius: 7px;
-            font-weight: bold;
-            font-size: 0.95em;
-            display: inline-block;
+        @keyframes bounceIn {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(10px);}
+            60% {transform: translateY(5px);}
         }
 
-        .premium { border-color: #03a9f4; }
-        .asansyon { border-color: #4caf50; }
-        .magnitid { border-color: var(--orange-vues); }
-        .bildozè { 
-            border-color: var(--rouge-power); 
-            background: linear-gradient(145deg, #1a1f26, #251010);
+        @keyframes bounceDown {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px); }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="header-section">
-            <h1 class="main-title">Sèvis marketing dijital</h1>
-            <p class="subtitle">Responsab kreyasyon piblisite nou an pran angajman pou transfòme afich ou yo an videyo & vizyèl pro.</p>
-            
-            <span class="cta-text">Kontakte ajan marketing sa</span>
-            <span class="arrow-down">↓</span>
-            
-            <div class="agent-box">
+        
+        <div id="visaSection" class="section-wrapper">
+            <div class="header-section">
+                <h1 class="main-title">Sèvis kat Visa</h1>
+                <p class="subtitle">Pwofite pi bon tarif pou kreyasyon ak rechaj kat vityèl paw lan jodi a.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card card-blue">
+                    <div class="card-header">Kreyasyon</div>
+                    <div class="card-body">
+                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje ak Moncash / Natcash</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Achte sou entènèt (Shein, Temu, Facebook..)</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Resevwa lajan entènasyonal</span></div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="old-price">2500 HTG</span>
+                        <span class="current-price">1000 HTG</span>
+                        <button class="select-btn">Chwazi</button>
+                    </div>
+                </div>
+
+                <div class="pricing-card card-orange">
+                    <div class="card-header">Rechaje</div>
+                    <div class="card-body">
+                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje nan mwens ke 10 minit</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Ou ka bay kòb kach</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Sipò 24/7 pou tranzaksyon w</span></div>
+                    </div>
+                    <div class="card-footer">
+                        <span class="old-price">Taux: 147 HTG</span>
+                        <span class="current-price">Taux: 140 HTG</span>
+                        <button class="select-btn">Chwazi</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-section">
+                <p class="subtitle">Klike sou flèch la pou wè plan marketing nou yo</p>
+                <span class="material-icons toggle-arrow" onclick="toggleSections()">expand_more</span>
+            </div>
+        </div>
+
+        <div id="marketingSection" class="section-wrapper hidden-section">
+            <div class="header-section">
+                <span class="material-icons toggle-arrow" onclick="toggleSections()">expand_less</span>
+                <h1 class="main-title" style="color:var(--rose-pale)">Plan marketing nou yo</h1>
+                <p class="subtitle">Klike sou flèch anlè a pou tounen nan sèvis avan an</p>
+            </div>
+
+            <div class="plan-container plan-premium">
+                <div class="hex-header">
+                    <div class="stars-row"><span class="material-icons">star</span></div>
+                    Plan premium
+                </div>
+                <div class="hex-card">
+                    <div class="views-text">8.2k - 10.2k views</div>
+                    <div class="desc-text">Ideyal pou kòmanse fè konnen w.</div>
+                    <div class="price-text">1 750 G</div>
+                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
+                </div>
+            </div>
+
+            <div class="plan-container plan-ascension">
+                <div class="hex-header">
+                    <div class="stars-row"><span class="material-icons">star</span><span class="material-icons">star</span></div>
+                    Plan ascension
+                </div>
+                <div class="hex-card">
+                    <div class="views-text">15k - 22.2k views</div>
+                    <div class="desc-text">Pran yon nivo rapid nan vil la.</div>
+                    <div class="price-text">3 500 G</div>
+                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
+                </div>
+            </div>
+
+            <div class="plan-container plan-magnitude">
+                <div class="hex-header">
+                    <div class="stars-row"><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span></div>
+                    Plan magnitude
+                </div>
+                <div class="hex-card">
+                    <div class="views-text">25.5k - 38.3k views</div>
+                    <div class="desc-text">Domine tout vil la, vizibilite o Max.</div>
+                    <div class="price-text">5 250 G</div>
+                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
+                </div>
+            </div>
+
+            <div class="plan-container plan-bulldozer">
+                <div class="hex-header">
+                    <div class="stars-row">
+                        <span class="material-icons">star</span><span class="material-icons">star</span>
+                        <span class="material-icons">star</span><span class="material-icons">star</span>
+                    </div>
+                    Plan bulldozer
+                </div>
+                <div class="hex-card">
+                    <div class="views-text">40k - 62k views</div>
+                    <div class="desc-text">Pran tout depatman nèt, ki gen telefòn.</div>
+                    <div class="price-text">7 000 G</div>
+                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
+                </div>
+            </div>
+
+            <div class="agent-section">
+                <span class="cta-agent">Kontakte ajan sila</span>
+                <div style="animation: bounceDown 1.5s infinite; color: var(--rose-pale); margin: 5px 0;">↓</div>
                 <a href="https://wa.me/50956228203">
                     <img src="Francesse Gabriel.jpg" alt="Francesse Gabriel" class="agent-img">
                 </a>
-                
-                <a href="https://wa.me/50956228203" class="contact-animation-link">
-                    <span class="material-icons wa-icon">whatsapp</span>
-                </a>
+                <p style="font-size: 0.8em; color: var(--blanc); margin-top: 10px; font-weight: bold;">
+                    Klike sou foto a pou kontakte ajan an sou WhatsApp!
+                </p>
             </div>
         </div>
-<h2 style="color: #757575; font-size: 1.3em;">Men lis plan nou yo :</h2>
-        
-        <div class="plan-grid">
-            <div class="plan-card premium">
-                <div class="plan-icon-box"><span class="material-icons" style="color:#03a9f4">workspace_premium</span></div>
-                <div class="plan-info">
-                    <h3>Plan premium</h3>
-                    <p>Ideyal pou kòmanse.</p>
-                </div>
-                <div class="price-container">
-                    <span class="views-count">8.2k - 10.2k views</span>
-                    <div class="plan-price-only">1 750 G</div>
-                </div>
-            </div>
 
-            <div class="plan-card asansyon">
-                <div class="plan-icon-box"><span class="material-icons" style="color:#4caf50">auto_graph</span></div>
-                <div class="plan-info">
-                    <h3>Plan ascension</h3>
-                    <p>Pran yon nivo rapid.</p>
-                </div>
-                <div class="price-container">
-                    <span class="views-count">15k - 22.2k views</span>
-                    <div class="plan-price-only">3 500 G</div>
-                </div>
-            </div>
-
-            <div class="plan-card magnitid">
-                <div class="plan-icon-box"><span class="material-icons" style="color:var(--orange-vues)">public</span></div>
-                <div class="plan-info">
-                    <h3>Plan magnitude</h3>
-                    <p>Domine tout vil la.</p>
-                </div>
-                <div class="price-container">
-                    <span class="views-count">25.5k - 38.3k views</span>
-                    <div class="plan-price-only">5 250 G</div>
-                </div>
-            </div>
-
-            <div class="plan-card bildozè">
-                <div class="plan-icon-box"><span class="material-icons" style="color:var(--rouge-power)">rocket_launch</span></div>
-                <div class="plan-info">
-                    <h3>Plan bulldozer</h3>
-                    <p>Pran tout depatman.</p>
-                </div>
-                <div class="price-container">
-                    <span class="views-count">40k - 62k views</span>
-                    <div class="plan-price-only">7 000 G</div>
-                </div>
-            </div>
-        </div>
     </div>
 
+    <script>
+        function toggleSections() {
+            var visa = document.getElementById('visaSection');
+            var marketing = document.getElementById('marketingSection');
+            
+            if (marketing.classList.contains('hidden-section')) {
+                // Montre Marketing, Kache Visa
+                visa.style.display = 'none';
+                marketing.classList.remove('hidden-section');
+                marketing.classList.add('show-section');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // Montre Visa, Kache Marketing
+                marketing.classList.add('hidden-section');
+                marketing.classList.remove('show-section');
+                visa.style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+    </script>
 </body>
 </html>

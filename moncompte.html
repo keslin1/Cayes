@@ -257,12 +257,12 @@
             <span class="material-icons right">chevron_right</span>
         </a>
         
-        <a href="contact.html" class="action-card">
+        <a href="javascript:void(0)" id="support-btn" class="action-card locked">
             <span>
                 <span class="material-icons left">support_agent</span>
                 Sèvis kliyan
             </span>
-            <span class="material-icons right">chevron_right</span>
+            <span id="support-lock-icon" class="material-icons right">lock</span>
         </a>
 
         <a href="javascript:void(0)" id="entrepreneur-btn" class="action-card locked">
@@ -291,7 +291,7 @@
                 <label for="address">Adrès detaye</label>
                 <textarea id="address" name="address" required placeholder="egz: Simon, toupre Hotel Josafa"></textarea>
 
-                <button type="submit" id="save-profile-btn">Anrejistre</button>
+                <button type="submit" id="save-profile-btn">Anrejistre & voye sou WhatsApp</button>
             </form>
         </div>
         
@@ -323,9 +323,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const userStorageKey = 'user_profile_data';
+            const whatsappNumber = "50931013968";
+
             const form = document.getElementById('profile-form');
             const formContainer = document.getElementById('profile-form-container');
             const entrepreneurBtn = document.getElementById('entrepreneur-btn');
+            const supportBtn = document.getElementById('support-btn');
             const editProfileBtn = document.getElementById('edit-profile-btn');
             
             const profileNameDisplay = document.getElementById('profile-name-display');
@@ -352,23 +355,33 @@
                     
                     entrepreneurBtn.classList.remove('locked');
                     document.getElementById('lock-icon').textContent = 'chevron_right';
+
+                    supportBtn.classList.remove('locked');
+                    document.getElementById('support-lock-icon').textContent = 'chevron_right';
+
                     formContainer.style.display = 'none';
                 } else {
                     entrepreneurBtn.classList.add('locked');
                     document.getElementById('lock-icon').textContent = 'lock';
+
+                    supportBtn.classList.add('locked');
+                    document.getElementById('support-lock-icon').textContent = 'lock';
+
                     formContainer.style.display = 'block';
                 }
             };
 
-            // Jere klik sou bouton antrepriz la
-            entrepreneurBtn.addEventListener('click', (e) => {
+            const handleLockedClick = (targetUrl) => {
                 if (!isProfileComplete) {
-                    alert('Ou dwe anrejistre enfòmasyon kont ou an pou ou ka gen aksè a sèvis devlopman antrepriz la.');
+                    alert('Ou dwe anrejistre enfòmasyon kont ou an pou ou ka gen aksè a sèvis sa.');
                     formContainer.scrollIntoView({ behavior: 'smooth' });
                 } else {
-                    window.location.href = "pack.html";
+                    window.location.href = targetUrl;
                 }
-            });
+            };
+
+            entrepreneurBtn.addEventListener('click', () => handleLockedClick("pack.html"));
+            supportBtn.addEventListener('click', () => handleLockedClick("contact.html"));
 
             editProfileBtn.addEventListener('click', () => {
                 formContainer.style.display = 'block';
@@ -376,7 +389,7 @@
             });
 
             form.addEventListener('submit', function(e) {
-                e.preventDefault(); // Anpeche paj la rafrechi imedyatman
+                e.preventDefault();
                 
                 const saveBtn = document.getElementById('save-profile-btn');
                 saveBtn.textContent = "Ap anrejistre...";
@@ -389,28 +402,32 @@
                     address: inputAddress.value.trim()
                 };
 
-                // Voye done yo sou Getform nan background la
+                // 1. Sove lokalman pou debloke koze a
+                localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+                
+                // 2. Prepare mesaj pou WhatsApp
+                const textMessage = `Bonjou Les Cayes Dropshipping! Mwen sot anrejistre pwofil mwen:\n\n` +
+                                    `*Non:* ${profileData.nom}\n` +
+                                    `*Imèl:* ${profileData.email}\n` +
+                                    `*Telefòn:* ${profileData.phone}\n` +
+                                    `*Adrès:* ${profileData.address}`;
+                
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(textMessage)}`;
+
+                // 3. Voye done sou Getform nan background (opsyonèl men bon pou achiv)
                 fetch("https://getform.io/f/akkpolva", {
                     method: "POST",
                     body: new FormData(form),
-                    headers: {
-                        "Accept": "application/json",
-                    },
-                })
-                .then(response => {
-                    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-                    updateUI();
-                    alert('Bravo! Pwofil ou anrejistre avèk siksè. Kounye a ou ka devlope antrepriz ou.');
-                })
-                .catch(error => {
-                    // Si gen erè rezo, nou sove l lokalman kanmenm pou itilizatè a ka avanse
-                    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-                    updateUI();
-                    alert('Done yo sove lokalman. N ap senkronize yo pi ta.');
+                    headers: { "Accept": "application/json" },
                 })
                 .finally(() => {
-                    saveBtn.textContent = "Anrejistre";
+                    updateUI();
+                    saveBtn.textContent = "Anrejistre & Voye sou WhatsApp";
                     saveBtn.disabled = false;
+                    
+                    // 4. Redireksyon sou WhatsApp
+                    alert('Pwofil ou anrejistre! Klike OK pou voye detay yo sou WhatsApp pou konfimasyon.');
+                    window.location.href = whatsappUrl;
                 });
             });
 
