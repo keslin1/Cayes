@@ -42,7 +42,6 @@
         }
 
         .header-top h1 {
-            /* Application de la règle de capitalisation au commencement d'un titre */
             font-size: 1.5em;
             margin: 0;
             color: var(--bleu-marin);
@@ -64,11 +63,8 @@
             font-weight: 600;
             margin: 25px 0 10px 0;
             color: var(--noir-texte);
-            padding-left: 0;
-            border-left: none;
         }
 
-        /* Cadres d'informations (similaires aux cartes de l'exemple) */
         .info-card, .action-card {
             background-color: var(--blanc-fond);
             padding: 15px;
@@ -106,12 +102,18 @@
             margin-right: 5px;
         }
         
-        /* Boutons d'action */
         .action-card {
             text-decoration: none;
             color: var(--noir-texte);
             justify-content: space-between;
             padding: 18px 15px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .action-card.locked {
+            opacity: 0.6;
+            background-color: #f9f9f9;
         }
 
         .action-card .material-icons.left {
@@ -130,12 +132,17 @@
             font-weight: 500;
         }
 
-        /* Formulaire */
+        #profile-form-container {
+            display: block;
+            margin-top: 20px;
+        }
+
         #profile-form {
             background-color: var(--blanc-fond);
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: left;
         }
         
         #profile-form label {
@@ -146,39 +153,29 @@
             color: var(--bleu-marin);
         }
 
-        #profile-form input[type="text"], 
-        #profile-form input[type="email"], 
-        #profile-form input[type="tel"],
-        #profile-form textarea {
+        #profile-form input, #profile-form textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 10px;
             border: 1px solid var(--gri-clair);
-            border-radius: 6px;
+            border-radius: 8px;
             box-sizing: border-box; 
             font-size: 1em;
-        }
-
-        #profile-form textarea {
-            resize: vertical;
-            min-height: 80px;
         }
 
         #save-profile-btn {
             background-color: var(--kaki); 
             color: var(--bleu-marin); 
             border: none;
-            padding: 12px 20px;
-            border-radius: 25px; 
+            padding: 15px;
+            border-radius: 30px; 
             cursor: pointer;
             width: 100%;
             font-weight: bold;
             margin-top: 20px;
-            transition: background-color 0.3s;
             font-size: 1.1em;
         }
         
-        /* Footer Styles */
         #main-footer {
             display: flex;
             justify-content: space-around;
@@ -198,34 +195,6 @@
             text-decoration: none;
             color: var(--vert-menu); 
             font-size: 0.75em;
-            padding: 5px;
-            position: relative;
-        }
-        
-        #main-footer .material-icons {
-            color: var(--vert-menu); 
-            font-size: 24px;
-        }
-        
-        .nav-item.active .material-icons {
-            color: var(--kaki); 
-        }
-
-        .cart-badge-nav {
-            position: absolute;
-            top: 0;
-            right: 10px; 
-            background-color: var(--rouge-alerte);
-            color: var(--blanc-fond);
-            border-radius: 50%;
-            padding: 2px 5px;
-            font-size: 0.65em;
-            font-weight: bold;
-            min-width: 10px;
-            text-align: center;
-            line-height: 1;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            display: none;
         }
     </style>
 </head>
@@ -247,29 +216,28 @@
             <div class="info-card-line">
                 <span class="material-icons">person</span>
                 <strong>Non:</strong> 
-                <span id="profile-name-display">Chaje...</span>
+                <span id="profile-name-display">Non w pako anrejistre</span>
             </div>
             <div class="info-card-line">
                 <span class="material-icons">email</span>
                 <strong>Imèl:</strong> 
-                <span id="profile-email-display">Chaje...</span>
+                <span id="profile-email-display">Imèl ou pako anrejistre</span>
             </div>
             <div class="info-card-line">
                 <span class="material-icons">phone</span>
                 <strong>Telefòn:</strong> 
-                <span id="profile-phone-display">Chaje...</span>
+                <span id="profile-phone-display">Telefòn ou pako anrejistre</span>
             </div>
             <div class="info-card-line">
                 <span class="material-icons">location_on</span>
                 <strong>Adrès:</strong> 
-                <span id="profile-address-display">Chaje...</span>
+                <span id="profile-address-display">Adrès ou pako anrejistre</span>
             </div>
-            
         </div>
         
         <h2 class="section-title">Aksyon</h2>
         
-        <a href="#profile-form" class="action-card">
+        <a href="javascript:void(0)" id="edit-profile-btn" class="action-card">
             <span>
                 <span class="material-icons left">edit</span>
                 Mete pwofil mwen ajou
@@ -284,27 +252,36 @@
             </span>
             <span class="material-icons right">chevron_right</span>
         </a>
+
+        <a href="pack.html" id="entrepreneur-btn" class="action-card locked">
+            <span>
+                <span class="material-icons left">business</span>
+                Devlope antrepriz ou
+            </span>
+            <span id="lock-icon" class="material-icons right">lock</span>
+        </a>
         
-        <h2 class="section-title" id="form-title">mete pwofil mwen ajou</h2>
-        
-        <form id="profile-form" action="https://getform.io/f/akkpolva" method="POST">
+        <div id="profile-form-container">
+            <h2 class="section-title" id="form-title">Anrejistre pwofil mwen</h2>
             
-            <input type="hidden" name="form_type" value="user_profile_update">
-            
-            <label for="nom">Non konplè (pou livrezon)</label>
-            <input type="text" id="nom" name="nom" required>
+            <form id="profile-form" action="https://getform.io/f/akkpolva" method="POST">
+                <input type="hidden" name="form_type" value="user_profile_update">
+                
+                <label for="nom">Non konplè (pou livrezon)</label>
+                <input type="text" id="nom" name="nom" required placeholder="egz: Jean Marc">
 
-            <label for="email">Adrès imèl (obligatwa)</label>
-            <input type="email" id="email" name="email" required>
+                <label for="email">Adrès imèl (obligatwa)</label>
+                <input type="email" id="email" name="email" required placeholder="egz: jean12@gmail.com">
 
-            <label for="phone">Telefòn whatsapp</label>
-            <input type="tel" id="phone" name="phone" placeholder="+509 xx xxxx xxxx">
-            
-            <label for="address">Adrès detaye (egzanp: Simon, toupre Hotel Josafa)</label>
-            <textarea id="address" name="address" required></textarea>
+                <label for="phone">Telefòn whatsapp</label>
+                <input type="tel" id="phone" name="phone" placeholder="+509 xx xx xx xx">
+                
+                <label for="address">Adrès detaye</label>
+                <textarea id="address" name="address" required placeholder="egz: Simon, toupre Hotel Josafa"></textarea>
 
-            <button type="submit" id="save-profile-btn">Anrejistre e voye enfo w yo ale</button>
-        </form>
+                <button type="submit" id="save-profile-btn">Anrejistre</button>
+            </form>
+        </div>
         
     </main>
 
@@ -323,7 +300,6 @@
         </a>
         <a href="deal.html" class="nav-item">
             <span class="material-icons">flash_on</span>
-            <span id="deal-badge" class="cart-badge-nav">0</span>
             <p>Deal</p>
         </a>
         <a href="moncompte.html" class="nav-item active">
@@ -336,99 +312,56 @@
         document.addEventListener('DOMContentLoaded', () => {
             const userStorageKey = 'user_profile_data';
             const form = document.getElementById('profile-form');
-            const saveButton = document.getElementById('save-profile-btn');
+            const formContainer = document.getElementById('profile-form-container');
+            const entrepreneurBtn = document.getElementById('entrepreneur-btn');
+            const editProfileBtn = document.getElementById('edit-profile-btn');
             
-            // Éléments d'affichage
             const profileNameDisplay = document.getElementById('profile-name-display');
             const profileEmailDisplay = document.getElementById('profile-email-display');
             const profilePhoneDisplay = document.getElementById('profile-phone-display');
             const profileAddressDisplay = document.getElementById('profile-address-display');
             
-            // Champs du formulaire
             const inputNom = document.getElementById('nom');
             const inputEmail = document.getElementById('email');
             const inputPhone = document.getElementById('phone');
             const inputAddress = document.getElementById('address');
-            
-            // Charge le profil depuis localStorage
-            const loadProfile = () => {
-                try {
-                    return JSON.parse(localStorage.getItem(userStorageKey)) || {};
-                } catch (e) {
-                    return {};
-                }
-            };
 
-            // Met à jour l'affichage et remplit le formulaire avec les données sauvegardées
             const updateUI = () => {
-                const profile = loadProfile();
-                
-                // 1. Remplir les champs du formulaire
-                inputNom.value = profile.nom || '';
-                inputEmail.value = profile.email || '';
-                inputPhone.value = profile.phone || '';
-                inputAddress.value = profile.address || '';
+                const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                const isProfileComplete = profile.nom && profile.email;
 
-                // 2. Mettre à jour l'affichage
-                // S'assurer que chaque mot de chaque commencement de phrase a une majuscule
-                const formatText = (text, defaultText) => {
-                     // Utiliser la première lettre en majuscule, sauf si le texte est vide
-                    if (!text) return defaultText;
-                    return text.charAt(0).toUpperCase() + text.slice(1);
-                };
-                
-                profileNameDisplay.textContent = formatText(profile.nom, 'non w pako anrejistre');
-                profileEmailDisplay.textContent = profile.email || 'imèl ou pako anrejistre';
-                profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
-                profileAddressDisplay.textContent = formatText(profile.address ? profile.address.replace(/\n/g, ', ') : '', 'adrès ou pako anrejistre');
-                
-                // Mettre à jour le texte du bouton et du titre du formulaire
-                if (profile.nom || profile.email) {
-                    saveButton.textContent = 'Mete pwofil mwen ajou e voye bay admin';
-                    document.getElementById('form-title').textContent = 'mete pwofil mwen ajou';
+                if (isProfileComplete) {
+                    profileNameDisplay.textContent = profile.nom;
+                    profileEmailDisplay.textContent = profile.email;
+                    profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
+                    profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
+                    
+                    entrepreneurBtn.classList.remove('locked');
+                    document.getElementById('lock-icon').textContent = 'chevron_right';
+                    entrepreneurBtn.href = "pack.html";
+                    formContainer.style.display = 'none';
                 } else {
-                    saveButton.textContent = 'Anrejistre e voye bay administrasyon an';
-                    document.getElementById('form-title').textContent = 'Anrejistre pwofil mwen';
+                    formContainer.style.display = 'block';
                 }
             };
-            
-            // Gère la soumission du formulaire
-            form.addEventListener('submit', function(e) {
+
+            editProfileBtn.addEventListener('click', () => {
+                formContainer.style.display = 'block';
+                formContainer.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            form.addEventListener('submit', function() {
                 const profileData = {
                     nom: inputNom.value.trim(),
                     email: inputEmail.value.trim(),
                     phone: inputPhone.value.trim(),
                     address: inputAddress.value.trim()
                 };
-
-                // Sauvegarder dans le stockage local avant l'envoi du formulaire externe
                 localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-                
-                // Afficher un message de confirmation
-                alert('Pwofil ou anrejistre avèk siksè e ale vèr administrasyon an!');
-                
-                // Le formulaire continue sa soumission vers getform.io
+                alert('Pwofil ou anrejistre avèk siksè!');
             });
-            
-            // Initialisation du badge du panier (pour le footer)
-            const dealBadgeElement = document.getElementById('deal-badge');
-            const loadCart = () => {
-                try {
-                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
-                } catch (e) {
-                    return [];
-                }
-            };
-            const updateBadgeUI = () => {
-                const count = loadCart().length;
-                dealBadgeElement.textContent = count;
-                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
-            };
 
-            // Initialiser l'interface utilisateur
             updateUI();
-            updateBadgeUI();
-
         });
     </script>
 </body>

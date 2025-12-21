@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pake sèvis - Les Cayes Dropshipping</title>
+    <link rel="stylesheet" href="base.css"> 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    <style>
+        :root {
+            --fon-nwa: #0a0e14;
+            --ka-gri: #1a1f26;
+            --bleu-marin: #001f3f; 
+            --kaki: #8fbc8f;              
+            --blanc-fond: #ffffff;        
+            --orange-vues: #ff9800;
+            --rouge-power: #f44336;
+        }
+
+        body {
+            font-family: 'Century Gothic', AppleGothic, sans-serif;
+            background-color: var(--fon-nwa);
+            color: #e0e0e0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 50px;
+        }
+
+        .container {
+            padding: 20px 15px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .main-title {
+            color: var(--blanc-fond);
+            font-size: 1.6em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #b0b0b0;
+            font-size: 0.9em;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        /* Phrase d'appel à l'action en gras avec flèche */
+        .cta-text {
+            font-weight: bold;
+            color: var(--orange-vues);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .arrow-down {
+            display: block;
+            font-size: 20px;
+            margin-bottom: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        .agent-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        /* Animation de pulsion sur l'image chaque 2 secondes */
+        .agent-img {
+            width: 200px; 
+            height: 200px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid var(--orange-vues);
+            margin-bottom: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .contact-animation-link {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 40px;
+            width: 200px;
+            color: var(--orange-vues);
+        }
+
+        .wa-icon {
+            font-size: 24px;
+            animation: blink 1.5s infinite ease-in-out;
+            margin-right: 8px;
+        }
+
+        .animated-text {
+            font-size: 0.75em;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeInOut 5s infinite;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-5px);}
+            60% {transform: translateY(-3px);}
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes fadeInOut {
+            0%, 20% { opacity: 0; }
+            40%, 80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .plan-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .plan-card {
+            background: var(--ka-gri);
+            border-radius: 18px;
+            padding: 15px;
+            border-left: 5px solid;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .plan-icon-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            border-radius: 12px;
+            margin-right: 12px;
+        }
+
+        .plan-info { flex: 1; text-align: left; }
+
+        .plan-info h3 {
+            margin: 0 0 3px 0;
+            font-size: 1em;
+            color: var(--kaki);
+        }
+
+        .plan-info p {
+            margin: 0;
+            font-size: 0.8em;
+            color: #aaa;
+        }
+
+        .price-container {
+            text-align: right;
+            min-width: 105px;
+        }
+
+        .views-count {
+            display: block;
+            font-size: 0.75em;
+            color: var(--orange-vues);
+            margin-bottom: 4px;
+            font-weight: bold;
+        }
+
+        .plan-price-only {
+            background: var(--kaki);
+            color: var(--bleu-marin);
+            padding: 5px 9px;
+            border-radius: 7px;
+            font-weight: bold;
+            font-size: 0.95em;
+            display: inline-block;
+        }
+
+        .premium { border-color: #03a9f4; }
+        .asansyon { border-color: #4caf50; }
+        .magnitid { border-color: var(--orange-vues); }
+        .bildozè { 
+            border-color: var(--rouge-power); 
+            background: linear-gradient(145deg, #1a1f26, #251010);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-section">
+            <h1 class="main-title">Sèvis marketing dijital</h1>
+            <p class="subtitle">Responsab kreyasyon piblisite nou an pran angajman pou transfòme afich ou yo an videyo & vizyèl pro.</p>
+            
+            <span class="cta-text">Kontakte ajan marketing sa</span>
+            <span class="arrow-down">↓</span>
+            
+            <div class="agent-box">
+                <a href="https://wa.me/50956228203">
+                    <img src="Francesse Gabriel.jpg" alt="Francesse Gabriel" class="agent-img">
+                </a>
+                
+                <a href="https://wa.me/50956228203" class="contact-animation-link">
+                    <span class="material-icons wa-icon">whatsapp</span>
+                </a>
+            </div>
+        </div>
+<h2 style="color: #757575; font-size: 1.3em;">Men lis plan nou yo :</h2>
+        
+        <div class="plan-grid">
+            <div class="plan-card premium">
+                <div class="plan-icon-box"><span class="material-icons" style="color:#03a9f4">workspace_premium</span></div>
+                <div class="plan-info">
+                    <h3>Plan premium</h3>
+                    <p>Ideyal pou kòmanse.</p>
+                </div>
+                <div class="price-container">
+                    <span class="views-count">8.2k - 10.2k views</span>
+                    <div class="plan-price-only">1 750 G</div>
+                </div>
+            </div>
+
+            <div class="plan-card asansyon">
+                <div class="plan-icon-box"><span class="material-icons" style="color:#4caf50">auto_graph</span></div>
+                <div class="plan-info">
+                    <h3>Plan ascension</h3>
+                    <p>Pran yon nivo rapid.</p>
+                </div>
+                <div class="price-container">
+                    <span class="views-count">15k - 22.2k views</span>
+                    <div class="plan-price-only">3 500 G</div>
+                </div>
+            </div>
+
+            <div class="plan-card magnitid">
+                <div class="plan-icon-box"><span class="material-icons" style="color:var(--orange-vues)">public</span></div>
+                <div class="plan-info">
+                    <h3>Plan magnitude</h3>
+                    <p>Domine tout vil la.</p>
+                </div>
+                <div class="price-container">
+                    <span class="views-count">25.5k - 38.3k views</span>
+                    <div class="plan-price-only">5 250 G</div>
+                </div>
+            </div>
+
+            <div class="plan-card bildozè">
+                <div class="plan-icon-box"><span class="material-icons" style="color:var(--rouge-power)">rocket_launch</span></div>
+                <div class="plan-info">
+                    <h3>Plan bulldozer</h3>
+                    <p>Pran tout depatman.</p>
+                </div>
+                <div class="price-container">
+                    <span class="views-count">40k - 62k views</span>
+                    <div class="plan-price-only">7 000 G</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
