@@ -114,6 +114,7 @@
         .action-card.locked {
             opacity: 0.6;
             background-color: #f9f9f9;
+            pointer-events: none; /* Bloke klik la lè li fèmen */
         }
 
         .action-card .material-icons.left {
@@ -196,6 +197,11 @@
             color: var(--vert-menu); 
             font-size: 0.75em;
         }
+
+        .nav-item.active {
+            font-weight: bold;
+            color: var(--bleu-marin);
+        }
     </style>
 </head>
 <body>
@@ -253,7 +259,7 @@
             <span class="material-icons right">chevron_right</span>
         </a>
 
-        <a href="pack.html" id="entrepreneur-btn" class="action-card locked">
+        <a href="javascript:void(0)" id="entrepreneur-btn" class="action-card locked">
             <span>
                 <span class="material-icons left">business</span>
                 Devlope antrepriz ou
@@ -264,7 +270,7 @@
         <div id="profile-form-container">
             <h2 class="section-title" id="form-title">Anrejistre pwofil mwen</h2>
             
-            <form id="profile-form" action="https://getform.io/f/akkpolva" method="POST">
+            <form id="profile-form">
                 <input type="hidden" name="form_type" value="user_profile_update">
                 
                 <label for="nom">Non konplè (pou livrezon)</label>
@@ -336,11 +342,17 @@
                     profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
                     profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
                     
+                    // DEBLOKE BOUTON AN
                     entrepreneurBtn.classList.remove('locked');
+                    entrepreneurBtn.style.pointerEvents = "auto";
                     document.getElementById('lock-icon').textContent = 'chevron_right';
                     entrepreneurBtn.href = "pack.html";
                     formContainer.style.display = 'none';
                 } else {
+                    // BLOKE BOUTON AN
+                    entrepreneurBtn.classList.add('locked');
+                    entrepreneurBtn.style.pointerEvents = "none";
+                    document.getElementById('lock-icon').textContent = 'lock';
                     formContainer.style.display = 'block';
                 }
             };
@@ -350,15 +362,44 @@
                 formContainer.scrollIntoView({ behavior: 'smooth' });
             });
 
-            form.addEventListener('submit', function() {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault(); // Anpeche paj la rafrechi
+                
+                const btn = document.getElementById('save-profile-btn');
+                btn.textContent = "Ap anrejistre...";
+                btn.disabled = true;
+
                 const profileData = {
                     nom: inputNom.value.trim(),
                     email: inputEmail.value.trim(),
                     phone: inputPhone.value.trim(),
                     address: inputAddress.value.trim()
                 };
-                localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-                alert('Pwofil ou anrejistre avèk siksè!');
+
+                // 1. Voye done yo sou Getform nan background la
+                fetch("https://getform.io/f/akkpolva", {
+                    method: "POST",
+                    body: new FormData(form),
+                    headers: {
+                        "Accept": "application/json",
+                    },
+                })
+                .then(response => {
+                    // 2. Menm si gen repons oswa non, nou anrejistre lokalman pou debloke koze a
+                    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+                    updateUI(); // Debloke kadna a imedyatman
+                    alert('Bravo! Pwofil ou anrejistre epi seksyon Antrepriz la debloke.');
+                })
+                .catch(error => {
+                    // Si gen erè rezo, nou toujou anrejistre lokalman pou pa bloke itilizatè a
+                    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+                    updateUI();
+                    console.log("Erè Getform, men done sove lokalman.");
+                })
+                .finally(() => {
+                    btn.textContent = "Anrejistre";
+                    btn.disabled = false;
+                });
             });
 
             updateUI();
