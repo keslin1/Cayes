@@ -501,10 +501,53 @@
         }
 
 
-        /* Footer inchangé */
-              #main-footer .material-icons {
+         #main-footer {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--blanc-fond); 
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            text-align: center;
+            text-decoration: none;
+            color: var(--vert-menu); 
+            font-size: 0.75em;
+            padding: 5px;
+            position: relative;
+        }
+        
+        #main-footer .material-icons {
             color: var(--vert-menu); 
             font-size: 24px;
+        }
+        
+        .nav-item.active .material-icons {
+            color: var(--kaki); 
+        }
+        
+        .cart-badge-nav {
+            position: absolute;
+            top: 0;
+            right: 10px; 
+            background-color: var(--rouge-alerte);
+            color: var(--blanc-fond);
+            border-radius: 50%;
+            padding: 2px 5px;
+            font-size: 0.65em;
+            font-weight: bold;
+            min-width: 10px;
+            text-align: center;
+            line-height: 1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            display: none;
         }
     </style>
 </head>
@@ -655,9 +698,9 @@ const AVAILABLE_PRODUCTS = [
     { id: 'P004', name: 'Kostim 2 pyès pou sitwayen', priceHTG: 8000, deliveryFeeHTG: 250, description: 'yon kostim 2 pyès pou gason, ideyal pou maryaj ak moman solanèl. li fèt ak twal fen.', imageSrc: 'Vès.jpg', isPreorder: false },
     { id: 'P005', name: 'Pwoteksyon zòrèy timoun', priceHTG: 750, deliveryFeeHTG: 50, description: 'yon pwoteksyon pou zòrèy timoun lè l ap benyen pou evite dlo tonbe nan zòrèy yo.', imageSrc: 'Pwo.jpg', isPreorder: false },
     { id: 'P006', name: 'Limyè pou animasyon chanm', priceHTG: 1100, deliveryFeeHTG: 0, description: 'yon limyè ak divès koulè pou animasyon chanm. ou ka branche l nan backup usb ou.', imageSrc: 'Limyè.jpg', isPreorder: false },
-    { id: 'P007', name: 'Cover telefòn Tecno', priceHTG: 1300, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè wouj grena e blan ladan. Pwoteksyon elegan.', imageSrc: 'tekno.jpg', isPreorder: false },
-    { id: 'P008', name: 'Cover telefòn Tecno (Blan & Wouj)', priceHTG: 1300, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè blan e wouj grena ladan. Rezistan ak elegan.', imageSrc: 'tecno2.jpg', isPreorder: false },
-    { id: 'P009', name: 'pòch samsung galaxy a12', priceHTG: 1800, deliveryFeeHTG: 0, description: 'yon etui telefòn pou samsung galaxy a12 pou sitwayen ki vle mete tèt yo an valè.', imageSrc: 'A12.jpg', isPreorder: false },
+    { id: 'P007', name: 'Cover telefòn Tecno', priceHTG: 900, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè wouj grena e blan ladan. Pwoteksyon elegan.', imageSrc: 'tekno.jpg', isPreorder: false },
+    { id: 'P008', name: 'Cover telefòn Tecno', priceHTG: 900, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè blan e wouj grena ladan. Rezistan ak elegan.', imageSrc: 'tecno2.jpg', isPreorder: false },
+    { id: 'P009', name: 'pòch samsung galaxy a12', priceHTG: 1300, deliveryFeeHTG: 0, description: 'yon etui telefòn pou samsung galaxy a12 pou sitwayen ki vle mete tèt yo an valè.', imageSrc: 'A12.jpg', isPreorder: false },
     { id: 'P010', name: 'Etòf kimen pou savonnen', priceHTG: 250, deliveryFeeHTG: 0, description: 'yon ètòf trè rafine pou lave kò w, li fè anpil kim. ideyal pou benyen ak konfò.', imageSrc: 'Etòf.jpg', isPreorder: false },
     { id: 'P011', name: 'Mikwofòn filè', priceHTG: 3900, deliveryFeeHTG: 100, description: 'yon mikwofòn a fil pou fè videyo. Ou ka konekte l ak kamera oswa telefòn ou.', imageSrc: 'micro3.jpg', isPreorder: false },
     { id: 'P012', name: 'Zanno dore 18 pyès', priceHTG: 1600, deliveryFeeHTG: 0, description: 'yon seri 18 pyès zanno dore pou mete nan zòrèy pou moman espesyal. trè elegant.', imageSrc: 'Zanno.jpg', isPreorder: false },

@@ -30,34 +30,33 @@
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
+            perspective: 1000px; /* Nesesè pou efè 3D a */
         }
 
         .container {
             width: 100%;
             max-width: 500px;
             position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- LOGIK ROULÈT --- */
+        /* --- LOGIK VIRE (FLIP) --- */
+        .flipped {
+            transform: rotateY(180deg);
+        }
+
         .section-wrapper {
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            display: block;
+            width: 100%;
+            backface-visibility: hidden; /* Kache kote ki pa parèt la */
+            position: relative;
         }
 
-        .hidden-section {
-            display: none;
-            opacity: 0;
-            transform: translateX(100px);
-        }
-
-        .show-section {
-            display: block;
-            animation: slideIn 0.6s forwards;
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-50px); }
-            to { opacity: 1; transform: translateX(0); }
+        #marketingSection {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotateY(180deg); /* Mete dezyèm pati a sou do */
         }
 
         /* --- STYLES SÈVIS WISE --- */
@@ -278,21 +277,21 @@
 </head>
 <body>
 
-    <div class="container">
+    <div id="mainContainer" class="container">
         
         <div id="visaSection" class="section-wrapper">
             <div class="header-section">
                 <h1 class="main-title">Sèvis kat Visa</h1>
-                <p class="subtitle">Pwofite pi bon tarif pou kreyasyon ak rechaj kat vityèl paw lan jodi a.</p>
+                <p class="subtitle">Pwofite pi bon tarif pou kreyasyon ak rechaj kat vityèl paw lan jodi a pouw kòmanse fè tranzaksyon anliy.</p>
             </div>
 
             <div class="pricing-grid">
                 <div class="pricing-card card-blue">
                     <div class="card-header">Kreyasyon</div>
                     <div class="card-body">
-                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje ak Moncash / Natcash</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Achte sou entènèt (Shein, Temu, Facebook..)</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Resevwa lajan entènasyonal</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje ak Moncash / Natcash.</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Achte sou entènèt (Shein, FB, Temu..).</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Resevwa lajan entènasyonal.</span></div>
                     </div>
                     <div class="card-footer">
                         <span class="old-price">2500 HTG</span>
@@ -304,9 +303,9 @@
                 <div class="pricing-card card-orange">
                     <div class="card-header">Rechaje</div>
                     <div class="card-body">
-                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje nan mwens ke 10 minit</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Ou ka bay kòb kach</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Sipò 24/7 pou tranzaksyon w</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje nan mwens ke 1 h!</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Ou ka bay kòb kach.</span></div>
+                        <div class="feature-item"><span class="material-icons">check</span><span>Sipò 24/7 pou tranzaksyon w.</span></div>
                     </div>
                     <div class="card-footer">
                         <span class="old-price">Taux: 147 HTG</span>
@@ -322,11 +321,11 @@
             </div>
         </div>
 
-        <div id="marketingSection" class="section-wrapper hidden-section">
+        <div id="marketingSection" class="section-wrapper">
             <div class="header-section">
                 <span class="material-icons toggle-arrow" onclick="toggleSections()">expand_less</span>
                 <h1 class="main-title" style="color:var(--rose-pale)">Plan marketing nou yo</h1>
-                <p class="subtitle">Klike sou flèch anlè a pou tounen nan sèvis avan an</p>
+                <p class="subtitle">Fè aktivite w vizib sou Facebook ak plan maketing sa yo. Chanje nivo biznis ou jodi a, paske marketing se kle kwasans aktivite w lan.</p>
             </div>
 
             <div class="plan-container plan-premium">
@@ -400,22 +399,9 @@
 
     <script>
         function toggleSections() {
-            var visa = document.getElementById('visaSection');
-            var marketing = document.getElementById('marketingSection');
-            
-            if (marketing.classList.contains('hidden-section')) {
-                // Montre Marketing, Kache Visa
-                visa.style.display = 'none';
-                marketing.classList.remove('hidden-section');
-                marketing.classList.add('show-section');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                // Montre Visa, Kache Marketing
-                marketing.classList.add('hidden-section');
-                marketing.classList.remove('show-section');
-                visa.style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            var container = document.getElementById('mainContainer');
+            container.classList.toggle('flipped');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
 </body>

@@ -9,10 +9,9 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
 
     <style>
-        /* ==================== Styles Globaux et Couleurs ==================== */
-        
         :root {
             --bleu-marin: #001f3f; 
+            --bleu-fonce: #000d1a;
             --kaki: #8fbc8f;              
             --gri-clair: #f0f0f0;         
             --noir-texte: #333;           
@@ -21,18 +20,10 @@
             --vert-info: #00897b; 
             --vert-fond: #e0f2f1; 
             --vert-menu: #004D40; 
-            --orange-attente: #f39c12; 
-            
-            /* Couleurs pour le Dégradé Spécifique */
             --jaune-pale: #fffacd; 
             --vert-turquoise: #40e0d0; 
-            
-            /* Couleurs des boîtes */
             --info-fond: #e0f2f1; 
             --remak-fond: #fff3e0; 
-            
-            /* Nouvelle couleur de fond pour l'onglet Actif */
-            --active-tab-bg: var(--vert-info); 
         }
 
         body {
@@ -40,271 +31,161 @@
             background-color: var(--gri-clair);
             color: var(--noir-texte);
             margin: 0;
-            padding-bottom: 70px; /* Espace pour le footer fixe */
+            padding-bottom: 120px; 
+            overflow-x: hidden;
         }
-        
+
         #main-content {
             padding: 20px 15px;
+            perspective: 1500px; 
         }
 
-        /* ==================== Animation du Contenu (Onglet) ==================== */
-        
-        @keyframes slideInFromRight {
-            0% { opacity: 0; transform: translateX(50px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-        
-        .tab-content {
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-            animation: slideInFromRight 0.5s ease-out; 
-        }
-
-        /* ==================== Animation des Éléments de Liste (Scroll Reveal / Rebond) ==================== */
-
-        @keyframes bounceInUp {
-            0% {
-                opacity: 0;
-                transform: translateY(100px) scale(0.8);
-            }
-            60% {
-                opacity: 1;
-                transform: translateY(-10px) scale(1.05); /* Petit rebond vers le haut */
-            }
-            80% {
-                transform: translateY(5px) scale(0.98);
-            }
-            100% {
-                transform: translateY(0) scale(1);
-            }
-        }
-        
-        .condition-list > li {
-            margin-bottom: 25px;
-            line-height: 1.4;
-            counter-increment: list-counter; 
-            padding-left: 30px; 
+        .flip-container {
+            width: 100%;
             position: relative;
-            
-            /* Propriétés pour l'état initial masqué */
-            opacity: 0; 
-            transform: translateY(100px); 
-            transition: opacity 0.3s, transform 0.3s;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            min-height: 1200px; /* Ogmante pou kontni an ka antre nèt */
         }
 
-        .condition-list > li.reveal {
-            opacity: 1;
-            /* Utilisation d'une fonction de temps pour l'effet élastique */
-            animation: bounceInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; 
+        .flip-container.flipped {
+            transform: rotateY(180deg);
         }
 
-        /* La première consigne n'a pas d'animation si elle est immédiatement visible au chargement de l'onglet */
-        /* La logique JavaScript gérera l'application à partir du deuxième élément */
-
-
-        /* ==================== Styles du Tableau de Bord (Dashboard/Onglets) - MOBILE ==================== */
-        
-        #service-dashboard {
-            display: flex;
-            justify-content: space-between;
-            overflow: hidden;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            margin: 15px 0 20px 0; 
-            border-radius: 8px;
-            /* Dégradé demandé */
-            background: linear-gradient(to right, var(--jaune-pale), var(--vert-turquoise));
+        .tab-content {
+            width: 100%;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            background-color: var(--blanc-fond);
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
-        .dashboard-tab {
-            flex-grow: 1;
-            text-align: center;
-            padding: 12px 10px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.9em;
-            color: var(--bleu-marin);
-            background-color: transparent;
-            transition: background-color 0.3s, color 0.3s;
-            border-bottom: 3px solid transparent;
+        #section-avantaj {
+            transform: rotateY(180deg);
         }
 
-        .dashboard-tab.active {
-            background-color: var(--bleu-marin); 
-            color: var(--blanc-fond); 
-            border-bottom: 3px solid var(--vert-turquoise); 
-        }
-        
         #main-section-image {
             width: 100%;
-            max-height: 200px; 
+            height: 190px;
             object-fit: cover;
             border-radius: 8px;
-            margin-bottom: 0px; 
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            border: 1px solid var(--gri-clair); 
+            margin-bottom: 15px;
         }
 
-        /* ==================== Styles de Titres et Sections ==================== */
-        
         .section-title {
-            font-size: 1.8em;
-            margin: 25px 0 15px 0;
+            font-size: 1.65em;
+            margin: 15px 0;
             font-weight: 900; 
             color: var(--bleu-marin);
-            text-align: left;
-            padding-left: 5px;
-            border-left: 5px solid var(--kaki); 
-            line-height: 1.2;
+            border-left: 6px solid var(--kaki);
+            padding-left: 12px;
         }
-        
-        h3 {
-            font-size: 1.2em;
-            color: var(--kaki);
-            border-bottom: 2px solid var(--gri-clair);
-            padding-bottom: 5px;
-            margin-top: 25px;
-        }
-        
-        /* Conteneurs de liste */
+
+        /* Lis ak Animasyon */
         .condition-list {
             padding: 0;
             margin: 0;
             list-style: none;
+            counter-reset: list-counter;
         }
-        
+
+        .condition-list > li {
+            margin-bottom: 0;
+            padding: 25px 0 25px 45px;
+            border-bottom: 1px solid #eeeeee;
+            line-height: 1.6;
+            position: relative;
+            box-sizing: border-box;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s;
+        }
+
+        .condition-list > li:last-child { border-bottom: none; }
+
+        .condition-list > li.reveal {
+            opacity: 1 !important;
+            transform: translateY(0) scale(1) !important;
+        }
+
+        .condition-list > li.hidden-scroll {
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+        }
+
         .condition-list > li::before {
             content: counter(list-counter) ".";
+            counter-increment: list-counter;
             position: absolute;
             left: 0;
-            font-weight: bold;
+            font-weight: 900;
             color: var(--rouge-alerte);
-            font-size: 1.2em;
+            font-size: 1.5em; /* Pi gwo nimewo */
         }
 
-        /* Styles des boîtes d'information */
-        .info-box {
+        /* Sous-titres modifye (Pi gwo) */
+        h3 {
+            font-size: 1.4em; /* Ogmante gwosè a */
+            color: var(--kaki);
+            margin: 0 0 10px 0;
+            font-weight: 900;
+            text-transform: capitalize;
+        }
+
+        .info-box, .remak-box {
             display: flex;
             align-items: flex-start;
-            background-color: var(--info-fond); 
-            border-left: 4px solid var(--vert-info);
-            padding: 10px;
-            margin: 10px 0 10px 0;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
-        
-        /* Style Avertissement (Warning) */
-        .info-box[data-type="warning"] {
-            background-color: #fce4e4; 
-            border-left: 4px solid var(--rouge-alerte);
-        }
-        .info-box[data-type="warning"] .material-icons {
-            color: var(--rouge-alerte);
-        }
-
-        /* Style Liste (List) */
-        .info-box[data-type="list"] .material-icons {
-             color: var(--vert-info);
-        }
-
-        .info-box .material-icons {
-            font-size: 18px;
-            margin-right: 8px;
-            margin-top: 2px;
-        }
-        
-        /* Styles Remarque */
-        .remak-box {
-            background-color: var(--remak-fond); 
-            border-left: 4px solid #ff9800; 
-            padding: 10px;
+            gap: 12px;
+            padding: 15px;
             margin: 15px 0;
-            border-radius: 4px;
-            font-size: 0.9em;
-            display: flex;
-            align-items: flex-start;
+            border-radius: 6px;
+            font-size: 0.95em;
         }
 
-        .remak-box .material-icons {
-            font-size: 16px; 
-            margin-right: 5px; 
-            color: #ff9800;
+        .info-box { background-color: var(--info-fond); border-left: 4px solid var(--vert-info); }
+        .remak-box { background-color: var(--remak-fond); border-left: 4px solid #ff9800; }
+
+        .info-box .material-icons, .remak-box .material-icons {
+            font-size: 22px;
+            flex-shrink: 0;
             margin-top: 2px;
         }
 
-        strong {
-            color: var(--bleu-marin);
-            font-weight: 700; 
+        strong { color: var(--bleu-marin); font-weight: 800; }
+
+        /* Bouton ak Espas anba */
+        .flip-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 40px;
+            margin-bottom: 60px; /* Anpil espas apre bouton an */
+            padding: 20px;
+            background: linear-gradient(135deg, var(--vert-turquoise), var(--bleu-fonce));
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            font-size: 0.9em;
         }
-        
-        /* ==================== Styles PC (Media Query pour écrans > 768px) ==================== */
 
-        @media (min-width: 768px) {
-            
-            #main-content {
-                display: flex;
-                flex-direction: row-reverse; 
-                gap: 20px;
-                padding: 20px 30px; 
-            }
-
-            #side-menu {
-                flex-grow: 1; 
-                max-width: 300px;
-                order: 1; 
-                padding: 0;
-                border-radius: 10px;
-                align-self: flex-start; 
-                position: sticky; 
-                top: 20px; 
-                height: fit-content;
-                background: linear-gradient(to bottom right, var(--jaune-pale), var(--vert-turquoise));
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-            }
-            
-            #content-wrapper {
-                flex-grow: 3; 
-                order: 2; 
-                background-color: var(--blanc-fond);
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            }
-            
-            #main-section-image {
-                max-height: 250px; 
-            }
-
-            #service-dashboard {
-                display: block; 
-                margin: 0;
-                box-shadow: none;
-                background: transparent;
-                border-radius: 10px;
-            }
-
-            .dashboard-tab {
-                display: block;
-                border-bottom: 1px solid rgba(0, 31, 63, 0.1); 
-                text-align: left;
-                padding: 15px 20px;
-                font-size: 1em;
-                background: transparent;
-                color: var(--bleu-marin); 
-            }
-
-            .dashboard-tab.active {
-                background-color: var(--bleu-marin); 
-                color: var(--blanc-fond); 
-                border-left: 5px solid var(--vert-turquoise); 
-                border-bottom: 1px solid var(--bleu-marin); 
-            }
+        .flip-trigger .material-icons {
+            animation: rotateCycle 3s linear infinite;
         }
-        
-        /* ==================== Footer Styles ==================== */
+
+        @keyframes rotateCycle {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Footer */
         #main-footer {
             display: flex;
             justify-content: space-around;
@@ -319,166 +200,117 @@
             z-index: 1000;
         }
 
-        .nav-item {
-            text-align: center;
-            text-decoration: none;
-            color: var(--vert-menu); 
-            font-size: 0.75em;
-            padding: 5px;
-            position: relative; 
-        }
-        
-        #main-footer .material-icons {
-            color: var(--vert-menu); 
-            font-size: 24px;
-        }
-        
-        .nav-item.active .material-icons {
-            color: var(--kaki); 
-        }
-        
-        .cart-badge-nav {
-            position: absolute;
-            top: 0;
-            right: 10px; 
-            background-color: var(--rouge-alerte);
-            color: var(--blanc-fond);
-            border-radius: 50%;
-            padding: 2px 5px;
-            font-size: 0.65em;
-            font-weight: bold;
-            min-width: 10px;
-            text-align: center;
-            line-height: 1;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            display: none; 
-        }
-        
+        .nav-item { text-align: center; text-decoration: none; color: var(--vert-menu); font-size: 0.75em; padding: 5px; position: relative; }
+        #main-footer .material-icons { color: var(--vert-menu); font-size: 24px; }
+        .nav-item.active .material-icons { color: var(--kaki); }
+        .cart-badge-nav { position: absolute; top: 0; right: 10px; background-color: var(--rouge-alerte); color: white; border-radius: 50%; padding: 2px 5px; font-size: 0.65em; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
     <main id="main-content">
-        
-        <div id="side-menu">
-            <div id="service-dashboard">
-                <div id="tab-conditions" class="dashboard-tab active" data-target="section-kondisyon" data-image="img26.jpg">
-                    Kondisyon sèvis nou
-                </div>
-                <div id="tab-avantages" class="dashboard-tab" data-target="section-avantaj" data-image="img5.jpg">
-                    Poukisa si se pa nou, ou riske?
-                </div>
-            </div>
-        </div>
-        
-        <div id="content-wrapper">
+        <div class="flip-container" id="flip-card">
             
-            <img src="img26.jpg" alt="imaj ki reprezente kondisyon sèvis yo" id="main-section-image">
-
-            <section id="section-kondisyon" class="tab-content active">
+            <section id="section-kondisyon" class="tab-content">
+                <img src="img26.jpg" alt="Kondisyon" id="main-section-image">
                 <h2 class="section-title">Kondisyon jeneral pou sèvi ak nou</h2>
                 
-                <ol class="condition-list" style="counter-reset: list-counter 0;">
-                    
-                    <li id="condition-1">
+                <ol class="condition-list">
+                    <li style="opacity: 1; transform: none;">
                         <h3>Acha e pèman :</h3>
-                        Nou achte pou ou san ou pa peye anyen pou <strong>sèvis acha a</strong>.
-                        <br>Ou peye an goud nan yon to fiks <strong>135 gds</strong> pou pri atik ou yo vini an $ sou platfòm etranje wap achte an.
-                        <div class="info-box" data-type="info">
-                            <span class="material-icons">info</span> 
-                            <p style="margin: 0;">Mwayen nou plis privilejye pou lanse kòmand ou an pi rapid aprè pèman, se <strong>Natcash</strong> osinon <strong>cash</strong>.</p>
+                        Sila kap ban nou achte, nou achte pou ou san ou pa peye anyen pou <strong>sèvis acha a</strong>.
+                        <br>Ou peye <strong>an goud</strong> nan yon <strong>to fiks 135 gds</strong> pou pri atik ou yo vini an $ sou <strong>platfòm etranje</strong> wap achte an.
+                        <div class="info-box">
+                            <span class="material-icons" style="color: var(--vert-info);">info</span> 
+                            <p style="margin: 0;">Mwayen nou plis privilejye pou <strong>lanse kòmand</strong> ou an pi rapid aprè pèman, se <strong>Natcash</strong> osinon <strong>cash</strong>.</p>
                         </div>
                     </li>
 
-                    <li id="condition-2">
+                    <li class="hidden-scroll">
                         <h3>Pwotokòl acha :</h3>
-                        Pou moun kap achte plizyè atik oswa machandiz, se panye w pou voye ba nou. Nou lanse order an pou ou nan moman okazyon. Ou paka kòmande dirèkteman nan adrès sèvis lan.
-                        <div class="info-box" data-type="warning"> 
-                            <span class="material-icons">warning</span> 
-                            <p style="margin: 0;"><strong>Rezon</strong> : Nou regroupe kòmand yo epi nou voye yo an Ayiti nan yon sèl stòk par okazyon pou nou ka gen kontwòl total sou eta ak suivi tout koli kliyan yo.</p>
-                        </div>
+                        Pou moun kap achte <strong>plizyè atik</strong> oswa machandiz, se <strong>panye w pou voye ba nou.</strong> Nou lanse order an pou ou nan moman okazyon ki afiche nan akèy la. Lè wap achte anliy nan adrès nou, ou dwe mete nom sèvis lan epi ajoute siyati w dèyè. 
                     </li>
                     
-                    <li id="condition-3">
-                        <h3>Frè e livrezon :</h3>
-                        Frè enpòtasyon an se <strong>6 dola (usd) pa liv (lbs)</strong>. 
-                        <br>Nan Sud oswa p-au-p, ou resevwa kòmand ou yo <strong>15 a 22 jou</strong> apre li fin rive nan adrès konpayi an Etazini. Sa ki fè tan sa se DWÀN. Ou pa bezwen plede ekri n a chak fwa pou mande n' kijan sa ye. Kòmand ou an plase e lap livre.
+                    <li class="hidden-scroll">
+                        <h3>Livrezon :</h3>
+                        Frè <strong>enpòtasyon an</strong> se <strong>6 dola (usd) pa liv (lbs)</strong>. 
+                        <br>Ou resevwa kòmand ou an nan <strong>Sud oswa P-au-P</strong>. Aprè temps ki estime nan premye paj platfòm nou an fin ekoule, atik ou genyen ki pa livre nan adrès nou ap ret pou lòt okazyon.
                     </li>
 
-                    <li id="condition-4">
+                    <li class="hidden-scroll">
                         <h3>Bagay entèdi :</h3>
-                        Nou <strong>pa pote</strong> materyèl ladwàn pa aksepte. Tout kliyan ki gen kòmand nan men nou se nan Sud yap resevwa yo.
-                        <div class="info-box" data-type="list">
-                            <span class="material-icons">list</span> 
+                        Nou <strong>pa pote</strong> materyèl ladwàn pa aksepte. Tout kliyan ki gen kòmand nan men nou ki pa nan Sud ka gen yon <strong>ti reta 5 jou</strong> nan resepsyon koli yo. Yon kliyan pa bezwen plede ekri n a chak fwa pou mande n' kijan sa ye. Kòmand ou an <strong>plase e lap livre</strong> nan dat ki estime an.
+                        <div class="info-box">
+                            <span class="material-icons" style="color: var(--vert-info);">list</span> 
                             <p style="margin: 0;"><strong>Lis bagay entèdi</strong> : Kagoul, sex-toy, materyèl enflamab, materyèl militè, fo lajan, batri lithium, dwon, dwòg.</p>
                         </div>
                     </li>
                     
-                    <li id="condition-5">
+                    <li class="hidden-scroll">
                         <h3>Limit :</h3>
-                        Nou <strong>pa livre</strong> atik ki pa sòti nan lòd acha pa nou.
-                        <br>Yon pakè ki vin nan adrès konpayi an sou non Les Cayes Dropshipping ap peye yon frè siplemantè pou jesyon ak livrezon l.
+                        Nou <strong>pa livre</strong> atik ki pa sòti nan lòd acha platfòm komès yo.
+                        <br>Yon <strong>bwat & dwoum</strong> ki vin nan adrès konpayi an sou non <strong>Les Cayes Dropshipping</strong> ap peye yon <strong>frè siplemantè</strong> pou jesyon ak livrezon l.
                     </li>
 
-                    <li id="condition-6">
+                    <li class="hidden-scroll">
                         <h3>Resevwa koli w :</h3>
-                        Ou peye <strong>fakti enpòtasyon an 3 jou alavans</strong> anvan nou livre w koli w. Tout kòmand ki peze ant 1 a 3 liv koute 24 dola fiks. Kalite atik ou yo depann de kalite founisè w chwazi sou platfòm wap achte an.
+                        Tout kòmand ki peze ant <strong>1 a 3 liv</strong> koute <strong>24 dola fiks</strong>. Wap resevwa yon fakti pou "coût importation" afèw yo. Ou peye <strong>fakti sa 3 jou alavans</strong> anvan nou livre w koli an. Pa kite koli ret fè plis ke 7 jou nan depo n, se sèl fason nou pa tolere kliyan. Kalite atik ou yo depann de kalite founisè w chwazi sou platfòm wap achte an.
                     </li>
-<li id="condition-7">
-    <h3>Kontwòl :</h3>
-    Toujou <strong>verifye disponiblite atik</strong> wap achte sou sit nou an (èske yo disponib osinon précommande).
-    
-    <div style="margin-top: 15px; padding: 10px; border-left: 3px solid #ff4d4d; background-color: #ffe6e6; font-style: italic; font-size: 0.95em; border-radius: 0 5px 5px 0; color: #333;">
-        <strong>Endis :</strong> Pou w genyen sit lan sou fòm aplikasyon sou ekran telefòn ou, ale nan 3 ti pwen anlè adwat ki prezante konsa (⋮) osinon konsa (⬇️). Klike sou li epi desann anba nèt wap jwenn opsyon ki maké <strong>ajouter sur écran d'accueil</strong> (oswa "add to home screen"). Peze sou li epi konfime "ajouter".
-    </div>
-</li>
 
-                    
+                    <li class="hidden-scroll">
+                        <h3>Platfòm nou an :</h3>
+                        Toujou <strong>verifye disponiblite atik</strong> wap achte sou sit nou an (èske yo disponib osinon <strong>précommande</strong>).
+                        
+                        <div style="margin-top: 15px; padding: 10px; border-left: 3px solid #ff4d4d; background-color: #ffe6e6; font-style: italic; font-size: 0.95em; border-radius: 0 5px 5px 0; color: #333;">
+                            <strong>Endis :</strong> Pou w genyen sit lan sou fòm aplikasyon sou ekran telefòn ou, ale nan <strong>3 ti pwen anlè adwat</strong> (⋮). Klike sou li epi chwazi <strong>ajouter sur écran d'accueil</strong>.
+                        </div>
+                    </li>
                 </ol>
+
+                <div class="flip-trigger" onclick="toggleFlip()">
+                    <span>Poukisa si se pa nou...?</span>
+                    <span class="material-icons">sync</span>
+                </div>
             </section>
             
             <section id="section-avantaj" class="tab-content">
+                <img src="img5.jpg" alt="Avantaj" id="main-section-image">
                 <h2 class="section-title">Poukisa w ka pran sèvis Les Cayes Dropshipping lan?</h2>
                 
                 <ul style="list-style: disc; padding-left: 20px;">
                     <li>
                         <h3>Sekirite e suivi :</h3>
-                        Ou gen aksè dirèk ak whatsapp nou pou <strong>suiv koli w</strong>.
-                        <br>Ou ka suiv kòmand lan ak e-mail oswa nimewo whatsapp, depi lè nou achte l, anbake, jis li rive nan men w. Sètadi, nou voye mesaj baw a <strong>chak etap</strong> kòmand ou an.
+                        Ou gen <strong>aksè dirèk</strong> ak whatsapp nou pou <strong>suiv koli w</strong>.
+                        <br>Nou voye mesaj baw a <strong>chak etap</strong> kòmand ou an, osinon w ka suiv disponiblite yo sou sit lan.
                     </li>
 
                     <li>
                         <h3>Acha pro :</h3>
                         Nap achte sou entènèt depi <strong>2019</strong>.
-                        <br>Nou garanti erè pa janm soti nan nou (<strong>défaut de commande</strong>). Wòl nou se achte e pote sa ou chwazi a.
+                        <br>Nou garanti <strong>erè pa janm soti nan nou</strong>. Wòl nou se achte e pote sa ou chwazi a.
                     </li>
 
                     <li>
-    <h3>Jere pwoblèm nou ak transparans :</h3>
-    
-    <p>
-        Si gen yon pwoblèm ak atik ou yo (sa ki pako rive n'), kontrèman ak anpil lòt sèvis, ou konn egzakteman ki kote pou w ale. Si gen yon pwoblèm, <strong>nou pap lage w</strong>.
-    </p>
+                        <h3>Achte poukò w :</h3>
+                        Ou ka fè tout sa sou sèl platfòm lan: depi nan <strong>kreyasyon kat ou an, rechaj, order jiska livrezon</strong>.
+                    </li>
 
-    <div class="remak-box" style="
-        background-color: #ffe0b2; /* Couleur orange clair */
-        border: 2px solid #ff9800; /* Bordure orange */
-        padding: 15px;
-        margin-top: 20px;
-        border-radius: 8px;
-        font-size: 0.95em;
-        line-height: 1.4;
-    ">
-        <p style="font-weight: 900; color: #e65100; margin-bottom: 5px; display: flex; align-items: center; gap: 5px;">
-             <span class="material-icons" style="font-size: 1.2em;">info</span>
-        </p>
+                    <li>
+                        <h3>Jere pwoblèm ak transparans :</h3>
+                        <p>Si gen yon pwoblèm, <strong>nou pap abandone w</strong>.</p>
 
-        <p>
-            Sèvis Les Cayes Dropshipping itilize yon depo etranjè pou resevwa kòmand ou yo, nou pa gen pwòp adrès nou pou resepsyon koli USA.
-        </p>
-    </div>
-</section>
+                        <div class="remak-box">
+                            <span class="material-icons" style="color: #ff9800;">info</span>
+                            <p style="margin: 0;">Sèvis <strong>Les Cayes Dropshipping</strong> itilize yon depo etranjè, nou pa gen pwòp adrès pa nou USA.</p>
+                        </div>
+                    </li>
+                </ul>
 
+                <div class="flip-trigger" onclick="toggleFlip()">
+                    <span>Tounen nan konsiy yo</span>
+                    <span class="material-icons">sync</span>
+                </div>
+            </section>
 
         </div>
     </main>
@@ -506,122 +338,38 @@
         </a>
     </footer>
 
-       <script>
+    <script>
+        function toggleFlip() {
+            const card = document.getElementById('flip-card');
+            card.classList.toggle('flipped');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
-            const dealBadgeElement = document.getElementById('deal-badge'); 
-            const tabs = document.querySelectorAll('.dashboard-tab');
-            const contents = document.querySelectorAll('.tab-content');
-            const mainImage = document.getElementById('main-section-image');
-            const mediaQuery = window.matchMedia('(min-width: 768px)');
+            const listItems = document.querySelectorAll('.condition-list > li.hidden-scroll'); 
             
-            // Fonction pour gérer l'affichage des contenus des onglets
-            const setActiveTab = (selectedTab) => {
-                const targetId = selectedTab.getAttribute('data-target');
-                const targetImageSrc = selectedTab.getAttribute('data-image');
-
-                // 1. Désactiver tous les onglets et contenus
-                tabs.forEach(t => t.classList.remove('active'));
-                contents.forEach(c => c.classList.remove('active'));
-
-                // 2. Activer l'onglet cliqué
-                selectedTab.classList.add('active');
-
-                // 3. Afficher le contenu cible
-                const targetContent = document.getElementById(targetId);
-                if (targetContent) {
-                    targetContent.classList.add('active');
-                    
-                    // Réinitialiser l'animation des éléments de liste lors du changement d'onglet
-                    targetContent.querySelectorAll('.condition-list > li').forEach(li => {
-                        li.classList.remove('reveal');
-                        // L'observer est permanent, il suffit de retirer la classe 'reveal' pour qu'il la remette quand l'élément entre en vue.
-                    });
-                }
-                
-                // 4. Mettre à jour l'image
-                if (mainImage && targetImageSrc) {
-                     mainImage.src = targetImageSrc;
-                     mainImage.alt = selectedTab.textContent.trim() + " imaj";
-                }
-            };
-
-            // --- Logique d'apparition progressive permanente au défilement (Scroll Reveal / Rebond) ---
-            
-            // Cible les éléments de liste (consignes)
-            const listItems = document.querySelectorAll('.condition-list > li'); 
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    const isIntersecting = entry.isIntersecting;
-                    const item = entry.target;
-                    
-                    // Déclenche l'animation de rebond si l'élément entre en vue
-                    if (isIntersecting) {
-                        // Pour que l'animation se rejoue, on s'assure qu'elle n'est pas déjà jouée
-                        if (!item.classList.contains('reveal')) {
-                             item.classList.add('reveal');
-                        }
-                    } 
-                    // Supprime la classe 'reveal' lorsque l'élément quitte l'écran (montée ou descente)
-                    // Cela permet à l'animation de se rejouer la prochaine fois qu'il entre en vue
-                    else {
-                        item.classList.remove('reveal');
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal');
+                    } else {
+                        entry.target.classList.remove('reveal');
                     }
                 });
-            }, {
-                rootMargin: '0px',
-                // Threshold à 0.1 pour un déclenchement dès qu'une petite partie est visible
-                threshold: 0.1 
+            }, { 
+                threshold: 0.1, 
+                rootMargin: '0px 0px -20px 0px' 
             });
 
-            // Observer chaque élément de la liste
-            listItems.forEach(item => {
-                // Nous commençons l'observation à partir du DEUXIÈME élément (index 1) si la première consigne est toujours visible
-                // Pour que la première consigne soit visible sans animation au chargement initial :
-                if (item.id === 'condition-1') {
-                    // Supprimer les styles initiaux pour le premier élément
-                    item.style.opacity = 1;
-                    item.style.transform = 'none';
-                    return; 
-                }
-                observer.observe(item);
-            });
-            
-            // --- Initialisation et Gestion des Clics ---
-
-            // Initialiser le premier onglet actif et l'animation
-            setActiveTab(document.querySelector('.dashboard-tab.active'));
-
-            // Logique de navigation par onglets (MOBILE & PC)
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    setActiveTab(tab);
-
-                    // Si on est sur mobile, défilement vers le tableau de bord
-                    if (!mediaQuery.matches) {
-                         document.getElementById('service-dashboard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-            });
-
-
-            // --- Gère le badge persistant du panier (deal) ---
-            const loadCart = () => {
-                try {
-                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
-                } catch (e) {
-                    return [];
-                }
-            };
+            listItems.forEach(item => observer.observe(item));
 
             const updateBadgeUI = () => {
-                const cart = loadCart();
-                const count = cart.length;
-                dealBadgeElement.textContent = count;
-                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
+                const badge = document.getElementById('deal-badge');
+                const cart = JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+                badge.textContent = cart.length;
+                badge.style.display = cart.length > 0 ? 'block' : 'none';
             };
-
-            updateBadgeUI(); 
+            updateBadgeUI();
         });
     </script>
 </body>

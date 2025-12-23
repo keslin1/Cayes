@@ -69,44 +69,33 @@
             color: var(--bleu-marin);
         }
         
-        /* Barre de Recherche (Ajustement pour la fonction de recherche) */
-        #search-bar {
-            display: flex;
-            align-items: center;
-            background-color: var(--gri-clair);
-            border-radius: 25px;
-            padding: 8px 15px;
-            margin: 10px 15px 0 15px;
-        }
-
-        #search-bar .material-icons {
-            color: #666;
-            margin-right: 10px;
-            cursor: pointer; /* Indique que l'icône est cliquable pour la recherche */
-        }
-        
-        #search-bar input[type="text"] {
-            flex-grow: 1;
-            border: none;
-            background: transparent;
-            font-size: 1em;
-            outline: none;
-            color: var(--noir-texte);
-        }
-        
         /* Contwa à rebours */
-        #countdown-timer {
-            text-align: center;
-            background: linear-gradient(to right, #40E0D0, #FFFF00); 
-            color: var(--bleu-marin); 
-            padding: 10px 0; 
-            border-radius: 0px; 
-            font-size: 1em;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-            font-weight: bold;
-            font-style: italic; 
-        }
+#countdown-timer {
+    text-align: center;
+    background: linear-gradient(to right, #40E0D0, #FFFF00); 
+    color: var(--bleu-marin); 
+    padding: 15px 10px; 
+    border-radius: 10px; /* Mwen mete yon ti wonn pou l pi bèl */
+    margin: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    font-weight: bold;
+    min-height: 80px; /* Sa ap anpeche vye kontwa a bloke espas la */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.step-container {
+    display: none; /* Tout kache pa defo, JS ap limen sa ki nesesè a */
+}
+
+#timer-value {
+    color: #FF0000; 
+    margin-top: 5px; 
+    font-size: 1.3em; 
+    font-weight: 900; 
+}
+
         
         #countdown-timer p {
             margin: 0;
@@ -350,17 +339,32 @@
                 <span id="address-info">Les Cayes Dropshipping, haïti-sud</span> 
                 <span class="material-icons dropdown-icon">arrow_drop_down</span>
             </div>
-            
-            <div id="search-bar">
-                <span class="material-icons" id="search-icon">search</span>
-                <input type="text" id="search-input" placeholder="Chèche sou sit la...">
-            </div>
-            
-            <div id="countdown-timer" style="margin-top: 15px;">
-                <p>Pwochen okazyon pou kòmand, se ap nan:</p>
-                <div id="timer-value"><span id="timer-display"></span></div>
-            </div>
+<div id="countdown-timer">
+    <div id="step1" class="step-container" style="display: block; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px;">
+        <p style="margin:0; font-size: 0.85em; font-weight: bold;">1. Tan ki rete pou kòmand pase :</p>
+        <div id="timer-value"><span id="timer-display-1">--:--:--</span></div>
+        <p style="font-size: 0.7em; margin: 2px 0; color: var(--bleu-marin);">Ou ka kòmande nan yon dat ou panse koli w yo ap gentan livre nan adrès USA nou avan dat anbakman an.</p>
+    </div>
+
+    <div id="step2" class="step-container" style="display: block; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px;">
+        <p style="margin:0; font-size: 0.85em; font-weight: bold;">2. Dat anbakman :</p>
+        <div style="font-size: 1.1em; font-weight: 900; color: #004D40; margin-top: 5px;">
+            20 Janvye 2026
         </div>
+        <p style="font-size: 0.7em; margin: 2px 0; color: var(--bleu-marin);">Koli yo ap anbake nan avyon pou vin Ayiti (ladwàn).</p>
+    </div>
+
+    <div id="step3" class="step-container" style="display: block; opacity: 0.4;">
+        <p style="margin:0; font-size: 0.85em; font-weight: bold;">3. Disponiblite koli yo :</p>
+        <div id="timer-value" style="color: #00897b;">
+            <span id="timer-display-3">Atant anbakman</span>
+        </div>
+        <p style="font-size: 0.7em; margin-top: 5px; color: var(--bleu-marin);">Livrezon apre 15 jou vwayaj.</p>
+    </div>
+</div>
+
+
+
     </header>
 
     <section id="banner-carousel">
@@ -379,7 +383,12 @@
                     <p>nenpòt materyèl oswa pwodui w paka jwenn sou mache a.</p>
                 </div>
             </div>
-            
+<div class="carousel-item" style="background-image: url('rechajkatwise.jpg');">
+    <div class="banner-text">
+        <h1>Achte poukont ou</h1>
+        <p>Kreye yon kat ak nou e rechaje l ak yon ajan Les Cayes Dropsh.</p>
+    </div>
+</div>
             <div class="carousel-item" style="background-image: url('kontr.png');">
                 <div class="banner-text">
                     <h1>achte zouti modèn pou travay</h1>
@@ -391,18 +400,18 @@
 
     <main id="main-content">
         <h2 class="section-title"> 
-            Pwodui flash vant
+            Pwodui nou gen dispo
             <a href="deal.html" class="scroll-indicator" aria-label="Voir plus de produits">
                 <span class="material-icons">arrow_forward</span>
             </a>
         </h2>
         
         <div id="deal-products">
-            <a href="deal.html#P001" class="product-card-link">
+            <a href="deal.html#P005" class="product-card-link">
                 <div class="product-card">
-                    <img src="camera.jpg" alt="kamera konplè ak trépied an bon eta">
-                    <p class="price">Kamera konplè</p>
-                    <p class="stock">Pri: 25 900 HTG</p>
+                    <img src="pwo.jpg" alt="kamera konplè ak trépied an bon eta">
+                    <p class="price">Pwoteksyon zorèy timoun</p>
+                    <p class="stock">Pri: 750 HTG</p>
                     <button class="btn-ajouter">
                         <span class="material-icons">shopping_cart</span>
                         Add to cart
@@ -413,8 +422,8 @@
             <a href="deal.html#P002" class="product-card-link">
                 <div class="product-card">
                     <img src="Vès.jpg" alt="kostim 2 pyès pou sitwayen">
-                    <p class="price">Kostim 2 pyès</p>
-                    <p class="stock">Pri: 12 000 HTG</p>
+                    <p class="price">Kostim 2 pyès pou Citizen</p>
+                    <p class="stock">Pri: 8 000 HTG</p>
                     <button class="btn-ajouter">
                         <span class="material-icons">shopping_cart</span>
                         Add to cart
@@ -424,9 +433,9 @@
             
             <a href="deal.html#P003" class="product-card-link">
                 <div class="product-card">
-                    <img src="Pwo.jpg" alt="pwoteksyon zòrèy pou benyen">
-                    <p class="price">Pwoteksyon zòrèy</p>
-                    <p class="stock">Pri: 750 HTG</p>
+                    <img src="tecno2.jpg" alt="pwoteksyon zòrèy pou benyen">
+                    <p class="price">Pòch telefòn Tecno</p>
+                    <p class="stock">Pri: 1000 HTG</p>
                     <button class="btn-ajouter">
                         <span class="material-icons">shopping_cart</span>
                         mete nan panye
@@ -499,77 +508,67 @@
             updateCarouselPosition(); 
             setInterval(nextSlide, 10000); 
 
+// ================= 2. SISTÈM 3 KONTWA AN KASKAD =================
+function initBusinessCountdown() {
+    const timer1 = document.getElementById('timer-display-1');
+    const timer3 = document.getElementById('timer-display-3');
 
-            // ================= 2. gère la barre de recherche (Recherche Google ciblée) =================
-            const searchInput = document.getElementById('search-input');
-            const searchIcon = document.getElementById('search-icon');
-            const siteUrl = 'lescayesdropshipping.com'; 
+    const step1UI = document.getElementById('step1');
+    const step3UI = document.getElementById('step3');
 
-            function executeSearch() {
-                const query = searchInput.value.trim();
-                if (query) {
-                    const searchUrl = `https://www.google.com/search?q=site%3A${siteUrl}+${encodeURIComponent(query)}`;
-                    window.open(searchUrl, '_self'); 
-                }
-            }
+    // DATES
+    const dateOkazyon = new Date("January 4, 2026 23:59:59").getTime();
+    const dateAnbakman = new Date("January 20, 2026 23:59:59").getTime();
+    const dateLivrezon = dateAnbakman + (15 * 24 * 60 * 60 * 1000); 
 
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    executeSearch();
-                }
-            });
+    function updateAll() {
+        const now = new Date().getTime();
 
-            searchIcon.addEventListener('click', executeSearch);
-            
-            
-            // ================= 3. gère le kontwa à rebous (15 JOU PÈSISTAN) =================
-            const timerDisplay = document.getElementById('timer-display');
-            const countdownStorageKey = 'countdownTargetDate'; 
+        // Gestion de l'étape 1 (Compteur complet)
+        if (now < dateOkazyon) {
+            renderFullTime(dateOkazyon - now, timer1);
+        } else {
+            timer1.innerHTML = "FINI";
+            step1UI.style.opacity = "0.5";
+        }
 
-            let targetDate;
-            const storedTarget = localStorage.getItem(countdownStorageKey);
-            const nowTime = new Date().getTime();
-            
-            // Nou fikse entèval la sou 15 jou
-            const intervalDurationMs = 15 * 24 * 60 * 60 * 1000;
+        // Gestion de l'étape 3 (Compteur de jours uniquement)
+        if (now >= dateAnbakman && now < dateLivrezon) {
+            // Activer le compteur après le 20 Janvier
+            step3UI.style.opacity = "1";
+            renderDaysOnly(dateLivrezon - now, timer3);
+        } else if (now >= dateLivrezon) {
+            timer3.innerHTML = "DISPONIB";
+            step3UI.style.opacity = "1";
+        } else {
+            // Avant le 20 Janvier, reste pâle et fixe
+            timer3.innerHTML = "Atant anbakman";
+            step3UI.style.opacity = "0.4";
+        }
+    }
 
-            if (storedTarget) {
-                targetDate = new Date(storedTarget);
-                
-                // Si dat la pa valid, nou rekòmanse li
-                if (isNaN(targetDate.getTime())) {
-                    targetDate = new Date(nowTime + intervalDurationMs);
-                    localStorage.setItem(countdownStorageKey, targetDate.toString());
-                }
-            } else {
-                // Premye fwa, nou kreye dat la epi nou sove l
-                targetDate = new Date(nowTime + intervalDurationMs);
-                localStorage.setItem(countdownStorageKey, targetDate.toString());
-            }
+    // Affiche Jours, Heures, Minutes, Secondes
+    function renderFullTime(distance, element) {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        element.innerHTML = `${days}j - ${hours}è - ${minutes}m - ${seconds}s`;
+    }
 
-            function updateCountdown() {
-                const now = new Date().getTime();
-                const distance = targetDate.getTime() - now;
+    // Affiche uniquement les Jours
+    function renderDaysOnly(distance, element) {
+        const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
+        element.innerHTML = `${days} Jou ki rete`;
+    }
 
-                if (distance < 0) {
-                    timerDisplay.innerHTML = "Okazyon: Pako gen okazyon ki prevwa pou mwa sa";
-                    clearInterval(countdownInterval);
-                    return;
-                }
+    setInterval(updateAll, 1000);
+    updateAll();
+}
 
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+initBusinessCountdown();
 
-                timerDisplay.innerHTML = `${days} jou-${hours} è-${minutes} mnt- ${seconds} sd`;
-            }
-            
-            updateCountdown();
-            const countdownInterval = setInterval(updateCountdown, 1000);
-            
-            
-            // ================= 4. gère le badge persistant du panier (deal) =================
+            // ================= 3. gère le badge persistant du panier (deal) =================
             const dealBadgeElement = document.getElementById('deal-badge');
 
             const loadCart = () => {
@@ -590,7 +589,7 @@
             updateBadgeUI(); 
             
             
-            // ================= 5. met à jour l'adresse de localisation (personnalisation) =================
+            // ================= 4. met à jour l'adresse de localisation (personnalisation) =================
             const addressInfoElement = document.getElementById('address-info');
             const userStorageKey = 'user_profile_data';
 
