@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pake Sèvis - Les Cayes Dropshipping</title>
+    <title>Sèvis Kat - Les Cayes Dropshipping</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
     <style>
         :root {
@@ -12,11 +12,7 @@
             --wise-blue: #00b9ff;
             --wise-orange: #ff9800;
             --blanc: #ffffff;
-            --vèt-pwo: #70ad47;
             --vèt-check: #4caf50;
-            --orange-marketing: #ed7d31;
-            --bleu-marketing: #00b0f0;
-            --gris-plan: #a5a5a5;
             --rose-pale: #ff99cc;
         }
 
@@ -29,37 +25,13 @@
             flex-direction: column;
             align-items: center;
             padding: 20px;
-            overflow-x: hidden;
-            perspective: 1000px; /* Nesesè pou efè 3D a */
         }
 
         .container {
             width: 100%;
             max-width: 500px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- LOGIK VIRE (FLIP) --- */
-        .flipped {
-            transform: rotateY(180deg);
-        }
-
-        .section-wrapper {
-            width: 100%;
-            backface-visibility: hidden; /* Kache kote ki pa parèt la */
-            position: relative;
-        }
-
-        #marketingSection {
-            position: absolute;
-            top: 0;
-            left: 0;
-            transform: rotateY(180deg); /* Mete dezyèm pati a sou do */
-        }
-
-        /* --- STYLES SÈVIS WISE --- */
         .header-section {
             text-align: center;
             margin-bottom: 30px;
@@ -81,7 +53,7 @@
             display: flex;
             flex-direction: column;
             gap: 25px;
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
 
         .pricing-card {
@@ -123,7 +95,6 @@
             font-size: 18px;
             margin-right: 10px;
             color: var(--vèt-check);
-            font-weight: bold;
         }
 
         .card-footer {
@@ -155,118 +126,32 @@
             text-transform: uppercase;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 10px;
+            width: 100%;
             transition: 0.3s;
         }
 
-        .select-btn:hover { background-color: var(--blanc); color: #000; }
-
-        /* --- STYLES MARKETING --- */
-        .toggle-arrow {
-            font-size: 50px;
-            color: var(--rose-pale);
-            cursor: pointer;
-            animation: bounceIn 2s infinite;
-            display: block;
-            margin: 10px auto;
-        }
-
-        .plan-container {
-            margin-bottom: 40px;
-            position: relative;
-            width: 100%;
-            text-align: center;
-        }
-
-        .hex-header {
-            padding: 15px;
-            color: var(--blanc);
-            font-weight: bold;
-            font-size: 1.2em;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 100%, 0% 100%, 0% 25%);
-            position: relative;
-            z-index: 1;
-        }
-
-        .hex-card {
-            background-color: var(--blanc);
-            clip-path: polygon(50% 0%, 100% 15%, 100% 85%, 50% 100%, 0% 85%, 0% 15%);
-            padding: 50px 20px;
-            color: #333;
-            margin-top: -25px;
-            position: relative;
-            z-index: 0;
-        }
-
-        .plan-bulldozer .hex-header {
-            z-index: 2;
-            margin-bottom: -15px;
-        }
-
-        .stars-row .material-icons { font-size: 24px; }
-
-        .views-text {
-            color: var(--rose-pale);
-            font-weight: bold;
-            font-size: 1.5em;
-            margin: 10px 0;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 5px;
-        }
-
-        .desc-text { font-size: 0.85em; color: #666; margin: 10px 0; }
-        .price-text { font-size: 2em; font-weight: bold; margin: 10px 0; }
-
-        .btn-select-mkt {
-            padding: 10px 20px;
-            border-radius: 5px;
-            color: var(--blanc);
-            text-decoration: none;
-            font-weight: bold;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .plan-premium .hex-header, .plan-premium .btn-select-mkt { background-color: var(--vèt-pwo); }
-        .plan-premium .stars-row { color: var(--vèt-pwo); }
-
-        .plan-ascension .hex-header, .plan-ascension .btn-select-mkt { background-color: var(--orange-marketing); }
-        .plan-ascension .stars-row { color: var(--orange-marketing); }
-
-        .plan-magnitude .hex-header, .plan-magnitude .btn-select-mkt { background-color: var(--bleu-marketing); }
-        .plan-magnitude .stars-row { color: var(--bleu-marketing); }
-
-        .plan-bulldozer .hex-header, .plan-bulldozer .btn-select-mkt { background-color: var(--gris-plan); }
-        .plan-bulldozer .stars-row { color: var(--gris-plan); }
-
         .agent-section {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--ka-gri);
+            border-radius: 15px;
         }
 
         .agent-img {
-            width: 180px;
-            height: 180px;
-            border-radius: 20px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
             object-fit: cover;
-            border: 4px solid var(--blanc);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transition: transform 0.3s;
+            border: 3px solid var(--wise-blue);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-
-        .agent-img:hover { transform: scale(1.05); }
 
         .cta-agent {
             font-weight: bold;
             color: var(--rose-pale);
-            margin-top: 20px;
+            margin-bottom: 10px;
             display: block;
-        }
-
-        @keyframes bounceIn {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(10px);}
-            60% {transform: translateY(5px);}
         }
 
         @keyframes bounceDown {
@@ -277,132 +162,53 @@
 </head>
 <body>
 
-    <div id="mainContainer" class="container">
-        
-        <div id="visaSection" class="section-wrapper">
-            <div class="header-section">
-                <h1 class="main-title">Sèvis kat Visa</h1>
-                <p class="subtitle">Pwofite pi bon tarif pou kreyasyon ak rechaj kat vityèl paw lan jodi a pouw kòmanse fè tranzaksyon anliy.</p>
-            </div>
+    <div class="container">
+        <div class="header-section">
+            <h1 class="main-title">Sèvis kat Visa</h1>
+            <p class="subtitle">Pwofite pi bon tarif pou kreyasyon ak rechaj kat vityèl paw lan jodi a.</p>
+        </div>
 
-            <div class="pricing-grid">
-                <div class="pricing-card card-blue">
-                    <div class="card-header">Kreyasyon</div>
-                    <div class="card-body">
-                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje ak Moncash / Natcash.</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Achte sou entènèt (Shein, FB, Temu..).</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Resevwa lajan entènasyonal.</span></div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="old-price">2500 HTG</span>
-                        <span class="current-price">1000 HTG</span>
-                        <button class="select-btn">Chwazi</button>
-                    </div>
+        <div class="pricing-grid">
+            <div class="pricing-card card-blue">
+                <div class="card-header">Kreyasyon</div>
+                <div class="card-body">
+                    <div class="feature-item"><span class="material-icons">check</span><span>Rechaje ak Moncash / Natcash.</span></div>
+                    <div class="feature-item"><span class="material-icons">check</span><span>Achte sou entènèt (Shein, FB, Temu..).</span></div>
+                    <div class="feature-item"><span class="material-icons">check</span><span>Resevwa lajan entènasyonal.</span></div>
                 </div>
-
-                <div class="pricing-card card-orange">
-                    <div class="card-header">Rechaje</div>
-                    <div class="card-body">
-                        <div class="feature-item"><span class="material-icons">check</span><span>Rechaje nan mwens ke 1 h!</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Ou ka bay kòb kach.</span></div>
-                        <div class="feature-item"><span class="material-icons">check</span><span>Sipò 24/7 pou tranzaksyon w.</span></div>
-                    </div>
-                    <div class="card-footer">
-                        <span class="old-price">Taux: 147 HTG</span>
-                        <span class="current-price">Taux: 140 HTG</span>
-                        <button class="select-btn">Chwazi</button>
-                    </div>
+                <div class="card-footer">
+                    <span class="old-price">2500 HTG</span>
+                    <span class="current-price">1000 HTG</span>
+                    <button class="select-btn">Chwazi</button>
                 </div>
             </div>
 
-            <div class="header-section">
-                <p class="subtitle">Klike sou flèch la pou wè plan marketing nou yo</p>
-                <span class="material-icons toggle-arrow" onclick="toggleSections()">expand_more</span>
+            <div class="pricing-card card-orange">
+                <div class="card-header">Rechaje</div>
+                <div class="card-body">
+                    <div class="feature-item"><span class="material-icons">check</span><span>Rechaje nan mwens ke 1 h!</span></div>
+                    <div class="feature-item"><span class="material-icons">check</span><span>Ou ka bay kòb kach.</span></div>
+                    <div class="feature-item"><span class="material-icons">check</span><span>Sipò 24/7 pou tranzaksyon w.</span></div>
+                </div>
+                <div class="card-footer">
+                    <span class="old-price">Taux: 147 HTG</span>
+                    <span class="current-price">Taux: 140 HTG</span>
+                    <button class="select-btn">Chwazi</button>
+                </div>
             </div>
         </div>
 
-        <div id="marketingSection" class="section-wrapper">
-            <div class="header-section">
-                <span class="material-icons toggle-arrow" onclick="toggleSections()">expand_less</span>
-                <h1 class="main-title" style="color:var(--rose-pale)">Plan marketing nou yo</h1>
-                <p class="subtitle">Fè aktivite w vizib sou Facebook ak plan maketing sa yo. Chanje nivo biznis ou jodi a, paske marketing se kle kwasans aktivite w lan.</p>
-            </div>
-
-            <div class="plan-container plan-premium">
-                <div class="hex-header">
-                    <div class="stars-row"><span class="material-icons">star</span></div>
-                    Plan premium
-                </div>
-                <div class="hex-card">
-                    <div class="views-text">8.2k - 10.2k views</div>
-                    <div class="desc-text">Ideyal pou kòmanse fè konnen w.</div>
-                    <div class="price-text">1 750 G</div>
-                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
-                </div>
-            </div>
-
-            <div class="plan-container plan-ascension">
-                <div class="hex-header">
-                    <div class="stars-row"><span class="material-icons">star</span><span class="material-icons">star</span></div>
-                    Plan ascension
-                </div>
-                <div class="hex-card">
-                    <div class="views-text">15k - 22.2k views</div>
-                    <div class="desc-text">Pran yon nivo rapid nan vil la.</div>
-                    <div class="price-text">3 500 G</div>
-                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
-                </div>
-            </div>
-
-            <div class="plan-container plan-magnitude">
-                <div class="hex-header">
-                    <div class="stars-row"><span class="material-icons">star</span><span class="material-icons">star</span><span class="material-icons">star</span></div>
-                    Plan magnitude
-                </div>
-                <div class="hex-card">
-                    <div class="views-text">25.5k - 38.3k views</div>
-                    <div class="desc-text">Domine tout vil la, vizibilite o Max.</div>
-                    <div class="price-text">5 250 G</div>
-                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
-                </div>
-            </div>
-
-            <div class="plan-container plan-bulldozer">
-                <div class="hex-header">
-                    <div class="stars-row">
-                        <span class="material-icons">star</span><span class="material-icons">star</span>
-                        <span class="material-icons">star</span><span class="material-icons">star</span>
-                    </div>
-                    Plan bulldozer
-                </div>
-                <div class="hex-card">
-                    <div class="views-text">40k - 62k views</div>
-                    <div class="desc-text">Pran tout depatman nèt, ki gen telefòn.</div>
-                    <div class="price-text">7 000 G</div>
-                    <a href="#" class="btn-select-mkt">Chwazi plan</a>
-                </div>
-            </div>
-
-            <div class="agent-section">
-                <span class="cta-agent">Kontakte ajan sila</span>
-                <div style="animation: bounceDown 1.5s infinite; color: var(--rose-pale); margin: 5px 0;">↓</div>
-                <a href="https://wa.me/50956228203">
-                    <img src="Francesse Gabriel.jpg" alt="Francesse Gabriel" class="agent-img">
-                </a>
-                <p style="font-size: 0.8em; color: var(--blanc); margin-top: 10px; font-weight: bold;">
-                    Klike sou foto a pou kontakte ajan an sou WhatsApp!
-                </p>
-            </div>
+        <div class="agent-section">
+            <span class="cta-agent">Kontakte ajan sila pou sèvis la</span>
+            <div style="animation: bounceDown 1.5s infinite; color: var(--rose-pale); margin: 5px 0;">↓</div>
+            <a href="https://wa.me/50935608869">
+                <img src="Francesse Gabriel.jpg" alt="Francesse Gabriel" class="agent-img">
+            </a>
+            <p style="font-size: 0.9em; color: var(--blanc); margin-top: 10px; font-weight: bold;">
+                Francesse Gabriel
+            </p>
         </div>
-
     </div>
 
-    <script>
-        function toggleSections() {
-            var container = document.getElementById('mainContainer');
-            container.classList.toggle('flipped');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    </script>
 </body>
 </html>
