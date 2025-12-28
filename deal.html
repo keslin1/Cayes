@@ -692,21 +692,13 @@
 // --- Base de données de produits (Séparée en deux blocs) ---
 // BLOC 1 : Produits disponibles (Achat immédiat)
 const AVAILABLE_PRODUCTS = [
-    { id: 'P001', name: 'Telefòn Tecno 128 GB 2 SIM (Foto Ultra HD)', priceHTG: 14300, deliveryFeeHTG: 500, description: 'Telefòn Tecno 128 GB, 2 SIM. Li kenbe chaj, li pran foto ultra HD ak efè flou dèyè. An bon eta ak tout akseswa. 3 jou garanti.', imageSrc: '30c.jpg', isPreorder: false },
-    { id: 'P002', name: 'Pòch kado pou Tekno 128 GB', priceHTG: 0, deliveryFeeHTG: 0, description: 'Pòch modèn inik sa a se yon kado GRATIS pou tout moun ki achte telefòn Tecno 128 GB a.', imageSrc: '30cp.jpg', isPreorder: false },
+    { id: 'P014', name: 'Flash SWAT chinwa (Rechajab)', priceHTG: 3900, deliveryFeeHTG: 100, description: 'Yon flash ekstèn ki tire lwen. Li rechargeable epi li gen yon ti lanp nan manch li.', imageSrc: 'flash.jpg', isPreorder: false },
     { id: 'P003', name: 'Kit kamera konplè an bon eta pou kreyatè kontni', priceHTG: 25900, deliveryFeeHTG: 0, description: 'Kamera rezolisyon 4k, konplè ak (2) batri & chajè manyèl, 2 valiz de pwoteksyon, yon kat memwa 64 gb, yon lektè SD Card, yon green screen, yon mikwo filè 5 mèt ak yon trepye. Garanti 3 jou sou tout ekipman, batri yo full garanti', imageSrc: 'camera.jpg', isPreorder: false },
-    { id: 'P004', name: 'Kostim 2 pyès pou sitwayen', priceHTG: 8000, deliveryFeeHTG: 250, description: 'yon kostim 2 pyès pou gason, ideyal pou maryaj ak moman solanèl. li fèt ak twal fen.', imageSrc: 'Vès.jpg', isPreorder: false },
-    { id: 'P005', name: 'Pwoteksyon zòrèy timoun', priceHTG: 750, deliveryFeeHTG: 50, description: 'yon pwoteksyon pou zòrèy timoun lè l ap benyen pou evite dlo tonbe nan zòrèy yo.', imageSrc: 'Pwo.jpg', isPreorder: false },
-    { id: 'P006', name: 'Limyè pou animasyon chanm', priceHTG: 1100, deliveryFeeHTG: 0, description: 'yon limyè ak divès koulè pou animasyon chanm. ou ka branche l nan backup usb ou.', imageSrc: 'Limyè.jpg', isPreorder: false },
+    { id: 'P004', name: 'Kostim 2 pyès pou sitwayen', priceHTG: 8000, deliveryFeeHTG: 250, description: 'Yon kostim 2 pyès ki pa komen ditou pou gason, ideyal pou maryaj ak moman solanèl. Pa kenbe cho.', imageSrc: 'Vès.jpg', isPreorder: false },
+    { id: 'P005', name: 'Pwoteksyon zòrèy timoun', priceHTG: 750, deliveryFeeHTG: 50, description: 'Yon pwotektè pou zòrèy timoun lè l ap benyen pou evite dlo tonbe nan zòrèy li.', imageSrc: 'Pwo.jpg', isPreorder: false },
     { id: 'P007', name: 'Cover telefòn Tecno', priceHTG: 900, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè wouj grena e blan ladan. Pwoteksyon elegan.', imageSrc: 'tekno.jpg', isPreorder: false },
     { id: 'P008', name: 'Cover telefòn Tecno', priceHTG: 900, deliveryFeeHTG: 200, description: 'Yon cover telefòn Tecno ultra konfòtab ak koulè blan e wouj grena ladan. Rezistan ak elegan.', imageSrc: 'tecno2.jpg', isPreorder: false },
-    { id: 'P009', name: 'pòch samsung galaxy a12', priceHTG: 1300, deliveryFeeHTG: 0, description: 'yon etui telefòn pou samsung galaxy a12 pou sitwayen ki vle mete tèt yo an valè.', imageSrc: 'A12.jpg', isPreorder: false },
-    { id: 'P010', name: 'Etòf kimen pou savonnen', priceHTG: 250, deliveryFeeHTG: 0, description: 'yon ètòf trè rafine pou lave kò w, li fè anpil kim. ideyal pou benyen ak konfò.', imageSrc: 'Etòf.jpg', isPreorder: false },
     { id: 'P011', name: 'Mikwofòn filè', priceHTG: 3900, deliveryFeeHTG: 100, description: 'yon mikwofòn a fil pou fè videyo. Ou ka konekte l ak kamera oswa telefòn ou.', imageSrc: 'micro3.jpg', isPreorder: false },
-    { id: 'P012', name: 'Zanno dore 18 pyès', priceHTG: 1600, deliveryFeeHTG: 0, description: 'yon seri 18 pyès zanno dore pou mete nan zòrèy pou moman espesyal. trè elegant.', imageSrc: 'Zanno.jpg', isPreorder: false },
-    { id: 'P013', name: 'Souri a fil', priceHTG: 700, deliveryFeeHTG: 0, description: 'souri dokazyon longè 1 mèt pou òdinatè w.', imageSrc: 'souris.jpg', isPreorder: false },
-    { id: 'P014', name: 'Flash SWAT chinwa (Rechajab)', priceHTG: 3900, deliveryFeeHTG: 100, description: 'Yon flash ekstèn ki tire lwen. Li rechargeable epi li gen yon ti lanp nan manch li.', imageSrc: 'flash.jpg', isPreorder: false },
-    { id: 'P015', name: 'Lamp rechajab Type C', priceHTG: 1900, deliveryFeeHTG: 0, description: 'Yon lanp rechargeable ak detèktè mouvman, li limen otomatikman nan fènwa.', imageSrc: 'lamp.jpg', isPreorder: false },
     { id: 'P016', name: 'Tablo manyetik efasab (35.4" x 23.6")', priceHTG: 13800, deliveryFeeHTG: 500, description: "Tablo ak kad aliminyòm, ou ka fikse l nan mi. Li ak tout makè ak bwòs li.", imageSrc: 'board.jpg', isPreorder: false },
             ];
 
