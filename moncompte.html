@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="base.css"> 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
 
+    <link rel="manifest" href="/manifest.json">
+
     <style>
         /* ================= styles de base pour moncompte.html ================= */
         :root {
             --bleu-marin: #001f3f; 
             --kaki: #8fbc8f;              
-            --gri-clair: #f0f0f0;         
+            --gri-claire: #f0f0f0;         
             --noir-texte: #333;           
             --blanc-fond: #ffffff;        
             --rouge-alerte: #e74c3c;
@@ -22,7 +24,7 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: var(--gri-clair);
+            background-color: var(--gri-claire);
             color: var(--noir-texte);
             margin: 0;
             padding-bottom: 70px;
@@ -38,7 +40,7 @@
             align-items: center;
             padding: 15px;
             background-color: var(--blanc-fond);
-            border-bottom: 1px solid var(--gri-clair);
+            border-bottom: 1px solid var(--gri-claire);
         }
 
         .header-top h1 {
@@ -123,14 +125,38 @@
             font-size: 24px;
         }
         
+        /* Correction de l'alignement des cadenas et flèches */
         .action-card .material-icons.right {
             color: #ccc;
+            margin-left: auto; /* Aligne l'icône complètement à droite */
         }
         
         .action-card span {
             display: flex;
             align-items: center;
             font-weight: 500;
+        }
+
+        /* Style du bouton d'installation */
+        #btn-installer {
+            display: none;
+            background-color: var(--bleu-marin);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: none;
+            margin: 10px 0 20px 0;
+            width: 100%;
+            font-weight: bold;
+            font-size: 1em;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        #btn-installer .material-icons {
+            margin-right: 10px;
         }
 
         #profile-form-container {
@@ -158,7 +184,7 @@
             width: 100%;
             padding: 12px;
             margin-bottom: 10px;
-            border: 1px solid var(--gri-clair);
+            border: 1px solid var(--gri-claire);
             border-radius: 8px;
             box-sizing: border-box; 
             font-size: 1em;
@@ -222,6 +248,11 @@
 
     <main id="main-content">
         
+        <button id="btn-installer">
+            <span class="material-icons">get_app</span>
+            Ajoute LCDrop sou ekran w
+        </button>
+
         <h2 class="section-title">Enfòmasyon pèsonèl</h2>
         
         <div class="info-card">
@@ -268,7 +299,8 @@
         <a href="javascript:void(0)" id="entrepreneur-btn" class="action-card locked">
             <span>
                 <span class="material-icons left">add_card</span>
-                Rechaj kat & other
+                Rechaj Wise
+            </span>
             <span id="lock-icon" class="material-icons right">lock</span>
         </a>
         
@@ -328,6 +360,7 @@
             const entrepreneurBtn = document.getElementById('entrepreneur-btn');
             const supportBtn = document.getElementById('support-btn');
             const editProfileBtn = document.getElementById('edit-profile-btn');
+            const installBtn = document.getElementById('btn-installer');
             
             const profileNameDisplay = document.getElementById('profile-name-display');
             const profileEmailDisplay = document.getElementById('profile-email-display');
@@ -339,6 +372,28 @@
             const inputPhone = document.getElementById('phone');
             const inputAddress = document.getElementById('address');
 
+            // LOGIQUE INSTALLATION PWA
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                window.deferredPrompt = e;
+                installBtn.style.display = 'flex';
+            });
+
+            // Afficher le bouton si l'événement a été capturé sur index.html
+            if (window.deferredPrompt) {
+                installBtn.style.display = 'flex';
+            }
+
+            installBtn.addEventListener('click', async () => {
+                const promptEvent = window.deferredPrompt;
+                if (!promptEvent) return;
+                promptEvent.prompt();
+                const result = await promptEvent.userChoice;
+                window.deferredPrompt = null;
+                installBtn.style.display = 'none';
+            });
+
+            // LOGIQUE PROFIL
             let isProfileComplete = false;
 
             const updateUI = () => {
@@ -351,11 +406,9 @@
                     profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
                     profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
                     
-                    // Debloke devlopman antrepriz
                     entrepreneurBtn.classList.remove('locked');
                     document.getElementById('lock-icon').textContent = 'chevron_right';
                     
-                    // Debloke sèvis kliyan
                     supportBtn.classList.remove('locked');
                     document.getElementById('lock-icon-support').textContent = 'chevron_right';
                     
@@ -403,10 +456,8 @@
                     address: inputAddress.value.trim()
                 };
 
-                // 1. Sove lokalman pou debloke koze a
                 localStorage.setItem(userStorageKey, JSON.stringify(profileData));
                 
-                // 2. Voye done sou Getform nan background
                 fetch("https://getform.io/f/akkpolva", {
                     method: "POST",
                     body: new FormData(form),
@@ -416,7 +467,7 @@
                     alert('Pwofil ou anrejistre ak siksè!');
                 })
                 .catch(() => {
-                    alert('Enfòmasyon yo sove lokalman, men gen yon ti pwoblèm rezo pou achiv yo.');
+                    alert('Enfòmasyon yo sovgade, men gen yon ti pwoblèm rezo pou achiv yo.');
                 })
                 .finally(() => {
                     updateUI();
