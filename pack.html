@@ -14,6 +14,7 @@
             --blanc: #ffffff;
             --vèt-check: #4caf50;
             --rose-pale: #ff99cc;
+            --rouge-flash: #ff4444;
         }
 
         body {
@@ -27,188 +28,249 @@
             padding: 20px;
         }
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-        }
+        .container { width: 100%; max-width: 500px; }
 
-        .header-section {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .header-section { text-align: center; margin-bottom: 30px; }
+        .main-title { color: var(--blanc); font-size: 1.8em; margin-bottom: 5px; text-transform: capitalize; }
 
-        .main-title {
-            color: var(--blanc);
-            font-size: 1.8em;
-            margin-bottom: 10px;
-        }
-
-        .subtitle {
-            color: #b0b0b0;
-            font-size: 0.95em;
-            line-height: 1.4;
-        }
-
-        .pricing-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-
+        /* Kat Rechaje a */
         .pricing-card {
             border-radius: 15px;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
             box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #e67e22, #ff9800);
         }
 
-        .card-blue { background: linear-gradient(135deg, #0056b3, #00b9ff); }
-        .card-orange { background: linear-gradient(135deg, #e67e22, #ff9800); }
+        .card-header { padding: 20px; text-align: center; color: var(--blanc); font-size: 1.4em; font-weight: bold; text-transform: capitalize; }
+        .card-body { background-color: var(--blanc); margin: 0 15px; padding: 20px; border-radius: 5px; color: #333; }
+        .card-footer { padding: 20px; text-align: center; color: var(--blanc); }
+        .current-price { font-size: 1.8em; font-weight: bold; display: block; }
 
-        .card-header {
-            padding: 20px;
-            text-align: center;
-            color: var(--blanc);
-            font-size: 1.4em;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+        /* Jwèt Chans la */
+        .luck-section { text-align: center; padding: 10px; margin-top: 10px; }
+        .luck-title { color: #8fbc8f; font-weight: bold; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        
+        /* Bouton pwen entèrogasyon */
+        .info-btn { cursor: pointer; color: #e74c3c; font-size: 24px; vertical-align: middle; }
 
-        .card-body {
-            background-color: var(--blanc);
-            margin: 0 15px;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        .feature-item {
+        .rate-bar {
+            position: relative;
             display: flex;
-            align-items: center;
-            color: #333;
-            font-size: 0.85em;
-            margin-bottom: 12px;
+            width: 100%;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px;
+            overflow: hidden;
+            margin: 15px 0;
         }
 
-        .feature-item .material-icons {
-            font-size: 18px;
-            margin-right: 10px;
-            color: var(--vèt-check);
+        .zone { flex: 1; line-height: 45px; font-size: 0.9em; color: var(--blanc); border-right: 1px solid rgba(255, 255, 255, 0.2); }
+
+        #cursor {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: var(--rouge-flash);
+            box-shadow: 0 0 20px var(--rouge-flash);
+            /* Tranzisyon pou vitès la ak 10 segonn */
+            transition: left 10s cubic-bezier(0.1, 2, 0.2, 1);
         }
 
-        .card-footer {
-            padding: 20px;
-            text-align: center;
-            color: var(--blanc);
+        /* Animasyon bouton an */
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 185, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 185, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 185, 255, 0); }
         }
 
-        .old-price {
-            text-decoration: line-through;
-            opacity: 0.7;
-            font-size: 1em;
-            display: block;
-        }
-
-        .current-price {
-            font-size: 1.8em;
-            font-weight: bold;
-            display: block;
-            margin: 5px 0;
-        }
-
-        .select-btn {
-            background-color: rgba(0,0,0,0.3);
-            border: 1px solid var(--blanc);
-            color: var(--blanc);
-            padding: 10px 30px;
-            border-radius: 5px;
-            text-transform: uppercase;
+        .luck-btn {
+            background: var(--wise-blue);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            transition: 0.3s;
+            animation: pulse-glow 2s infinite;
+            text-transform: capitalize;
         }
 
-        .agent-section {
-            text-align: center;
-            margin-top: 20px;
-            padding: 20px;
-            background-color: var(--ka-gri);
+        .luck-btn:disabled { animation: none; background: #555; }
+
+        /* Modal pou Frais yo */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+
+        .modal-content {
+            background: var(--ka-gri);
+            padding: 25px;
             border-radius: 15px;
+            width: 85%;
+            max-width: 400px;
+            border: 2px solid var(--wise-blue);
         }
 
-        .agent-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--wise-blue);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
+        .frais-list { list-style: none; padding: 0; text-align: left; }
+        .frais-list li { padding: 8px 0; border-bottom: 1px solid #333; font-size: 0.95em; }
 
-        .cta-agent {
-            font-weight: bold;
-            color: var(--rose-pale);
-            margin-bottom: 10px;
-            display: block;
-        }
-
-        @keyframes bounceDown {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(5px); }
-        }
+        .agent-section { text-align: center; margin-top: 30px; padding: 20px; background-color: var(--ka-gri); border-radius: 15px; }
+        .agent-img { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--wise-blue); }
     </style>
 </head>
 <body>
 
     <div class="container">
         <div class="header-section">
-            <h1 class="main-title">Sèvis kat Visa</h1>
-            <p class="subtitle">Pwofite pi bon tarif pou kreyasyon ak rechaj kat vityèl paw lan jodi a.</p>
+            <h1 class="main-title">Sèvis rechaj</h1>
+            <p class="subtitle">Rechaje kont Wise ou, a pi bon taux dola sou mache a.</p>
         </div>
 
-        <div class="pricing-grid">
-            <div class="pricing-card card-blue">
-                <div class="card-header">Kreyasyon</div>
-                <div class="card-body">
-                    <div class="feature-item"><span class="material-icons">check</span><span>Rechaje ak Moncash / Natcash.</span></div>
-                    <div class="feature-item"><span class="material-icons">check</span><span>Achte sou entènèt (Shein, FB, Temu..).</span></div>
-                    <div class="feature-item"><span class="material-icons">check</span><span>Resevwa lajan entènasyonal.</span></div>
+        <div class="pricing-card">
+            <div class="card-header">Rechaje kat</div>
+            <div class="card-body">
+                <div style="display:flex; align-items:center; margin-bottom:10px;">
+                    <span class="material-icons" style="color:var(--vèt-check); margin-right:10px;">check</span>
+                    <span>Ou ka bay lajan cash nan lokal nou.</span>
                 </div>
-                <div class="card-footer">
-                    <span class="old-price">2500 HTG</span>
-                    <span class="current-price">1000 HTG</span>
-                    <button class="select-btn">Chwazi</button>
+                <div style="display:flex; align-items:center;">
+                    <span class="material-icons" style="color:var(--vèt-check); margin-right:10px;">check</span>
+                    <span>Sipò 24/7 pou tranzaksyon w.</span>
+                </div>
+                <div style="display:flex; align-items:center;">
+                <span class="material-icons" style="color:var(--vèt-check); margin-right:10px;">check</span>
+                    <span>Rechaje nan mwens ke 5 h!</span>
                 </div>
             </div>
+            <div class="card-footer">
+                <span class="current-price" id="displayRate">Taux: 140 HTG</span>
+            </div>
+        </div>
 
-            <div class="pricing-card card-orange">
-                <div class="card-header">Rechaje</div>
-                <div class="card-body">
-                    <div class="feature-item"><span class="material-icons">check</span><span>Rechaje nan mwens ke 1 h!</span></div>
-                    <div class="feature-item"><span class="material-icons">check</span><span>Ou ka bay kòb kach.</span></div>
-                    <div class="feature-item"><span class="material-icons">check</span><span>Sipò 24/7 pou tranzaksyon w.</span></div>
-                </div>
-                <div class="card-footer">
-                    <span class="old-price">Taux: 147 HTG</span>
-                    <span class="current-price">Taux: 140 HTG</span>
-                    <button class="select-btn">Chwazi</button>
-                </div>
+        <div class="luck-section">
+            <p class="luck-title">
+                TANTE CHANS OU POU YON PI BON TAUX!
+                <span class="material-icons info-btn" onclick="toggleModal()">help_outline</span>
+            </p>
+            <div class="rate-bar">
+                <div class="zone">130</div>
+                <div class="zone">135</div>
+                <div class="zone">140</div>
+                <div class="zone">144</div>
+                <div id="cursor"></div>
             </div>
+            <button class="luck-btn" id="spinBtn" onclick="startLuck()">Klike pou tante chans ou</button>
+            <p id="statusMsg" style="margin-top:15px; font-weight:bold; color:var(--vèt-check);"></p>
+            <p id="countdown" style="font-size: 0.8em; color: #aaa;"></p>
         </div>
 
         <div class="agent-section">
-            <span class="cta-agent">Kontakte ajan sila pou sèvis la</span>
-            <div style="animation: bounceDown 1.5s infinite; color: var(--rose-pale); margin: 5px 0;">↓</div>
+            <p style="color:var(--rose-pale); font-weight:bold; margin-bottom:10px;">Kontakte ajan sila pou rechaje kat ou.</p>
             <a href="https://wa.me/50935608869">
                 <img src="Francesse Gabriel.jpg" alt="Francesse Gabriel" class="agent-img">
             </a>
-            <p style="font-size: 0.9em; color: var(--blanc); margin-top: 10px; font-weight: bold;">
-                Francesse Gabriel
-            </p>
+            <p style="color:var(--blanc); margin-top:10px; font-weight:bold;">Francesse Gabriel</p>
         </div>
     </div>
 
+    <div id="fraisModal" class="modal" onclick="toggleModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 style="color:var(--wise-blue); text-align:center; margin-top:0;">Frais 💸💳</h2>
+            <ul class="frais-list">
+                <li>5$ ➔ 19$ = 2$</li>
+                <li>20$ ➔ 39$ = 4$</li>
+                <li>40$ ➔ 99$ = 6$</li>
+                <li>100$ ➔ 199$ = 8$</li>
+                <li>200$ ➔ 299$ = 10$</li>
+                <li>300$ ➔ 399$ = 12$</li>
+                <li>400$ ➔ 499$ = 6$</li>
+                <li>500$ e plis ➔ 8%</li>
+            </ul>
+            <button class="luck-btn" onclick="toggleModal()" style="margin-top:15px; animation:none;">FÈMEN</button>
+        </div>
+    </div>
+
+    <script>
+        // Sekans strik sou 12 mwa
+        const monthlySequence = [130, 140, 135, 140, 130, 144, 140, 140, 144, 135, 140, 140];
+        const positions = { 130: "12%", 135: "37%", 140: "62%", 144: "87%" };
+
+        function startLuck() {
+            let lastSpin = localStorage.getItem('lastSpinDate');
+            let now = new Date().getTime();
+            let thirtyDays = 30 * 24 * 60 * 60 * 1000;
+
+            if (lastSpin && (now - lastSpin < thirtyDays)) return;
+
+            let spinCount = parseInt(localStorage.getItem('spinCount') || "0");
+            let targetRate = monthlySequence[spinCount % 12];
+            let cursor = document.getElementById('cursor');
+            let btn = document.getElementById('spinBtn');
+
+            btn.disabled = true;
+            btn.style.animation = "none";
+            
+            // Animasyon "Course" la (anpil ale vini rapid)
+            cursor.style.transition = "none";
+            cursor.style.left = "0%";
+            
+            setTimeout(() => {
+                cursor.style.transition = "left 10s cubic-bezier(0.1, 2, 0.2, 1)";
+                cursor.style.left = "98%"; // Li kouri ale nan fon an
+                
+                setTimeout(() => {
+                    cursor.style.left = positions[targetRate]; // Li tounen poze sou taux a
+                    
+                    setTimeout(() => {
+                        document.getElementById('statusMsg').innerText = "Bravo! Taux ou se " + targetRate + " HTG pou mwa sa.";
+                        document.getElementById('displayRate').innerText = "Taux: " + targetRate + " HTG";
+                        
+                        localStorage.setItem('lastSpinDate', now);
+                        localStorage.setItem('currentRate', targetRate);
+                        localStorage.setItem('spinCount', (spinCount + 1) % 12);
+                        checkStatus();
+                    }, 500);
+                }, 9500); 
+            }, 50);
+        }
+
+        function toggleModal() {
+            let m = document.getElementById('fraisModal');
+            m.style.display = (m.style.display === "flex") ? "none" : "flex";
+        }
+
+        function checkStatus() {
+            let lastSpin = localStorage.getItem('lastSpinDate');
+            let savedRate = localStorage.getItem('currentRate');
+            let btn = document.getElementById('spinBtn');
+            let now = new Date().getTime();
+            let thirtyDays = 30 * 24 * 60 * 60 * 1000;
+
+            if (savedRate) {
+                document.getElementById('displayRate').innerText = "Taux: " + savedRate + " HTG";
+                document.getElementById('cursor').style.left = positions[savedRate];
+            }
+
+            if (lastSpin && (now - lastSpin < thirtyDays)) {
+                btn.disabled = true;
+                btn.innerText = "OU DEJA TE PRAN CHANS OU";
+                btn.style.animation = "none";
+                let days = Math.floor((thirtyDays - (now - lastSpin)) / (1000 * 60 * 60 * 24));
+                document.getElementById('countdown').innerText = "Ou ka rejwe nan " + days + " jou.";
+            }
+        }
+
+        window.onload = checkStatus;
+    </script>
 </body>
 </html>
