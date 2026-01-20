@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ht">
 <head>
+    <script src="https://unpkg.com/hammerjs@2.0.8/hammer.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Akèy - Les Cayes Dropshipping</title>
@@ -442,6 +443,16 @@
     border-radius: 8px;
     margin-top: 15px; 
 }
+        <div id="splash-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <img src="/lescayesdropshipping.png" alt="Logo" style="width: 120px; margin-bottom: 20px;">
+    <div style="width: 40px; height: 40px; border: 4px solid var(--kaki); border-top: 4px solid var(--bleu-marin); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+</div>
+
+<style>
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    body {
+    overscroll-behavior-y: contain; /* Empêche le tirer-pour-rafraîchir */
+}
     </style>
 </head>
 <body>
@@ -648,199 +659,178 @@
         
     </footer>
 <script>
-        // Fonction pour mettre en majuscule la première lettre d'une chaîne
-        function capitalizeFirstLetter(string) {
-            if (!string) return '';
-            return string.charAt(0).toUpperCase() + string.slice(1);
+    // 1. FONCTIONS UTILITAIRES ET CHARGEMENT DES DONNÉES
+    function capitalizeFirstLetter(string) {
+        if (!string) return '';
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+
+    const loadProfile = () => {
+        try {
+            return JSON.parse(localStorage.getItem('user_profile_data')) || {};
+        } catch (e) { return {}; }
+    };
+
+    const loadCart = () => {
+        try {
+            return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
+        } catch (e) { return []; }
+    };
+
+    // 2. SYSTÈME DE NOTIFICATIONS LOCALES
+    function showWelcomeNotification() {
+        const profile = loadProfile();
+        let name = profile.nom ? profile.nom.split(' ')[0] : "Zanmi";
+
+        if (Notification.permission === "granted") {
+            new Notification("Les Cayes Dropshipping", {
+                body: `Bonjou ${name}, kontan wè w! Tcheke dènye deal nou yo.`,
+                icon: "/lescayesdropshipping.png"
+            });
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") showWelcomeNotification();
+            });
+        }
+    }
+
+    // 3. INITIALISATION PRINCIPALE
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            if(splash) splash.style.display = 'none';
+        }, 1500);
+
+        setTimeout(showWelcomeNotification, 3000);
+
+        if (typeof Hammer !== 'undefined') {
+            const bodyElement = document.body;
+            const hammer = new Hammer(bodyElement);
+            hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
+            hammer.on('swipeleft', () => { window.location.href = "deal.html"; });
+            hammer.on('swiperight', () => { window.location.href = "transaction.html"; });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // ================= 1. gère le kourousèl =================
-            const bannerCarousel = document.getElementById('banner-carousel'); 
-            const items = document.querySelectorAll('.carousel-item');
-            const itemsLength = items.length;
-            let currentIndex = 0;
+        initCarousel();
+        initBusinessCountdown();
+        updateBadgeUI();
+        updateLocationHeader();
+    });
 
-            function updateCarouselPosition() {
-                if (items.length === 0) return;
-                const itemWidth = items[0].getBoundingClientRect().width; 
-                const itemFullWidth = itemWidth + 15; 
-                const scrollDistance = currentIndex * itemFullWidth; 
+    // 4. LOGIQUE DU CARROUSEL
+    function initCarousel() {
+        const bannerCarousel = document.getElementById('banner-carousel'); 
+        const items = document.querySelectorAll('.carousel-item');
+        if (!bannerCarousel || items.length === 0) return;
+        
+        let currentIndex = 0;
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % items.length;
+            const itemWidth = items[0].getBoundingClientRect().width; 
+            bannerCarousel.scrollTo({ left: currentIndex * (itemWidth + 15), behavior: 'smooth' });
+        }, 10000);
+    }
 
-                bannerCarousel.scrollTo({
-                    left: scrollDistance,
-                    behavior: 'smooth'
-                });
+    // 5. LOGIQUE DES COMPTEURS (MISE À JOUR 20 JANVIER)
+    function initBusinessCountdown() {
+        const timer1 = document.getElementById('timer-display-1');
+        const timer2 = document.getElementById('timer-display-2'); // Seksyon anbakman
+        const timer3 = document.getElementById('timer-display-3'); // Seksyon livrezon
+        
+        const step1UI = document.getElementById('step1');
+        const step2UI = document.getElementById('step2');
+        const step3UI = document.getElementById('step3');
+
+        // Dat limit yo
+        const dateOkazyon = new Date("January 4, 2026 23:59:59").getTime();
+        const dateAnbakman = new Date("January 20, 2026 23:59:59").getTime();
+        
+        // Livrezon an fèt 15 jou apre anbakman (20 Janvye + 15 jou = 4 Fevriye)
+        const dateLivrezon = new Date("February 4, 2026 23:59:59").getTime(); 
+
+        function updateAll() {
+            const now = new Date().getTime();
+
+            // ETAP 1 : OKAZYON (Pase - Opacité faible)
+            if (timer1) {
+                timer1.innerHTML = "FINI";
+                if(step1UI) step1UI.style.opacity = "0.3";
             }
 
-            function nextSlide() {
-                currentIndex = (currentIndex + 1) % itemsLength;
-                updateCarouselPosition();
+            // ETAP 2 : ANBAKMAN (Pase jodi a - Opacité faible)
+            if (timer2) {
+                if (now < dateAnbakman) {
+                    timer2.innerHTML = "AN KOU...";
+                } else {
+                    timer2.innerHTML = "FINI";
+                    if(step2UI) step2UI.style.opacity = "0.3";
+                }
             }
 
-            updateCarouselPosition(); 
-            setInterval(nextSlide, 10000); 
-
-// ================= 2. SISTÈM 3 KONTWA AN KASKAD =================
-function initBusinessCountdown() {
-    const timer1 = document.getElementById('timer-display-1');
-    const timer3 = document.getElementById('timer-display-3');
-
-    const step1UI = document.getElementById('step1');
-    const step3UI = document.getElementById('step3');
-
-    // DATES
-    const dateOkazyon = new Date("January 4, 2026 23:59:59").getTime();
-    const dateAnbakman = new Date("January 20, 2026 23:59:59").getTime();
-    const dateLivrezon = dateAnbakman + (15 * 24 * 60 * 60 * 1000); 
-
-    function updateAll() {
-        const now = new Date().getTime();
-
-        // Gestion de l'étape 1 (Compteur complet)
-        if (now < dateOkazyon) {
-            renderFullTime(dateOkazyon - now, timer1);
-        } else {
-            timer1.innerHTML = "FINI";
-            step1UI.style.opacity = "0.5";
-        }
-
-        // Gestion de l'étape 3 (Compteur de jours uniquement)
-        if (now >= dateAnbakman && now < dateLivrezon) {
-            // Activer le compteur après le 20 Janvier
-            step3UI.style.opacity = "1";
-            renderDaysOnly(dateLivrezon - now, timer3);
-        } else if (now >= dateLivrezon) {
-            timer3.innerHTML = "DISPONIB";
-            step3UI.style.opacity = "1";
-        } else {
-            // Avant le 20 Janvier, reste pâle et fixe
-            timer3.innerHTML = "Atant anbakman";
-            step3UI.style.opacity = "0.4";
-        }
-    }
-
-    // Affiche Jours, Heures, Minutes, Secondes
-    function renderFullTime(distance, element) {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        element.innerHTML = `${days}j - ${hours}è - ${minutes}m - ${seconds}s`;
-    }
-
-    // Affiche uniquement les Jours
-    function renderDaysOnly(distance, element) {
-        const days = Math.ceil(distance / (1000 * 60 * 60 * 24));
-        element.innerHTML = `${days} Jou ki rete`;
-    }
-
-    setInterval(updateAll, 1000);
-    updateAll();
-}
-
-initBusinessCountdown();
-
-            // ================= 3. gère le badge persistant du panier (deal) =================
-            const dealBadgeElement = document.getElementById('deal-badge');
-
-            const loadCart = () => {
-                try {
-                    return JSON.parse(localStorage.getItem('lescayes_cart')) || [];
-                } catch (e) {
-                    return [];
-                }
-            };
-
-            const updateBadgeUI = () => {
-                const cart = loadCart();
-                const count = cart.length;
-                dealBadgeElement.textContent = count;
-                dealBadgeElement.style.display = count > 0 ? 'block' : 'none';
-            };
-
-            updateBadgeUI(); 
-            
-            
-            // ================= 4. met à jour l'adresse de localisation (personnalisation) =================
-            const addressInfoElement = document.getElementById('address-info');
-            const userStorageKey = 'user_profile_data';
-
-            const loadProfile = () => {
-                try {
-                    return JSON.parse(localStorage.getItem(userStorageKey)) || {};
-                } catch (e) {
-                    return {};
-                }
-            };
-
-            const updateLocationHeader = () => {
-                const profile = loadProfile();
-                const defaultAddress = 'les Cayes Dropshipping, haïti-sud';
-                
-                if (profile.address && profile.address.trim() !== '') {
-                    const firstLine = profile.address.split('\n')[0].trim();
+            // ETAP 3 : LIVREZON (Aktif - Mesaj an gra)
+            if (timer3) {
+                if (now < dateLivrezon) {
+                    // Kalkile konbyen jou ki rete
+                    const diff = dateLivrezon - now;
+                    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
                     
-                    let namePart = '';
-                    if (profile.nom) {
-                         namePart = profile.nom.split(' ')[0];
-                    } else if (profile.email) {
-                         namePart = profile.email.split('@')[0];
+                    if(step3UI) {
+                        step3UI.style.opacity = "1";
+                        step3UI.style.fontWeight = "bold";
                     }
                     
-                    const capitalizedName = namePart ? capitalizeFirstLetter(namePart) : 'Zanmi';
-                    const capitalizedAddressLine = capitalizeFirstLetter(firstLine);
-                    
-                    addressInfoElement.textContent = `${capitalizedName}, ${capitalizedAddressLine}...`;
+                    // Afichaj mande a
+                    timer3.innerHTML = `Pwochen koli yo ap disponib nan : <span style="color:#ff9800;">${daysLeft} jou</span>`;
                 } else {
-                    addressInfoElement.textContent = capitalizeFirstLetter(defaultAddress);
+                    timer3.innerHTML = "<span style='color:#4caf50;'>Koli disponib Ayiti !</span>";
+                    if(step3UI) step3UI.style.opacity = "1";
                 }
-            };
-            
-            updateLocationHeader();
-
-        });
-        // ================= 5. GESTION DE L'INSTALLATION (PWA) =================
-
-// Enregistrement du Service Worker (Obligatoire pour l'installation)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(reg => {
-            console.log('Service Worker enregistré !');
-        }).catch(err => {
-            console.log('Erreur SW:', err);
-        });
-    });
-}
+            }
+        }
         
-function openModal(id) {
-    document.getElementById(id).style.display = "block";
-    document.body.style.overflow = "hidden"; // empêche le scroll de la page derrière
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = "none";
-    document.body.style.overflow = "auto";
-}
-
-// fermer si on clique en dehors de la fenêtre
-window.onclick = function(event) {
-    if (event.target.className === 'modal') {
-        event.target.style.display = "none";
-        document.body.style.overflow = "auto";
+        setInterval(updateAll, 1000);
+        updateAll();
     }
-}
 
-// Capture de l'événement d'installation pour le bouton dans moncompte.html
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Empêche l'affichage automatique du navigateur
-    e.preventDefault();
-    // On stocke l'événement dans window pour qu'il soit accessible depuis moncompte.html
-    window.deferredPrompt = e;
-    console.log('L\'événement d\'installation a été capturé et stocké.');
-});
+    // 6. UI UPDATES
+    function updateBadgeUI() {
+        const badge = document.getElementById('deal-badge');
+        const count = loadCart().length;
+        if(badge) {
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'block' : 'none';
+        }
+    }
 
-    </script>
-</body>
-</html>
+    function updateLocationHeader() {
+        const addressInfoElement = document.getElementById('address-info');
+        if (!addressInfoElement) return;
+        const profile = loadProfile();
+        if (profile.address) {
+            const namePart = profile.nom ? profile.nom.split(' ')[0] : 'Zanmi';
+            addressInfoElement.textContent = `${capitalizeFirstLetter(namePart)}, ${capitalizeFirstLetter(profile.address.split('\n')[0])}...`;
+        }
+    }
+
+    // 7. MODALS
+    function openModal(id) {
+        const m = document.getElementById(id);
+        if(m) { m.style.display = "block"; document.body.style.overflow = "hidden"; }
+    }
+
+    function closeModal(id) {
+        const m = document.getElementById(id);
+        if(m) { m.style.display = "none"; document.body.style.overflow = "auto"; }
+    }
+
+    window.onclick = function(event) {
+        if (event.target.classList.contains('modal')) closeModal(event.target.id);
+    }
+
+    // 8. SERVICE WORKER
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(err => console.log('Erreur SW:', err));
+        });
+    }
+</script>

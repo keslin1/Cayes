@@ -46,95 +46,70 @@
         .current-price { font-size: 1.8em; font-weight: bold; display: block; }
 
         .luck-section { text-align: center; padding: 10px; margin-top: 10px; }
-        .luck-title { color: #8fbc8f; font-weight: bold; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; text-align: left; }
+        .luck-title { color: #8fbc8f; font-weight: bold; margin-bottom: 15px; display: flex; justify-content: center; align-items: center; gap: 10px; }
         
-/* Animasyon pou icône frais an */
-@keyframes pulse-tax {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
-    5% { transform: scale(1.2); box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
-    10% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
-    100% { transform: scale(1); } /* Repoze pandan rès tan an */
-}
+        @keyframes pulse-tax {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+            5% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
+            10% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+            100% { transform: scale(1); }
+        }
 
-.info-btn { 
-    cursor: pointer; 
-    color: var(--wise-orange); 
-    font-size: 24px; 
-    vertical-align: middle;
-    border: 2px solid var(--wise-orange); 
-    border-radius: 50%;
-    padding: 5px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    /* Aplike animasyon an sou 10 segonn an bouk */
-    animation: pulse-tax 10s infinite ease-in-out;
-}
-
+        .info-btn { 
+            cursor: pointer; color: #8fbc8f; font-size: 32px; 
+            border: 2px solid #8fbc8f; border-radius: 50%; padding: 5px;
+            display: inline-flex; align-items: center; justify-content: center;
+            animation: pulse-tax 8s infinite ease-in-out;
+        }
 
         .rate-bar {
-            position: relative;
-            display: flex;
-            width: 100%;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 25px;
-            overflow: hidden;
-            margin: 15px 0;
+            position: relative; display: flex; width: 100%; height: 45px;
+            background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px; overflow: hidden; margin: 15px 0;
         }
 
-        .zone { flex: 1; line-height: 45px; font-size: 0.9em; color: var(--blanc); border-right: 1px solid rgba(255, 255, 255, 0.2); display: flex; justify-content: center; align-items: center; }
+        .zone { flex: 1; line-height: 45px; font-size: 0.9em; color: var(--blanc); display: flex; justify-content: center; align-items: center; }
 
         #cursor {
-            position: absolute;
-            top: 0;
-            left: 87%; 
-            width: 6px;
-            height: 100%;
-            background: var(--rouge-flash);
-            box-shadow: 0 0 20px var(--rouge-flash);
-            z-index: 5;
+            position: absolute; top: 0; left: 87%; width: 6px; height: 100%;
+            background: var(--rouge-flash); box-shadow: 0 0 20px var(--rouge-flash); z-index: 5;
         }
 
-        @keyframes frenzy {
-            0% { left: 0%; }
-            50% { left: 98%; }
-            100% { left: 0%; }
-        }
-
+        @keyframes frenzy { 0% { left: 0%; } 50% { left: 98%; } 100% { left: 0%; } }
         .frenzy-anim { animation: frenzy 0.3s infinite linear !important; }
 
         .luck-btn {
-            background: var(--wise-blue);
-            color: white;
-            border: none;
-            padding: 15px 25px;
-            border-radius: 30px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            text-transform: capitalize;
+            background: var(--wise-blue); color: white; border: none; padding: 15px 25px;
+            border-radius: 30px; font-weight: bold; cursor: pointer; width: 100%;
         }
 
-        .luck-btn:disabled { background: #555; cursor: default; }
+        /* Faktir Style */
+        .calculator-area {
+            background: #fff; border-radius: 15px; padding: 20px; margin-top: 20px;
+            color: #333; position: relative; display: none; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .watermark {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg);
+            width: 80%; opacity: 0.08; pointer-events: none;
+        }
+        .facture-header { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px; text-align: center; }
+        .input-group input {
+            width: 100%; background: #f9f9f9; border: 2px solid var(--wise-blue);
+            padding: 12px; border-radius: 10px; color: #333; font-size: 1.1em;
+            text-align: center; box-sizing: border-box; outline: none; margin-bottom: 15px;
+        }
+        .result-row { display: flex; justify-content: space-between; margin: 8px 0; font-size: 1em; }
+        .total-row { border-top: 2px dashed #ccc; padding-top: 10px; margin-top: 10px; font-weight: bold; font-size: 1.3em; color: #d35400; }
+        .facture-footer { font-size: 0.8em; color: #777; text-align: center; margin-top: 15px; font-style: italic; }
 
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            justify-content: center; align-items: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;
         }
-
         .modal-content {
-            background: var(--ka-gri);
-            padding: 25px;
-            border-radius: 15px;
-            width: 85%;
-            max-width: 400px;
-            border: 2px solid var(--wise-blue);
+            background: var(--ka-gri); padding: 25px; border-radius: 15px; width: 85%;
+            max-width: 400px; border: 2px solid var(--wise-blue);
         }
 
         .agent-section { text-align: center; margin-top: 30px; padding: 20px; background-color: var(--ka-gri); border-radius: 15px; }
@@ -156,13 +131,13 @@
                     <span class="material-icons" style="color:var(--vèt-check); margin-right:10px;">check</span>
                     <span>Ou ka bay lajan cash nan lokal nou.</span>
                 </div>
-                <div style="display:flex; align-items:center;">
+                <div style="display:flex; align-items:center; margin-bottom:10px;">
                     <span class="material-icons" style="color:var(--vèt-check); margin-right:10px;">check</span>
                     <span>Sipò 24/7 pou tranzaksyon w.</span>
                 </div>
                 <div style="display:flex; align-items:center;">
-                <span class="material-icons" style="color:var(--vèt-check); margin-right:10px;">check</span>
-                    <span>Rechaje nan mwens ke 5 h!</span>
+                    <span class="material-icons" style="color:var(--vèt-check); margin-right:10px;">check</span>
+                    <span>Rechaje kat ou nan mwens ke 5 h!</span>
                 </div>
             </div>
             <div class="card-footer">
@@ -170,22 +145,42 @@
             </div>
         </div>
 
-        <div class="luck-section">
-            <p class="luck-title">
-                TANTE CHANS OU POU YON PI BON TAUX!
-                <span class="material-icons info-btn" onclick="toggleModal()">payments</span>
-            </p>
-            <div class="rate-bar">
-                <div class="zone"><span class="material-icons">sync</span></div>
+        <div class="luck-section" id="luckSection">
+            <p class="luck-title" id="luckTitle">TANTE CHANS OU POU YON PI BON TAUX!</p>
+            <div class="rate-bar" id="rateBar">
+                <div class="zone"><span class="material-icons">card_giftcard</span></div>
                 <div class="zone">135</div>
                 <div class="zone">140</div>
                 <div class="zone">144</div>
                 <div id="cursor"></div>
-                
             </div>
             <button class="luck-btn" id="spinBtn" onclick="startLuck()">Klike pou tante chans ou</button>
-            <p id="statusMsg" style="margin-top:15px; font-weight:bold; color:var(--vèt-check);"></p>
-            <p id="countdown" style="font-size: 0.8em; color: #aaa; margin-top: 5px;"></p>
+        </div>
+
+        <div class="calculator-area" id="calcArea">
+            <img src="lescayesdropshipping.png" class="watermark" alt="Logo">
+            
+            <div class="facture-header">
+                <h3 style="margin: 0; color: #1a1f26;">Kalkil Peman</h3>
+                <p id="countdown" style="font-size: 0.75em; color: #8fbc8f; margin: 5px 0; font-weight: bold;"></p>
+                <span class="material-icons info-btn" onclick="toggleModal()" style="font-size: 24px;">payments</span>
+            </div>
+            
+            <div class="input-group">
+                <p style="font-size: 0.85em; margin-bottom: 5px; font-weight: bold;">Kantite dola w' bezwen sou kat ou :</p>
+                <input type="number" id="usdAmount" placeholder="Ekri montan an..." oninput="calculateTotal()">
+            </div>
+            
+            <div id="invoiceDetails">
+                <div class="result-row"><span>Kantite mande :</span> <span id="resDola">0.00 $</span></div>
+                <div class="result-row"><span>Frè sèvis :</span> <span id="resFrais">0.00 $</span></div>
+                <div class="result-row"><span>Taux ou genyen :</span> <span id="resTaux">144 HTG</span></div>
+                <div class="result-row total-row"><span>Total pou peye :</span> <span id="htgTotal">0 HTG</span></div>
+            </div>
+
+            <div class="facture-footer">
+                Pran yon kapti ekran (screenshot) epi voye l bay Francesse Gabriel pou konfime.
+            </div>
         </div>
 
         <div class="agent-section">
@@ -201,139 +196,125 @@
     <div class="modal-content" onclick="event.stopPropagation()">
         <h2 style="color:var(--wise-blue); text-align:center; margin-top:0;">Frais ak Tax 💸💳</h2>
         <ul style="list-style: none; padding: 0; text-align: left; color: #e0e0e0;">
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;">
-                <span>5$ ➔ 19$</span> <strong>2$</strong>
-            </li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;">
-                <span>20$ ➔ 39$</span> <strong>4$</strong>
-            </li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;">
-                <span>40$ ➔ 99$</span> <strong>6$</strong>
-            </li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;">
-                <span>100$ ➔ 199$</span> <strong>8$</strong>
-            </li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;">
-                <span>200$ ➔ 299$</span> <strong>10$</strong>
-            </li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;">
-                <span>300$ ➔ 399$</span> <strong>12$</strong>
-            </li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;">
-                <span>400$ ➔ 499$</span> <strong>6$</strong>
-            </li>
-            <li style="padding: 10px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; color: var(--wise-orange);">
-                <span>500$ e plis</span> <strong>8%</strong>
-            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;"><span>5$ ➔ 19$</span> <strong>2$</strong></li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;"><span>20$ ➔ 39$</span> <strong>4$</strong></li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;"><span>40$ ➔ 99$</span> <strong>6$</strong></li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;"><span>100$ ➔ 199$</span> <strong>8$</strong></li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;"><span>200$ ➔ 299$</span> <strong>10$</strong></li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;"><span>300$ ➔ 399$</span> <strong>12$</strong></li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between;"><span>400$ ➔ 499$</span> <strong>14$</strong></li>
+            <li style="padding: 8px 0; border-bottom: 1px solid #333; display: flex; justify-content: space-between; color: var(--wise-orange);"><span>500$ e plis</span> <strong>8%</strong></li>
         </ul>
-        <p style="font-size: 0.8em; color: #888; text-align: center; margin-top: 15px;">
-            Taux ou genyen an ap aplike sou kantite HTG w ap bay la.
-        </p>
-        <button class="luck-btn" onclick="toggleModal()" style="margin-top:15px; animation:none;">DAKÒ</button>
+        <button class="luck-btn" onclick="toggleModal()" style="margin-top:15px;">DAKÒ</button>
     </div>
 </div>
 
-    <script>
-        const positions = { "gift": "12%", 135: "37%", 140: "62%", 144: "87%" };
-        const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+<script>
+    const positions = { "gift": "12%", 135: "37%", 140: "62%", 144: "87%" };
+    const thirtyDays = 30 * 24 * 60 * 60 * 1000;
 
-        function startLuck() {
-            let lastSpin = localStorage.getItem('lastSpinDate');
-            let now = new Date().getTime();
-
-            if (lastSpin && (now - lastSpin < thirtyDays)) return;
-
-            let step = parseInt(localStorage.getItem('luckStep') || "1");
-            let cursor = document.getElementById('cursor');
-            let btn = document.getElementById('spinBtn');
-            let status = document.getElementById('statusMsg');
-
-            btn.disabled = true;
-            status.innerText = "Chans ou ap kalkile...";
-            cursor.classList.add('frenzy-anim');
+    function startLuck() {
+        let step = parseInt(localStorage.getItem('luckStep') || "1");
+        let cursor = document.getElementById('cursor');
+        let btn = document.getElementById('spinBtn');
+        
+        btn.disabled = true;
+        btn.innerText = "Chans ou ap kalkile...";
+        cursor.classList.add('frenzy-anim');
+        
+        setTimeout(() => {
+            cursor.classList.remove('frenzy-anim');
+            cursor.style.transition = "left 2s cubic-bezier(0.2, 0, 0.3, 1)";
             
-            setTimeout(() => {
-                cursor.classList.remove('frenzy-anim');
-                cursor.style.transition = "left 2s cubic-bezier(0.2, 0, 0.3, 1)";
-                
-                let targetPos;
-                if (step === 1) targetPos = positions["gift"];
-                else if (step === 2) targetPos = positions[140];
-                else if (step === 3) targetPos = positions[144];
-                else targetPos = positions[140];
-
-                cursor.style.left = targetPos;
-
-                setTimeout(() => {
-                    if (step === 1) {
-                        status.style.color = "#ff9800";
-                        status.innerText = "Ou preske jwenn li! Re-tante chans ou.";
-                        btn.disabled = false;
-                        btn.innerText = "RE-TANTE CHANS OU";
-                        localStorage.setItem('luckStep', "2");
-                    } 
-                    else if (step === 2) {
-                        status.style.color = "var(--vèt-check)";
-                        status.innerText = "Felisitasyon! Taux ou se 140 HTG pou 30 jou.";
-                        document.getElementById('displayRate').innerText = "Taux: 140 HTG";
-                        localStorage.setItem('lastSpinDate', new Date().getTime());
-                        localStorage.setItem('currentRate', "140");
-                        localStorage.setItem('luckStep', "3");
-                        checkStatus();
-                    }
-                    else if (step === 3) {
-                        status.style.color = "#ff4444";
-                        status.innerText = "Taux mwa sa a se 144 HTG. Rejwe nan 30 jou.";
-                        document.getElementById('displayRate').innerText = "Taux: 144 HTG";
-                        localStorage.setItem('lastSpinDate', new Date().getTime());
-                        localStorage.setItem('currentRate', "144");
-                        localStorage.setItem('luckStep', "4");
-                        checkStatus();
-                    }
-                    else if (step === 4) {
-                        status.style.color = "var(--vèt-check)";
-                        status.innerText = "Felisitasyon! Taux ou bloke definitivman sou 140 HTG.";
-                        document.getElementById('displayRate').innerText = "Taux: 140 HTG";
-                        localStorage.setItem('finalRateLocked', "true");
-                        localStorage.setItem('currentRate', "140");
-                        checkStatus();
-                    }
-                }, 2100);
-            }, 3000); 
-        }
-
-        function toggleModal() {
-            let m = document.getElementById('fraisModal');
-            m.style.display = (m.style.display === "flex") ? "none" : "flex";
-        }
-
-        function checkStatus() {
-            let lastSpin = localStorage.getItem('lastSpinDate');
-            let isLocked = localStorage.getItem('finalRateLocked');
-            let savedRate = localStorage.getItem('currentRate') || "144";
-            let btn = document.getElementById('spinBtn');
-            let now = new Date().getTime();
-
-            document.getElementById('displayRate').innerText = "Taux: " + savedRate + " HTG";
-            document.getElementById('cursor').style.left = positions[savedRate];
-
-            if (isLocked === "true") {
-                btn.disabled = true;
-                btn.innerText = "TAUX BLOKE";
-                document.getElementById('statusMsg').innerText = "Ou gen pi bon taux a!";
-            } 
-            else if (lastSpin && (now - lastSpin < thirtyDays)) {
-                btn.disabled = true;
-                btn.innerText = "REJWE NAN 30 JOU";
-                let daysLeft = Math.ceil((thirtyDays - (now - lastSpin)) / (1000 * 60 * 60 * 24));
-                document.getElementById('countdown').innerText = "Disponib nan " + daysLeft + " jou.";
+            let targetRate;
+            if (step === 1) { 
+                cursor.style.left = positions["gift"]; 
             } else {
-                btn.disabled = false;
-                document.getElementById('countdown').innerText = "";
-            }
-        }
+                // Seleksyon pousantaj (2yèm kou a bay yon taux)
+                if (step === 2) targetRate = 140; 
+                else if (step === 3) targetRate = 144;
+                else targetRate = 140;
 
-        window.onload = checkStatus;
-    </script>
+                cursor.style.left = positions[targetRate];
+            }
+
+            setTimeout(() => {
+                if (step === 1) {
+                    btn.disabled = false;
+                    btn.innerText = "RE-TANTE CHANS OU";
+                    localStorage.setItem('luckStep', "2");
+                } else {
+                    localStorage.setItem('lastSpinDate', new Date().getTime());
+                    localStorage.setItem('currentRate', targetRate);
+                    localStorage.setItem('luckStep', "3"); // bloke nan etap 3
+                    checkStatus();
+                }
+            }, 2100);
+        }, 2000); 
+    }
+
+    // FONKSYON KORÈK POU FRÈ YO
+    function getFrais(amount) {
+        if (amount <= 0) return 0;
+        if (amount < 5) return 0; // Ou ka deside si gen frè anba 5$
+        if (amount <= 19) return 2;
+        if (amount <= 39) return 4;
+        if (amount <= 99) return 6;
+        if (amount <= 199) return 8;
+        if (amount <= 299) return 10;
+        if (amount <= 399) return 12;
+        if (amount <= 499) return 14; // Korije soti 6$ pou vini 14$
+        return amount * 0.08; // 8% pou 500$ e plis
+    }
+
+    function calculateTotal() {
+        let usd = parseFloat(document.getElementById('usdAmount').value) || 0;
+        let rate = parseFloat(localStorage.getItem('currentRate')) || 144;
+        let frais = getFrais(usd);
+        
+        // Afichaj Dola ak Frè
+        document.getElementById('resDola').innerText = usd.toFixed(2) + " $";
+        if (usd >= 500) {
+            document.getElementById('resFrais').innerText = frais.toFixed(2) + " $ (8%)";
+        } else {
+            document.getElementById('resFrais').innerText = frais.toFixed(2) + " $";
+        }
+        
+        document.getElementById('resTaux').innerText = rate + " HTG";
+
+        // Kalkil final: (Montan + Frè) * Taux
+        if (usd > 0) {
+            let total = (usd + frais) * rate;
+            document.getElementById('htgTotal').innerText = Math.ceil(total).toLocaleString() + " HTG";
+        } else {
+            document.getElementById('htgTotal').innerText = "0 HTG";
+        }
+    }
+
+    function toggleModal() {
+        let m = document.getElementById('fraisModal');
+        m.style.display = (m.style.display === "flex") ? "none" : "flex";
+    }
+
+    function checkStatus() {
+        let lastSpin = localStorage.getItem('lastSpinDate');
+        let savedRate = localStorage.getItem('currentRate') || "144";
+        let now = new Date().getTime();
+
+        document.getElementById('displayRate').innerText = "Taux: " + savedRate + " HTG";
+
+        if (lastSpin && (now - lastSpin < thirtyDays)) {
+            document.getElementById('luckSection').style.display = "none";
+            document.getElementById('calcArea').style.display = "block";
+            
+            let diff = thirtyDays - (now - lastSpin);
+            let daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('countdown').innerText = "TAUX SA A VALAB POU " + daysLeft + " JOU ANKÒ";
+            calculateTotal();
+        }
+    }
+
+    window.onload = checkStatus;
+</script>
 </body>
 </html>
