@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kont mwen - les cayes dropshipping</title>
+    <title>Kont mwen - Les Cayes Dropshipping</title>
     
     <link rel="stylesheet" href="base.css"> 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
@@ -11,7 +11,6 @@
     <link rel="manifest" href="/manifest.json">
 
     <style>
-        /* ================= styles de base pour moncompte.html ================= */
         :root {
             --bleu-marin: #001f3f; 
             --kaki: #8fbc8f;              
@@ -30,9 +29,7 @@
             padding-bottom: 70px;
         }
 
-        #main-content {
-            padding: 15px;
-        }
+        #main-content { padding: 15px; }
 
         .header-top {
             display: flex;
@@ -43,17 +40,8 @@
             border-bottom: 1px solid var(--gri-claire);
         }
 
-        .header-top h1 {
-            font-size: 1.5em;
-            margin: 0;
-            color: var(--bleu-marin);
-        }
+        .header-top h1 { font-size: 1.5em; margin: 0; color: var(--bleu-marin); }
         
-        .header-top .icon-right {
-            display: flex;
-            align-items: center;
-        }
-
         .header-top .icon-right .material-icons {
             font-size: 28px;
             color: var(--bleu-marin);
@@ -67,27 +55,19 @@
             color: var(--noir-texte);
         }
 
-        .info-card, .action-card {
+        .info-card {
             background-color: var(--blanc-fond);
-            padding: 15px;
+            padding: 20px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             margin-bottom: 15px;
             display: flex;
-            align-items: center;
-            transition: background-color 0.2s;
-        }
-        
-        .info-card {
             flex-direction: column;
-            align-items: flex-start;
-            padding: 20px;
         }
 
         .info-card-line {
             display: flex;
             align-items: center;
-            width: 100%;
             margin-bottom: 8px;
             font-size: 0.95em;
         }
@@ -105,19 +85,21 @@
         }
         
         .action-card {
+            background-color: var(--blanc-fond);
             text-decoration: none;
             color: var(--noir-texte);
+            display: flex;
+            align-items: center;
             justify-content: space-between;
             padding: 18px 15px;
-            width: 100%;
-            box-sizing: border-box;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
             cursor: pointer;
+            box-sizing: border-box;
         }
 
-        .action-card.locked {
-            opacity: 0.6;
-            background-color: #f9f9f9;
-        }
+        .action-card.locked { opacity: 0.6; background-color: #f9f9f9; }
 
         .action-card .material-icons.left {
             margin-right: 15px;
@@ -125,19 +107,10 @@
             font-size: 24px;
         }
         
-        /* Correction de l'alignement des cadenas et flèches */
-        .action-card .material-icons.right {
-            color: #ccc;
-            margin-left: auto; /* Aligne l'icône complètement à droite */
-        }
+        .action-card .material-icons.right { color: #ccc; margin-left: auto; }
         
-        .action-card span {
-            display: flex;
-            align-items: center;
-            font-weight: 500;
-        }
+        .action-card span { display: flex; align-items: center; font-weight: 500; }
 
-        /* Style du bouton d'installation */
         #btn-installer {
             display: none;
             background-color: var(--bleu-marin);
@@ -152,30 +125,20 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        #btn-installer .material-icons {
-            margin-right: 10px;
-        }
-
-        #profile-form-container {
-            display: block;
-            margin-top: 20px;
-        }
+        #profile-form-container { display: block; margin-top: 20px; }
 
         #profile-form {
             background-color: var(--blanc-fond);
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            text-align: left;
         }
         
         #profile-form label {
             display: block;
-            margin-bottom: 5px;
-            margin-top: 15px;
+            margin: 15px 0 5px 0;
             font-weight: 600;
             color: var(--bleu-marin);
         }
@@ -183,7 +146,6 @@
         #profile-form input, #profile-form textarea {
             width: 100%;
             padding: 12px;
-            margin-bottom: 10px;
             border: 1px solid var(--gri-claire);
             border-radius: 8px;
             box-sizing: border-box; 
@@ -203,7 +165,7 @@
             font-size: 1.1em;
         }
         
-        #main-footer {
+         #main-footer {
             display: flex;
             justify-content: space-around;
             align-items: center;
@@ -230,10 +192,9 @@
             color: var(--vert-menu); 
             font-size: 24px;
         }
-        
-        .nav-item.active .material-icons {
-            color: var(--kaki); 
-        }
+
+        .nav-item { text-align: center; text-decoration: none; color: var(--vert-menu); font-size: 0.75em; padding: 5px; }
+        .nav-item.active .material-icons { color: var(--kaki); }
     </style>
 </head>
 <body>
@@ -258,23 +219,19 @@
         <div class="info-card">
             <div class="info-card-line">
                 <span class="material-icons">person</span>
-                <strong>Non:</strong> 
-                <span id="profile-name-display">Non w pako anrejistre</span>
+                <strong>Non:</strong> <span id="profile-name-display">Non w pako anrejistre</span>
             </div>
             <div class="info-card-line">
                 <span class="material-icons">email</span>
-                <strong>Imèl:</strong> 
-                <span id="profile-email-display">Imèl ou pako anrejistre</span>
+                <strong>Imèl:</strong> <span id="profile-email-display">Imèl ou pako anrejistre</span>
             </div>
             <div class="info-card-line">
                 <span class="material-icons">phone</span>
-                <strong>Telefòn:</strong> 
-                <span id="profile-phone-display">Telefòn ou pako anrejistre</span>
+                <strong>Telefòn:</strong> <span id="profile-phone-display">Telefòn ou pako anrejistre</span>
             </div>
             <div class="info-card-line">
                 <span class="material-icons">location_on</span>
-                <strong>Adrès:</strong> 
-                <span id="profile-address-display">Adrès ou pako anrejistre</span>
+                <strong>Adrès:</strong> <span id="profile-address-display">Adrès ou pako anrejistre</span>
             </div>
         </div>
         
@@ -296,36 +253,37 @@
             <span id="lock-icon-support" class="material-icons right">lock</span>
         </a>
 
-        <a href="javascript:void(0)" id="entrepreneur-btn" class="action-card locked">
+        <a href="javascript:void(0)" id="wise-btn" class="action-card locked">
             <span>
                 <span class="material-icons left">add_card</span>
                 Rechaj Wise
             </span>
-            <span id="lock-icon" class="material-icons right">lock</span>
+            <span id="lock-icon-wise" class="material-icons right">lock</span>
         </a>
-        
+
+        <a href="javascript:void(0)" id="usdt-btn" class="action-card locked">
+            <span>
+                <span class="material-icons left">currency_exchange</span>
+                Rechaj USDT (Binance)
+            </span>
+            <span id="lock-icon-usdt" class="material-icons right">lock</span>
+        </a>
+
         <div id="profile-form-container">
-            <h2 class="section-title" id="form-title">Anrejistre pwofil mwen</h2>
-            
+            <h2 class="section-title">Anrejistre pwofil mwen</h2>
             <form id="profile-form">
                 <input type="hidden" name="form_type" value="user_profile_update">
-                
                 <label for="nom">Non konplè (pou livrezon)</label>
                 <input type="text" id="nom" name="nom" required placeholder="egz: jean marc">
-
                 <label for="email">Adrès imèl (obligatwa)</label>
                 <input type="email" id="email" name="email" required placeholder="egz: jean12@gmail.com">
-
                 <label for="phone">Telefòn whatsapp</label>
                 <input type="tel" id="phone" name="phone" placeholder="+509 xx xx xx xx">
-                
                 <label for="address">Adrès detaye</label>
                 <textarea id="address" name="address" required placeholder="egz: simon, toupre hotel josafa"></textarea>
-
                 <button type="submit" id="save-profile-btn">Anrejistre enfòmasyon mwen yo</button>
             </form>
         </div>
-        
     </main>
 
     <footer id="main-footer">
@@ -357,7 +315,8 @@
 
             const form = document.getElementById('profile-form');
             const formContainer = document.getElementById('profile-form-container');
-            const entrepreneurBtn = document.getElementById('entrepreneur-btn');
+            const wiseBtn = document.getElementById('wise-btn');
+            const usdtBtn = document.getElementById('usdt-btn');
             const supportBtn = document.getElementById('support-btn');
             const editProfileBtn = document.getElementById('edit-profile-btn');
             const installBtn = document.getElementById('btn-installer');
@@ -366,34 +325,7 @@
             const profileEmailDisplay = document.getElementById('profile-email-display');
             const profilePhoneDisplay = document.getElementById('profile-phone-display');
             const profileAddressDisplay = document.getElementById('profile-address-display');
-            
-            const inputNom = document.getElementById('nom');
-            const inputEmail = document.getElementById('email');
-            const inputPhone = document.getElementById('phone');
-            const inputAddress = document.getElementById('address');
 
-            // LOGIQUE INSTALLATION PWA
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                window.deferredPrompt = e;
-                installBtn.style.display = 'flex';
-            });
-
-            // Afficher le bouton si l'événement a été capturé sur index.html
-            if (window.deferredPrompt) {
-                installBtn.style.display = 'flex';
-            }
-
-            installBtn.addEventListener('click', async () => {
-                const promptEvent = window.deferredPrompt;
-                if (!promptEvent) return;
-                promptEvent.prompt();
-                const result = await promptEvent.userChoice;
-                window.deferredPrompt = null;
-                installBtn.style.display = 'none';
-            });
-
-            // LOGIQUE PROFIL
             let isProfileComplete = false;
 
             const updateUI = () => {
@@ -406,20 +338,17 @@
                     profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
                     profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
                     
-                    entrepreneurBtn.classList.remove('locked');
-                    document.getElementById('lock-icon').textContent = 'chevron_right';
-                    
-                    supportBtn.classList.remove('locked');
+                    [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn.classList.remove('locked'));
+                    document.getElementById('lock-icon-wise').textContent = 'chevron_right';
+                    document.getElementById('lock-icon-usdt').textContent = 'chevron_right';
                     document.getElementById('lock-icon-support').textContent = 'chevron_right';
                     
                     formContainer.style.display = 'none';
                 } else {
-                    entrepreneurBtn.classList.add('locked');
-                    document.getElementById('lock-icon').textContent = 'lock';
-                    
-                    supportBtn.classList.add('locked');
+                    [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn.classList.add('locked'));
+                    document.getElementById('lock-icon-wise').textContent = 'lock';
+                    document.getElementById('lock-icon-usdt').textContent = 'lock';
                     document.getElementById('lock-icon-support').textContent = 'lock';
-                    
                     formContainer.style.display = 'block';
                 }
             };
@@ -434,7 +363,8 @@
                 }
             };
 
-            entrepreneurBtn.addEventListener('click', () => checkAccess("pack.html"));
+            wiseBtn.addEventListener('click', () => checkAccess("pack.html"));
+            usdtBtn.addEventListener('click', () => checkAccess("usdt.html"));
             supportBtn.addEventListener('click', () => checkAccess("contact.html"));
 
             editProfileBtn.addEventListener('click', () => {
@@ -444,16 +374,15 @@
 
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
                 const saveBtn = document.getElementById('save-profile-btn');
                 saveBtn.textContent = "Ap anrejistre...";
                 saveBtn.disabled = true;
 
                 const profileData = {
-                    nom: inputNom.value.trim(),
-                    email: inputEmail.value.trim(),
-                    phone: inputPhone.value.trim(),
-                    address: inputAddress.value.trim()
+                    nom: document.getElementById('nom').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    address: document.getElementById('address').value.trim()
                 };
 
                 localStorage.setItem(userStorageKey, JSON.stringify(profileData));
@@ -463,12 +392,8 @@
                     body: new FormData(form),
                     headers: { "Accept": "application/json" },
                 })
-                .then(() => {
-                    alert('Pwofil ou anrejistre ak siksè!');
-                })
-                .catch(() => {
-                    alert('Enfòmasyon yo sovgade, men gen yon ti pwoblèm rezo pou achiv yo.');
-                })
+                .then(() => alert('Pwofil ou anrejistre ak siksè!'))
+                .catch(() => alert('Enfòmasyon sovgade lokalman.'))
                 .finally(() => {
                     updateUI();
                     saveBtn.textContent = "Anrejistre enfòmasyon mwen yo";

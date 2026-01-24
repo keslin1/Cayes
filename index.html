@@ -70,47 +70,53 @@
             color: var(--bleu-marin);
         }
         
-        /* Contwa à rebours */
-#countdown-timer {
-    text-align: center;
-    background: linear-gradient(to right, #40E0D0, #FFFF00); 
+/* Seksyon Enfòmasyon Livrezon */
+#info-livrezon-container {
+    text-align: left;
+    background: linear-gradient(135deg, #40E0D0, #FFFF00); 
     color: var(--bleu-marin); 
-    padding: 15px 10px; 
-    border-radius: 10px; /* Mwen mete yon ti wonn pou l pi bèl */
+    padding: 20px 15px; 
+    border-radius: 12px;
     margin: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    font-weight: bold;
-    min-height: 80px; /* Sa ap anpeche vye kontwa a bloke espas la */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: 15px;
 }
 
-.step-container {
-    display: none; /* Tout kache pa defo, JS ap limen sa ki nesesè a */
+.info-step {
+    border-bottom: 1px solid rgba(0, 31, 63, 0.1);
+    padding-bottom: 12px;
 }
 
-#timer-value {
-    color: #FF0000; 
-    margin-top: 5px; 
-    font-size: 1.3em; 
-    font-weight: 900; 
+.info-step.no-border {
+    border-bottom: none;
+    padding-bottom: 0;
 }
 
-        
-        #countdown-timer p {
-            margin: 0;
-            padding: 0;
-            font-size: 1em;
-        }
+.info-title {
+    margin: 0;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
 
-        #timer-value {
-            color: #FF0000; 
-            margin-top: 5px; 
-            font-size: 1.2em; 
-            font-weight: 900; 
-            font-style: normal; 
-        }
+.info-detail {
+    color: #FF0000; /* Kenbe koulè wouj la pou dat ak jou yo ka parèt byen */
+    font-size: 1.3em;
+    font-weight: 900;
+    margin: 5px 0;
+}
+
+.info-sub {
+    margin: 0;
+    font-size: 0.75em;
+    line-height: 1.4;
+    color: var(--bleu-marin);
+    font-weight: normal;
+}
+
 
         /* Kourousèl */
         #banner-carousel {
@@ -465,30 +471,21 @@
                 <span id="address-info">Les Cayes Dropshipping, haïti-sud</span> 
                 <span class="material-icons dropdown-icon">arrow_drop_down</span>
             </div>
-<div id="countdown-timer">
-    <div id="step1" class="step-container" style="display: block; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px;">
-        <p style="margin:0; font-size: 0.85em; font-weight: bold;">1. Tan ki rete pou kòmand pase :</p>
-        <div id="timer-value"><span id="timer-display-1">--:--:--</span></div>
-        <p style="font-size: 0.7em; margin: 2px 0; color: var(--bleu-marin);">Ou ka kòmande nan yon dat ou panse koli w yo ap gentan livre nan adrès USA nou avan dat anbakman an.</p>
+
+
+<div id="info-livrezon-container">
+    <div class="info-step">
+        <p class="info-title">1. Jou anbakman :</p>
+        <div class="info-detail">Chak Lendi oswa Madi</div>
+        <p class="info-sub">Ekri nou pou nou ka konsolide (regwoupe) koli w yo pou ou avan nou voye yo.</p>
     </div>
 
-    <div id="step2" class="step-container" style="display: block; margin-bottom: 12px; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px;">
-        <p style="margin:0; font-size: 0.85em; font-weight: bold;">2. Dat anbakman :</p>
-        <div style="font-size: 1.1em; font-weight: 900; color: #004D40; margin-top: 5px;">
-            20 Janvye 2026
-        </div>
-        <p style="font-size: 0.7em; margin: 2px 0; color: var(--bleu-marin);">Koli yo ap anbake nan avyon pou vin Ayiti (ladwàn).</p>
-    </div>
-
-    <div id="step3" class="step-container" style="display: block; opacity: 0.4;">
-        <p style="margin:0; font-size: 0.85em; font-weight: bold;">3. Disponiblite koli yo :</p>
-        <div id="timer-value" style="color: #00897b;">
-            <span id="timer-display-3">Atant anbakman</span>
-        </div>
-        <p style="font-size: 0.7em; margin-top: 5px; color: var(--bleu-marin);">Livrezon apre 15 jou vwayaj.</p>
+    <div class="info-step no-border">
+        <p class="info-title">2. Disponiblite koli :</p>
+        <div class="info-detail">8 Fevriye 2026 (SDV)</div>
+        <p class="info-sub">Dat previzib pou koli disponib nan adrès nou nan Sud.</p>
     </div>
 </div>
-
 
 
     </header>
@@ -731,67 +728,6 @@
         }, 10000);
     }
 
-    // 5. LOGIQUE DES COMPTEURS (MISE À JOUR 20 JANVIER)
-    function initBusinessCountdown() {
-        const timer1 = document.getElementById('timer-display-1');
-        const timer2 = document.getElementById('timer-display-2'); // Seksyon anbakman
-        const timer3 = document.getElementById('timer-display-3'); // Seksyon livrezon
-        
-        const step1UI = document.getElementById('step1');
-        const step2UI = document.getElementById('step2');
-        const step3UI = document.getElementById('step3');
-
-        // Dat limit yo
-        const dateOkazyon = new Date("January 4, 2026 23:59:59").getTime();
-        const dateAnbakman = new Date("January 20, 2026 23:59:59").getTime();
-        
-        // Livrezon an fèt 15 jou apre anbakman (20 Janvye + 15 jou = 4 Fevriye)
-        const dateLivrezon = new Date("February 4, 2026 23:59:59").getTime(); 
-
-        function updateAll() {
-            const now = new Date().getTime();
-
-            // ETAP 1 : OKAZYON (Pase - Opacité faible)
-            if (timer1) {
-                timer1.innerHTML = "FINI";
-                if(step1UI) step1UI.style.opacity = "0.3";
-            }
-
-            // ETAP 2 : ANBAKMAN (Pase jodi a - Opacité faible)
-            if (timer2) {
-                if (now < dateAnbakman) {
-                    timer2.innerHTML = "AN KOU...";
-                } else {
-                    timer2.innerHTML = "FINI";
-                    if(step2UI) step2UI.style.opacity = "0.3";
-                }
-            }
-
-            // ETAP 3 : LIVREZON (Aktif - Mesaj an gra)
-            if (timer3) {
-                if (now < dateLivrezon) {
-                    // Kalkile konbyen jou ki rete
-                    const diff = dateLivrezon - now;
-                    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
-                    
-                    if(step3UI) {
-                        step3UI.style.opacity = "1";
-                        step3UI.style.fontWeight = "bold";
-                    }
-                    
-                    // Afichaj mande a
-                    timer3.innerHTML = `Pwochen koli yo ap disponib nan : <span style="color:#ff9800;">${daysLeft} jou</span>`;
-                } else {
-                    timer3.innerHTML = "<span style='color:#4caf50;'>Koli disponib Ayiti !</span>";
-                    if(step3UI) step3UI.style.opacity = "1";
-                }
-            }
-        }
-        
-        setInterval(updateAll, 1000);
-        updateAll();
-    }
-
     // 6. UI UPDATES
     function updateBadgeUI() {
         const badge = document.getElementById('deal-badge');
@@ -802,15 +738,33 @@
         }
     }
 
-    function updateLocationHeader() {
-        const addressInfoElement = document.getElementById('address-info');
-        if (!addressInfoElement) return;
-        const profile = loadProfile();
-        if (profile.address) {
-            const namePart = profile.nom ? profile.nom.split(' ')[0] : 'Zanmi';
-            addressInfoElement.textContent = `${capitalizeFirstLetter(namePart)}, ${capitalizeFirstLetter(profile.address.split('\n')[0])}...`;
-        }
+function updateLocationHeader() {
+    const addressInfoElement = document.getElementById('address-info');
+    if (!addressInfoElement) return;
+
+    // Nou rale pwofil ki te deja sove a
+    const profile = loadProfile(); 
+
+    if (profile && profile.nom) {
+        // Nou prepare non konplè a
+        const nonKonple = profile.nom; 
+        
+        // Nou pran zòn nan (premye pati nan adrès la)
+        const zon = profile.address ? profile.address.split('\n')[0].split(',')[0] : 'Ayiti';
+
+        // Nou mete yo sou yon sèl liy separe ak vigil
+        // Rezilta: "Jean Marc, Simon"
+        addressInfoElement.textContent = `${nonKonple}, ${zon}`;
+    } else {
+        // Si se yon moun ki pako janm enskri
+        addressInfoElement.textContent = "Les Cayes Dropshipping, Ayiti";
     }
+}
+
+// Rele fonksyon an le paj la chaje
+document.addEventListener('DOMContentLoaded', () => {
+    updateLocationHeader();
+});
 
     // 7. MODALS
     function openModal(id) {
