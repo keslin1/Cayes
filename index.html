@@ -117,6 +117,37 @@
     font-weight: normal;
 }
 
+.announcement-bar {
+    background-color: var(--bleu-marin);
+    color: var(--blanc-fond);
+    overflow: hidden; /* Sa kache tèks la lè l soti deyò */
+    white-space: nowrap;
+    padding: 8px 0;
+    font-size: 0.85em;
+    font-weight: 500;
+    position: relative;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.scrolling-text {
+    display: inline-block;
+    padding-left: 100%; /* Kòmanse tèks la nèt sou bò dwat */
+    animation: scroll-announcement 20s linear infinite;
+}
+
+@keyframes scroll-announcement {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* Si ou vle animasyon an rete lè sourit la sou li */
+.announcement-bar:hover .scrolling-text {
+    animation-play-state: paused;
+}
 
         /* Kourousèl */
         #banner-carousel {
@@ -472,6 +503,11 @@
                 <span class="material-icons dropdown-icon">arrow_drop_down</span>
             </div>
 
+            <div class="announcement-bar">
+    <div class="scrolling-text">
+        Nou ap fè yon mizajou nan sèvis shipping nou an pou nou pèmèt livrezon yo fèt pi rapid, pou pri pa liv yo desann, ak plizyè lòt chanjman pou fasilite nou, chè kliyan. Mitan Fevriye, nou espere tout bagay ka retabli.
+    </div>
+</div>
 
 <div id="info-livrezon-container">
     <div class="info-step">
