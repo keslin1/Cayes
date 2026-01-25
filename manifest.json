@@ -1,0 +1,15 @@
+{
+  "name": "Les Cayes Dropshipping",
+  "short_name": "LCDrop",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#001f3f",
+  "icons": [
+    {
+      "src": "/lescayesdropshipping.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
