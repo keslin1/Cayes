@@ -278,9 +278,22 @@
                 <input type="text" id="nom" name="nom" required placeholder="egz: jean marc">
                 <label for="email">Adrès imèl (obligatwa)</label>
                 <input type="email" id="email" name="email" required placeholder="egz: jean12@gmail.com">
-                <label for="phone">Telefòn whatsapp</label>
+                <label for="phone">Telefòn Whatsapp</label>
                 <input type="tel" id="phone" name="phone" placeholder="+509 xx xx xx xx">
                 <label for="address">Adrès detaye</label>
+<label for="reference">Referans (obligatwa)</label>
+<select id="reference" name="reference" required>
+    <option value="">Opsyon</option>
+    <option value="Facebook">Facebook</option>
+    <option value="TikTok">TikTok</option>
+    <option value="IA">IA</option>
+    <option value="WhatsApp">WhatsApp</option>
+</select>
+
+<div id="whatsapp-friend-container" style="display:none; margin-top: 10px;">
+    <label for="whatsapp_name">Non moun ki refere-w la:</label>
+    <input type="text" id="whatsapp_name" name="whatsapp_name">
+</div>
                 <textarea id="address" name="address" required placeholder="egz: simon, toupre hotel josafa"></textarea>
                 <button type="submit" id="save-profile-btn">Anrejistre enfòmasyon mwen yo</button>
             </form>
@@ -310,100 +323,121 @@
         </a>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const userStorageKey = 'user_profile_data';
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const userStorageKey = 'user_profile_data';
 
-            const form = document.getElementById('profile-form');
-            const formContainer = document.getElementById('profile-form-container');
-            const wiseBtn = document.getElementById('wise-btn');
-            const usdtBtn = document.getElementById('usdt-btn');
-            const supportBtn = document.getElementById('support-btn');
-            const editProfileBtn = document.getElementById('edit-profile-btn');
-            const installBtn = document.getElementById('btn-installer');
-            
-            const profileNameDisplay = document.getElementById('profile-name-display');
-            const profileEmailDisplay = document.getElementById('profile-email-display');
-            const profilePhoneDisplay = document.getElementById('profile-phone-display');
-            const profileAddressDisplay = document.getElementById('profile-address-display');
+        const form = document.getElementById('profile-form');
+        const formContainer = document.getElementById('profile-form-container');
+        const wiseBtn = document.getElementById('wise-btn');
+        const usdtBtn = document.getElementById('usdt-btn');
+        const supportBtn = document.getElementById('support-btn');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        
+        // nouveaux éléments pour la référence
+        const referenceSelect = document.getElementById('reference');
+        const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
+        
+        const profileNameDisplay = document.getElementById('profile-name-display');
+        const profileEmailDisplay = document.getElementById('profile-email-display');
+        const profilePhoneDisplay = document.getElementById('profile-phone-display');
+        const profileAddressDisplay = document.getElementById('profile-address-display');
 
-            let isProfileComplete = false;
+        let isProfileComplete = false;
 
-            const updateUI = () => {
-                const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-                isProfileComplete = !!(profile.nom && profile.email);
-
-                if (isProfileComplete) {
-                    profileNameDisplay.textContent = profile.nom;
-                    profileEmailDisplay.textContent = profile.email;
-                    profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
-                    profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
-                    
-                    [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn.classList.remove('locked'));
-                    document.getElementById('lock-icon-wise').textContent = 'chevron_right';
-                    document.getElementById('lock-icon-usdt').textContent = 'chevron_right';
-                    document.getElementById('lock-icon-support').textContent = 'chevron_right';
-                    
-                    formContainer.style.display = 'none';
+        // gestion de l'affichage du champ whatsapp
+        if (referenceSelect) {
+            referenceSelect.addEventListener('change', (e) => {
+                if (e.target.value === 'WhatsApp') {
+                    whatsappFriendContainer.style.display = 'block';
                 } else {
-                    [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn.classList.add('locked'));
-                    document.getElementById('lock-icon-wise').textContent = 'lock';
-                    document.getElementById('lock-icon-usdt').textContent = 'lock';
-                    document.getElementById('lock-icon-support').textContent = 'lock';
-                    formContainer.style.display = 'block';
+                    whatsappFriendContainer.style.display = 'none';
                 }
-            };
+            });
+        }
 
-            const checkAccess = (targetUrl) => {
-                if (!isProfileComplete) {
-                    alert('Ou dwe anrejistre enfòmasyon kont ou an pou ou ka gen aksè a sèvis sa a.');
-                    formContainer.style.display = 'block';
-                    formContainer.scrollIntoView({ behavior: 'smooth' });
-                } else {
-                    window.location.href = targetUrl;
-                }
-            };
+        const updateUI = () => {
+            const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+            isProfileComplete = !!(profile.nom && profile.email);
 
-            wiseBtn.addEventListener('click', () => checkAccess("pack.html"));
-            usdtBtn.addEventListener('click', () => checkAccess("usdt.html"));
-            supportBtn.addEventListener('click', () => checkAccess("contact.html"));
+            if (isProfileComplete) {
+                profileNameDisplay.textContent = profile.nom;
+                profileEmailDisplay.textContent = profile.email;
+                profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
+                profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
+                
+                [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn && btn.classList.remove('locked'));
+                
+                if(document.getElementById('lock-icon-wise')) document.getElementById('lock-icon-wise').textContent = 'chevron_right';
+                if(document.getElementById('lock-icon-usdt')) document.getElementById('lock-icon-usdt').textContent = 'chevron_right';
+                if(document.getElementById('lock-icon-support')) document.getElementById('lock-icon-support').textContent = 'chevron_right';
+                
+                formContainer.style.display = 'none';
+            } else {
+                [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn && btn.classList.add('locked'));
+                
+                if(document.getElementById('lock-icon-wise')) document.getElementById('lock-icon-wise').textContent = 'lock';
+                if(document.getElementById('lock-icon-usdt')) document.getElementById('lock-icon-usdt').textContent = 'lock';
+                if(document.getElementById('lock-icon-support')) document.getElementById('lock-icon-support').textContent = 'lock';
+                
+                formContainer.style.display = 'block';
+            }
+        };
 
+        const checkAccess = (targetUrl) => {
+            if (!isProfileComplete) {
+                alert('Ou dwe anrejistre enfòmasyon kont ou an pou ou ka gen aksè a sèvis sa a.');
+                formContainer.style.display = 'block';
+                formContainer.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                window.location.href = targetUrl;
+            }
+        };
+
+        if(wiseBtn) wiseBtn.addEventListener('click', () => checkAccess("pack.html"));
+        if(usdtBtn) usdtBtn.addEventListener('click', () => checkAccess("usdt.html"));
+        if(supportBtn) supportBtn.addEventListener('click', () => checkAccess("contact.html"));
+
+        if(editProfileBtn) {
             editProfileBtn.addEventListener('click', () => {
                 formContainer.style.display = 'block';
                 formContainer.scrollIntoView({ behavior: 'smooth' });
             });
+        }
 
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const saveBtn = document.getElementById('save-profile-btn');
-                saveBtn.textContent = "Ap anrejistre...";
-                saveBtn.disabled = true;
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const saveBtn = document.getElementById('save-profile-btn');
+            saveBtn.textContent = "yap anrejistre...";
+            saveBtn.disabled = true;
 
-                const profileData = {
-                    nom: document.getElementById('nom').value.trim(),
-                    email: document.getElementById('email').value.trim(),
-                    phone: document.getElementById('phone').value.trim(),
-                    address: document.getElementById('address').value.trim()
-                };
+            // on ne sauvegarde que les infos de base localement
+            const profileData = {
+                nom: document.getElementById('nom').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                address: document.getElementById('address').value.trim()
+            };
 
-                localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-                
-                fetch("https://getform.io/f/akkpolva", {
-                    method: "POST",
-                    body: new FormData(form),
-                    headers: { "Accept": "application/json" },
-                })
-                .then(() => alert('Pwofil ou anrejistre ak siksè!'))
-                .catch(() => alert('Enfòmasyon sovgade lokalman.'))
-                .finally(() => {
-                    updateUI();
-                    saveBtn.textContent = "Anrejistre enfòmasyon mwen yo";
-                    saveBtn.disabled = false;
-                });
+            localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+            
+            // envoi de toutes les données (y compris référence) à getform
+            fetch("https://getform.io/f/akkpolva", {
+                method: "POST",
+                body: new FormData(form),
+                headers: { "Accept": "application/json" },
+            })
+            .then(() => alert('Pwofil ou anrejistre ak siksè!'))
+            .catch(() => alert('Enfòmasyon sovgade lokalman.'))
+            .finally(() => {
+                updateUI();
+                saveBtn.textContent = "Anrejistre enfòmasyon m yo";
+                saveBtn.disabled = false;
             });
-
-            updateUI();
         });
-    </script>
+
+        updateUI();
+    });
+</script>
 </body>
 </html>
