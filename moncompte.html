@@ -270,34 +270,40 @@
             <span id="lock-icon-usdt" class="material-icons right">lock</span>
         </a>
 
-        <div id="profile-form-container">
-            <h2 class="section-title">Anrejistre pwofil mwen</h2>
-            <form id="profile-form">
-                <input type="hidden" name="form_type" value="user_profile_update">
-                <label for="nom">Non konplè (pou livrezon)</label>
-                <input type="text" id="nom" name="nom" required placeholder="egz: jean marc">
-                <label for="email">Adrès imèl (obligatwa)</label>
-                <input type="email" id="email" name="email" required placeholder="egz: jean12@gmail.com">
-                <label for="phone">Telefòn Whatsapp</label>
-                <input type="tel" id="phone" name="phone" placeholder="+509 xx xx xx xx">
-                <label for="address">Adrès detaye</label>
-<label for="reference">Referans (obligatwa)</label>
-<select id="reference" name="reference" required>
-    <option value="">Opsyon</option>
-    <option value="Facebook">Facebook</option>
-    <option value="TikTok">TikTok</option>
-    <option value="IA">IA</option>
-    <option value="WhatsApp">WhatsApp</option>
-</select>
+<div id="profile-form-container">
+    <h2 class="section-title">Anrejistre pwofil mwen</h2>
+    <form id="profile-form">
+        <input type="hidden" name="form_type" value="user_profile_update">
 
-<div id="whatsapp-friend-container" style="display:none; margin-top: 10px;">
-    <label for="whatsapp_name">Non moun ki refere-w la:</label>
-    <input type="text" id="whatsapp_name" name="whatsapp_name">
-</div>
-                <textarea id="address" name="address" required placeholder="egz: simon, toupre hotel josafa"></textarea>
-                <button type="submit" id="save-profile-btn">Anrejistre enfòmasyon mwen yo</button>
-            </form>
+        <label for="nom">Non konplè (pou livrezon)</label>
+        <input type="text" id="nom" name="nom" required placeholder="egz: jean marc">
+
+        <label for="email">Adrès imèl (obligatwa)</label>
+        <input type="email" id="email" name="email" required placeholder="egz: jean12@gmail.com">
+
+        <label for="phone">Telefòn Whatsapp</label>
+        <input type="tel" id="phone" name="phone" placeholder="+509 xx xx xx xx">
+
+        <label for="address">Adrès detaye</label>
+        <textarea id="address" name="address" required placeholder="egz: simon, toupre hotel josafa"></textarea>
+
+        <label for="reference">Referans (obligatwa)</label>
+        <select id="reference" name="reference" required>
+            <option value="">Chwazi yon opsyon</option>
+            <option value="Facebook">Facebook</option>
+            <option value="TikTok">TikTok</option>
+            <option value="IA">IA</option>
+            <option value="WhatsApp">WhatsApp</option>
+        </select>
+
+        <div id="whatsapp-friend-container" style="display:none; margin-top: 10px;">
+            <label for="whatsapp_name">Non moun ki refere-w la:</label>
+            <input type="text" id="whatsapp_name" name="whatsapp_name" placeholder="Ekrigan non zanmi an">
         </div>
+
+        <button type="submit" id="save-profile-btn">Anrejistre enfòmasyon mwen yo</button>
+    </form>
+</div>
     </main>
 
     <footer id="main-footer">
@@ -334,7 +340,7 @@
         const supportBtn = document.getElementById('support-btn');
         const editProfileBtn = document.getElementById('edit-profile-btn');
         
-        // nouveaux éléments pour la référence
+        // éléments de référence
         const referenceSelect = document.getElementById('reference');
         const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
         
@@ -345,13 +351,15 @@
 
         let isProfileComplete = false;
 
-        // gestion de l'affichage du champ whatsapp
+        // gestion de l'affichage du nom pour whatsapp
         if (referenceSelect) {
             referenceSelect.addEventListener('change', (e) => {
                 if (e.target.value === 'WhatsApp') {
                     whatsappFriendContainer.style.display = 'block';
+                    document.getElementById('whatsapp_name').setAttribute('required', 'true');
                 } else {
                     whatsappFriendContainer.style.display = 'none';
+                    document.getElementById('whatsapp_name').removeAttribute('required');
                 }
             });
         }
@@ -366,7 +374,10 @@
                 profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
                 profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
                 
-                [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn && btn.classList.remove('locked'));
+                const buttons = [wiseBtn, usdtBtn, supportBtn];
+                buttons.forEach(btn => {
+                    if(btn) btn.classList.remove('locked');
+                });
                 
                 if(document.getElementById('lock-icon-wise')) document.getElementById('lock-icon-wise').textContent = 'chevron_right';
                 if(document.getElementById('lock-icon-usdt')) document.getElementById('lock-icon-usdt').textContent = 'chevron_right';
@@ -374,7 +385,10 @@
                 
                 formContainer.style.display = 'none';
             } else {
-                [wiseBtn, usdtBtn, supportBtn].forEach(btn => btn && btn.classList.add('locked'));
+                const buttons = [wiseBtn, usdtBtn, supportBtn];
+                buttons.forEach(btn => {
+                    if(btn) btn.classList.add('locked');
+                });
                 
                 if(document.getElementById('lock-icon-wise')) document.getElementById('lock-icon-wise').textContent = 'lock';
                 if(document.getElementById('lock-icon-usdt')) document.getElementById('lock-icon-usdt').textContent = 'lock';
@@ -408,10 +422,9 @@
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             const saveBtn = document.getElementById('save-profile-btn');
-            saveBtn.textContent = "yap anrejistre...";
+            saveBtn.textContent = "Ap anrejistre...";
             saveBtn.disabled = true;
 
-            // on ne sauvegarde que les infos de base localement
             const profileData = {
                 nom: document.getElementById('nom').value.trim(),
                 email: document.getElementById('email').value.trim(),
@@ -421,17 +434,18 @@
 
             localStorage.setItem(userStorageKey, JSON.stringify(profileData));
             
-            // envoi de toutes les données (y compris référence) à getform
             fetch("https://getform.io/f/akkpolva", {
                 method: "POST",
                 body: new FormData(form),
                 headers: { "Accept": "application/json" },
             })
-            .then(() => alert('Pwofil ou anrejistre ak siksè!'))
-            .catch(() => alert('Enfòmasyon sovgade lokalman.'))
-            .finally(() => {
+            .then(() => {
+                alert('Pwofil ou anrejistre ak siksè!');
                 updateUI();
-                saveBtn.textContent = "Anrejistre enfòmasyon m yo";
+            })
+            .catch(() => alert('Erreur de connexion. Enfòmasyon sovgade lokalman.'))
+            .finally(() => {
+                saveBtn.textContent = "Anrejistre enfòmasyon mwen yo";
                 saveBtn.disabled = false;
             });
         });
