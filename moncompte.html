@@ -254,22 +254,6 @@
             <span id="lock-icon-support" class="material-icons right">lock</span>
         </a>
 
-        <a href="javascript:void(0)" id="wise-btn" class="action-card locked">
-            <span>
-                <span class="material-icons left">add_card</span>
-                Rechaj Wise
-            </span>
-            <span id="lock-icon-wise" class="material-icons right">lock</span>
-        </a>
-
-        <a href="javascript:void(0)" id="usdt-btn" class="action-card locked">
-            <span>
-                <span class="material-icons left">currency_exchange</span>
-                Rechaj USDT (Binance)
-            </span>
-            <span id="lock-icon-usdt" class="material-icons right">lock</span>
-        </a>
-
 <div id="profile-form-container">
     <h2 class="section-title">Anrejistre pwofil mwen</h2>
     <form id="profile-form">
@@ -335,12 +319,10 @@
 
         const form = document.getElementById('profile-form');
         const formContainer = document.getElementById('profile-form-container');
-        const wiseBtn = document.getElementById('wise-btn');
-        const usdtBtn = document.getElementById('usdt-btn');
         const supportBtn = document.getElementById('support-btn');
         const editProfileBtn = document.getElementById('edit-profile-btn');
         
-        // éléments de référence
+        // Éléments de référence
         const referenceSelect = document.getElementById('reference');
         const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
         
@@ -351,15 +333,16 @@
 
         let isProfileComplete = false;
 
-        // gestion de l'affichage du nom pour whatsapp
+        // Gestion de l'affichage du champ whatsapp
         if (referenceSelect) {
             referenceSelect.addEventListener('change', (e) => {
+                const whatsappNameInput = document.getElementById('whatsapp_name');
                 if (e.target.value === 'WhatsApp') {
                     whatsappFriendContainer.style.display = 'block';
-                    document.getElementById('whatsapp_name').setAttribute('required', 'true');
+                    if (whatsappNameInput) whatsappNameInput.setAttribute('required', 'true');
                 } else {
                     whatsappFriendContainer.style.display = 'none';
-                    document.getElementById('whatsapp_name').removeAttribute('required');
+                    if (whatsappNameInput) whatsappNameInput.removeAttribute('required');
                 }
             });
         }
@@ -374,25 +357,15 @@
                 profilePhoneDisplay.textContent = profile.phone || 'telefòn ou pako anrejistre';
                 profileAddressDisplay.textContent = profile.address || 'adrès ou pako anrejistre';
                 
-                const buttons = [wiseBtn, usdtBtn, supportBtn];
-                buttons.forEach(btn => {
-                    if(btn) btn.classList.remove('locked');
-                });
-                
-                if(document.getElementById('lock-icon-wise')) document.getElementById('lock-icon-wise').textContent = 'chevron_right';
-                if(document.getElementById('lock-icon-usdt')) document.getElementById('lock-icon-usdt').textContent = 'chevron_right';
-                if(document.getElementById('lock-icon-support')) document.getElementById('lock-icon-support').textContent = 'chevron_right';
+                if (supportBtn) supportBtn.classList.remove('locked');
+                const lockIconSupport = document.getElementById('lock-icon-support');
+                if (lockIconSupport) lockIconSupport.textContent = 'chevron_right';
                 
                 formContainer.style.display = 'none';
             } else {
-                const buttons = [wiseBtn, usdtBtn, supportBtn];
-                buttons.forEach(btn => {
-                    if(btn) btn.classList.add('locked');
-                });
-                
-                if(document.getElementById('lock-icon-wise')) document.getElementById('lock-icon-wise').textContent = 'lock';
-                if(document.getElementById('lock-icon-usdt')) document.getElementById('lock-icon-usdt').textContent = 'lock';
-                if(document.getElementById('lock-icon-support')) document.getElementById('lock-icon-support').textContent = 'lock';
+                if (supportBtn) supportBtn.classList.add('locked');
+                const lockIconSupport = document.getElementById('lock-icon-support');
+                if (lockIconSupport) lockIconSupport.textContent = 'lock';
                 
                 formContainer.style.display = 'block';
             }
@@ -408,11 +381,11 @@
             }
         };
 
-        if(wiseBtn) wiseBtn.addEventListener('click', () => checkAccess("pack.html"));
-        if(usdtBtn) usdtBtn.addEventListener('click', () => checkAccess("usdt.html"));
-        if(supportBtn) supportBtn.addEventListener('click', () => checkAccess("contact.html"));
+        if (supportBtn) {
+            supportBtn.addEventListener('click', () => checkAccess("contact.html"));
+        }
 
-        if(editProfileBtn) {
+        if (editProfileBtn) {
             editProfileBtn.addEventListener('click', () => {
                 formContainer.style.display = 'block';
                 formContainer.scrollIntoView({ behavior: 'smooth' });
