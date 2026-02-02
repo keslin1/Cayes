@@ -48,7 +48,47 @@
             color: var(--bleu-marin);
             margin-left: 15px;
         }
-        
+/* Badge sou cloche la */
+.icon-right { position: relative; display: flex; align-items: center; }
+#notif-badge {
+    position: absolute;
+    top: -5px;
+    left: 15px;
+    background-color: var(--rouge-alerte);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 10px;
+    font-weight: bold;
+    display: none; /* l ap parèt sèlman si gen mesaj */
+}
+
+/* Modal Mesaj */
+.message-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+.message-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    width: 85%;
+    max-width: 400px;
+    border-radius: 15px;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+.message-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9em;
+}
+.message-item.unread { background-color: #f0f8ff; border-left: 4px solid var(--bleu-marin); }
+.message-time { font-size: 0.7em; color: #888; display: block; }
+       
         .section-title {
             font-size: 1.1em; 
             font-weight: 600;
@@ -200,13 +240,28 @@
 </head>
 <body>
 
-    <header class="header-top">
-        <h1>Kont mwen</h1>
-        <div class="icon-right">
-            <span class="material-icons">notifications</span>
-            <span class="material-icons">person</span> 
+<header class="header-top">
+    <h1>Kont mwen</h1>
+    <div class="icon-right" onclick="openMessageModal()">
+        <span class="material-icons">notifications</span>
+        <span id="notif-badge">0</span>
+        <span class="material-icons" style="margin-left:15px;">person</span> 
+    </div>
+</header>
+
+<div id="messageModal" class="message-modal">
+    <div class="message-content">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="margin:0;">Mesaj mwen yo</h3>
+            <span class="material-icons" onclick="closeMessageModal()" style="cursor:pointer;">close</span>
         </div>
-    </header>
+        <hr>
+        <div id="message-list">
+            <p style="text-align:center; color:#888;">Pa gen mesaj pou kounye a.</p>
+        </div>
+    </div>
+</div>
+
 
     <main id="main-content">
         
@@ -314,6 +369,81 @@
     </footer>
 
 <script>
+// Sistèm Jesyon Mesaj
+const MESSAGE_KEY = 'lcd_user_messages';
+
+function getMessages() {
+    return JSON.parse(localStorage.getItem(MESSAGE_KEY)) || [];
+}
+
+function saveMessage(title, body) {
+    const messages = getMessages();
+    messages.unshift({
+        id: Date.now(),
+        title: title,
+        body: body,
+        time: new Date().toLocaleString('ht-HT'),
+        read: false
+    });
+    localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
+    updateBadgeUI();
+}
+
+function updateBadgeUI() {
+    const messages = getMessages();
+    const unreadCount = messages.filter(m => !m.read).length;
+    const badge = document.getElementById('notif-badge');
+    
+    if (unreadCount > 0) {
+        badge.style.display = 'block';
+        badge.textContent = unreadCount;
+        
+        // Si navigatè a sipòte sa, mete nimewo a sou ikòn aplikasyon an
+        if ('setAppBadge' in navigator) {
+            navigator.setAppBadge(unreadCount);
+        }
+    } else {
+        badge.style.display = 'none';
+        if ('clearAppBadge' in navigator) {
+            navigator.clearAppBadge();
+        }
+    }
+}
+
+function openMessageModal() {
+    document.getElementById('messageModal').style.display = 'block';
+    const list = document.getElementById('message-list');
+    const messages = getMessages();
+    
+    if (messages.length === 0) return;
+
+    list.innerHTML = messages.map(m => `
+        <div class="message-item ${m.read ? '' : 'unread'}">
+            <strong>${m.title}</strong>
+            <p style="margin:5px 0;">${m.body}</p>
+            <span class="message-time">${m.time}</span>
+        </div>
+    `).join('');
+
+    // Make all as read after opening
+    const updatedMessages = messages.map(m => ({ ...m, read: true }));
+    localStorage.setItem(MESSAGE_KEY, JSON.stringify(updatedMessages));
+    setTimeout(updateBadgeUI, 1000); // Rete yon ti tan avan badge la disparèt
+}
+
+function closeMessageModal() {
+    document.getElementById('messageModal').style.display = 'none';
+}
+
+// Tcheke si gen paramèt nan URL la pou ouvri mesaj otomatikman
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('tab') === 'mesaj') {
+        openMessageModal();
+    }
+    updateBadgeUI();
+});
+    
     document.addEventListener('DOMContentLoaded', () => {
         const userStorageKey = 'user_profile_data';
 

@@ -735,11 +735,12 @@
     };
 
     // 3. SYSTÈME DE NOTIFICATIONS (FIREBASE + LOCAL)
+    const notifSound = new Audio('notification.mp3');
+
     async function initNotifications() {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
             try {
-                // Récupération du token Firebase pour l'APK
                 const currentToken = await getToken(messaging, { 
                     vapidKey: 'BP9kFGPwxqYaXOC-Ip3AY6L2eBMs0og181TRWEL03ROFvVf-0Onw3QibLba06Q5dZnjlQh7381JplG838ygul70' 
                 });
@@ -752,17 +753,45 @@
         }
     }
 
+    // Fonksyon pou koute notifikasyon k ap rive lè itilizatè a sou paj la
+    onMessage(messaging, (payload) => {
+        console.log('Mesaj resevwa: ', payload);
+        
+        // Jwe son an
+        notifSound.play().catch(err => console.log("Navigatè a bloke son an: ", err));
+
+        // Kreye notifikasyon an
+        const notificationTitle = payload.notification.title;
+        const notificationOptions = {
+            body: payload.notification.body,
+            icon: "/lescayesdropshipping.jpg",
+            data: { url: "moncompte.html?tab=mesaj" } // Sa prepare lyen pou ale nan paj mesaj la
+        };
+
+        const notification = new Notification(notificationTitle, notificationOptions);
+        
+        // Lè itilizatè a klike sou notifikasyon an, li ale nan paj mesaj nan moncompte
+        notification.onclick = (event) => {
+            event.preventDefault();
+            window.location.href = event.target.data.url;
+        };
+    });
+
     function showWelcomeNotification() {
         const profile = loadProfile();
         let name = profile.nom ? profile.nom.split(' ')[0] : "Zanmi";
 
         if (Notification.permission === "granted") {
-            new Notification("Les Cayes Dropshipping", {
+            const welcomeNotif = new Notification("Les Cayes Dropshipping", {
                 body: `Bonjou ${name}, kontan wè w! Tcheke dènye deal nou yo.`,
                 icon: "/lescayesdropshipping.jpg"
             });
+            
+            // Jwe son tou pou notifikasyon akey la
+            notifSound.play().catch(e => console.log("Son bloke"));
         }
     }
+
 
     // 4. INITIALISATION PRINCIPALE
     document.addEventListener('DOMContentLoaded', () => {
@@ -823,6 +852,21 @@
             addressInfoElement.textContent = "Les Cayes Dropshipping, Ayiti";
         }
     }
+// Ajoute sa pou bouton yo ka ouvri afich yo
+window.openModal = function(modalId) {
+    document.getElementById(modalId).style.display = "block";
+}
+
+window.closeModal = function(modalId) {
+    document.getElementById(modalId).style.display = "none";
+}
+
+// Sa ap fè modal la fèmen si moun nan klike deyò bwat la
+window.onclick = function(event) {
+    if (event.target.className === 'modal') {
+        event.target.style.display = "none";
+    }
+}
 
     // 6. SERVICE WORKER
     if ('serviceWorker' in navigator) {
