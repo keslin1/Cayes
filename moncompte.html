@@ -369,90 +369,118 @@
     </footer>
 
 <script>
-// Sistèm Jesyon Mesaj
-const MESSAGE_KEY = 'lcd_user_messages';
+    // 1. KONFIGIRASYON AK GLOBAL
+    const MESSAGE_KEY = 'lcd_user_messages';
+    const userStorageKey = 'user_profile_data';
+    const notifSound = new Audio('notification.mp3');
 
-function getMessages() {
-    return JSON.parse(localStorage.getItem(MESSAGE_KEY)) || [];
-}
+    // 2. SISTÈM JESYON MESAJ
+    function getMessages() {
+        try {
+            return JSON.parse(localStorage.getItem(MESSAGE_KEY)) || [];
+        } catch (e) {
+            return [];
+        }
+    }
 
-function saveMessage(title, body) {
-    const messages = getMessages();
-    messages.unshift({
-        id: Date.now(),
-        title: title,
-        body: body,
-        time: new Date().toLocaleString('ht-HT'),
-        read: false
-    });
-    localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
-    updateBadgeUI();
-}
-
-function updateBadgeUI() {
-    const messages = getMessages();
-    const unreadCount = messages.filter(m => !m.read).length;
-    const badge = document.getElementById('notif-badge');
-    
-    if (unreadCount > 0) {
-        badge.style.display = 'block';
-        badge.textContent = unreadCount;
+    function saveMessage(title, body) {
+        let messages = getMessages();
         
-        // Si navigatè a sipòte sa, mete nimewo a sou ikòn aplikasyon an
-        if ('setAppBadge' in navigator) {
-            navigator.setAppBadge(unreadCount);
+        // Ajoute nouvo mesaj la nan kòmansman an
+        messages.unshift({
+            id: Date.now(),
+            title: title,
+            body: body,
+            time: new Date().toLocaleString('ht-HT'),
+            read: false
+        });
+
+        // LIMITE A 10 MESAJ: Si gen plis, nou efase sa ki pi ansyen yo
+        if (messages.length > 10) {
+            messages = messages.slice(0, 10);
         }
-    } else {
-        badge.style.display = 'none';
-        if ('clearAppBadge' in navigator) {
-            navigator.clearAppBadge();
+
+        localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
+        updateBadgeUI();
+    }
+
+    // Sa a se pou Firebase (si kòd sa a nan paj accueil oswa moncompte)
+    if (typeof onMessage !== 'undefined') {
+        onMessage(messaging, (payload) => {
+            const title = payload.notification.title;
+            const body = payload.notification.body;
+
+            notifSound.play().catch(e => console.log("Son bloke pa navigatè a"));
+            
+            // Sove mesaj la ak limit 10 la
+            saveMessage(title, body);
+
+            new Notification(title, { 
+                body: body, 
+                icon: "/lescayesdropshipping.jpg",
+                data: { url: "moncompte.html?tab=mesaj" }
+            });
+        });
+    }
+
+    function updateBadgeUI() {
+        const messages = getMessages();
+        const unreadCount = messages.filter(m => !m.read).length;
+        const badge = document.getElementById('notif-badge');
+        
+        if (badge) {
+            if (unreadCount > 0) {
+                badge.style.display = 'block';
+                badge.textContent = unreadCount;
+                if ('setAppBadge' in navigator) navigator.setAppBadge(unreadCount);
+            } else {
+                badge.style.display = 'none';
+                if ('clearAppBadge' in navigator) navigator.clearAppBadge();
+            }
         }
     }
-}
 
-function openMessageModal() {
-    document.getElementById('messageModal').style.display = 'block';
-    const list = document.getElementById('message-list');
-    const messages = getMessages();
-    
-    if (messages.length === 0) return;
+    // 3. UI MODAL MESAJ
+    function openMessageModal() {
+        const modal = document.getElementById('messageModal');
+        if (!modal) return;
+        
+        modal.style.display = 'block';
+        const list = document.getElementById('message-list');
+        const messages = getMessages();
+        
+        if (messages.length === 0) {
+            list.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Ou pa gen okenn mesaj.</p>';
+            return;
+        }
 
-    list.innerHTML = messages.map(m => `
-        <div class="message-item ${m.read ? '' : 'unread'}">
-            <strong>${m.title}</strong>
-            <p style="margin:5px 0;">${m.body}</p>
-            <span class="message-time">${m.time}</span>
-        </div>
-    `).join('');
+        list.innerHTML = messages.map(m => `
+            <div class="message-item ${m.read ? '' : 'unread'}">
+                <strong>${m.title}</strong>
+                <p style="margin:5px 0;">${m.body}</p>
+                <span class="message-time">${m.time}</span>
+            </div>
+        `).join('');
 
-    // Make all as read after opening
-    const updatedMessages = messages.map(m => ({ ...m, read: true }));
-    localStorage.setItem(MESSAGE_KEY, JSON.stringify(updatedMessages));
-    setTimeout(updateBadgeUI, 1000); // Rete yon ti tan avan badge la disparèt
-}
-
-function closeMessageModal() {
-    document.getElementById('messageModal').style.display = 'none';
-}
-
-// Tcheke si gen paramèt nan URL la pou ouvri mesaj otomatikman
-document.addEventListener('DOMContentLoaded', () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('tab') === 'mesaj') {
-        openMessageModal();
+        // Make all as read after opening
+        const updatedMessages = messages.map(m => ({ ...m, read: true }));
+        localStorage.setItem(MESSAGE_KEY, JSON.stringify(updatedMessages));
+        
+        // Tann yon ti moman anvan badge la disparèt
+        setTimeout(updateBadgeUI, 1500);
     }
-    updateBadgeUI();
-});
-    
+
+    function closeMessageModal() {
+        const modal = document.getElementById('messageModal');
+        if (modal) modal.style.display = 'none';
+    }
+
+    // 4. INICIALIZASYON DOM
     document.addEventListener('DOMContentLoaded', () => {
-        const userStorageKey = 'user_profile_data';
-
         const form = document.getElementById('profile-form');
         const formContainer = document.getElementById('profile-form-container');
         const supportBtn = document.getElementById('support-btn');
         const editProfileBtn = document.getElementById('edit-profile-btn');
-        
-        // Éléments de référence
         const referenceSelect = document.getElementById('reference');
         const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
         
@@ -463,7 +491,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let isProfileComplete = false;
 
-        // Gestion de l'affichage du champ whatsapp
+        // Tcheke si moun nan soti nan yon notifikasyon
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('tab') === 'mesaj') {
+            setTimeout(openMessageModal, 500);
+        }
+
+        // Mizajou Badge la
+        updateBadgeUI();
+
+        // Jesyon fòm referans
         if (referenceSelect) {
             referenceSelect.addEventListener('change', (e) => {
                 const whatsappNameInput = document.getElementById('whatsapp_name');
@@ -496,7 +533,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (supportBtn) supportBtn.classList.add('locked');
                 const lockIconSupport = document.getElementById('lock-icon-support');
                 if (lockIconSupport) lockIconSupport.textContent = 'lock';
-                
                 formContainer.style.display = 'block';
             }
         };
@@ -511,10 +547,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        if (supportBtn) {
-            supportBtn.addEventListener('click', () => checkAccess("contact.html"));
-        }
-
+        if (supportBtn) supportBtn.addEventListener('click', () => checkAccess("contact.html"));
+        
         if (editProfileBtn) {
             editProfileBtn.addEventListener('click', () => {
                 formContainer.style.display = 'block';
@@ -555,6 +589,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         updateUI();
     });
+
+    // Fèmen modal si moun nan klike deyò
+    window.onclick = function(event) {
+        const modal = document.getElementById('messageModal');
+        if (event.target == modal) {
+            closeMessageModal();
+        }
+    }
 </script>
 </body>
 </html>
