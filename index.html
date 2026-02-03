@@ -713,17 +713,44 @@
         measurementId: "G-PNG051JBNN"
     };
 
-    // Initialisation Firebase
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const messaging = getMessaging(app);
 
-    // 2. FONCTIONS UTILITAIRES
-    function capitalizeFirstLetter(string) {
-        if (!string) return '';
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    // 2. SISTÈM SON AK MESAJ (LCD MOD)
+    const MESSAGE_KEY = 'lcd_user_messages';
+    const notifSound = new Audio('notification.mp3');
+
+    // NOUVO: Debloke son an depi premye klik sou paj akey la
+    document.addEventListener('click', () => {
+        notifSound.play().then(() => {
+            notifSound.pause();
+            notifSound.currentTime = 0;
+        }).catch(() => {});
+    }, { once: true });
+
+    // Fonksyon pou sove mesaj la (menm jan ak moncompte.html)
+    function saveMessage(title, body) {
+        let messages = JSON.parse(localStorage.getItem(MESSAGE_KEY)) || [];
+        
+        // Evite kopi
+        const isDuplicate = messages.some(m => m.title === title && m.body === body && (Date.now() - m.id) < 5000);
+        if (isDuplicate) return;
+
+        messages.unshift({
+            id: Date.now(),
+            title: title,
+            body: body,
+            time: new Date().toLocaleString('ht-HT'),
+            read: false
+        });
+
+        if (messages.length > 10) { messages = messages.slice(0, 10); }
+        localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
+        updateNotifBadges(); // Rafrechi badge yo
     }
 
+    // 3. FONKSYON UTILITAIRES
     const loadProfile = () => {
         try { return JSON.parse(localStorage.getItem('user_profile_data')) || {}; }
         catch (e) { return {}; }
@@ -734,104 +761,74 @@
         catch (e) { return []; }
     };
 
-    // 3. SYSTÈME DE NOTIFICATIONS (FIREBASE + LOCAL)
-    const notifSound = new Audio('notification.mp3');
-
+    // 4. SYSTÈME DE NOTIFICATIONS
     async function initNotifications() {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
             try {
-                const currentToken = await getToken(messaging, { 
+                await getToken(messaging, { 
                     vapidKey: 'BP9kFGPwxqYaXOC-Ip3AY6L2eBMs0og181TRWEL03ROFvVf-0Onw3QibLba06Q5dZnjlQh7381JplG838ygul70' 
                 });
-                if (currentToken) {
-                    console.log("Token prêt pour les notifications distantes");
-                }
-            } catch (err) {
-                console.log("Erreur lors de la récupération du token :", err);
-            }
+            } catch (err) { console.log("Erreur token:", err); }
         }
     }
 
-    // Fonksyon pou koute notifikasyon k ap rive lè itilizatè a sou paj la
     onMessage(messaging, (payload) => {
-        console.log('Mesaj resevwa: ', payload);
-        
+        const title = payload.notification.title;
+        const body = payload.notification.body;
+
         // Jwe son an
-        notifSound.play().catch(err => console.log("Navigatè a bloke son an: ", err));
+        notifSound.play().catch(err => console.log("Son bloke"));
 
-        // Kreye notifikasyon an
-        const notificationTitle = payload.notification.title;
-        const notificationOptions = {
-            body: payload.notification.body,
+        // SOVE MESAJ LA NAN MEMWA
+        saveMessage(title, body);
+
+        // Montre notifikasyon lokal la
+        const notification = new Notification(title, {
+            body: body,
             icon: "/lescayesdropshipping.jpg",
-            data: { url: "moncompte.html?tab=mesaj" } // Sa prepare lyen pou ale nan paj mesaj la
-        };
-
-        const notification = new Notification(notificationTitle, notificationOptions);
+            data: { url: "moncompte.html?tab=mesaj" }
+        });
         
-        // Lè itilizatè a klike sou notifikasyon an, li ale nan paj mesaj nan moncompte
         notification.onclick = (event) => {
             event.preventDefault();
-            window.location.href = event.target.data.url;
+            window.location.href = "moncompte.html?tab=mesaj";
         };
     });
 
-    function showWelcomeNotification() {
-        const profile = loadProfile();
-        let name = profile.nom ? profile.nom.split(' ')[0] : "Zanmi";
-
-        if (Notification.permission === "granted") {
-            const welcomeNotif = new Notification("Les Cayes Dropshipping", {
-                body: `Bonjou ${name}, kontan wè w! Tcheke dènye deal nou yo.`,
-                icon: "/lescayesdropshipping.jpg"
-            });
-            
-            // Jwe son tou pou notifikasyon akey la
-            notifSound.play().catch(e => console.log("Son bloke"));
-        }
-    }
-
-
-    // 4. INITIALISATION PRINCIPALE
+    // 5. INITIALISATION UI
     document.addEventListener('DOMContentLoaded', () => {
-        // Cacher le splash screen
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             if(splash) splash.style.display = 'none';
         }, 1500);
 
-        // Initialiser les notifications
         initNotifications();
-        setTimeout(showWelcomeNotification, 3000);
+        updateNotifBadges(); // Tcheke si gen mesaj ki pako li pou footer a
 
-        // Gestions des swipes
-        if (typeof Hammer !== 'undefined') {
-            const hammer = new Hammer(document.body);
-            hammer.get('swipe').set({ direction: Hammer.DIRECTION_HORIZONTAL });
-            hammer.on('swipeleft', () => { window.location.href = "deal.html"; });
-            hammer.on('swiperight', () => { window.location.href = "transaction.html"; });
-        }
-
+        // Carousel ak Swipe kòd ou a...
         initCarousel();
-        updateBadgeUI();
+        updateBadgeUI(); // Badge panier a
         updateLocationHeader();
     });
 
-    // 5. LOGIQUE UI (CAROUSEL, BADGE, HEADER)
-    function initCarousel() {
-        const bannerCarousel = document.getElementById('banner-carousel'); 
-        const items = document.querySelectorAll('.carousel-item');
-        if (!bannerCarousel || items.length === 0) return;
+    // Mizajou Badge Cloche (si li la) ak Footer
+    function updateNotifBadges() {
+        const messages = JSON.parse(localStorage.getItem(MESSAGE_KEY)) || [];
+        const unreadCount = messages.filter(m => !m.read).length;
         
-        let currentIndex = 0;
-        setInterval(() => {
-            currentIndex = (currentIndex + 1) % items.length;
-            const itemWidth = items[0].getBoundingClientRect().width; 
-            bannerCarousel.scrollTo({ left: currentIndex * (itemWidth + 15), behavior: 'smooth' });
-        }, 10000);
+        const footerBadge = document.getElementById('footer-badge');
+        if (footerBadge) {
+            if (unreadCount > 0) {
+                footerBadge.style.display = 'block';
+                footerBadge.textContent = unreadCount;
+            } else {
+                footerBadge.style.display = 'none';
+            }
+        }
     }
 
+    // Rès fonksyon ou yo (initCarousel, updateBadgeUI, elatriye...)
     function updateBadgeUI() {
         const badge = document.getElementById('deal-badge');
         const count = loadCart().length;
@@ -841,37 +838,10 @@
         }
     }
 
-    function updateLocationHeader() {
-        const addressInfoElement = document.getElementById('address-info');
-        if (!addressInfoElement) return;
-        const profile = loadProfile(); 
-        if (profile && profile.nom) {
-            const zon = profile.address ? profile.address.split('\n')[0].split(',')[0] : 'Ayiti';
-            addressInfoElement.textContent = `${profile.nom}, ${zon}`;
-        } else {
-            addressInfoElement.textContent = "Les Cayes Dropshipping, Ayiti";
-        }
-    }
-// Ajoute sa pou bouton yo ka ouvri afich yo
-window.openModal = function(modalId) {
-    document.getElementById(modalId).style.display = "block";
-}
-
-window.closeModal = function(modalId) {
-    document.getElementById(modalId).style.display = "none";
-}
-
-// Sa ap fè modal la fèmen si moun nan klike deyò bwat la
-window.onclick = function(event) {
-    if (event.target.className === 'modal') {
-        event.target.style.display = "none";
-    }
-}
-
-    // 6. SERVICE WORKER
+    // ... (Kenbe fonksyon openModal, closeModal ak Service Worker ou yo) ...
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then(reg => console.log('Firebase SW enregistré'))
+            .then(reg => console.log('SW anrejistre'))
             .catch(err => console.log('Erreur SW:', err));
     }
 </script>
