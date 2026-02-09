@@ -372,15 +372,13 @@
     const userStorageKey = 'user_profile_data';
     const notifSound = new Audio('notification.mp3');
 
-    // Fonksyon pou jwe son an (pèsonalize)
     function playNotifSound() {
-        notifSound.currentTime = 0; // Rekòmanse son an si l te deja ap jwe
+        notifSound.currentTime = 0;
         notifSound.play().catch(e => {
-            console.warn("Navigatè a bloke son an otomatikman. Itilizatè a dwe klike sou paj la omwen yon fwa.");
+            console.warn("Navigatè a bloke son an otomatikman.");
         });
     }
 
-    // Débloquer le son au premier clic utilisateur (OBLIGATWA POU MOBILE)
     document.addEventListener('click', () => {
         notifSound.play().then(() => {
             notifSound.pause();
@@ -413,7 +411,7 @@
 
         localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
         updateBadgeUI();
-        playNotifSound(); // Jwe son an depi yon mesaj anrejistre
+        playNotifSound();
     }
 
     function updateBadgeUI() {
@@ -434,7 +432,6 @@
         }
     }
 
-    // Écouter les messages venant du Service Worker
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.addEventListener('message', (event) => {
             if (event.data && event.data.type === 'SAVE_NOTIF') {
@@ -443,7 +440,6 @@
         });
     }
 
-    // Firebase onMessage (quand l'app est ouverte)
     if (typeof onMessage !== 'undefined') {
         onMessage(messaging, (payload) => {
             saveMessage(payload.notification.title, payload.notification.body);
@@ -454,7 +450,7 @@
         });
     }
 
-    // 3. INTERFACE UTILISATEUR (MODAL ET PROFIL)
+    // 3. INTERFACE UTILISATEUR
     function openMessageModal() {
         const modal = document.getElementById('messageModal');
         if (!modal) return;
@@ -476,18 +472,16 @@
             </div>
         `).join('');
 
-        // Marquer comme lu
         const updatedMessages = messages.map(m => ({ ...m, read: true }));
         localStorage.setItem(MESSAGE_KEY, JSON.stringify(updatedMessages));
         
-        // Nou mete badge yo ajou touswit apre modal la fin ouvri
         setTimeout(updateBadgeUI, 500);
     }
 
     function closeMessageModal() {
         const modal = document.getElementById('messageModal');
         if (modal) modal.style.display = 'none';
-        updateBadgeUI(); // Verifye ankò lè l fèmen
+        updateBadgeUI();
     }
 
     // INITIALISATION GÉNÉRALE
@@ -496,13 +490,13 @@
         const formContainer = document.getElementById('profile-form-container');
         const supportBtn = document.getElementById('support-btn');
         const lockIcon = document.getElementById('lock-icon-support');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
         
         const profileNameDisplay = document.getElementById('profile-name-display');
         const profileEmailDisplay = document.getElementById('profile-email-display');
         const profilePhoneDisplay = document.getElementById('profile-phone-display');
         const profileAddressDisplay = document.getElementById('profile-address-display');
 
-        // Lojik pou mete pwofil ajou ak debloke bouton
         const updateUI = () => {
             const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
             const isProfileComplete = !!(profile.nom && profile.email);
@@ -513,12 +507,11 @@
                 profilePhoneDisplay.textContent = profile.phone || 'pako anrejistre';
                 profileAddressDisplay.textContent = profile.address || 'pako anrejistre';
                 
-                // Debloke bouton sèvis kliyan
                 if (supportBtn) {
                     supportBtn.classList.remove('locked');
                     supportBtn.style.opacity = "1";
                     if(lockIcon) lockIcon.style.display = "none";
-                    supportBtn.href = "https://wa.me/50937512345"; // Chanje ak nimewo pa w
+                    supportBtn.href = "https://wa.me/50937512345";
                 }
                 formContainer.style.display = 'none';
             } else {
@@ -531,7 +524,19 @@
             }
         };
 
-        // Koute chanjman sou Select la
+        // Bouton Mettre à jour
+        if (editProfileBtn) {
+            editProfileBtn.addEventListener('click', () => {
+                formContainer.style.display = 'block';
+                formContainer.scrollIntoView({ behavior: 'smooth' });
+                const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                if (profile.nom) document.getElementById('nom').value = profile.nom;
+                if (profile.email) document.getElementById('email').value = profile.email;
+                if (profile.phone) document.getElementById('phone').value = profile.phone;
+                if (profile.address) document.getElementById('address').value = profile.address;
+            });
+        }
+
         const referenceSelect = document.getElementById('reference');
         const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
         if (referenceSelect) {
@@ -540,7 +545,6 @@
             });
         }
 
-        // Soumèt fòm nan
         form.addEventListener('submit', function(e) {
             e.preventDefault();
             const profileData = {
@@ -551,12 +555,8 @@
             };
             localStorage.setItem(userStorageKey, JSON.stringify(profileData));
             alert('Pwofil anrejistre ak siksè!');
-            updateUI(); // Sa ap debloke Sèvis Kliyan touswit
+            updateUI();
         });
-
-        // Tcheke notifikasyon nan URL
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('tab') === 'mesaj') setTimeout(openMessageModal, 500);
 
         updateUI();
         updateBadgeUI();
@@ -566,6 +566,7 @@
         if (event.target == document.getElementById('messageModal')) closeMessageModal();
     }
 </script>
+
 
 </body>
 </html>
