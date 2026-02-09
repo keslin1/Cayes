@@ -9,7 +9,7 @@
     
     <link rel="stylesheet" href="base.css"> 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="manifest" href="/manifest.json">
     
     <meta name="apple-mobile-web-app-title" content="LCDrop">
@@ -220,101 +220,7 @@
             text-shadow: 1px 1px 2px #000;
         }
         
-        /* Cartes produits */
-        #deal-products {
-            display: flex;
-            overflow-x: scroll; 
-            gap: 15px;
-            padding: 10px 15px 10px 0; 
-            scroll-snap-type: x mandatory; 
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
 
-        #deal-products::-webkit-scrollbar {
-            display: none;
-        }
-
-        #deal-products .product-card-link {
-             scroll-snap-align: start; 
-             text-decoration: none; 
-             color: inherit; 
-        }
-        
-        #deal-products .product-card-link:first-child {
-            margin-left: 15px;
-        }
-
-        #main-content {
-            padding: 0 15px; 
-        }
-
-        .product-card {
-            min-width: 160px;
-            background-color: var(--blanc-fond); 
-            border-radius: 12px; 
-            padding: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); 
-            transition: transform 0.2s;
-            text-align: center;
-        }
-        
-        .product-card img {
-            width: 100%;
-            height: 100px; 
-            object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 5px;
-        }
-
-        .price {
-            font-weight: bold;
-            font-size: 1.1em;
-            color: var(--bleu-marin);
-            margin: 5px 0;
-        }
-
-        .stock {
-            font-size: 0.8em;
-            margin-bottom: 5px;
-            color: var(--kaki); 
-            font-weight: 600;
-        }
-
-        .btn-ajouter {
-            background-color: var(--kaki); 
-            color: var(--bleu-marin); 
-            border: 2px solid var(--bleu-marin); 
-            padding: 8px 15px;
-            border-radius: 20px; 
-            cursor: pointer;
-            width: 100%;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-            display: flex; 
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Style de l'icône dans le bouton "Mete nan panye" */
-        .btn-ajouter .material-icons {
-            font-size: 18px;
-            margin-right: 5px;
-            color: var(--bleu-marin); 
-        }
-        
-        #main-content > p {
-            background-color: var(--gri-clair); 
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-        
-        .material-icons {
-            font-family: 'Material Icons';
-        }
-        
         /* Footer Styles */
         #main-footer {
             display: flex;
@@ -386,23 +292,6 @@
     font-weight: bold;
 }
 
-        /* Style du Badge de Notification (pour Deal) */
-        .cart-badge-nav {
-            position: absolute;
-            top: 0;
-            right: 10px; 
-            background-color: var(--rouge-alerte);
-            color: var(--blanc-fond);
-            border-radius: 50%;
-            padding: 2px 5px;
-            font-size: 0.65em;
-            font-weight: bold;
-            min-width: 10px;
-            text-align: center;
-            line-height: 1;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            display: none; 
-        }
 /* style des boutons de profil */
     /* style pou lis ak chèk ✔️ */
 .custom-list {
@@ -491,6 +380,83 @@
     body {
     overscroll-behavior-y: contain; /* Empêche le tirer-pour-rafraîchir */
 }
+    
+#avis-clients { padding: 20px 15px; background: var(--blanc-fond); margin: 15px; border-radius: 12px; }
+.stars-global { display: flex; align-items: center; gap: 2px; color: #FFD700; margin-bottom: 15px; }
+.stars-global p { color: var(--noir-texte); font-size: 0.8em; margin-left: 10px; }
+
+.comment-card { border-bottom: 1px solid #eee; padding: 15px 0; }
+.comment-card:last-child { border-bottom: none; }
+.comment-author { font-weight: bold; font-size: 0.9em; display: flex; align-items: center; gap: 8px; }
+.comment-author span { color: #FFD700; font-size: 14px; }
+.comment-text { font-size: 0.85em; color: #555; margin-top: 5px; line-height: 1.4; }
+.comment-date { font-size: 0.7em; color: #aaa; margin-top: 5px; }
+
+.add-avis { margin-top: 25px; border-top: 2px dashed var(--kaki); padding-top: 15px; }
+.add-avis textarea { width: 100%; height: 80px; border-radius: 8px; border: 1px solid #ccc; padding: 10px; font-family: inherit; }
+.add-avis button { background: var(--bleu-marin); color: white; border: none; padding: 10px 20px; border-radius: 20px; margin-top: 10px; width: 100%; font-weight: bold; }
+    
+#footer-description {
+    padding: 30px 15px;
+    text-align: left;
+    background-color: #004D40; /* Vèt fonse ki nan imaj la */
+    color: #ffffff; /* Tèks blan pou l ka li byen */
+    margin-top: 30px;
+    border-radius: 12px 12px 0 0;
+}
+
+#footer-description {
+    padding: 40px 0; /* Espas anlè ak anba */
+    text-align: center; /* Sa ap santre tout tèks yo */
+    background-color: #004D40; /* Vèt fonse Kaw Academy an */
+    color: #ffffff;
+    margin: 30px -15px -70px -15px; /* Maj negatif pou l kole nan bor ekran an (si main content gen padding) */
+    border-radius: 0; /* Retire kwen won yo pou l ranpli tout espas la */
+}
+
+.container-footer {
+    padding: 0 20px; /* Pou tèks la pa kole nan bor vèt la */
+}
+
+#footer-description p {
+    line-height: 1.6;
+    font-size: 0.95em;
+    margin-bottom: 20px;
+}
+
+#footer-description strong {
+    color: #FF8C00; /* Zoranj pou aksan */
+}
+
+.social-icons-display {
+    display: flex;
+    justify-content: center; /* Sa ap santre ikon yo nèt nan mitan */
+    gap: 30px;
+    margin: 25px 0;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.contact-info-footer {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-info-footer p {
+    margin: 10px 0;
+    font-size: 0.85em;
+    color: #e0e0e0;
+}
+
+.contact-info-footer strong {
+    color: #FF8C00;
+    display: block;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
     </style>
 </head>
 <body>
@@ -508,7 +474,7 @@
 
             <div class="announcement-bar">
     <div class="scrolling-text">
-        Chè kliyan, nou ap fè mizajou nan sèvis lan pou pèmèt livrezon yo fèt pi rapid, ak plizyè lòt chanjman pou kontinye fasilite nou nan aktivite n. Mitan Fevriye, nou espere tout bagay ap retabli.
+        ⚠️ Pa kòmande bagay ki entèdi osinon ki danjere nan adrès nou. Kliyan an responsab pou peye tout taks ak penalite si ladwàn kenbe machandiz la.
     </div>
 </div>
 
@@ -516,7 +482,7 @@
     <div class="info-step">
         <p class="info-title">1. Jou anbakman :</p>
         <div class="info-detail">Chak Lendi oswa Madi</div>
-        <p class="info-sub">Ekri nou pou nou ka konsolide (regwoupe) koli w yo pou ou avan nou voye yo.</p>
+        <p class="info-sub">Ekri nou pou nou ka konsolide (regwoupe) koli w yo pou ou avan nou voye yo. <strong>Tan pou koli disponib: 15 a 17 jou</strong></p>
     </div>
 
     <div class="info-step no-border">
@@ -612,65 +578,48 @@
 </div>
 
     <main id="main-content">
-<h2 class="section-title"> 
-    Pwodui nou gen dispo
-    <a href="deal.html" class="scroll-indicator arrow-circle" aria-label="Voir plus de produits">
-        <span class="material-icons">arrow_forward</span>
-    </a>
+<h2 class="section-title">
 </h2>
 
+<section id="avis-clients">
+    <div class="avis-header">
+        <h2 class="section-title">Sa kliyan nou yo di</h2>
+        <div class="stars-global">
+            <span class="material-icons">star</span>
+            <span class="material-icons">star</span>
+            <span class="material-icons">star</span>
+            <span class="material-icons">star</span>
+            <span class="material-icons">star_half</span>
+            <p>sou 103 avis ✅</p>
+        </div>
+    </div>
+
+    <div id="comments-container"></div>
+
+    <div class="add-avis">
+        <h3>Bay avis pa w</h3>
+        <textarea id="user-comment" placeholder="Ekri eksperyans ou isit la..."></textarea>
+        <button onclick="ajouterAvis()">Pibliye kòmantè a</button>
+    </div>
+</section>
         
-<div id="deal-products">
-    <a href="deal.html#P001" class="product-card-link">
-        <div class="product-card">
-            <img src="Pwo.jpg" alt="Pwoteksyon zorèy timoun">
-            <div class="product-info">
-                <p class="price" style="font-size: 0.9em; height: 40px; overflow: hidden;">Pwoteksyon zorèy timoun</p>
-                <p class="stock">Pri: 750 HTG</p>
-            </div>
-            <button class="btn-ajouter">
-                <span class="material-icons">shopping_cart</span>
-                Add to cart
-            </button>
-        </div>
-    </a>
-    
-    <a href="deal.html#P002" class="product-card-link">
-        <div class="product-card">
-            <img src="Vès.jpg" alt="Kostim 2 pyès">
-            <div class="product-info">
-                <p class="price" style="font-size: 0.9em; height: 40px; overflow: hidden;">Kostim 2 pyès pou Citizen</p>
-                <p class="stock">Pri: 8 000 HTG</p>
-            </div>
-            <button class="btn-ajouter">
-                <span class="material-icons">shopping_cart</span>
-                Add to cart
-            </button>
-        </div>
-    </a>
-    
-    <a href="deal.html#P003" class="product-card-link">
-        <div class="product-card">
-            <img src="tecno2.jpg" alt="Pòch telefòn Tecno">
-            <div class="product-info">
-                <p class="price" style="font-size: 0.9em; height: 40px; overflow: hidden;">Pòch telefòn Tecno</p>
-                <p class="stock">Pri: 1 000 HTG</p>
-            </div>
-            <button class="btn-ajouter">
-                <span class="material-icons">shopping_cart</span>
-                Add to cart
-            </button>
-        </div>
-    </a>
-</div>
+<section id="footer-description">
+    <div class="container-footer">
+        <p>Les Cayes Dropshipping se yon platfòm e-commerce ki rann acha sou entènèt pi senp e pi sekirize. 
+        <strong>Nou se premye chwa tout antreprenè</strong> ki bezwen achte e resevwa atik osinon materyèl sot aletranje.</p>
 
+        <div class="social-icons-display">
+            <i class="fab fa-facebook"></i>
+            <i class="fab fa-whatsapp"></i>
+            <i class="fab fa-tiktok"></i>
+        </div>
 
-        <h2 class="section-title" style="margin-top: 30px;">Sèvis dropshipping nou an</h2>
-        <p>Les Cayes Dropshipping se yon platfòm e-commerce ki rann acha sou entènèt pi senp e pi sekirize.
-<strong>Nou se premye chwa tout antreprenè</strong> ki bezwen achte e resevwa atik osinon materyèl sot aletranje.</p>
-<div id="custom-install-banner" style="display:none; position:fixed; top:0; left:0; width:100%; background: #ffffff; padding: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 10001; align-items: center; justify-content: space-between;">
-    <div style="display:flex; align-items:center; gap:10px;">
-        <img src="/lescayesdropshipping.jpg" style="width:40px; border-radius:5px;">
+        <div class="contact-info-footer">
+            <p><strong>Haïti Sud :</strong> Camp-Perrin</p>
+            <p><strong>Adresse USA :</strong> 22261 SW 94th Ave Cutler Bay Florida (Floride) 33190-1233 : États-Unis</p>
+        </div>
+    </div>
+</section>
 
 </main>
 
@@ -686,10 +635,6 @@
         <a href="transaction.html" class="nav-item">
             <span class="material-icons">list_alt</span>
             <p>Tranzaksyon</p>
-        </a>
-        <a href="deal.html" class="nav-item">
-            <span class="material-icons">flash_on</span>
-            <span id="deal-badge" class="cart-badge-nav">0</span> <p>Deal</p>
         </a>
         <a href="moncompte.html" class="nav-item">
             <span class="material-icons">person</span >
@@ -716,19 +661,6 @@
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
     const messaging = getMessaging(app);
-
-    // 2. SISTÈM SON AK MESAJ (LCD MOD)
-    const MESSAGE_KEY = 'lcd_user_messages';
-    const notifSound = new Audio('notification.mp3');
-
-    // NOUVO: Debloke son an depi premye klik sou paj akey la
-    document.addEventListener('click', () => {
-        notifSound.play().then(() => {
-            notifSound.pause();
-            notifSound.currentTime = 0;
-        }).catch(() => {});
-    }, { once: true });
-
     // Fonksyon pou sove mesaj la (menm jan ak moncompte.html)
     function saveMessage(title, body) {
         let messages = JSON.parse(localStorage.getItem(MESSAGE_KEY)) || [];
@@ -828,22 +760,147 @@
         }
     }
 
-    // Rès fonksyon ou yo (initCarousel, updateBadgeUI, elatriye...)
-    function updateBadgeUI() {
-        const badge = document.getElementById('deal-badge');
-        const count = loadCart().length;
-        if(badge) {
-            badge.textContent = count;
-            badge.style.display = count > 0 ? 'block' : 'none';
-        }
-    }
-
     // ... (Kenbe fonksyon openModal, closeModal ak Service Worker ou yo) ...
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
             .then(reg => console.log('SW anrejistre'))
             .catch(err => console.log('Erreur SW:', err));
     }
+// Fonksyon pou louvri modal la
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = "block";
+        // Bloke scroll dèyè modal la
+        document.body.style.overflow = "hidden";
+    }
+}
+
+// Fonksyon pou fèmen modal la
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = "none";
+        // Remete scroll la
+        document.body.style.overflow = "auto";
+    }
+}
+
+// Fèmen modal la si moun nan klike deyò bwat la
+window.onclick = function(event) {
+    if (event.target.className === 'modal') {
+        event.target.style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+}
+
+// Rann fonksyon yo aksesib globalman pou "onclick" ka jwenn yo
+window.openModal = openModal;
+window.closeModal = closeModal;
+    
+const simulationAvis = [
+    { id: 101, non: "Jean-Robert L.", text: "Bgy serye, machandiz mw rive san pwoblèm. Sèl bagay li pran yon ti tan.", date: "2 semèn pase", stars: 5 },
+    { id: 102, non: "Marie-Claire D.", text: "Les Kay Dropshipping c garanti 🤭✅. c vre livrezon an pa rapid rapid, men u jwen saw kòmande a.", date: "1 mwa pase", stars: 5 },
+    { id: 103, non: "Stevenson P.", text: "nu pa takse moun pil kòb! bwat mh te pran 22 jou men li rive an bon eta.", date: "5 jou pase", stars: 4 },
+    { id: 104, non: "Lucie B.", text: "sevis mw f plis konfyans. Mr Thomas, respè pou u frem 👍. Livrezon an yon ti jan long, men sa vo lapèn.", date: "3 semèn pase", stars: 5 },
+    { id: 105, non: "Samuel H.", text: "Sèvis la bon, men fòk ou pasyan. sa te pran anviwon 3 semèn pou m te jwenn komand mw yo.", date: "10 jou pase", stars: 4 },
+    { id: 106, non: "Tania S.", text: "Pa gen vòl, no fake. Se yon sevis ki onèt. Machandiz mw rive an plizye okazyon, men yo rive san manke anyen.", date: "2 mwa pase", stars: 5 },
+    { id: 107, non: "Ricardo J.", text: "Mwen fè plizyè kòmand deja. Toujou livre. Reta a se sèl pwoblm, men pou pri a, sekirite; pa gen plenyen.", date: "Yè", stars: 4 }
+];
+
+function aficheAvis() {
+    const container = document.getElementById('comments-container');
+    let localAvis = JSON.parse(localStorage.getItem('user_simulated_avis')) || [];
+    
+    // Nou montre simulation yo + sa itilizatè a ekri
+    const toutAvis = [...localAvis, ...simulationAvis];
+    
+    container.innerHTML = toutAvis.map(a => {
+        // Si se yon kòmantè itilizatè a (li gen yon ID tanporèl ki wo oswa se li ki nan localAvis)
+        const isUser = localAvis.some(la => la.id === a.id);
+        const starIcon = a.stars > 0 ? 'star' : 'star_border'; // star_border vle di zetwal vid
+        
+        return `
+        <div class="comment-card" id="comment-${a.id}">
+            <div class="comment-author">
+                ${a.non} 
+                <span>
+                    <i class="material-icons" style="font-size:14px">${starIcon}</i>
+                    <i class="material-icons" style="font-size:14px">${starIcon}</i>
+                    <i class="material-icons" style="font-size:14px">${starIcon}</i>
+                    <i class="material-icons" style="font-size:14px">${starIcon}</i>
+                    <i class="material-icons" style="font-size:14px">${starIcon}</i>
+                </span>
+            </div>
+            <p class="comment-text" id="text-${a.id}">${a.text}</p>
+            <div class="comment-footer">
+                <span class="comment-date">${a.date}</span>
+                ${isUser ? `
+                    <div class="user-actions">
+                        <button onclick="prepareEdit(${a.id})">Modifye</button>
+                        <button onclick="effacerAvis(${a.id})" style="color:red">Efase</button>
+                    </div>
+                ` : ''}
+            </div>
+        </div>
+    `}).join('');
+}
+
+window.ajouterAvis = function() {
+    const textInput = document.getElementById('user-comment');
+    const text = textInput.value;
+    const editId = textInput.getAttribute('data-edit-id');
+    
+    if(text.trim() === "") return;
+
+    // Rekipere non an nan LocalStorage (menm jan ak nan moncompte.html)
+    const profile = JSON.parse(localStorage.getItem('user_profile_data')) || {};
+    const userName = profile.fullname || "Oumenm";
+
+    let localAvis = JSON.parse(localStorage.getItem('user_simulated_avis')) || [];
+
+    if(editId) {
+        // Si n ap modifye
+        localAvis = localAvis.map(a => a.id == editId ? {...a, text: text} : a);
+        textInput.removeAttribute('data-edit-id');
+    } else {
+        // Si se yon nouvo kòmantè
+        localAvis.unshift({
+            id: Date.now(),
+            non: userName,
+            text: text,
+            date: "Kounye a",
+            stars: 0 // Zetwal vid pou nouvo kòmantè
+        });
+    }
+
+    localStorage.setItem('user_simulated_avis', JSON.stringify(localAvis));
+    textInput.value = "";
+    aficheAvis();
+};
+
+window.prepareEdit = function(id) {
+    let localAvis = JSON.parse(localStorage.getItem('user_simulated_avis')) || [];
+    const avis = localAvis.find(a => a.id == id);
+    if(avis) {
+        const input = document.getElementById('user-comment');
+        input.value = avis.text;
+        input.setAttribute('data-edit-id', id);
+        input.focus();
+    }
+};
+
+window.effacerAvis = function(id) {
+    if(confirm("Èske ou vle efase kòmantè sa a?")) {
+        let localAvis = JSON.parse(localStorage.getItem('user_simulated_avis')) || [];
+        localAvis = localAvis.filter(a => a.id != id);
+        localStorage.setItem('user_simulated_avis', JSON.stringify(localAvis));
+        aficheAvis();
+    }
+};
+
+document.addEventListener('DOMContentLoaded', aficheAvis);
+    
 </script>
 </body>
 </html>
