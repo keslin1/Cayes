@@ -393,26 +393,27 @@
         } catch (e) { return []; }
     }
 
-    function saveMessage(title, body) {
-        let messages = getMessages();
-        
-        const isDuplicate = messages.some(m => m.title === title && m.body === body && (Date.now() - m.id) < 5000);
-        if (isDuplicate) return;
+function saveMessage(title, body) {
+    let messages = getMessages();
+    
+    // On retire le blocage de 5000ms pour vos tests
+    // On garde une limite de 50 messages au lieu de 10
+    messages.unshift({
+        id: Date.now(),
+        title: title,
+        body: body,
+        time: new Date().toLocaleString('ht-HT'),
+        read: false
+    });
 
-        messages.unshift({
-            id: Date.now(),
-            title: title,
-            body: body,
-            time: new Date().toLocaleString('ht-HT'),
-            read: false
-        });
+    if (messages.length > 50) { messages = messages.slice(0, 50); }
 
-        if (messages.length > 10) { messages = messages.slice(0, 10); }
+    localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
+    updateBadgeUI();
+    // Le son ne jouera ici que si l'utilisateur a déjà cliqué sur l'app
+    playNotifSound();
+}
 
-        localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
-        updateBadgeUI();
-        playNotifSound();
-    }
 
     function updateBadgeUI() {
         const messages = getMessages();

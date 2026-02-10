@@ -900,6 +900,29 @@ window.effacerAvis = function(id) {
 };
 
 document.addEventListener('DOMContentLoaded', aficheAvis);
+
+    function updateHomeBadge() {
+        const messages = JSON.parse(localStorage.getItem('lcd_user_messages')) || [];
+        const unreadCount = messages.filter(m => !m.read).length;
+        const footerBadge = document.getElementById('footer-badge');
+        
+        if (footerBadge) {
+            if (unreadCount > 0) {
+                footerBadge.style.display = 'block';
+                footerBadge.textContent = unreadCount;
+            } else {
+                footerBadge.style.display = 'none';
+            }
+        }
+    }
+
+    // Écouter si un message arrive pendant qu'on est sur l'accueil
+    window.addEventListener('storage', (e) => {
+        if (e.key === 'lcd_user_messages') updateHomeBadge();
+    });
+
+    // Mettre à jour au chargement
+    document.addEventListener('DOMContentLoaded', updateHomeBadge);
     
 </script>
 </body>
