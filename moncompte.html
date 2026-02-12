@@ -240,14 +240,21 @@
 </head>
 <body>
 
-<header class="header-top">
+<<header class="header-top">
     <h1>Kont mwen</h1>
-    <div class="icon-right" onclick="openMessageModal()" style="position: relative; cursor: pointer;">
-        <span class="material-icons">notifications</span>
-        <span id="notif-badge" style="position: absolute; top: -5px; left: 15px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;">0</span>
-        <span class="material-icons" style="margin-left:15px;">person</span> 
+    <div class="icon-right">
+        <div style="position: relative; cursor: pointer; display: flex; align-items: center;" onclick="openMessageModal()">
+            <span class="material-icons">notifications</span>
+            <span id="notif-badge" style="position: absolute; top: -5px; left: 15px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;">0</span>
+        </div>
+
+        <div style="cursor: pointer; display: flex; align-items: center; margin-left: 20px;" onclick="scrollToProfile()">
+            <span class="material-icons">person</span>
+        </div>
     </div>
 </header>
+
+
 
 <div id="messageModal" class="message-modal">
     <div class="message-content">
@@ -396,22 +403,37 @@
 function saveMessage(title, body) {
     let messages = getMessages();
     
-    // On retire le blocage de 5000ms pour vos tests
-    // On garde une limite de 50 messages au lieu de 10
-    messages.unshift({
+    // Kreye nouvo mesaj la
+    const newMsg = {
         id: Date.now(),
         title: title,
         body: body,
         time: new Date().toLocaleString('ht-HT'),
         read: false
-    });
+    };
 
-    if (messages.length > 50) { messages = messages.slice(0, 50); }
+    // Ajoute li nan konmansman lis la
+    messages.unshift(newMsg);
+
+    // Kenbe sèlman 50 dènye mesaj yo
+    if (messages.length > 50) { 
+        messages = messages.slice(0, 50); 
+    }
 
     localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
+    
+    // Mizajou vizyèl imedyat
     updateBadgeUI();
-    // Le son ne jouera ici que si l'utilisateur a déjà cliqué sur l'app
     playNotifSound();
+}
+function scrollToProfile() {
+    const infoCard = document.querySelector('.info-card');
+    if (infoCard) {
+        infoCard.scrollIntoView({ behavior: 'smooth' });
+        // Yon ti efè flash pou montre kote enfòmasyon yo ye
+        infoCard.style.border = "2px solid var(--kaki)";
+        setTimeout(() => { infoCard.style.border = "none"; }, 2000);
+    }
 }
 
 
