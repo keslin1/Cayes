@@ -456,8 +456,73 @@
     text-transform: uppercase;
     font-size: 0.9em;
 }
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 20000; /* Pi wo pase tout lòt bagay */
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
 
-    </style>
+.popup-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+}
+
+.close-popup {
+    position: absolute;
+    top: -50px;
+    right: 10px;
+    color: white;
+    font-size: 45px;
+    cursor: pointer;
+}
+
+.flip-card {
+    width: 100%;
+    height: 100%;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.is-flipped {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flip-card-front img, .flip-card-back img {
+    width: 100%;
+    border-radius: 20px;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+    
+  </style>
 </head>
 <body>
 
@@ -481,17 +546,32 @@
 <div id="info-livrezon-container">
     <div class="info-step">
         <p class="info-title">1. Jou anbakman :</p>
-        <div class="info-detail">Chak Lendi oswa Madi</div>
-        <p class="info-sub">Ekri nou pou nou ka konsolide (regwoupe) koli w yo pou ou avan nou voye yo. <strong>Tan pou koli disponib: 15 a 17 jou</strong></p>
+        <div class="info-detail">Chak mwa</div>
+        <p class="info-sub">Machandiz ou yo gen tout tan pou yo livre, pou yo rejwenn ou  <strong>nan yon sèl okazyon!</strong></p>
     </div>
 
     <div class="info-step no-border">
         <p class="info-title">2. Disponiblite koli :</p>
         <div class="info-detail">Mitan Mars (SDV)</div>
-        <p class="info-sub">Dat previzib pou koli disponib nan adrès nou nan Sud.</p>
+        <p class="info-sub">Nou fè anbakman chak mwa, ou peye sèlman 4,90 par liv bwat ou an, pou koli ki enferyè a 20 liv.</p>
     </div>
 </div>
 
+<div id="promo-popup" class="popup-overlay" style="display: none;">
+    <div class="popup-container">
+        <span class="close-popup" onclick="closePromoPopup()">&times;</span>
+        <div class="flip-card">
+            <div class="flip-card-inner" id="flip-inner">
+                <div class="flip-card-front">
+                    <img src="cargo.png" alt="cargo">
+                </div>
+                <div class="flip-card-back">
+                    <img src="bato.jpg" alt="bato">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
     </header>
 
@@ -666,7 +746,7 @@
         let messages = JSON.parse(localStorage.getItem(MESSAGE_KEY)) || [];
         
         // Evite kopi
-        const isDuplicate = messages.some(m => m.title === title && m.body === body && (Date.now() - m.id) < 5000);
+        const isDuplicate = messages.some(m => m.title === title && m.body === body && (Date.now() - m.id) < 2000);
         if (isDuplicate) return;
 
         messages.unshift({
@@ -916,14 +996,39 @@ document.addEventListener('DOMContentLoaded', aficheAvis);
         }
     }
 
-    // Écouter si un message arrive pendant qu'on est sur l'accueil
-    window.addEventListener('storage', (e) => {
-        if (e.key === 'lcd_user_messages') updateHomeBadge();
-    });
+// Fonksyon pou vire imaj yo
+function startFlipCycle() {
+    const card = document.getElementById('flip-inner');
+    if (card) {
+        setInterval(() => {
+            card.classList.toggle('is-flipped');
+        }, 2000);
+    }
+}
 
-    // Mettre à jour au chargement
-    document.addEventListener('DOMContentLoaded', updateHomeBadge);
-    
+// Fonksyon pou fèmen popup
+window.closePromoPopup = function() {
+    const p = document.getElementById('promo-popup');
+    if (p) p.style.display = 'none';
+};
+
+// Fonksyon pou montre popup la apre 15 segonn
+function initPromoDelay() {
+    setTimeout(() => {
+        const p = document.getElementById('promo-popup');
+        if (p) {
+            p.style.display = 'flex';
+            startFlipCycle(); // Li kòmanse vire sèlman lè l parèt
+        }
+    }, 15000); 
+}
+
+// Rele fonksyon an nan fen DOMContentLoaded ki deja egziste a
+document.addEventListener('DOMContentLoaded', () => {
+    // ... rès kòd ou yo ...
+    initPromoDelay();
+});
+
 </script>
 </body>
 </html>
