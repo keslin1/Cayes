@@ -456,33 +456,6 @@
     text-transform: uppercase;
     font-size: 0.9em;
 }
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 20000; /* Pi wo pase tout lòt bagay */
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
-
-.popup-container {
-    position: relative;
-    width: 280px;
-    height: 280px;
-}
-
-.close-popup {
-    position: absolute;
-    top: -50px;
-    right: 10px;
-    color: white;
-    font-size: 45px;
-    cursor: pointer;
-}
 
 .flip-card {
     width: 100%;
@@ -539,7 +512,7 @@
 
             <div class="announcement-bar">
     <div class="scrolling-text">
-        ⚠️ Pa kòmande bagay ki entèdi osinon ki danjere nan adrès nou. Kliyan an responsab pou peye tout taks ak penalite si ladwàn kenbe machandiz la.
+        Si se yon moun ki pote yon droum oswa nenpòt lòt machandiz pou ou nan depo nou, ou dwe voye foto prèv livrezon an bay sèvis asistans Ayiti an.
     </div>
 </div>
 
@@ -552,26 +525,11 @@
 
     <div class="info-step no-border">
         <p class="info-title">2. Disponiblite koli :</p>
-        <div class="info-detail">AN ATANT</div>
-        <p class="info-sub">Si kòmand ou yo livre jodi a yap disponib nan pwochen okazyon</p>
+        <div class="info-detail">DISPONIB</div>
+        <p class="info-sub">Dènyè koli avyon nou disponib (Okazyon fen mwa Fevriye)</p>
     </div>
 </div>
 
-<div id="promo-popup" class="popup-overlay" style="display: none;">
-    <div class="popup-container">
-        <span class="close-popup" onclick="closePromoPopup()">&times;</span>
-        <div class="flip-card">
-            <div class="flip-card-inner" id="flip-inner">
-                <div class="flip-card-front">
-                    <img src="cargo.png" alt="cargo">
-                </div>
-                <div class="flip-card-back">
-                    <img src="bato.jpg" alt="bato">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
     </header>
 
@@ -996,38 +954,6 @@ document.addEventListener('DOMContentLoaded', aficheAvis);
         }
     }
 
-// Fonksyon pou vire imaj yo
-function startFlipCycle() {
-    const card = document.getElementById('flip-inner');
-    if (card) {
-        setInterval(() => {
-            card.classList.toggle('is-flipped');
-        }, 2000);
-    }
-}
-
-// Fonksyon pou fèmen popup
-window.closePromoPopup = function() {
-    const p = document.getElementById('promo-popup');
-    if (p) p.style.display = 'none';
-};
-
-// Fonksyon pou montre popup la apre 15 segonn
-function initPromoDelay() {
-    setTimeout(() => {
-        const p = document.getElementById('promo-popup');
-        if (p) {
-            p.style.display = 'flex';
-            startFlipCycle(); // Li kòmanse vire sèlman lè l parèt
-        }
-    }, 15000); 
-}
-
-// Rele fonksyon an nan fen DOMContentLoaded ki deja egziste a
-document.addEventListener('DOMContentLoaded', () => {
-    // ... rès kòd ou yo ...
-    initPromoDelay();
-});
 
 </script>
 </body>
