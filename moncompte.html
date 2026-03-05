@@ -313,7 +313,6 @@
                 <span class="material-icons left">support_agent</span>
                 Sèvis kliyan
             </span>
-            <span id="lock-icon-support" class="material-icons right">lock</span>
         </a>
 
 <div id="profile-form-container">
@@ -507,45 +506,47 @@ function scrollToProfile() {
         updateBadgeUI();
     }
 
-    // INITIALISATION GÉNÉRALE
-    document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('profile-form');
-        const formContainer = document.getElementById('profile-form-container');
-        const supportBtn = document.getElementById('support-btn');
-        const lockIcon = document.getElementById('lock-icon-support');
-        const editProfileBtn = document.getElementById('edit-profile-btn');
-        
-        const profileNameDisplay = document.getElementById('profile-name-display');
-        const profileEmailDisplay = document.getElementById('profile-email-display');
-        const profilePhoneDisplay = document.getElementById('profile-phone-display');
-        const profileAddressDisplay = document.getElementById('profile-address-display');
+// INITIALISATION GÉNÉRALE
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('profile-form');
+    const formContainer = document.getElementById('profile-form-container');
+    const supportBtn = document.getElementById('support-btn');
+    const lockIcon = document.getElementById('lock-icon-support');
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+    
+    const profileNameDisplay = document.getElementById('profile-name-display');
+    const profileEmailDisplay = document.getElementById('profile-email-display');
+    const profilePhoneDisplay = document.getElementById('profile-phone-display');
+    const profileAddressDisplay = document.getElementById('profile-address-display');
 
-        const updateUI = () => {
-            const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-            const isProfileComplete = !!(profile.nom && profile.email);
+    const updateUI = () => {
+        const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+        const isProfileComplete = !!(profile.nom && profile.email);
 
-            if (isProfileComplete) {
-                profileNameDisplay.textContent = profile.nom;
-                profileEmailDisplay.textContent = profile.email;
-                profilePhoneDisplay.textContent = profile.phone || 'pako anrejistre';
-                profileAddressDisplay.textContent = profile.address || 'pako anrejistre';
-                
-                if (supportBtn) {
-                    supportBtn.classList.remove('locked');
-                    supportBtn.style.opacity = "1";
-                    if(lockIcon) lockIcon.style.display = "none";
-                    supportBtn.href = "https://wa.me/5093101396";
-                }
-                formContainer.style.display = 'none';
-            } else {
-                if (supportBtn) {
-                    supportBtn.classList.add('locked');
-                    supportBtn.href = "javascript:void(0)";
-                    if(lockIcon) lockIcon.style.display = "block";
-                }
-                formContainer.style.display = 'block';
+        // --- PARTIE MODIFIÉE POUR L'ASSISTANCE (DÉVERROUILLÉE) ---
+        if (supportBtn) {
+            supportBtn.classList.remove('locked');
+            supportBtn.style.opacity = "1";
+            supportBtn.href = "https://wa.me/50931013968"; // Numéro corrigé
+            if (lockIcon) {
+                lockIcon.style.display = "none";
             }
-        };
+        }
+        // -------------------------------------------------------
+
+        if (isProfileComplete) {
+            profileNameDisplay.textContent = profile.nom;
+            profileEmailDisplay.textContent = profile.email;
+            profilePhoneDisplay.textContent = profile.phone || 'pako anrejistre';
+            profileAddressDisplay.textContent = profile.address || 'pako anrejistre';
+            formContainer.style.display = 'none';
+        } else {
+            // Le formulaire reste visible si le profil n'est pas complet
+            // Mais le bouton support (géré plus haut) reste cliquable
+            formContainer.style.display = 'block';
+        }
+    };
+
 
         // Bouton Mettre à jour
         if (editProfileBtn) {
