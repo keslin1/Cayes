@@ -240,7 +240,7 @@
 </head>
 <body>
 
-<<header class="header-top">
+<header class="header-top">
     <h1>Kont mwen</h1>
     <div class="icon-right">
         <div style="position: relative; cursor: pointer; display: flex; align-items: center;" onclick="openMessageModal()">
@@ -503,90 +503,94 @@ function scrollToProfile() {
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('profile-form');
     const formContainer = document.getElementById('profile-form-container');
-    const supportBtn = document.getElementById('support-btn');
-    const lockIcon = document.getElementById('lock-icon-support');
     const editProfileBtn = document.getElementById('edit-profile-btn');
     
-    const profileNameDisplay = document.getElementById('profile-name-display');
-    const profileEmailDisplay = document.getElementById('profile-email-display');
-    const profilePhoneDisplay = document.getElementById('profile-phone-display');
-    const profileAddressDisplay = document.getElementById('profile-address-display');
-
+    // Fonksyon pou mete enfòmasyon yo sou ekran an
     const updateUI = () => {
-        const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+        const storedData = localStorage.getItem(userStorageKey);
+        const profile = storedData ? JSON.parse(storedData) : {};
+        
         const isProfileComplete = !!(profile.nom && profile.email);
 
-        // --- PARTIE MODIFIÉE POUR L'ASSISTANCE (DÉVERROUILLÉE) ---
-        if (supportBtn) {
-            supportBtn.classList.remove('locked');
-            supportBtn.style.opacity = "1";
-            supportBtn.href = "https://wa.me/50931013968"; // Numéro corrigé
-            if (lockIcon) {
-                lockIcon.style.display = "none";
-            }
-        }
-        // -------------------------------------------------------
-
         if (isProfileComplete) {
-            profileNameDisplay.textContent = profile.nom;
-            profileEmailDisplay.textContent = profile.email;
-            profilePhoneDisplay.textContent = profile.phone || 'pako anrejistre';
-            profileAddressDisplay.textContent = profile.address || 'pako anrejistre';
+            document.getElementById('profile-name-display').textContent = profile.nom;
+            document.getElementById('profile-email-display').textContent = profile.email;
+            document.getElementById('profile-phone-display').textContent = profile.phone || 'pako anrejistre';
+            document.getElementById('profile-address-display').textContent = profile.address || 'pako anrejistre';
+            
+            // Kache fòm nan piske pwofil la fini
             formContainer.style.display = 'none';
         } else {
-            // Le formulaire reste visible si le profil n'est pas complet
-            // Mais le bouton support (géré plus haut) reste cliquable
+            // Montre fòm nan si enfòmasyon yo manke
             formContainer.style.display = 'block';
         }
     };
 
+    // LANSE updateUI TÈKREMAN LÈ PAJ LA OUVRI
+    updateUI();
+    updateBadgeUI();
 
-        // Bouton Mettre à jour
-        if (editProfileBtn) {
-            editProfileBtn.addEventListener('click', () => {
-                formContainer.style.display = 'block';
-                formContainer.scrollIntoView({ behavior: 'smooth' });
-                const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-                if (profile.nom) document.getElementById('nom').value = profile.nom;
-                if (profile.email) document.getElementById('email').value = profile.email;
-                if (profile.phone) document.getElementById('phone').value = profile.phone;
-                if (profile.address) document.getElementById('address').value = profile.address;
-            });
-        }
+    // Bouton pou modifye pwofil la (li remete done yo nan fòm nan)
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', () => {
+            formContainer.style.display = 'block';
+            formContainer.scrollIntoView({ behavior: 'smooth' });
+            
+            const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+            if (profile.nom) document.getElementById('nom').value = profile.nom;
+            if (profile.email) document.getElementById('email').value = profile.email;
+            if (profile.phone) document.getElementById('phone').value = profile.phone;
+            if (profile.address) document.getElementById('address').value = profile.address;
+        });
+    }
 
-        const referenceSelect = document.getElementById('reference');
-        const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
-        if (referenceSelect) {
-            referenceSelect.addEventListener('change', (e) => {
-                whatsappFriendContainer.style.display = e.target.value === 'WhatsApp' ? 'block' : 'none';
-            });
-        }
+    // Sistèm Referans WhatsApp la
+    const referenceSelect = document.getElementById('reference');
+    const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
+    if (referenceSelect) {
+        referenceSelect.addEventListener('change', (e) => {
+            whatsappFriendContainer.style.display = e.target.value === 'WhatsApp' ? 'block' : 'none';
+        });
+    }
 
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const profileData = {
-        nom: document.getElementById('nom').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        reference: document.getElementById('reference').value,
-        whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
-    };
+    // --- ANREJISTREMAN AK ANVO DONE ---
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const profileData = {
+            nom: document.getElementById('nom').value.trim(),
+            email: document.getElementById('email').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            address: document.getElementById('address').value.trim(),
+            reference: document.getElementById('reference').value,
+            whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
+        };
 
-    // 1. Sove nan telefòn nan (LocalStorage)
-    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+        // 1. Sove lokalman nan telefòn nan
+        localStorage.setItem(userStorageKey, JSON.stringify(profileData));
 
-    // 2. Voye bay Formspree an kachèt (sans bloquer le reste)
-    fetch("https://formspree.io/f/meerazrr", {
-        method: "POST",
-        body: JSON.stringify(profileData),
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
-    }).catch(err => console.log("Erreur envoi Formspree"));
-
-    // 3. Bay mesaj siksè epi rafrechi paj la
-    alert('Pwofil anrejistre ak siksè!');
-    updateUI(); 
+        // 2. Voye bay Manager Thomas via Formspree
+        fetch("https://formspree.io/f/meerazrr", {
+            method: "POST",
+            body: JSON.stringify(profileData),
+            headers: { 
+                'Content-Type': 'application/json', 
+                'Accept': 'application/json' 
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Pwofil ou anrejistre ak siksè !');
+                updateUI(); // Rafrechi UI a imedyatman
+            } else {
+                alert('Gen yon ti erè nan voye done yo, men yo sove nan telefòn ou.');
+            }
+        })
+        .catch(err => {
+            console.log("Erreur:", err);
+            updateUI(); // Menm si gen erè rezo, nou montre sa ki sove a
+        });
+    });
 });
 
     window.onclick = function(event) {
