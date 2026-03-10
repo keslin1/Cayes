@@ -494,6 +494,40 @@
 .flip-card-back {
     transform: rotateY(180deg);
 }
+/* Stil pou bouton WhatsApp la */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 85px; /* Mete l yon ti jan anlè footer a pou yo pa moute sou lòt */
+    right: 20px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-float img {
+    width: 35px;
+    height: 35px;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    background-color: #128C7E;
+}
+
+/* Si ou vle l disparèt lè Splash Screen an la */
+#splash-screen[style*="display: block"] ~ .whatsapp-float {
+    display: none;
+}
     
   </style>
 </head>
@@ -504,11 +538,15 @@
             
 <link rel="manifest" href='data:application/json,{"name":"Les Cayes Dropshipping","short_name":"LCD","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#000000","icons":[{"src":"lescayesdropshipping.png","sizes":"192x192","type":"image/png"}]}' />
             
-            <div id="location-header">
-                <span class="material-icons location-icon">location_on</span>
-                <span id="address-info">Les Cayes Dropshipping, haïti-sud</span> 
-                <span class="material-icons dropdown-icon">arrow_drop_down</span>
-            </div>
+<div id="location-header">
+    <span class="material-icons location-icon">location_on</span>
+    <span id="address-info">
+        <span id="user-display-name">Les Cayes Dropshipping</span>, 
+        <span id="user-display-city">Haïti-Sud</span>
+    </span> 
+    <span class="material-icons dropdown-icon">arrow_drop_down</span>
+</div>
+
 
             <div class="announcement-bar">
     <div class="scrolling-text">
@@ -528,6 +566,14 @@
         <div class="info-detail">AN ATANT</div>
         <p class="info-sub">Annatandan ou ka kòmande pou shippment lòt mwa (Avril)!</p>
     </div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: center; margin-top: 15px; gap: 10px; background: rgba(255,255,255,0.5); padding: 10px; border-radius: 20px;">
+    <button id="like-btn" onclick="toggleLike()" style="background: none; border: none; cursor: pointer; display: flex; align-items: center; gap: 8px; color: var(--bleu-marin); transition: transform 0.2s;">
+        <span id="like-icon" class="material-icons" style="font-size: 32px;">thumb_up_off_alt</span>
+        <span id="like-count" style="font-weight: 900; font-size: 1.4em; color: var(--bleu-marin);">1</span>
+    </button>
+    <audio id="like-sound" src="bouton.mp3" preload="auto"></audio>
 </div>
 
 
@@ -681,13 +727,14 @@
             <span class="material-icons">list_alt</span>
             <p>Tranzaksyon</p>
         </a>
-        <a href="moncompte.html" class="nav-item">
-            <span class="material-icons">person</span >
-            <p>Kont mwen</p>
-        </a>
-        
+<a href="moncompte.html" class="nav-item" style="position: relative;">
+    <span class="material-icons">person</span>
+    <p>Kont mwen</p>
+    <span id="footer-badge" style="position: absolute; top: 2px; right: 15px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;">0</span>
+</a>
     </footer>
 <script type="module">
+    // 1. Premye bagay: tout "import" yo 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
     import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
@@ -773,20 +820,25 @@
         };
     });
 
-    // 5. INITIALISATION UI
+    // 5. INITIALISATION UI (KÒD KORIJÉ)
     document.addEventListener('DOMContentLoaded', () => {
+        // Ekran chajman (Splash screen)
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             if(splash) splash.style.display = 'none';
         }, 1500);
 
+        // --- LANSE TOUT FONKSYON YO ---
         initNotifications();
-        updateNotifBadges(); // Tcheke si gen mesaj ki pako li pou footer a
-
-        // Carousel ak Swipe kòd ou a...
-        initCarousel();
-        updateBadgeUI(); // Badge panier a
-        updateLocationHeader();
+        updateNotifBadges();  // Badge wouj nan footer a
+        initLikeSystem();     // Animasyon 1 rive 23 ak chèk LocalStorage
+        refreshHeader();      // Mete non ak vil itilizatè a anlè a
+        
+        // Carousel ak lòt eleman UI
+        if (typeof initCarousel === "function") initCarousel();
+        if (typeof updateBadgeUI === "function") updateBadgeUI();
+        if (typeof updateLocationHeader === "function") updateLocationHeader();
+        if (typeof aficheAvis === "function") aficheAvis(); 
     });
 
     // Mizajou Badge Cloche (si li la) ak Footer
@@ -805,39 +857,39 @@
         }
     }
 
-    // ... (Kenbe fonksyon openModal, closeModal ak Service Worker ou yo) ...
+    // Enskripsyon Service Worker la
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
-            .then(reg => console.log('SW anrejistre'))
+            .then(reg => console.log('SW anrejistre ak siksè'))
             .catch(err => console.log('Erreur SW:', err));
     }
-// Fonksyon pou louvri modal la
-function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = "block";
-        // Bloke scroll dèyè modal la
-        document.body.style.overflow = "hidden";
-    }
-}
 
-// Fonksyon pou fèmen modal la
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = "none";
-        // Remete scroll la
-        document.body.style.overflow = "auto";
+    // Fonksyon pou louvri modal la
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
     }
-}
 
-// Fèmen modal la si moun nan klike deyò bwat la
-window.onclick = function(event) {
-    if (event.target.className === 'modal') {
-        event.target.style.display = "none";
-        document.body.style.overflow = "auto";
+    // Fonksyon pou fèmen modal la
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
     }
-}
+
+    // Fèmen modal la si moun nan klike deyò bwat la
+    window.onclick = function(event) {
+        if (event.target.className === 'modal') {
+            event.target.style.display = "none";
+            document.body.style.overflow = "auto";
+        }
+    }
+
 
 // Rann fonksyon yo aksesib globalman pou "onclick" ka jwenn yo
 window.openModal = openModal;
@@ -945,6 +997,114 @@ window.effacerAvis = function(id) {
 };
 
 document.addEventListener('DOMContentLoaded', aficheAvis);
+// --- GESTION DU PROFIL ET DU HEADER ---
+function refreshHeader() {
+    const profile = JSON.parse(localStorage.getItem('user_profile_data')) || {};
+    const nameElem = document.getElementById('user-display-name');
+    const cityElem = document.getElementById('user-display-city');
+
+    if (profile.nom && nameElem) {
+        nameElem.textContent = profile.nom;
+    }
+    
+    if (profile.address && cityElem) {
+        // Pran premye pati adrès la anvan yon vigil oswa espas
+        const ville = profile.address.split(',')[0].split(' ')[0];
+        cityElem.textContent = ville;
+    }
+}
+
+
+// --- KONFIGIRASYON JENERAL ---
+const MESSAGE_KEY = 'lcd_user_messages'; // Pou evite erè ak sistèm mesaj la
+let baseLikes = 23; // Chif fiks ki egziste deja
+
+// --- SISTÈM LIKE AK ANIMASYON 1 RIVE 23 ---
+function initLikeSystem() {
+    const likeCountElem = document.getElementById('like-count');
+    const likeIcon = document.getElementById('like-icon');
+    
+    // Tcheke si itilizatè a te like deja nan memwa telefòn nan (LocalStorage)
+    // Sa ap pèmèt like la rete la menm si li fèmen aplikasyon an
+    const userHasLiked = localStorage.getItem('user_has_liked') === 'true';
+
+    // 1. Animasyon 1 rive 23 nan 3 segonn
+    let current = 1;
+    const duration = 3000; // 3 segonn
+    const interval = duration / baseLikes;
+
+    const counter = setInterval(() => {
+        current++;
+        
+        // Si itilizatè a te deja like, nou montre 24 (23 + 1)
+        // Sinon nou montre chif k ap monte a (1 rive 23)
+        let displayTotal = userHasLiked ? (current + 1) : current;
+        if (likeCountElem) likeCountElem.textContent = displayTotal;
+
+        if (current >= baseLikes) {
+            clearInterval(counter);
+            // Yon fwa animasyon fini, si li te like deja nan LocalStorage, nou mete koulè a
+            if (userHasLiked && likeIcon) {
+                likeIcon.textContent = 'thumb_up';
+                likeIcon.style.color = 'var(--kaki)';
+            }
+        }
+    }, interval);
+}
+
+window.toggleLike = function() {
+    const likeIcon = document.getElementById('like-icon');
+    const likeCountElem = document.getElementById('like-count');
+    const sound = document.getElementById('like-sound');
+    
+    let isLiked = localStorage.getItem('user_has_liked') === 'true';
+
+    if (!isLiked) {
+        // --- AKSYON LIKER ---
+        if (sound) {
+            sound.currentTime = 0;
+            sound.play(); 
+        }
+        
+        if (likeIcon) {
+            likeIcon.textContent = 'thumb_up';
+            likeIcon.style.color = 'var(--kaki)';
+            likeIcon.style.transform = "scale(1.3)";
+            setTimeout(() => { likeIcon.style.transform = "scale(1)"; }, 200);
+        }
+        
+        // Chif la ap toujou 24 (base 23 + 1 like pa li)
+        if (likeCountElem) likeCountElem.textContent = baseLikes + 1; 
+        localStorage.setItem('user_has_liked', 'true'); // Sove nan memwa a nèt
+    } else {
+        // --- AKSYON UNLIKE ---
+        if (likeIcon) {
+            likeIcon.textContent = 'thumb_up_off_alt';
+            likeIcon.style.color = 'var(--bleu-marin)';
+        }
+        
+        if (likeCountElem) likeCountElem.textContent = baseLikes;
+        localStorage.setItem('user_has_liked', 'false'); // Retire li nan memwa a
+    }
+};
+
+// --- INICIALIZASYON LÈ PAJ LA FINI CHAJE ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Retire ekran chajman (Splash Screen)
+    setTimeout(() => {
+        const splash = document.getElementById('splash-screen');
+        if(splash) splash.style.display = 'none';
+    }, 1500);
+
+    // 2. Lanse Sistèm Like la
+    initLikeSystem();
+
+    // 3. Lòt fonksyon ki nesesè pou paj la (si yo egziste nan kòd ou)
+    if (typeof refreshHeader === "function") refreshHeader();
+    if (typeof updateNotifBadges === "function") updateNotifBadges();
+    if (typeof aficheAvis === "function") aficheAvis();
+    if (typeof initNotifications === "function") initNotifications();
+});
 
     function updateHomeBadge() {
         const messages = JSON.parse(localStorage.getItem('lcd_user_messages')) || [];
@@ -963,5 +1123,11 @@ document.addEventListener('DOMContentLoaded', aficheAvis);
 
 
 </script>
+<a href="https://wa.me/50931013968?text=Hello%20manager%20Thomas%2C%20mwen%20ekri%20w%20apati%20de%20aplikasyon%20Les%20Cayes%20Dropshipping%20lan" 
+   class="whatsapp-float" 
+   target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Business" />
+</a>
+        
 </body>
 </html>

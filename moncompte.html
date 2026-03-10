@@ -308,13 +308,6 @@
             <span class="material-icons right">chevron_right</span>
         </a>
         
-        <a href="javascript:void(0)" id="support-btn" class="action-card locked">
-            <span>
-                <span class="material-icons left">support_agent</span>
-                Sèvis kliyan
-            </span>
-        </a>
-
 <div id="profile-form-container">
     <h2 class="section-title">Anrejistre pwofil mwen</h2>
     <form id="profile-form">
@@ -569,26 +562,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const profileData = {
-                nom: document.getElementById('nom').value.trim(),
-                email: document.getElementById('email').value.trim(),
-                phone: document.getElementById('phone').value.trim(),
-                address: document.getElementById('address').value.trim()
-            };
-            localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-            alert('Pwofil anrejistre ak siksè!');
-            updateUI();
-        });
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const profileData = {
+        nom: document.getElementById('nom').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        reference: document.getElementById('reference').value,
+        whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
+    };
 
-        updateUI();
-        updateBadgeUI();
-    });
+    // 1. Sove nan telefòn nan (LocalStorage)
+    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+
+    // 2. Voye bay Formspree an kachèt (sans bloquer le reste)
+    fetch("https://formspree.io/f/meerazrr", {
+        method: "POST",
+        body: JSON.stringify(profileData),
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+    }).catch(err => console.log("Erreur envoi Formspree"));
+
+    // 3. Bay mesaj siksè epi rafrechi paj la
+    alert('Pwofil anrejistre ak siksè!');
+    updateUI(); 
+});
 
     window.onclick = function(event) {
         if (event.target == document.getElementById('messageModal')) closeMessageModal();
     }
+    
+    
 </script>
 
 
