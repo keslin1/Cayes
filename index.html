@@ -494,39 +494,66 @@
 .flip-card-back {
     transform: rotateY(180deg);
 }
-/* Stil pou bouton WhatsApp la */
-.whatsapp-float {
+/* Modal Notifikasyon */
+#notif-modal {
+    display: none; /* Li kache pa defo pou l pa parèt san pèmisyon */
     position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 85px; /* Mete l yon ti jan anlè footer a pou yo pa moute sou lòt */
-    right: 20px;
-    background-color: #25d366;
-    color: #FFF;
-    border-radius: 50px;
-    text-align: center;
-    font-size: 30px;
-    box-shadow: 2px 2px 3px #999;
-    z-index: 1000;
-    display: flex;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s ease;
 }
 
-.whatsapp-float img {
-    width: 35px;
-    height: 35px;
+
+.notif-box {
+    background-color: var(--bleu-marin); 
+    padding: 30px; 
+    border-radius: 20px; 
+    max-width: 350px; 
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    color: white;
 }
 
-.whatsapp-float:hover {
-    transform: scale(1.1);
-    background-color: #128C7E;
+.notif-box h2 {
+    margin: 15px 0;
+    font-size: 1.4em;
+    color: var(--blanc-fond);
 }
 
-/* Si ou vle l disparèt lè Splash Screen an la */
-#splash-screen[style*="display: block"] ~ .whatsapp-float {
-    display: none;
+.notif-box p {
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin-bottom: 25px;
+    color: #ccc;
+}
+
+.btn-notif-accept {
+    background-color: var(--kaki); 
+    color: var(--bleu-marin); 
+    border: none; 
+    padding: 14px 25px; 
+    border-radius: 30px; 
+    font-weight: bold; 
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.btn-notif-refuse {
+    background: transparent; 
+    border: 1px solid rgba(255,255,255,0.3); 
+    color: white; 
+    padding: 10px 25px; 
+    border-radius: 30px; 
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.9em;
 }
     
   </style>
@@ -609,6 +636,16 @@
             </div>
         </div>
     </section>
+<div id="notif-modal">
+    <div class="notif-box">
+        <span class="material-icons" style="font-size: 60px; color: var(--kaki);">notifications_active</span>
+        <h2>Otorizasyon nesesè</h2>
+        <p>Pou ou ka suiv koli ou yo epi resevwa alèt lè yo rive, ou dwe aktive notifikasyon yo. San sa, aplikasyon an pap ka fonksyone byen.</p>
+        
+        <button class="btn-notif-accept" onclick="requestPermission()">AKSEPTE NOTIFIKASYON</button>
+        <button class="btn-notif-refuse" onclick="refuseAccess()">REFIZE</button>
+    </div>
+</div>
         
 <section class="choix-profil">
 <h2 style="color: #556B2F; text-align: center;">Ki kalite sèvis ou bezwen?</h2>
@@ -734,10 +771,11 @@
 </a>
     </footer>
 <script type="module">
-    // 1. Premye bagay: tout "import" yo 
+    // 1. Premye bagay: tout "import" yo
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
     import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
 
     // 1. CONFIGURATION FIREBASE
     const firebaseConfig = {
@@ -997,22 +1035,42 @@ window.effacerAvis = function(id) {
 };
 
 document.addEventListener('DOMContentLoaded', aficheAvis);
-// --- GESTION DU PROFIL ET DU HEADER ---
+// --- GESTION DU PROFIL ET DU HEADER (KORİJE) ---
 function refreshHeader() {
     const profile = JSON.parse(localStorage.getItem('user_profile_data')) || {};
     const nameElem = document.getElementById('user-display-name');
     const cityElem = document.getElementById('user-display-city');
 
     if (profile.nom && nameElem) {
-        nameElem.textContent = profile.nom;
+        let nomAntye = profile.nom.trim();
+        
+        // Si non an twò long (plis pase 12 karaktè), nou koupe l epi mete (...)
+        if (nomAntye.length > 12) {
+            nameElem.textContent = nomAntye.substring(0, 10) + "...";
+        } else {
+            nameElem.textContent = nomAntye;
+        }
+    } else if (nameElem) {
+        nameElem.textContent = "Les Cayes Dropshipping";
     }
     
     if (profile.address && cityElem) {
-        // Pran premye pati adrès la anvan yon vigil oswa espas
-        const ville = profile.address.split(',')[0].split(' ')[0];
-        cityElem.textContent = ville;
+        // Pran premye pati adrès la (vil la) anvan yon vigil oswa yon espas
+        let vilNet = profile.address.split(',')[0].trim().split(' ')[0];
+        
+        // Si non vil la twò long tou, nou limite l
+        if (vilNet.length > 10) {
+            cityElem.textContent = vilNet.substring(0, 8) + "...";
+        } else {
+            cityElem.textContent = vilNet;
+        }
+    } else if (cityElem) {
+        cityElem.textContent = "Haïti-Sud";
     }
 }
+
+// Rele fonksyon an otomatikman lè paj la fin chaje
+document.addEventListener('DOMContentLoaded', refreshHeader);
 
 
 // --- KONFIGIRASYON JENERAL ---
@@ -1121,13 +1179,58 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+// 3. Gestion des Notifications et Accès
+function requestPermission() {
+    console.log("Sistèm nan ap mande pèmisyon...");
+    
+    if (!("Notification" in window)) {
+        alert("Navigatè sa a pa sipòte notifikasyon.");
+        femenModalNotif();
+        return;
+    }
+
+    Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+            // SOVE NAN MEMWA : Navigatè a ap sonje ke itilizatè a aksepte
+            localStorage.setItem('notif_accepted', 'true');
+            femenModalNotif();
+            console.log("Otorizasyon aksepte!");
+        } else {
+            refuseAccess();
+        }
+    });
+}
+
+function refuseAccess() {
+    alert("Atansyon! Aplikasyon Les Cayes Dropshipping lan pa ka fonksyone san notifikasyon yo. Sa a nesesè pou sekirite ak swivi koli ou yo.");
+    window.location.reload(); 
+}
+
+function femenModalNotif() {
+    const modal = document.getElementById('notif-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+// Rann fonksyon yo piblik pou bouton HTML yo
+window.requestPermission = requestPermission;
+window.refuseAccess = refuseAccess;
+
+// TCHEKE SI YO TE DEJA AKSEPTE OUBYEN SI PÈMISYON AN DEJA BAY
+document.addEventListener('DOMContentLoaded', () => {
+    const dejaAksepte = localStorage.getItem('notif_accepted');
+    const pèmisyonSistèm = Notification.permission;
+
+    // Si itilizatè a te deja klike sou "Aksepte" OUBYEN si navigatè a di "granted" deja
+    if (dejaAksepte === 'true' || pèmisyonSistèm === 'granted') {
+        femenModalNotif();
+    } else {
+        // Sinon, nou asire modal la parèt pou mande l
+        const modal = document.getElementById('notif-modal');
+        if (modal) modal.style.display = 'flex';
+    }
+});
+
 
 </script>
-<a href="https://wa.me/50931013968?text=Hello%20manager%20Thomas%2C%20mwen%20ekri%20w%20apati%20de%20aplikasyon%20Les%20Cayes%20Dropshipping%20lan" 
-   class="whatsapp-float" 
-   target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp Business" />
-</a>
-        
 </body>
 </html>
