@@ -553,48 +553,68 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- ANREJISTREMAN AK ANVO DONE ---
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
+// --- ANREJISTREMAN AK ANVO DONE ---
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // 1. Rekipere done yo nan fòm nan
+    const profileData = {
+        nom: document.getElementById('nom').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        reference: document.getElementById('reference').value,
+        whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
+    };
+
+    // 2. SOVE LOKALMAN AVAN (Sa asire done yo pa pèdi nan telefòn nan)
+    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+
+    // 3. Prepare anvo Web3Forms
+    const formData = new FormData();
+    formData.append("access_key", "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
+    formData.append("nom", profileData.nom);
+    formData.append("email", profileData.email);
+    formData.append("phone", profileData.phone);
+    formData.append("address", profileData.address);
+    formData.append("reference", profileData.reference);
+    formData.append("whatsapp_referant", profileData.whatsapp_referant);
+    formData.append("subject", "Nouvo Pwofil LCDrop: " + profileData.nom);
+
+    const saveBtn = document.getElementById('save-profile-btn');
+    const originalText = saveBtn.textContent;
+    saveBtn.textContent = "Ap voye...";
+    saveBtn.disabled = true;
+
+    // 4. Voye done yo
+    fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+    })
+    .then(async (response) => {
+        if (response.ok) {
+            alert('Pwofil ou anrejistre ak siksè !');
+            // NOU PA FÈ form.reset() ISIT LA POU DONE YO RETE NAN CHAMP YO
+        } else {
+            const result = await response.json();
+            alert('Erè: ' + result.message);
+        }
+    })
+    .catch(err => {
+        console.error("Erreur:", err);
+        alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo pou voye yo.');
+    })
+    .finally(() => {
+        // 5. Rafrechi UI a san efase anyen
+        updateUI(); 
+        saveBtn.textContent = originalText;
+        saveBtn.disabled = false;
         
-        const profileData = {
-            nom: document.getElementById('nom').value.trim(),
-            email: document.getElementById('email').value.trim(),
-            phone: document.getElementById('phone').value.trim(),
-            address: document.getElementById('address').value.trim(),
-            reference: document.getElementById('reference').value,
-            whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
-        };
-
-        // 1. Sove lokalman nan telefòn nan
-        localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-
-// 2. Voye bay Manager Thomas via Web3Forms
-        // Nou ajoute kle Web3Forms la nan done n ap voye yo
-        profileData.access_key = "A2d5b024-731b-4a8c-a5d4-d46a64e4f60a";
-
-        fetch("https://api.web3forms.com/submit", {
-            method: "POST",
-            body: JSON.stringify(profileData),
-            headers: { 
-                'Content-Type': 'application/json', 
-                'Accept': 'application/json' 
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Pwofil ou anrejistre ak siksè !');
-                updateUI(); // Rafrechi UI a imedyatman
-            } else {
-                alert('Gen yon ti erè nan voye done yo, men yo sove nan telefòn ou.');
-            }
-        })
-        .catch(err => {
-            console.log("Erreur:", err);
-            updateUI(); // Menm si gen erè rezo, nou montre sa ki sove a
-        });
+        // Opsyonèl: kache fòm nan sèlman si siksè
+        document.getElementById('profile-form-container').style.display = 'none';
     });
 });
+
 
     window.onclick = function(event) {
         if (event.target == document.getElementById('messageModal')) closeMessageModal();
