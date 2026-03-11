@@ -1112,7 +1112,7 @@ document.addEventListener('DOMContentLoaded', refreshHeader);
 
 // --- KONFIGIRASYON JENERAL ---
 const MESSAGE_KEY = 'lcd_user_messages'; // Pou evite erè ak sistèm mesaj la
-let baseLikes = 23; // Chif fiks ki egziste deja
+let baseLikes = 31; // Chif fiks ki egziste deja
 
 // --- SISTÈM LIKE AK ANIMASYON 1 RIVE 23 ---
 function initLikeSystem() {
@@ -1123,9 +1123,9 @@ function initLikeSystem() {
     // Sa ap pèmèt like la rete la menm si li fèmen aplikasyon an
     const userHasLiked = localStorage.getItem('user_has_liked') === 'true';
 
-    // 1. Animasyon 1 rive 23 nan 3 segonn
+    // 1. Animasyon 1 rive 31 nan 1 segond
     let current = 1;
-    const duration = 3000; // 3 segonn
+    const duration = 1000; // 1 segonn
     const interval = duration / baseLikes;
 
     const counter = setInterval(() => {
