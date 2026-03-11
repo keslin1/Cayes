@@ -392,47 +392,34 @@
         } catch (e) { return []; }
     }
 
-function saveMessage(title, body) {
-    let messages = getMessages();
-    
-    // Kreye nouvo mesaj la
-    const newMsg = {
-        id: Date.now(),
-        title: title,
-        body: body,
-        time: new Date().toLocaleString('ht-HT'),
-        read: false
-    };
-
-    // Ajoute li nan konmansman lis la
-    messages.unshift(newMsg);
-
-    // Kenbe sèlman 50 dènye mesaj yo
-    if (messages.length > 50) { 
-        messages = messages.slice(0, 50); 
+    function saveMessage(title, body) {
+        let messages = getMessages();
+        const newMsg = {
+            id: Date.now(),
+            title: title,
+            body: body,
+            time: new Date().toLocaleString('ht-HT'),
+            read: false
+        };
+        messages.unshift(newMsg);
+        if (messages.length > 50) { messages = messages.slice(0, 50); }
+        localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
+        updateBadgeUI();
+        playNotifSound();
     }
 
-    localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
-    
-    // Mizajou vizyèl imedyat
-    updateBadgeUI();
-    playNotifSound();
-}
-function scrollToProfile() {
-    const infoCard = document.querySelector('.info-card');
-    if (infoCard) {
-        infoCard.scrollIntoView({ behavior: 'smooth' });
-        // Yon ti efè flash pou montre kote enfòmasyon yo ye
-        infoCard.style.border = "2px solid var(--kaki)";
-        setTimeout(() => { infoCard.style.border = "none"; }, 2000);
+    function scrollToProfile() {
+        const infoCard = document.querySelector('.info-card');
+        if (infoCard) {
+            infoCard.scrollIntoView({ behavior: 'smooth' });
+            infoCard.style.border = "2px solid var(--kaki)";
+            setTimeout(() => { infoCard.style.border = "none"; }, 2000);
+        }
     }
-}
-
 
     function updateBadgeUI() {
         const messages = getMessages();
         const unreadCount = messages.filter(m => !m.read).length;
-        
         const bellBadge = document.getElementById('notif-badge');
         const footerBadge = document.getElementById('footer-badge');
         
@@ -455,21 +442,10 @@ function scrollToProfile() {
         });
     }
 
-    if (typeof onMessage !== 'undefined') {
-        onMessage(messaging, (payload) => {
-            saveMessage(payload.notification.title, payload.notification.body);
-            new Notification(payload.notification.title, { 
-                body: payload.notification.body, 
-                icon: "/lescayesdropshipping.jpg" 
-            });
-        });
-    }
-
     // 3. INTERFACE UTILISATEUR
     function openMessageModal() {
         const modal = document.getElementById('messageModal');
         if (!modal) return;
-        
         modal.style.display = 'block';
         const list = document.getElementById('message-list');
         const messages = getMessages();
@@ -489,7 +465,6 @@ function scrollToProfile() {
 
         const updatedMessages = messages.map(m => ({ ...m, read: true }));
         localStorage.setItem(MESSAGE_KEY, JSON.stringify(updatedMessages));
-        
         setTimeout(updateBadgeUI, 500);
     }
 
@@ -499,128 +474,112 @@ function scrollToProfile() {
         updateBadgeUI();
     }
 
-// INITIALISATION GÉNÉRALE
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('profile-form');
-    const formContainer = document.getElementById('profile-form-container');
-    const editProfileBtn = document.getElementById('edit-profile-btn');
-    
-    // Fonksyon pou mete enfòmasyon yo sou ekran an
-    const updateUI = () => {
-        const storedData = localStorage.getItem(userStorageKey);
-        const profile = storedData ? JSON.parse(storedData) : {};
+    // INITIALISATION GÉNÉRALE
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('profile-form');
+        const formContainer = document.getElementById('profile-form-container');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
         
-        const isProfileComplete = !!(profile.nom && profile.email);
+        const updateUI = () => {
+            const storedData = localStorage.getItem(userStorageKey);
+            const profile = storedData ? JSON.parse(storedData) : {};
+            const isProfileComplete = !!(profile.nom && profile.email);
 
-        if (isProfileComplete) {
-            document.getElementById('profile-name-display').textContent = profile.nom;
-            document.getElementById('profile-email-display').textContent = profile.email;
-            document.getElementById('profile-phone-display').textContent = profile.phone || 'pako anrejistre';
-            document.getElementById('profile-address-display').textContent = profile.address || 'pako anrejistre';
-            
-            // Kache fòm nan piske pwofil la fini
-            formContainer.style.display = 'none';
-        } else {
-            // Montre fòm nan si enfòmasyon yo manke
-            formContainer.style.display = 'block';
+            if (isProfileComplete) {
+                document.getElementById('profile-name-display').textContent = profile.nom;
+                document.getElementById('profile-email-display').textContent = profile.email;
+                document.getElementById('profile-phone-display').textContent = profile.phone || 'pako anrejistre';
+                document.getElementById('profile-address-display').textContent = profile.address || 'pako anrejistre';
+                formContainer.style.display = 'none';
+            } else {
+                formContainer.style.display = 'block';
+            }
+        };
+
+        updateUI();
+        updateBadgeUI();
+
+        if (editProfileBtn) {
+            editProfileBtn.addEventListener('click', () => {
+                formContainer.style.display = 'block';
+                formContainer.scrollIntoView({ behavior: 'smooth' });
+                const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                if (profile.nom) document.getElementById('nom').value = profile.nom;
+                if (profile.email) document.getElementById('email').value = profile.email;
+                if (profile.phone) document.getElementById('phone').value = profile.phone;
+                if (profile.address) document.getElementById('address').value = profile.address;
+            });
         }
-    };
 
-    // LANSE updateUI TÈKREMAN LÈ PAJ LA OUVRI
-    updateUI();
-    updateBadgeUI();
-
-    // Bouton pou modifye pwofil la (li remete done yo nan fòm nan)
-    if (editProfileBtn) {
-        editProfileBtn.addEventListener('click', () => {
-            formContainer.style.display = 'block';
-            formContainer.scrollIntoView({ behavior: 'smooth' });
-            
-            const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-            if (profile.nom) document.getElementById('nom').value = profile.nom;
-            if (profile.email) document.getElementById('email').value = profile.email;
-            if (profile.phone) document.getElementById('phone').value = profile.phone;
-            if (profile.address) document.getElementById('address').value = profile.address;
-        });
-    }
-
-    // Sistèm Referans WhatsApp la
-    const referenceSelect = document.getElementById('reference');
-    const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
-    if (referenceSelect) {
-        referenceSelect.addEventListener('change', (e) => {
-            whatsappFriendContainer.style.display = e.target.value === 'WhatsApp' ? 'block' : 'none';
-        });
-    }
-
-// --- ANREJISTREMAN AK ANVO DONE ---
-form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // 1. Rekipere done yo nan fòm nan
-    const profileData = {
-        nom: document.getElementById('nom').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        reference: document.getElementById('reference').value,
-        whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
-    };
-
-    // 2. SOVE LOKALMAN AVAN (Sa asire done yo pa pèdi nan telefòn nan)
-    localStorage.setItem(userStorageKey, JSON.stringify(profileData));
-
-    // 3. Prepare anvo Web3Forms
-    const formData = new FormData();
-    formData.append("access_key", "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
-    formData.append("nom", profileData.nom);
-    formData.append("email", profileData.email);
-    formData.append("phone", profileData.phone);
-    formData.append("address", profileData.address);
-    formData.append("reference", profileData.reference);
-    formData.append("whatsapp_referant", profileData.whatsapp_referant);
-    formData.append("subject", "Nouvo Pwofil LCDrop: " + profileData.nom);
-
-    const saveBtn = document.getElementById('save-profile-btn');
-    const originalText = saveBtn.textContent;
-    saveBtn.textContent = "Ap voye...";
-    saveBtn.disabled = true;
-
-    // 4. Voye done yo
-    fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-    })
-    .then(async (response) => {
-        if (response.ok) {
-            alert('Pwofil ou anrejistre ak siksè !');
-            // NOU PA FÈ form.reset() ISIT LA POU DONE YO RETE NAN CHAMP YO
-        } else {
-            const result = await response.json();
-            alert('Erè: ' + result.message);
+        const referenceSelect = document.getElementById('reference');
+        const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
+        if (referenceSelect) {
+            referenceSelect.addEventListener('change', (e) => {
+                whatsappFriendContainer.style.display = e.target.value === 'WhatsApp' ? 'block' : 'none';
+            });
         }
-    })
-    .catch(err => {
-        console.error("Erreur:", err);
-        alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo pou voye yo.');
-    })
-    .finally(() => {
-        // 5. Rafrechi UI a san efase anyen
-        updateUI(); 
-        saveBtn.textContent = originalText;
-        saveBtn.disabled = false;
-        
-        // Opsyonèl: kache fòm nan sèlman si siksè
-        document.getElementById('profile-form-container').style.display = 'none';
+
+        // --- ANREJISTREMAN AK ANVO DONE ---
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const profileData = {
+                nom: document.getElementById('nom').value.trim(),
+                email: document.getElementById('email').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                reference: document.getElementById('reference').value,
+                whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
+            };
+
+            // Sove lokalman an premye
+            localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+
+            // Prepare done pou Web3Forms
+            const formData = new FormData();
+            formData.append("access_key", "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
+            formData.append("nom", profileData.nom);
+            formData.append("email", profileData.email);
+            formData.append("phone", profileData.phone);
+            formData.append("address", profileData.address);
+            formData.append("reference", profileData.reference);
+            formData.append("whatsapp_referant", profileData.whatsapp_referant);
+            formData.append("subject", "Nouvo Pwofil LCDrop: " + profileData.nom);
+
+            const saveBtn = document.getElementById('save-profile-btn');
+            const originalText = saveBtn.textContent;
+            saveBtn.textContent = "Ap voye...";
+            saveBtn.disabled = true;
+
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            })
+            .then(async (response) => {
+                if (response.ok) {
+                    alert('Pwofil ou anrejistre ak siksè !');
+                    // Nou rafrechi UI a pou kache fòm nan epi montre done yo
+                    updateUI();
+                } else {
+                    const result = await response.json();
+                    alert('Erè: ' + result.message);
+                }
+            })
+            .catch(err => {
+                console.error("Erreur:", err);
+                alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo pou voye email la.');
+                updateUI();
+            })
+            .finally(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.disabled = false;
+            });
+        });
     });
-});
-
 
     window.onclick = function(event) {
         if (event.target == document.getElementById('messageModal')) closeMessageModal();
     }
-    
-    
 </script>
 
 
