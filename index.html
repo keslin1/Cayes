@@ -609,26 +609,26 @@
     <section id="banner-carousel">
         <div class="carousel-container">
             
-            <div class="carousel-item active" style="background-image: url('pro.jpg');">
+            <div class="carousel-item active" style="background-image: url('LCD 1.gif');">
                 <div class="banner-text">
                     <h1>oumenm tou w ka gen yon store</h1>
-                    <p>achte pwodui ou vle vann yo voye nan adrès nou, nap livre w yo.</p>
+                    <p>Achte pwodui an Chine kew vle vann, voye nan antrepo nou.</p>
                 </div>
             </div>
             
-            <div class="carousel-item" style="background-image: url('mache.jpg');">
+            <div class="carousel-item" style="background-image: url('LCD 2.gif');">
                 <div class="banner-text">
-                    <h1>La rareté est terminée</h1>
-                    <p>nenpòt materyèl oswa pwodui w paka jwenn sou mache a.</p>
+                    <h1>Livrezon nan 4 kwen peyi an</h1>
+                    <p>kliyan nan Sud, P-au-P, Okap, Jeremi, TiGwav, Leogane.</p>
                 </div>
             </div>
 <div class="carousel-item" style="background-image: url('rechajkatwise.jpg');">
     <div class="banner-text">
-        <h1>Achte poukont ou</h1>
-        <p>Kreye yon kat ak nou e rechaje l ak yon ajan Les Cayes Dropsh.</p>
+        <h1>Ban n achte pou ou</h1>
+        <p>siw pa gen kat, pataje link panye w nap order yo pou ou.</p>
     </div>
 </div>
-            <div class="carousel-item" style="background-image: url('kontr.png');">
+            <div class="carousel-item" style="background-image: url('kontr.jpg');">
                 <div class="banner-text">
                     <h1>achte zouti modèn pou travay</h1>
                     <p>pou devni pi pèfòman nan metye w lan.</p>
@@ -857,6 +857,43 @@
             window.location.href = "moncompte.html?tab=mesaj";
         };
     });
+// --- ANIMASYON CAROUSEL BANNER (CHAK 10 SEKOND) ---
+function initBannerCarousel() {
+    const carousel = document.getElementById('banner-carousel');
+    const container = carousel ? carousel.querySelector('.carousel-container') : null;
+    
+    if (!carousel || !container) return;
+
+    let scrollAmount = 0;
+    const items = container.querySelectorAll('.carousel-item');
+    const totalItems = items.length;
+
+    // Nou kreye yon entèval pou deplasman an
+    setInterval(() => {
+        const itemWidth = items[0].offsetWidth + 15; // Lajè afich la + margin-right la (15px)
+        
+        if (scrollAmount >= (itemWidth * (totalItems - 1))) {
+            // Si nou rive nan dènye a, nou tounen nan kòmansman dousman
+            scrollAmount = 0;
+            carousel.scrollTo({
+                left: 0,
+                behavior: 'smooth'
+            });
+        } else {
+            // Sinon, nou avanse sou pwochen an
+            scrollAmount += itemWidth;
+            carousel.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    }, 10000); // 10 segond
+}
+
+// Lanse fonksyon an lè paj la fin chaje
+document.addEventListener('DOMContentLoaded', () => {
+    initBannerCarousel();
+});
 
     // 5. INITIALISATION UI (KÒD KORIJÉ)
     document.addEventListener('DOMContentLoaded', () => {
@@ -1232,7 +1269,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 </script>
-<a href="https://wa.me/50931013968?text=Hello%20manager%20Thomas%2C%20mwen%20ekri%20w%20apati%20de%20aplikasyon%20Les%20Cayes%20Dropshipping%20lan" 
+<a href="https://wa.me/50931013968?text=Hello%20Manager%20Thomas%2C%20mwen%20ekri%20w%20apati%20de%20aplikasyon%20Les%20Cayes%20Dropshipping%20lan.%20Kòman%20sa%20ye%3F"
    style="position: fixed; width: 60px; height: 60px; bottom: 80px; right: 20px; background-color: #25d366; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 999;" 
    target="_blank">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width: 35px; height: 35px;" alt="WhatsApp Business" />
