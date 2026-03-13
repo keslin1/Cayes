@@ -220,20 +220,6 @@
             text-shadow: 1px 1px 2px #000;
         }
         
-/* Style du conteneur plein écran */
-#page-loader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.9); /* Fond blanc semi-transparent */
-    display: none; /* Caché par défaut */
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* Toujours au-dessus du footer */
-}
 
 /* Le cercle qui tourne */
 .spinner {
@@ -595,10 +581,6 @@
   </style>
 </head>
 <body>
-<div id="page-loader">
-    <div class="spinner"></div>
-    <p>Chajman...</p>
-</div>
 
     <header id="main-header">
         <div class="header-content">
@@ -1152,7 +1134,7 @@ document.addEventListener('DOMContentLoaded', refreshHeader);
 
 // --- KONFIGIRASYON JENERAL ---
 const MESSAGE_KEY = 'lcd_user_messages'; // Pou evite erè ak sistèm mesaj la
-let baseLikes = 31; // Chif fiks ki egziste deja
+let baseLikes = 33; // Chif fiks ki egziste deja
 
 // --- SISTÈM LIKE AK ANIMASYON 1 RIVE 23 ---
 function initLikeSystem() {
@@ -1306,21 +1288,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) modal.style.display = 'flex';
     }
 });
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. On affiche le loader quand on clique sur un lien du footer
-    const navLinks = document.querySelectorAll('.nav-item');
-    
-    navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            document.getElementById('page-loader').style.display = 'flex';
-        });
-    });
 
-    // 2. On s'assure que le loader est caché quand la page est prête
-    window.addEventListener('load', function() {
-        document.getElementById('page-loader').style.display = 'none';
-    });
-});
 </script>
 <a href="https://wa.me/50931013968?text=Hello%20Manager%20Thomas%2C%20mwen%20ekri%20w%20apati%20de%20aplikasyon%20Les%20Cayes%20Dropshipping%20lan.%20Kòman%20nèg%20ye%3F"
    style="position: fixed; width: 60px; height: 60px; bottom: 80px; right: 20px; background-color: #25d366; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 999;" 
