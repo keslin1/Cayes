@@ -1248,6 +1248,12 @@ function requestPermission() {
         return;
     }
 
+    // Si l'utilisateur a déjà bloqué les notifications dans les paramètres du navigateur
+    if (Notification.permission === 'denied') {
+        alert("Ou te bloke notifikasyon yo nan paramèt navigatè w la. Tanpri debloke yo pou Les Cayes Dropshipping ka fonksyone.");
+        return;
+    }
+
     Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
             // SOVE NAN MEMWA : Navigatè a ap sonje ke itilizatè a aksepte
@@ -1255,6 +1261,7 @@ function requestPermission() {
             femenModalNotif();
             console.log("Otorizasyon aksepte!");
         } else {
+            // Si l'utilisateur clique sur "Bloquer" ou ferme la fenêtre
             refuseAccess();
         }
     });
@@ -1262,12 +1269,15 @@ function requestPermission() {
 
 function refuseAccess() {
     alert("Atansyon! Aplikasyon Les Cayes Dropshipping lan pa ka fonksyone san notifikasyon yo. Sa a nesesè pou sekirite ak swivi koli ou yo.");
-    window.location.reload(); 
+    // Optionnel : Vous pouvez laisser le modal ouvert au lieu de recharger
+    // window.location.reload(); 
 }
 
 function femenModalNotif() {
     const modal = document.getElementById('notif-modal');
-    if (modal) modal.style.display = 'none';
+    if (modal) {
+        modal.style.setProperty('display', 'none', 'important');
+    }
 }
 
 // Rann fonksyon yo piblik pou bouton HTML yo
@@ -1276,18 +1286,21 @@ window.refuseAccess = refuseAccess;
 
 // TCHEKE SI YO TE DEJA AKSEPTE OUBYEN SI PÈMISYON AN DEJA BAY
 document.addEventListener('DOMContentLoaded', () => {
-    const dejaAksepte = localStorage.getItem('notif_accepted');
+    const dejaAksepteMemwa = localStorage.getItem('notif_accepted');
     const pèmisyonSistèm = Notification.permission;
 
-    // Si itilizatè a te deja klike sou "Aksepte" OUBYEN si navigatè a di "granted" deja
-    if (dejaAksepte === 'true' || pèmisyonSistèm === 'granted') {
+    // Condition stricte : Si c'est déjà accordé par le système, on cache le modal définitivement
+    if (pèmisyonSistèm === 'granted' || dejaAksepteMemwa === 'true') {
         femenModalNotif();
     } else {
-        // Sinon, nou asire modal la parèt pou mande l
+        // Montrer le modal seulement si la permission n'est pas encore accordée
         const modal = document.getElementById('notif-modal');
-        if (modal) modal.style.display = 'flex';
+        if (modal) {
+            modal.style.display = 'flex';
+        }
     }
 });
+
 
 </script>
 <a href="https://wa.me/50931013968?text=Hello%20Manager%20Thomas%2C%20mwen%20ekri%20w%20apati%20de%20aplikasyon%20Les%20Cayes%20Dropshipping%20lan.%20Kòman%20nèg%20ye%3F"
