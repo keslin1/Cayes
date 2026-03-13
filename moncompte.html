@@ -205,6 +205,41 @@
             margin-top: 20px;
             font-size: 1.1em;
         }
+/* Ajoutez ceci dans votre bloc <style> */
+#page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--blanc-fond); /* Utilise votre couleur de fond */
+    display: none; /* Caché par défaut */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Doit être au-dessus du footer */
+}
+
+.spinner {
+    width: 45px;
+    height: 45px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--vert-menu);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#page-loader p {
+    margin-top: 15px;
+    color: var(--vert-menu);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
         
          #main-footer {
             display: flex;
@@ -239,6 +274,10 @@
     </style>
 </head>
 <body>
+<div id="page-loader">
+    <div class="spinner"></div>
+    <p>Chajman...</p>
+</div>
 
 <header class="header-top">
     <h1>Kont mwen</h1>
@@ -580,6 +619,23 @@
     window.onclick = function(event) {
         if (event.target == document.getElementById('messageModal')) closeMessageModal();
     }
+// Ajoutez ceci dans votre bloc <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. On affiche le loader quand on clique sur un lien du footer
+    const navLinks = document.querySelectorAll('.nav-item');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            document.getElementById('page-loader').style.display = 'flex';
+        });
+    });
+
+    // 2. On s'assure que le loader est caché quand la page est prête
+    window.addEventListener('load', function() {
+        document.getElementById('page-loader').style.display = 'none';
+    });
+});
+    
 </script>
 
 

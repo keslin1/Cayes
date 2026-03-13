@@ -220,6 +220,42 @@
             text-shadow: 1px 1px 2px #000;
         }
         
+/* Style du conteneur plein écran */
+#page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Fond blanc semi-transparent */
+    display: none; /* Caché par défaut */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Toujours au-dessus du footer */
+}
+
+/* Le cercle qui tourne */
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--vert-menu); /* Utilise votre couleur verte */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#page-loader p {
+    margin-top: 10px;
+    font-family: sans-serif;
+    color: var(--vert-menu);
+    font-weight: bold;
+}
 
         /* Footer Styles */
         #main-footer {
@@ -559,6 +595,10 @@
   </style>
 </head>
 <body>
+<div id="page-loader">
+    <div class="spinner"></div>
+    <p>Chajman...</p>
+</div>
 
     <header id="main-header">
         <div class="header-content">
@@ -1266,6 +1306,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) modal.style.display = 'flex';
     }
 });
+document.querySelectorAll('.nav-item').forEach(link => {
+    link.addEventListener('click', function(e) {
+        // On affiche le loader
+        document.getElementById('page-loader').style.display = 'flex';
+    });
+});
+
+// Optionnel : Cacher le loader quand la page a fini de charger
+window.addEventListener('load', function() {
+    document.getElementById('page-loader').style.display = 'none';
+});
 
 
 </script>
@@ -1274,6 +1325,6 @@ document.addEventListener('DOMContentLoaded', () => {
    target="_blank">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width: 35px; height: 35px;" alt="WhatsApp Business" />
 </a>
-        
+       
 </body>
 </html>

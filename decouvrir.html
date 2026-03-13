@@ -185,6 +185,41 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
+/* Ajoutez ceci dans votre bloc <style> */
+#page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--blanc-fond); /* Utilise votre couleur de fond */
+    display: none; /* Caché par défaut */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Doit être au-dessus du footer */
+}
+
+.spinner {
+    width: 45px;
+    height: 45px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid var(--vert-menu);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#page-loader p {
+    margin-top: 15px;
+    color: var(--vert-menu);
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
 
         /* Footer */
         #main-footer {
@@ -200,6 +235,52 @@
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
+/* Santre veso kalkilatris la */
+.calculator-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+    text-align: center;
+    width: 100%;
+}
+
+/* Stil bouton ak animasyon */
+.pulse-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.7); /* Koulè vèt Les Cayes */
+    animation: pulse-animation 2s infinite;
+    transition: transform 0.3s ease;
+}
+
+.pulse-button:hover {
+    transform: scale(1.1);
+}
+
+.pulse-button img {
+    width: 45px;
+    height: 45px;
+}
+
+/* Algorit animasyon pulsation an */
+@keyframes pulse-animation {
+    0% {
+        box-shadow: 0 0 0 0 rgba(39, 174, 96, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 20px rgba(39, 174, 96, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(39, 174, 96, 0);
+    }
+}
 
         .nav-item { text-align: center; text-decoration: none; color: var(--vert-menu); font-size: 0.75em; padding: 5px; position: relative; }
         #main-footer .material-icons { color: var(--vert-menu); font-size: 24px; }
@@ -208,6 +289,11 @@
     </style>
 </head>
 <body>
+    
+<div id="page-loader">
+    <div class="spinner"></div>
+    <p>Chajman...</p>
+</div>
 
     <main id="main-content">
         <div class="flip-container" id="flip-card">
@@ -246,14 +332,20 @@
                         </div>
                     </li>
                     
-                    <li class="hidden-scroll">
-                        <h3>Kontwòl :</h3>
-                        Frè <strong>enpòtasyon an</strong> se <strong>4,90 USD pa liv (lbs)</strong>. Pou pwa ki siperyè a 49 lbs, li ka redui jiska 3,99 USD.
-                        <br>Kalkil frais an <strong>fèt an m³</strong> (selon poids reyèl ak volim koli an).
-                        <br>Fòmil kalil lan se: <strong>L × l × H / 4000.</strong> Ou pap peye okenn frais siplemantè si l pa nan kategori elektwonik.
-                    </li>
+<li class="hidden-scroll">
+    <h3>Kontwòl :</h3>
+    Frè <strong>enpòtasyon an</strong> se <strong>4,90 USD pa liv (lbs)</strong>. Pou pwa ki siperyè a 49 lbs, li ka redui jiska 3,99 USD.
+    <br>Kalkil frais an <strong>fèt an m³</strong> (selon poids reyèl ak volim koli an).
+    <br>Fòmil kalil lan se: <strong>L × l × H / 4000.</strong> Ou pap peye okenn frais siplemantè si l pa nan kategori elektwonik.
+    <div class="calculator-container">
+        <a href="calcul.html" class="pulse-button">
+            <img src="https://img.icons8.com/fluency/64/000000/bill.png" alt="Kalkile frais">
+        </a>
+        <p style="font-size: 12px; color: #27ae60; margin-top: 5px; font-weight: bold;">Kalkile frais koli w</p>
+    </div>                        
+</li>
 
-                    <li class="hidden-scroll">
+<li class="hidden-scroll">
                         <h3>Resevwa koli w :</h3>
                         Tout kòmand ki peze ant <strong>1 a 3 liv</strong> koute <strong>18 dola fiks</strong>. Wap resevwa yon fakti pou "coût importation" machandiz ou yo. 
                         <br>Ou peye fakti sa lòske koli an disponib. Pa kite koli ret fè <strong>plis ke 4 jou nan depo n</strong>, se sèl fason nou pa tolere kliyan. Kalite atik ou yo depann de kalite founisè w chwazi sou platfòm wap achte an.
@@ -366,6 +458,23 @@
             };
             updateBadgeUI();
         });
+// Ajoutez ceci dans votre bloc <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. On affiche le loader quand on clique sur un lien du footer
+    const navLinks = document.querySelectorAll('.nav-item');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            document.getElementById('page-loader').style.display = 'flex';
+        });
+    });
+
+    // 2. On s'assure que le loader est caché quand la page est prête
+    window.addEventListener('load', function() {
+        document.getElementById('page-loader').style.display = 'none';
+    });
+});
+    
     </script>
 </body>
 </html>
