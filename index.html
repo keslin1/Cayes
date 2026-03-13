@@ -1306,19 +1306,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) modal.style.display = 'flex';
     }
 });
-document.querySelectorAll('.nav-item').forEach(link => {
-    link.addEventListener('click', function(e) {
-        // On affiche le loader
-        document.getElementById('page-loader').style.display = 'flex';
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. On affiche le loader quand on clique sur un lien du footer
+    const navLinks = document.querySelectorAll('.nav-item');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            document.getElementById('page-loader').style.display = 'flex';
+        });
+    });
+
+    // 2. On s'assure que le loader est caché quand la page est prête
+    window.addEventListener('load', function() {
+        document.getElementById('page-loader').style.display = 'none';
     });
 });
-
-// Optionnel : Cacher le loader quand la page a fini de charger
-window.addEventListener('load', function() {
-    document.getElementById('page-loader').style.display = 'none';
-});
-
-
 </script>
 <a href="https://wa.me/50931013968?text=Hello%20Manager%20Thomas%2C%20mwen%20ekri%20w%20apati%20de%20aplikasyon%20Les%20Cayes%20Dropshipping%20lan.%20Kòman%20nèg%20ye%3F"
    style="position: fixed; width: 60px; height: 60px; bottom: 80px; right: 20px; background-color: #25d366; border-radius: 50px; display: flex; align-items: center; justify-content: center; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 999;" 
