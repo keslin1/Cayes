@@ -51,8 +51,7 @@
         /* Bwat Konsiy la */
         .consignes-box {
             background-color: var(--bleu-leje);
-            border-left: 5px solid var(--bleu-marin); 
-            padding: 15px;
+padding: 15px;
             margin-bottom: 25px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -352,48 +351,6 @@
         });
 
     </script>
-// --- PARTIE 1 : CACHER LE LOADER QUAND LA PAGE EST CHARGÉE ---
-// C'est ce qui gère l'arrivée sur la page
-window.addEventListener("load", function() {
-    const loader = document.getElementById("page-loader");
-    // On cache le loader après un très court délai pour qu'il soit visible
-    setTimeout(function() {
-        loader.style.display = 'none';
-    }, 100); 
-});
 
-// --- PARTIE 2 : AFFICHER LE LOADER AU CLIC SUR UN LIEN ---
-// C'est ce qui gère le départ vers une autre page
-document.addEventListener("DOMContentLoaded", function() {
-    const loader = document.getElementById("page-loader");
-    
-    // On sélectionne tous les liens '<a>' de la page
-    const links = document.querySelectorAll('a');
-
-    links.forEach(link => {
-        link.addEventListener('click', function(e) {
-            // Récupérer l'attribut href du lien
-            const href = this.getAttribute('href');
-
-            // On vérifie que c'est bien un lien interne (pas un #, pas un javascript:)
-            if (href && href !== '#' && !href.startsWith('javascript:') && !this.getAttribute('target')) {
-                
-                // --- ACTION ---
-                // On affiche le loader avant que le navigateur ne change de page
-                loader.style.display = 'flex';
-            }
-        });
-    });
-});
-
-// --- PARTIE 3 : SÉCURITÉ POUR LE BOUTON RETOUR ---
-window.addEventListener("pageshow", function(event) {
-    const loader = document.getElementById("page-loader");
-    if (event.persisted) {
-        // Si on revient en arrière, on force la disparition du loader
-        loader.style.display = 'none';
-    }
-});
-    
 </body>
 </html>
