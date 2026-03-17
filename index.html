@@ -632,7 +632,15 @@
     margin-top: 10px;
     color: #333;
 }
-
+/* Modèl B - Eskann */
+.icon-scan {
+    display: inline-block;
+    animation: scan 1.5s infinite alternate;
+}
+@keyframes scan {
+    from { opacity: 0.2; transform: translateY(-2px); }
+    to { opacity: 1; transform: translateY(2px); }
+}
 /* Efè lè moun pase sourit la */
 .rules-link:hover {
     border: 2px dashed #ccc; /* On garde la même bordure grise */
@@ -644,6 +652,7 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
   </style>
 </head>
 <body>
@@ -678,8 +687,8 @@
 
     <div class="info-step no-border">
         <p class="info-title">2. Disponiblite koli :</p>
-        <div class="info-detail">NAN DWÀN</div>
-        <p class="info-sub">Annatandan ou ka kòmande pou shippment lòt mwa (Avril)!</p>
+<div class="info-detail">NAN DWÀN <span class="icon-scan">🔍</span></div>
+        <p class="info-sub">Annatandan ou ka kòmande pou shipment lòt mwa!</p>
     </div>
 </div>
 
