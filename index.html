@@ -409,7 +409,7 @@
 
 .add-avis { margin-top: 25px; border-top: 2px dashed var(--kaki); padding-top: 15px; }
 .add-avis textarea { width: 100%; height: 80px; border-radius: 8px; border: 1px solid #ccc; padding: 10px; font-family: inherit; }
-.add-avis button { background: var(--bleu-marin); color: white; border: none; padding: 10px 20px; border-radius: 20px; margin-top: 10px; width: 100%; font-weight: bold; }
+.add-avis button { background: #004D40; color: white; border: none; padding: 10px 20px; border-radius: 20px; margin-top: 10px; width: 100%; font-weight: bold; }
     
 #footer-description {
     padding: 30px 15px;
@@ -571,6 +571,74 @@
     font-size: 0.9em;
 }
 
+/* Kontenè a pran tout lajè a */
+.rules-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0; /* Espas anwo ak anba */
+}
+
+/* Imaj la ap pran 90% lajè ekran an pou l parèt byen gwo */
+.rules-image {
+    width: 90vw;       /* 90% lajè ekran an (viewport width) */
+    height: 90vw;      /* Menm wotè ak lajè pou l rete 1x1 */
+    max-width: 500px;  /* Lajè maksimòm pou l pa parèt twòp sou òdinatè */
+    max-height: 500px; /* Wotè maksimòm pou l rete kare */
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+/* Kontenè a pou santre bouton an */
+.rules-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 30px 0;
+}
+
+/* Stil bouton an kòm yon rektang orizontal */
+.rules-link {
+    color: #333; /* Koulè tèks la */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    
+    /* Konfigirasyon Rektang lan */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    width: 80%; /* Lajè bouton an */
+    max-width: 300px;
+    height: 120px; /* Wotè pou l parèt tankou yon kat orizontal */
+    
+    border: 2px dashed #ccc; /* Bordure pwen-pwen tankou nan foto a */
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Yon ti koulè fon lejè */
+    
+    transition: all 0.3s ease;
+    margin: 0 auto;
+}
+
+/* Ajoute flèch la anba tèks la */
+.rules-link::after {
+    content: "→";
+    font-size: 24px;
+    margin-top: 10px;
+    color: #333;
+}
+
+/* Efè lè moun pase sourit la */
+.rules-link:hover {
+    border: 2px dashed #ccc; /* On garde la même bordure grise */
+    color: #333;             /* On garde le même noir (ou #000) */
+    background-color: #f9f9f9; /* On garde le même fond */
+    transform: scale(1.02); 
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
@@ -740,9 +808,17 @@
     <div class="add-avis">
         <h3>Bay avis pa w</h3>
         <textarea id="user-comment" placeholder="Ekri eksperyans ou isit la..."></textarea>
-        <button onclick="ajouterAvis()">Pibliye kòmantè pa w''</button>
+        <button onclick="ajouterAvis()">Pibliye kòmantè pa w'</button>
     </div>
 </section>
+        
+<div class="rules-container">
+    <img src="Lescayesdropshipping2.jpg" alt="Sèvis nou an" class="rules-image">
+    
+    <a href="decouvrir.html" class="rules-link">
+        Kondisyon pou sèvi ak nou
+    </a>
+</div>
         
 <section id="footer-description">
     <div class="container-footer">
