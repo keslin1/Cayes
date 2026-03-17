@@ -10,12 +10,14 @@
     {
       "src": "lescayesdropshipping.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "lescayesdropshipping.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "lescayes dropshipping2.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
     }
   ]
 }
