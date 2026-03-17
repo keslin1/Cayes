@@ -455,18 +455,21 @@
         });
 document.addEventListener('DOMContentLoaded', () => {
     const updateBadge = document.getElementById('update-badge');
+    const isRulePage = window.location.pathname.includes('decouvrir.html');
 
-    // Si itilizatè a sou paj "Règ" la (decouvrir.html)
-    if (window.location.pathname.includes('decouvrir.html')) {
-        // Nou kache badj la imedyatman
-        if (updateBadge) updateBadge.style.display = 'none';
-        // Nou sove nan memwa telefòn nan ke li fin li règ #7 la
+    // 1. Si itilizatè a sou paj "Règ" la kounye a, nou make l kòm li
+    if (isRulePage) {
         localStorage.setItem('rule7_read', 'true');
     }
 
-    // Tcheke si memwa a di li te deja li l, si wi nou pa montre badj la
-    if (localStorage.getItem('rule7_read') === 'true') {
-        if (updateBadge) updateBadge.style.display = 'none';
+    // 2. Nou tcheke si li te deja li l
+    const hasRead = localStorage.getItem('rule7_read') === 'true';
+
+    // 3. Si li poko li l, nou montre badj la (si li sou yon lòt paj)
+    if (!hasRead && updateBadge) {
+        updateBadge.style.display = 'block';
+    } else if (updateBadge) {
+        updateBadge.style.display = 'none';
     }
 });
 

@@ -776,10 +776,11 @@
             <span class="material-icons">home</span>
             <p>Akèy</p>
         </a>
-        <a href="decouvrir.html" class="nav-item">
-            <span class="material-icons">info</span>
-            <p>Règ</p>
-        </a>
+<a href="decouvrir.html" class="nav-item" id="rule-nav">
+    <span class="material-icons">info</span>
+    <span id="update-badge" style="position: absolute; top: -5px; right: 5px; background-color: var(--rouge-alerte); color: white; border-radius: 10px; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;">#7</span>
+    <p>Règ</p>
+</a>
         <a href="transaction.html" class="nav-item">
             <span class="material-icons">list_alt</span>
             <p>Tranzaksyon</p>
@@ -1296,6 +1297,25 @@ document.addEventListener('DOMContentLoaded', () => {
         if (modal) {
             modal.style.display = 'flex';
         }
+    }
+});
+document.addEventListener('DOMContentLoaded', () => {
+    const updateBadge = document.getElementById('update-badge');
+    const isRulePage = window.location.pathname.includes('decouvrir.html');
+
+    // 1. Si itilizatè a sou paj "Règ" la kounye a, nou make l kòm li
+    if (isRulePage) {
+        localStorage.setItem('rule7_read', 'true');
+    }
+
+    // 2. Nou tcheke si li te deja li l
+    const hasRead = localStorage.getItem('rule7_read') === 'true';
+
+    // 3. Si li poko li l, nou montre badj la (si li sou yon lòt paj)
+    if (!hasRead && updateBadge) {
+        updateBadge.style.display = 'block';
+    } else if (updateBadge) {
+        updateBadge.style.display = 'none';
     }
 });
 
