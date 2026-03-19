@@ -369,18 +369,29 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
     // -------------------------------------------------
     // COMPTEUR HTG — rafraîchi chak 80ms
     // -------------------------------------------------
-    function startCounter(investi, gain, dateDebut) {
-        clearInterval(animationInterval);
-        animationInterval = setInterval(function() {
-            var elapsed  = Math.min(Date.now() - dateDebut, TOTAL_MS);
-            var t        = elapsed / TOTAL_MS;
-            var current  = investi + (gain - investi) * (1 - Math.exp(-3.5 * t));
-            var decimals = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
-            counterInt.textContent = Math.floor(current);
-            counterDec.textContent = decimals;
-        }, 80);
-    }
+ function startCounter(investi, gain, dateDebut) {
+    var BOOST_MS = 60 * 1000; // 60 segond pou boost 3% la
+    clearInterval(animationInterval);
+    animationInterval = setInterval(function() {
+        var elapsed = Math.min(Date.now() - dateDebut, TOTAL_MS);
+        var current;
 
+        if (elapsed < BOOST_MS) {
+            // 60 premye segond: monte rapidman 3% 
+            var boostProgress = elapsed / BOOST_MS;
+            var boostTarget   = investi * 1.03;
+            current = investi + (boostTarget - investi) * boostProgress;
+        } else {
+            // Apre 60 segond: kwasans normal jiska gain final
+            var t = elapsed / TOTAL_MS;
+            current = investi + (gain - investi) * (1 - Math.exp(-3.5 * t));
+        }
+
+        var decimals = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
+        counterInt.textContent = Math.floor(current);
+        counterDec.textContent = decimals;
+    }, 80);
+}
     // -------------------------------------------------
     // GRAFIK REYÈL (sesyon aktif)
     // Pwen or = jou reyèl ki pase selon dateDebut
