@@ -693,10 +693,10 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
     // -------------------------------------------------
     checkStatus();
 
-})(); // fin IIFE
-
+})(); 
+    localStorage.setItem('transaction_visited', 'true');
+    var b = document.getElementById('new-badge');
+    if (b) b.style.display = 'none';
 </script>
-localStorage.setItem('transaction_visited', 'true');
-    
 </body>
 </html>

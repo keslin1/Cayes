@@ -437,6 +437,10 @@ var newBadge = document.getElementById('new-badge');
 if (newBadge && localStorage.getItem('transaction_visited') === 'true') {
     newBadge.style.display = 'none';
 }
+var newBadge = document.getElementById('new-badge');
+if (newBadge && localStorage.getItem('transaction_visited') === 'true') {
+    newBadge.style.display = 'none';
+}    
     // 1. Kache splash screen apre 1.5 sekonn
     setTimeout(() => {
         const splash = document.getElementById('splash-screen');
