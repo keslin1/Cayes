@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkilatris pwa ak pri - les cayes dropshipping</title>
+    <title>Kalkilatris Pwa ak Pri - Les Cayes Dropshipping</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #27ae60;
             --secondary: #2c3e50;
             --accent: #e67e22;
             --bg: #f0f2f5;
+            --font-main: 'Syne', sans-serif;
+            --font-data: 'Space Mono', monospace;
         }
 
         body { 
-            font-family: 'Segoe UI', sans-serif; 
+            font-family: var(--font-main); 
             background-color: var(--bg);
             margin: 0; padding: 15px;
             display: flex; flex-direction: column; align-items: center;
@@ -26,146 +29,144 @@
             overflow: hidden; position: relative;
         }
 
-        /* Filigrane "Preuve" par-dessus les résultats */
-        .watermark-proof {
-            position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200px; opacity: 0.06; pointer-events: none; z-index: 5;
-        }
-
         .header {
             background: var(--secondary); color: white;
-            padding: 15px; text-align: center;
+            padding: 20px; text-align: center;
         }
 
-        .machandiz-img {
-            width: 50px; height: 50px; border-radius: 8px;
-            object-fit: cover; border: 2px solid var(--primary);
-        }
+        .header h2 { font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
 
         .form-section { padding: 20px; position: relative; z-index: 10; }
 
         .input-grid {
             display: grid; grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px; margin-bottom: 20px;
+            gap: 10px; margin-bottom: 15px;
         }
 
         .input-group label {
-            display: block; font-size: 0.7rem; font-weight: bold;
+            display: block; font-size: 0.75rem; font-weight: 700;
             margin-bottom: 5px; color: #7f8c8d;
         }
 
         input {
-            width: 100%; padding: 10px; border: 2px solid #edf2f7;
+            width: 100%; padding: 12px; border: 2px solid #edf2f7;
             border-radius: 10px; box-sizing: border-box; text-align: center;
+            font-family: var(--font-data); font-weight: 700;
         }
 
-        .actions { display: flex; gap: 8px; }
+        .pwa-reyel-group { margin-bottom: 20px; }
+        .pwa-reyel-group input { border: 2px solid var(--primary); background: #fafffa; }
+
         button {
-            flex: 2; padding: 14px; border: none; border-radius: 10px;
-            background: var(--primary); color: white; font-weight: bold; cursor: pointer;
+            width: 100%; padding: 16px; border: none; border-radius: 12px;
+            background: var(--primary); color: white; font-weight: 800; 
+            cursor: pointer; font-size: 1rem; transition: 0.3s;
         }
 
-        .btn-clear { flex: 1; background: #ee5253; }
+        .btn-clear { background: #ee5253; margin-top: 10px; padding: 10px; }
 
-        /* Style des résultats actuels */
         .current-res {
-            margin-top: 20px; padding: 15px; border-radius: 12px;
-            background: #f8fff9; border: 1px dashed var(--primary);
+            margin-top: 20px; padding: 20px; border-radius: 15px;
+            background: #f8fff9; border: 2px solid var(--primary);
             text-align: center; display: none;
         }
 
-        /* Style Historique */
-        .history-area {
-            width: 100%; max-width: 450px; margin-top: 20px;
-        }
-        .history-title { font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; color: var(--secondary); }
-        
-        .history-card {
-            background: white; padding: 12px; border-radius: 10px;
-            margin-bottom: 8px; display: flex; justify-content: space-between;
-            align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            font-size: 0.85rem; border-left: 4px solid var(--primary);
+        .price-display { 
+            font-family: var(--font-data); font-size: 2.2rem; 
+            color: var(--accent); font-weight: 700; margin: 10px 0;
         }
 
-        .hist-date { font-size: 0.7rem; color: #999; }
+        .history-area { width: 100%; max-width: 450px; margin-top: 25px; }
+        .history-title { font-weight: 800; margin-bottom: 10px; color: var(--secondary); }
+        
+        .history-card {
+            background: white; padding: 15px; border-radius: 12px;
+            margin-bottom: 10px; display: flex; justify-content: space-between;
+            align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-family: var(--font-main); border-left: 5px solid var(--primary);
+        }
+
+        .hist-val { font-family: var(--font-data); font-weight: 700; color: var(--accent); }
     </style>
 </head>
 <body>
 
+
 <div class="container">
     <div class="header">
-        <img src="machandiz.jpg" alt="Machandiz" class="machandiz-img">
-        <h2 style="margin:5px 0 0; font-size: 1rem;">Les Cayes Dropshipping</h2>
+        <h2 style="margin:0; font-size: 1.1rem;">Les Cayes Dropshipping</h2>
     </div>
-
-    <img src="lescayesdropshipping.png" class="watermark-proof">
 
     <div class="form-section">
         <div class="input-grid">
-            <div class="input-group"><label>Longè (cm)</label><input type="number" id="L"></div>
-            <div class="input-group"><label>Lajè (cm)</label><input type="number" id="l"></div>
-            <div class="input-group"><label>Wotè (cm)</label><input type="number" id="H"></div>
+            <div class="input-group"><label>Longè (cm)</label><input type="number" id="L" placeholder="0"></div>
+            <div class="input-group"><label>Lajè (cm)</label><input type="number" id="l" placeholder="0"></div>
+            <div class="input-group"><label>Wotè (cm)</label><input type="number" id="H" placeholder="0"></div>
         </div>
 
-        <div class="actions">
-            <button onclick="kalkile()">Kalkile</button>
-            <button class="btn-clear" onclick="resetAll()">Efase</button>
+        <div class="input-group pwa-reyel-group">
+            <label>Pwa sou balans (Liv/lb) - *Si genyen*</label>
+            <input type="number" id="pwa_balans" placeholder="0.00">
         </div>
+
+        <button onclick="kalkile()">KALKILE PRI FINAL</button>
+        <button class="btn-clear" onclick="resetAll()">Efase tout bagay</button>
 
         <div id="currentRes" class="current-res">
-            <div style="font-size: 0.8rem;">Pwa: <strong id="p_res">0</strong> liv</div>
-            <div style="font-size: 1.4rem; color: var(--accent); font-weight: bold;">$ <span id="pr_res">0</span></div>
-            <div id="tarif_res" style="font-size: 0.7rem; color: var(--primary);"></div>
+            <div style="font-size: 0.85rem; font-weight: 700;">PWA TOTAL (LIV):</div>
+            <div id="p_res" style="font-family: 'Space Mono'; font-weight: 700;">0.00</div>
+            <div class="price-display">$ <span id="pr_res">0.00</span></div>
+            <div id="tarif_res" style="font-size: 0.8rem; color: var(--primary); font-weight: 700;"></div>
         </div>
     </div>
 </div>
 
 <div class="history-area">
-    <div class="history-title">Istorik dènye kalkil yo</div>
+    <div class="history-title">Istorik Kalkil</div>
     <div id="historyList"></div>
 </div>
 
 <script>
-    // Chaje istorik depi Local Storage
+
     let historyData = JSON.parse(localStorage.getItem('lcd_history')) || [];
     renderHistory();
 
     function kalkile() {
-        const L = parseFloat(document.getElementById('L').value);
-        const l = parseFloat(document.getElementById('l').value);
-        const H = parseFloat(document.getElementById('H').value);
+        const L = parseFloat(document.getElementById('L').value) || 0;
+        const l = parseFloat(document.getElementById('l').value) || 0;
+        const H = parseFloat(document.getElementById('H').value) || 0;
+        const pwaBalans = parseFloat(document.getElementById('pwa_balans').value) || 0;
 
-        if (L > 0 && l > 0 && H > 0) {
-            const pwa = (L * l * H) / 4000;
+        // 1. Kalkile Pwa Volimik la
+        const pwaVolimik = (L * l * H) / 4000;
+        
+        // 2. Lojik ADISYON: Nou ajoute pwa dimansyon an sou pwa balans lan
+        let pwaFinal = pwaVolimik + pwaBalans;
+
+        if (pwaFinal > 0) {
             let tarif = 4.90;
             
-            if (pwa >= 50 && pwa <= 200) {
+            // Si total pwa adisyone a rive 50 liv oswa plis
+            if (pwaFinal >= 50) {
                 tarif = 3.99;
             }
 
-            const pri = pwa * tarif;
+            const priTotal = pwaFinal * tarif;
             const dat = new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
 
-            // Mise à jour interface
-            document.getElementById('p_res').innerText = pwa.toFixed(2);
-            document.getElementById('pr_res').innerText = pri.toFixed(2);
+            // Mizajou Interface
+            document.getElementById('p_res').innerText = pwaFinal.toFixed(2) + " lb";
+            document.getElementById('pr_res').innerText = priTotal.toFixed(2);
             document.getElementById('tarif_res').innerText = "Tarif: $" + tarif + "/lb";
             document.getElementById('currentRes').style.display = 'block';
 
-            // Sauvegarde historique
-            addHistory(pwa.toFixed(2), pri.toFixed(2), dat);
+            addHistory(pwaFinal.toFixed(2), priTotal.toFixed(2), dat);
         }
     }
 
     function addHistory(pwa, pri, dat) {
         historyData.unshift({ pwa, pri, dat });
-        
-        // Limite à 10 éléments
-        if (historyData.length > 10) {
-            historyData.pop();
-        }
-        
+        if (historyData.length > 5) historyData.pop();
         localStorage.setItem('lcd_history', JSON.stringify(historyData));
         renderHistory();
     }
@@ -173,15 +174,14 @@
     function renderHistory() {
         const list = document.getElementById('historyList');
         list.innerHTML = '';
-        
         historyData.forEach(item => {
             list.innerHTML += `
                 <div class="history-card">
                     <div>
-                        <strong>${item.pwa} liv</strong><br>
-                        <span class="hist-date">${item.dat}</span>
+                        <span style="font-size:0.7rem;">${item.dat}</span><br>
+                        <strong>${item.pwa} lb</strong>
                     </div>
-                    <div style="font-weight: bold; color: var(--accent);">$ ${item.pri}</div>
+                    <div class="hist-val">$ ${item.pri}</div>
                 </div>
             `;
         });
@@ -191,6 +191,7 @@
         document.getElementById('L').value = '';
         document.getElementById('l').value = '';
         document.getElementById('H').value = '';
+        document.getElementById('pwa_balans').value = '';
         document.getElementById('currentRes').style.display = 'none';
     }
 </script>
