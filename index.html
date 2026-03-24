@@ -59,7 +59,8 @@
             </div>
             <div class="info-step no-border">
                 <p class="info-title">2. Disponiblite koli :</p>
-                <div class="info-detail">AN ATANT</div>
+<div class="info-detail" id="countdown-timer">1J 09H 60M 00S</div>
+
                 <p class="info-sub">Annatandan ou ka kòmande pou shipment lòt mwa!</p>
             </div>
         </div>
@@ -300,7 +301,42 @@
             .catch(err => console.log('Erreur SW:', err));
     }
 
-    document.addEventListener('DOMContentLoaded', () => { initNotifications(); });
+// calcul de la durée totale : 1 jour + 9 heures + 60 minutes
+const durationInMilliseconds = ((1 * 24 * 60 * 60) + (9 * 60 * 60) + (60 * 60)) * 1000;
+
+// vérification du localStorage
+let endTime = localStorage.getItem('countdownEndTime');
+
+if (!endTime) {
+    // si aucune date de fin n'existe, on la définit à partir de maintenant
+    endTime = Date.now() + durationInMilliseconds;
+    localStorage.setItem('countdownEndTime', endTime);
+}
+
+const timerElement = document.getElementById('countdown-timer');
+
+const updateTimer = setInterval(() => {
+    const now = Date.now();
+    const timeLeft = endTime - now;
+
+    if (timeLeft <= 0) {
+        clearInterval(updateTimer);
+        timerElement.innerText = "Disponible";
+        // optionnel : supprimer du storage une fois terminé
+        localStorage.removeItem('countdownEndTime');
+        return;
+    }
+
+    // calcul des unités de temps
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+    // affichage avec J, M, S en majuscules
+    timerElement.innerText = `${days}J ${hours}H ${minutes}M ${seconds}S`;
+}, 1000);
+
 </script>
 
 <!-- ===== JAVASCRIPT PRINCIPAL ===== -->
