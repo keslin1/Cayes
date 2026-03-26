@@ -309,7 +309,7 @@ body {
 .container-boutons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; }
 
 .btn-choix {
-    background: #FFFFF0;
+    background: #C5E1A5;
     border: 2px solid var(--kaki);
     padding: 20px;
     border-radius: 10px;
@@ -319,7 +319,7 @@ body {
     display: flex;
     flex-direction: column;
 }
-.btn-choix:hover { background: #00ced1; color: white; }
+.btn-choix:hover { background: #5D76A9; color: white; }
 .btn-choix span { font-size: 0.85em; margin-top: 5px; opacity: 0.8; }
 
 /* ===== MODALS ===== */
