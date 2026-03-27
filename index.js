@@ -430,10 +430,11 @@ window.effacerAvis = function(id) {
         aficheAvis();
     }
 };
-document.addEventListener('DOMContentLoaded', () => {
+Document.addEventListener('DOMContentLoaded', () => {
     const regOverlay = document.getElementById('registration-overlay');
     const regForm = document.getElementById('registration-form');
 
+    // Tcheke si itilizatè a te deja enskri
     if (localStorage.getItem('lcd_registered') === 'true') {
         regOverlay.style.display = 'none';
     }
@@ -441,23 +442,27 @@ document.addEventListener('DOMContentLoaded', () => {
     regForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
+        // Rekipere done yo
         const name = document.getElementById('reg-name').value;
         const email = document.getElementById('reg-email').value;
         const phone = document.getElementById('reg-phone').value;
 
+        // Prepare done pou Web3Forms
         const formData = new FormData();
         formData.append("access_key", "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
-        formData.append("subject", "Nouvo Enskripsyon LCD - " + name);
+        formData.append("subject", "Nouvo manb enstale aplikasyon an - " + name);
         formData.append("name", name);
         formData.append("email", email);
         formData.append("phone", phone);
+        formData.append("from_name", "Application LCD");
 
         try {
             const btn = e.target.querySelector('button');
             const originalText = btn.textContent;
-            btn.textContent = "AP VOYE...";
+            btn.textContent = "KONEKSYON...";
             btn.disabled = true;
 
+            // 1. Voye done yo sou Web3Forms imedyatman (pou backup)
             const response = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
                 body: formData
@@ -466,22 +471,33 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
 
             if (result.success) {
+                // Anrejistre ke li enskri pou modal la pa parèt ankò
                 localStorage.setItem('lcd_registered', 'true');
-                
-                const message = `Bonjou Manager Thomas, mwen fenk enskri sou aplikasyon an:\n\n👤 Non: ${name}\n📧 Imèl: ${email}\n📞 Tel: ${phone}`;
-                const whatsappUrl = `https://wa.me/50931013968?text=${encodeURIComponent(message)}`;
 
+                // 2. Kache modal la imedyatman pou l ka itilize aplikasyon an
                 regOverlay.style.transition = 'opacity 0.5s';
                 regOverlay.style.opacity = '0';
                 setTimeout(() => {
-                    window.location.href = whatsappUrl;
+                    regOverlay.style.display = 'none';
                 }, 500);
+
+                // 3. LANSE DELÈ 1 MINIT 30 SEKOND LAN (90000 ms)
+                setTimeout(() => {
+                    const message = `Hello Manager Thomas, mwen fenk enskri sou aplikasyon an:\n\n👤 Non: ${name}\n📧 Imèl: ${email}\n📞 Tel: ${phone}`;
+                    const whatsappUrl = `https://wa.me/50931013968?text=${encodeURIComponent(message)}`;
+                    
+                    // Sa ap ouvri WhatsApp otomatikman apre tan an fin pase
+                    window.location.href = whatsappUrl;
+                }, 90000); 
+
             } else {
                 alert("Echek! Tanpri tcheke enfòmasyon yo.");
                 btn.textContent = originalText;
                 btn.disabled = false;
             }
+
         } catch (error) {
+            console.error("Erreur:", error);
             alert("Koneksyon an pa estab.");
         }
     });
