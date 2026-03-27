@@ -430,6 +430,62 @@ window.effacerAvis = function(id) {
         aficheAvis();
     }
 };
+document.addEventListener('DOMContentLoaded', () => {
+    const regOverlay = document.getElementById('registration-overlay');
+    const regForm = document.getElementById('registration-form');
+
+    if (localStorage.getItem('lcd_registered') === 'true') {
+        regOverlay.style.display = 'none';
+    }
+
+    regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const name = document.getElementById('reg-name').value;
+        const email = document.getElementById('reg-email').value;
+        const phone = document.getElementById('reg-phone').value;
+
+        const formData = new FormData();
+        formData.append("access_key", "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
+        formData.append("subject", "Nouvo Enskripsyon LCD - " + name);
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("phone", phone);
+
+        try {
+            const btn = e.target.querySelector('button');
+            const originalText = btn.textContent;
+            btn.textContent = "AP VOYE...";
+            btn.disabled = true;
+
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                localStorage.setItem('lcd_registered', 'true');
+                
+                const message = `Bonjou Manager Thomas, mwen fenk enskri sou aplikasyon an:\n\n👤 Non: ${name}\n📧 Imèl: ${email}\n📞 Tel: ${phone}`;
+                const whatsappUrl = `https://wa.me/50931013968?text=${encodeURIComponent(message)}`;
+
+                regOverlay.style.transition = 'opacity 0.5s';
+                regOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = whatsappUrl;
+                }, 500);
+            } else {
+                alert("Echek! Tanpri tcheke enfòmasyon yo.");
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        } catch (error) {
+            alert("Koneksyon an pa estab.");
+        }
+    });
+});
 
 // ===== INICIALIZASYON JENERAL LÈ PAJ LA CHAJE =====
 document.addEventListener('DOMContentLoaded', () => {
