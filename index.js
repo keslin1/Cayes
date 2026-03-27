@@ -115,18 +115,12 @@ function updateNotifBadges() {
     } catch(e) {}
 }
 
-// ===== GESTION DES NOTIFICATIONS =====
+// ===== GESTION DES NOTIFICATIONS (CORRIGÉ) =====
 function requestPermission() {
     console.log("Sistèm nan ap mande pèmisyon...");
 
     if (!("Notification" in window)) {
         alert("Navigatè sa a pa sipòte notifikasyon.");
-        femenModalNotif();
-        return;
-    }
-
-    if (Notification.permission === 'denied') {
-        alert("Ou te bloke notifikasyon yo nan paramèt navigatè w la. Tanpri debloke yo pou Les Cayes Dropshipping ka fonksyone.");
         return;
     }
 
@@ -134,12 +128,19 @@ function requestPermission() {
         if (permission === 'granted') {
             localStorage.setItem('notif_accepted', 'true');
             femenModalNotif();
-            console.log("Otorizasyon aksepte!");
+            
+            // Notification de test avec votre LOGO
+            new Notification("Sistèm Aktive ✅", {
+                body: "Ou kapab resevwa mesaj Les Cayes Dropshipping yo kounya.",
+                icon: "/lescayesdropshipping.png", // Vérifiez bien le nom du fichier ici
+                badge: "/lescayesdropshipping.png"
+            });
         } else {
             refuseAccess();
         }
     });
 }
+
 
 function refuseAccess() {
     alert("Atansyon! Aplikasyon Les Cayes Dropshipping lan pa ka fonksyone san notifikasyon yo. Sa a nesesè pou sekirite ak swivi koli ou yo.");
