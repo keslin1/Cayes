@@ -17,8 +17,8 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/lescayesdropshipping.jpg',
-    // Nou ajoute done sa yo pou nou ka rekipere yo lè moun nan klike
+    icon: '/lescayesdropshipping.png', // Modifié en .png
+    badge: '/lescayesdropshipping.png', // Ajouté pour l'icône de la barre d'état
     data: {
         title: payload.notification.title,
         body: payload.notification.body,
@@ -36,7 +36,6 @@ self.addEventListener('notificationclick', function(event) {
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
-      // Si sit la deja ouvri, nou voye mesaj la ba li
       for (const client of clientList) {
         if (client.url.includes('moncompte.html') && 'focus' in client) {
           client.postMessage({
@@ -47,7 +46,6 @@ self.addEventListener('notificationclick', function(event) {
           return client.focus();
         }
       }
-      // Si sit la pa ouvri, nou ouvri l ak paramèt nan URL la
       if (clients.openWindow) {
         const urlWithParams = `${notifData.url}&msgTitle=${encodeURIComponent(notifData.title)}&msgBody=${encodeURIComponent(notifData.body)}`;
         return clients.openWindow(urlWithParams);
