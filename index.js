@@ -430,6 +430,70 @@ window.effacerAvis = function(id) {
         aficheAvis();
     }
 };
+document.addEventListener('DOMContentLoaded', () => {
+    const regOverlay = document.getElementById('registration-overlay');
+    const regForm = document.getElementById('registration-form');
+    const installBanner = document.getElementById('install-banner');
+    const installBtn = document.getElementById('install-btn');
+    let deferredPrompt;
+
+    // 1. Tcheke si li te deja konekte
+    if (localStorage.getItem('lcd_user_registered') === 'true') {
+        regOverlay.classList.add('hidden');
+    }
+
+    // 2. Soumisyon fòm lan
+    regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = document.getElementById('btn-submit');
+        btn.textContent = "Veye imèl ou...";
+        btn.disabled = true;
+
+        const formData = new FormData(regForm);
+        
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            });
+
+            if (response.ok) {
+                // Sove koneksyon an nan telefòn nan
+                localStorage.setItem('lcd_user_registered', 'true');
+                
+                // Kache koòdone login lan
+                regOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    regOverlay.classList.add('hidden');
+                }, 500);
+            }
+        } catch (error) {
+            alert("Gen yon pwoblèm rezo.");
+            btn.disabled = false;
+        }
+    });
+
+    // 3. Jesyon fenèt enstalasyon an
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        // Montre banyè a si l poko enstale
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            installBanner.classList.remove('hidden');
+        }
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                installBanner.classList.add('hidden');
+            }
+            deferredPrompt = null;
+        }
+    });
+});
 
 // ===== INICIALIZASYON JENERAL LÈ PAJ LA CHAJE =====
 document.addEventListener('DOMContentLoaded', () => {
