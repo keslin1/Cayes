@@ -5,7 +5,7 @@
 
 // ===== KONFIGIRASYON JENERAL =====
 const MESSAGE_KEY = 'lcd_user_messages';
-let baseLikes = 42;
+let baseLikes = 48;
 
 // ===== SISTÈM LIKE =====
 function initLikeSystem() {
