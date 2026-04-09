@@ -1,5 +1,9 @@
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
+// ===============================================================
+//  firebase-messaging-sw.js — Les Cayes Dropshipping (Version Unique)
+// ===============================================================
+
+importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging-compat.js');
 
 const firebaseConfig = {
   apiKey: "AIzaSyClITNBRZPS7uCGFtbCvcW3CE-KH3VHOyI",
@@ -13,12 +17,13 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
+// Gère l'affichage quand l'application est en arrière-plan
 messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: '/lescayesdropshipping.png', // Modifié en .png
-    badge: '/lescayesdropshipping.png', // Ajouté pour l'icône de la barre d'état
+    icon: '/lescayesdropshipping.png',
+    badge: '/lescayesdropshipping.png',
     data: {
         title: payload.notification.title,
         body: payload.notification.body,
@@ -29,13 +34,14 @@ messaging.onBackgroundMessage((payload) => {
   return self.registration.showNotification(notificationTitle, notificationOptions);
 });
 
-// Lè itilizatè a klike sou notifikasyon an
+// Action au clic sur la notification
 self.addEventListener('notificationclick', function(event) {
   const notifData = event.notification.data;
   event.notification.close();
 
   event.waitUntil(
     clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+      // 1. Si un onglet est déjà ouvert, on le focus et on envoie le message
       for (const client of clientList) {
         if (client.url.includes('moncompte.html') && 'focus' in client) {
           client.postMessage({
@@ -46,6 +52,7 @@ self.addEventListener('notificationclick', function(event) {
           return client.focus();
         }
       }
+      // 2. Si rien n'est ouvert, on ouvre une nouvelle fenêtre avec les paramètres
       if (clients.openWindow) {
         const urlWithParams = `${notifData.url}&msgTitle=${encodeURIComponent(notifData.title)}&msgBody=${encodeURIComponent(notifData.body)}`;
         return clients.openWindow(urlWithParams);
