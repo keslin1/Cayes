@@ -124,7 +124,7 @@
 <!-- ===== SIDE DRAWER ===== -->
 <aside id="app-drawer">
   <div class="drw-head">
-    <img src="lescayesdropshipping.png" alt="LCD" class="drw-logo">
+    <img src="lescayesdropshipping.png" alt="LCD" class="drw-logo" id="drw-avatar-img">
     <div class="drw-info">
       <span class="drawer-head-name" id="drw-nom">Les Cayes Dropshipping</span>
       <span class="drw-loc" id="drw-loc">Haiti-Sud</span>
@@ -227,6 +227,14 @@
         <div class="header-content">
 
             <div id="info-livrezon-container">
+
+                <!-- ===== OFFRE PREMYE KÒMAND ===== -->
+                <div id="promo-first-order" style="display:none; margin-bottom:10px;">
+                  <p id="promo-text" style="font-style:italic; font-size:0.82em; color:rgba(255,255,255,0.92); margin:0; line-height:1.5;">
+                    Benefisye de $3,99 par liv pou premye kòmand ou, olye de $4,90. Offre ekspire nan : <span id="promo-countdown" style="font-weight:900; color:#FFD700;"></span>
+                  </p>
+                </div>
+
                 <div class="info-step">
                     <p class="info-title">1. Jou anbakman :</p>
                     <div class="info-detail">13 AVRIL</div>
@@ -526,6 +534,9 @@
 
             const overlay = document.getElementById('registration-overlay');
             if (overlay) overlay.style.display = 'none';
+
+            // Initialise l'offre promo dès la première inscription
+            if (window.initPromoFirstOrder) window.initPromoFirstOrder();
 
             const drwNom = document.getElementById('drw-nom');
             if (drwNom) drwNom.textContent = nom;

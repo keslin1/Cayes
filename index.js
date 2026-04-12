@@ -35,6 +35,7 @@ window.openDrawer = function () {
   if (overlay) overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
   syncDrw();
+  syncDrawerAvatar();
 };
 
 window.closeDrawer = function () {
@@ -282,7 +283,7 @@ function initBannerCarousel() {
   var scrollAmount = 0;
 
   setInterval(function () {
-    var itemWidth = items[0].offsetWidth + 15;
+    var itemWidth = items[0].offsetWidth;
     if (scrollAmount >= itemWidth * (totalItems - 1)) {
       scrollAmount = 0;
       carousel.scrollTo({ left: 0, behavior: 'smooth' });
@@ -611,6 +612,68 @@ window.invCapture = function () {
     });
 };
 
+// ── OFFRE PREMYE KÒMAND (15 jou) ────────────────────────────────
+function initPromoFirstOrder() {
+  var PROMO_KEY    = 'lcd_promo_start';
+  var PROMO_DAYS   = 15;
+  var PROMO_MS     = PROMO_DAYS * 24 * 60 * 60 * 1000;
+
+  var promoEl      = document.getElementById('promo-first-order');
+  var countdownEl  = document.getElementById('promo-countdown');
+  if (!promoEl || !countdownEl) return;
+
+  // Initialise seulement si utilisateur enregistré
+  var isRegistered = localStorage.getItem('lcd_user_registered') === 'true';
+  if (!isRegistered) return;
+
+  var startStr = localStorage.getItem(PROMO_KEY);
+  if (!startStr) {
+    // Première fois : enregistre la date de départ
+    localStorage.setItem(PROMO_KEY, String(Date.now()));
+    startStr = localStorage.getItem(PROMO_KEY);
+  }
+
+  var startTime = parseInt(startStr, 10);
+  var endTime   = startTime + PROMO_MS;
+
+  function updateCountdown() {
+    var remaining = endTime - Date.now();
+    if (remaining <= 0) {
+      // Offre expirée : cacher définitivement
+      promoEl.style.display = 'none';
+      return;
+    }
+    promoEl.style.display = 'block';
+    var days    = Math.floor(remaining / 86400000);
+    var hours   = Math.floor((remaining % 86400000) / 3600000);
+    var minutes = Math.floor((remaining % 3600000) / 60000);
+    var seconds = Math.floor((remaining % 60000) / 1000);
+    countdownEl.textContent = days + 'j ' + hours + 'h ' + minutes + 'm ' + seconds + 's';
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+}
+
+// ── PHOTO PROFIL DANS DRAWER ─────────────────────────────────────
+window.initPromoFirstOrder = initPromoFirstOrder;
+function syncDrawerAvatar() {
+  var drwAvatar = document.getElementById('drw-avatar-img');
+  if (!drwAvatar) return;
+  var avatar = localStorage.getItem('lcd_user_avatar');
+  if (avatar) {
+    drwAvatar.src = avatar;
+    drwAvatar.style.borderRadius = '50%';
+    drwAvatar.style.objectFit   = 'cover';
+    drwAvatar.style.padding     = '0';
+  } else {
+    drwAvatar.src                = 'lescayesdropshipping.png';
+    drwAvatar.style.borderRadius = '13px';
+    drwAvatar.style.objectFit   = 'contain';
+    drwAvatar.style.padding     = '4px';
+  }
+}
+
 // ── INICIALIZASYON JENERAL ───────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -648,6 +711,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 8. Sync drawer
   syncDrw();
+  syncDrawerAvatar();
+
+  // 8b. Promo premye kòmand
+  initPromoFirstOrder();
 
   // 9. Badge cloche
   var msgs   = JSON.parse(localStorage.getItem(MESSAGE_KEY) || '[]');
