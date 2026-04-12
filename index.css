@@ -503,25 +503,17 @@ body {
 }
 .react-btn-like:hover { background: #e8f5e9; color: var(--vert-menu); }
 
-/* ── CAROUSEL BANNER — MISE À JOUR PLEIN ÉCRAN ── */
+/* ── CAROUSEL BANNER ── */
 #banner-carousel {
   overflow-x: scroll;
   height: 120px;
   position: relative;
-  
-  /* CES 3 LIGNES SONT LA CLÉ : */
-  width: 100vw; 
-  margin-left: calc(-50vw + 50%);
-  margin-right: calc(-50vw + 50%);
-  
-  margin-top: -5px;
-  margin-bottom: 20px;
+  margin: 20px 0;
   padding: 0;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
-
 
 #banner-carousel::-webkit-scrollbar { display: none; }
 
