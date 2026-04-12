@@ -409,11 +409,10 @@ body {
 #info-livrezon-container {
   /* Santre kontene a epi mete espas nan bò yo */
   margin: 15px auto; 
-  width: 90%;          /* Lajè a 90% pou l pa touche bò yo */
-  max-width: 500px;    /* Limit lajè pou l pa vin twò gwo */
+  width: 95%;          /* Ogmante lajè a pou l prèske touche bò yo */
+  max-width: 600px;    /* Ogmante limit lajè a tou */
   
-  /* Fòma 1:1 (Kare) */
-  aspect-ratio: 1 / 1; 
+  /* Fòma lib (non kare) */
   display: flex;
   flex-direction: column;
   justify-content: center; /* Santre kontni an vètikal */
@@ -421,10 +420,12 @@ body {
   text-align: left;
   background: linear-gradient(135deg, var(--bleu-marin) 0%, #006d6d 55%, #c8b400 100%);
   color: #ffffff;
-  padding: 30px;
-  border-radius: 15px; /* Yon ti awondi pou l parèt pi byen */
+  padding: 20px 25px;   /* Redwi yon ti kras padding vètikal pou l pa parèt twò wo */
+  border-radius: 15px; 
   box-shadow: 0 4px 10px rgba(0,0,0,0.18);
   gap: 15px;
+  
+  /* Nou retire aspect-ratio: 1/1 pou wotè a adapte ak kontni an */
 }
 
 .info-title {
