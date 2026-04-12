@@ -198,20 +198,41 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-        /* Footer */
-        #main-footer {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
-            background-color: var(--blanc-fond); 
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
+/* ── FOOTER NAVIGATION — suppression couleur bleue et soulignement ── */
+#main-footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: fixed;
+  bottom: 0; left: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--blanc-fond);
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+#main-footer a,
+#main-footer a:visited,
+#main-footer a:hover,
+#main-footer a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-item {
+  text-align: center;
+  font-size: 0.75em;
+  padding: 5px;
+  position: relative;
+  color: #004D40;
+  text-decoration: none;
+}
+
+#main-footer .material-icons      { color: #004D40; font-size: 24px; }
+.nav-item.active .material-icons  { color: var(--kaki); }
+.nav-item p                       { margin: 0; }
+
 /* Santre veso kalkilatris la */
 .calculator-container {
     display: flex;
@@ -358,7 +379,7 @@
             </section>
             
             <section id="section-avantaj" class="tab-content">
-                <img src="img5.jpg" alt="Avantaj" id="main-section-image">
+                <img src="lescayesdropshipping.jpg" alt="Avantaj" id="main-section-image">
                 <h2 class="section-title">Poukisa w ka pran sèvis Les Cayes Dropshipping lan?</h2>
                 
                 <ul style="list-style: disc; padding-left: 20px;">

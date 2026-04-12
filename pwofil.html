@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pwofil — Les Cayes Dropshipping</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --bleu-marin: #001f3f;
+            --bleu-pale: #5D6D7E; /* Koulè ble marin pal la */
+            --kaki: #8fbc8f;
+            --blanc: #ffffff;
+            --gris-frenk: #f8f9fa;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--gris-frenk);
+            color: var(--bleu-marin);
+            padding: 40px 20px 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Salitasyon */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+
+        .welcome-section h1 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            font-size: 16px;
+            color: var(--bleu-pale);
+        }
+
+/* Seleksyon Pwofil */
+.profile-selector {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+
+.choice-btn {
+    flex: 1;
+    height: 120px; /* Nou fòse yon wotè pou imaj la ka parèt byen */
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid;
+    background-color: var(--blanc);
+    color: var(--bleu-marin);
+    z-index: 1;
+}
+
+/* Kreyasyon kouch imaj la nan fon an */
+.choice-btn::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15; /* Opasite lè li pa aktif */
+    z-index: -1;
+    transition: opacity 0.4s ease;
+}
+
+/* Plasman imaj espesifik yo */
+.btn-img-pro::before { background-image: url('camera.jpg'); }
+.btn-img-entr::before { background-image: url('machandiz.jpg'); }
+
+.choice-btn .material-icons { 
+    font-size: 32px; 
+    color: var(--bleu-pale); 
+    transition: color 0.4s;
+}
+
+.choice-btn span { 
+    font-weight: 800; 
+    font-size: 14px; 
+    position: relative;
+    z-index: 2;
+}
+
+/* Style Lè Bouton an Aktif */
+.choice-btn.active {
+    border-color: var(--bleu-marin);
+    background-color: var(--bleu-marin);
+    color: white;
+    box-shadow: 0 12px 24px rgba(0, 31, 63, 0.25);
+}
+
+.choice-btn.active::before {
+    opacity: 0.3; /* Imaj la parèt yon ti jan plis lè l aktif */
+    filter: grayscale(100%) brightness(50%); /* Pou l melanje ak ble marin nan */
+}
+
+.choice-btn.active .material-icons { 
+    color: white; 
+}
+
+        /* Kontni Step-by-Step */
+        .content-area {
+            width: 100%;
+            max-width: 500px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .content-area.active { display: block; }
+
+.step-card {
+    background: var(--gris-frenk); /* Même couleur que le fond pour l'effet fusion */
+    padding: 25px;
+    border-radius: 30px; 
+    margin-bottom: 25px;
+    
+    /* Effet de profondeur sculptée (Neumorphism) */
+    box-shadow: 8px 8px 16px #d1d9e6, 
+               -8px -8px 16px #ffffff;
+    
+    border: none; /* On enlève les bordures classiques */
+    position: relative;
+    overflow: hidden;
+    
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+        /* Animasyon pou etap yo parèt youn apre lòt */
+        .show-step {
+            animation: slideIn 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+/* Indicateur d'étape ultra-discret mais luxueux */
+.step-num {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 40px;
+    font-weight: 900;
+    color: rgba(0, 31, 63, 0.03); /* Chiffre géant presque invisible en fond */
+    z-index: 0;
+}
+
+.step-title {
+    position: relative;
+    z-index: 1;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--bleu-marin);
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Une petite barre d'accentuation moderne en haut à gauche */
+.step-title::before {
+    content: '';
+    width: 12px;
+    height: 3px;
+    background: var(--kaki);
+    border-radius: 10px;
+    display: inline-block;
+}
+.step-text {
+    position: relative;
+    z-index: 1;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--bleu-pale);
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+/* Effet d'interaction premium */
+.step-card:active {
+    box-shadow: inset 6px 6px 12px #d1d9e6, 
+                inset -6px -6px 12px #ffffff;
+    transform: scale(0.98);
+}
+
+        .nav-item .material-icons { font-size: 24px; display: block; margin-bottom: 4px; }
+        .nav-item.active { color: var(--bleu-marin); }
+
+    </style>
+</head>
+<body>
+
+    <section class="welcome-section">
+        <h1 id="user-greeting">Bonjou 👋</h1>
+        <p>Kiyès ou ye nan sistèm lan?</p>
+    </section>
+
+<div class="profile-selector">
+    <div class="choice-btn btn-img-pro" id="btn-pro" onclick="selectProfile('pro')">
+        <span class="material-icons">engineering</span>
+        <span>Pwofesyonèl</span>
+    </div>
+    <div class="choice-btn btn-img-entr" id="btn-entr" onclick="selectProfile('entr')">
+        <span class="material-icons">payments</span>
+        <span>Antreprenè</span>
+    </div>
+</div>
+
+    <div id="res-pro" class="content-area">
+        <div class="step-card" style="animation-delay: 0.2s;">
+            <span class="step-num">Etap 1</span>
+            <span class="step-title">Idantifye bezwen w</span>
+            <p class="step-text">Chèche zouti oswa materyèl ki nesesè pou rann travay ou pi pwofesyonèl. Ou ka tcheke sou <strong>Temu</strong>, <strong>Amazon</strong> ak lòt platfòm ankò.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.4s;">
+            <span class="step-num">Etap 2</span>
+            <span class="step-title">Achte</span>
+            <p class="step-text">Konfigire adrès lan sou kont platfòm wap achte yo. Siw pa gen kat, kopye lyen atik lan voye l ban nou. Nou wè ansanm pri final lan, ou peye pou order l pou ou.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.6s;">
+            <span class="step-num">Etap 3</span>
+            <span class="step-title">Resevwa an Ayiti</span>
+            <p class="step-text">Nou resevwa l an Florid, nou livre l an Ayiti pou ou nan dat nap gen okazyon.</p>
+        </div>
+    </div>
+
+    <div id="res-entr" class="content-area">
+        <div class="step-card" style="animation-delay: 0.2s;">
+            <span class="step-num">Etap 1</span>
+            <span class="step-title">Idantifye yon mache</span>
+            <p class="step-text">Gade ki pwodwi ki manke nan vil ou an (kosmetik, pyès, materyèl agrikòl) ki ka vann vit.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.4s;">
+            <span class="step-num">Etap 2</span>
+            <span class="step-title">Gwo kòmand (bulk)</span>
+            <p class="step-text">Chwazi founisè ki gen pi bon pri sou <strong>Alibaba</strong>, <strong>AliExpress</strong>, achte tout saw swete yo nan yon sèl okazyon.</p>
+        </div>
+        <div class="step-card" style="animation-delay: 0.6s;">
+            <span class="step-num">Etap 3</span>
+            <span class="step-title">Distribisyon</span>
+            <p class="step-text">Sèvi ak depo nou an Florid pou voye koli, stòk machandiz ou vin nan men w yon sèl kou. Nou livre nan tout peyi an pouw pa gen limit ak biznis ou.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Pèsonalizasyon non an
+        document.addEventListener('DOMContentLoaded', function() {
+            const profile = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
+            const nom = (profile.nom || '').split(' ')[0];
+            if(nom) {
+                document.getElementById('user-greeting').textContent = 'Bonjou ' + nom + ' 👋';
+            }
+        });
+
+        function selectProfile(type) {
+            // Reset bouton yo
+            document.getElementById('btn-pro').classList.remove('active');
+            document.getElementById('btn-entr').classList.remove('active');
+            
+            // Reset kontni an
+            document.getElementById('res-pro').classList.remove('active');
+            document.getElementById('res-entr').classList.remove('active');
+            
+            // Aktive sa k klike a
+            document.getElementById('btn-' + type).classList.add('active');
+            const targetContent = document.getElementById('res-' + type);
+            targetContent.classList.add('active');
+
+            // Fòse animasyon etap yo
+            const cards = targetContent.querySelectorAll('.step-card');
+            cards.forEach(card => {
+                card.classList.remove('show-step');
+                void card.offsetWidth; // Trigger reflow
+                card.classList.add('show-step');
+            });
+
+            localStorage.setItem('lcd_profil_choisi', type);
+        }
+    </script>
+</body>
+</html>

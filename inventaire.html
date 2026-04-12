@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="ht">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google" content="notranslate" />
+    <title>Envantè - Les Cayes Dropshipping</title>
+
+    <link rel="stylesheet" href="base.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="/lescayesdropshipping.png">
+
+    <style>
+        /* ── VARIABLES ── */
+        :root {
+            --bleu-marin: #001f3f;
+            --bleu-clair: #0074D9;
+            --rouge: #e74c3c;
+            --kaki: #8fbc8f;
+            --white: #ffffff;
+            --gris-border: #e8ecf0;
+            --texte: #333;
+            --top-bar-h: 60px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+        body {
+            font-family: 'Poppins', 'Nunito', sans-serif;
+            background: #f0f2f5;
+            color: var(--texte);
+            padding-top: var(--top-bar-h);
+            padding-bottom: 80px;
+        }
+
+        .hidden { display: none !important; }
+
+        /* ── PAGE LOADER ── */
+        #page-loader {
+            position: fixed; inset: 0; background: rgba(255,255,255,0.94);
+            z-index: 9990; display: none; align-items: center; justify-content: center;
+        }
+        #page-loader.show { display: flex; }
+        .pl-inner { position: relative; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; }
+        .pl-ring {
+            position: absolute; inset: 0; border-radius: 50%;
+            border: 4px solid #f0f0f0; border-top-color: var(--rouge);
+            animation: plSpin 0.85s linear infinite;
+        }
+        .pl-logo { width: 65px; height: 65px; border-radius: 50%; object-fit: cover; }
+        @keyframes plSpin { to { transform: rotate(360deg); } }
+
+        /* ── TOP BAR ── */
+        #top-bar {
+            position: fixed; top: 0; left: 0; right: 0; height: var(--top-bar-h);
+            background: var(--white); border-bottom: 1px solid var(--gris-border);
+            display: flex; align-items: center; padding: 0 14px; gap: 10px;
+            z-index: 600; box-shadow: var(--shadow-sm);
+        }
+
+        .tb-back-btn {
+            width: 38px; height: 38px; border-radius: 10px; background: #f0f0f0;
+            border: none; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: var(--bleu-marin);
+        }
+
+        .tb-brand { flex: 1; display: flex; align-items: center; gap: 9px; }
+        .tb-logo  { width: 30px; height: 30px; border-radius: 7px; object-fit: contain; }
+        .tb-title { font-size: 16px; font-weight: 900; color: var(--bleu-marin); }
+
+        /* ── MAIN CONTENT ── */
+        #main-content { padding: 18px 14px; }
+
+        /* ── CARTE EN-TÊTE PAGE ── */
+        .inv-page-header {
+            background: linear-gradient(135deg, #4682B4 0%, #003d7a 100%);
+            border-radius: 16px;
+            padding: 18px 18px 16px;
+            margin-bottom: 16px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .inv-page-header-left {}
+        .inv-page-title { font-size: 1.3em; font-weight: 900; }
+        .inv-page-subtitle { font-size: 12px; opacity: 0.65; margin-top: 3px; }
+
+        .inv-page-count {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 10px;
+            padding: 8px 14px;
+            text-align: center;
+        }
+        .inv-page-count-num { font-size: 1.8em; font-weight: 900; color: #FFD700; line-height: 1; }
+        .inv-page-count-lbl { font-size: 10px; opacity: 0.7; margin-top: 2px; }
+
+        /* ── FORMULAIRE AJOUT ── */
+        .inv-form-card {
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .inv-form-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--bleu-marin);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .inv-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .inv-form-grid .inv-input-full { grid-column: 1 / -1; }
+
+        .inv-input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            outline: none;
+            background: #fafafa;
+            transition: border-color 0.2s;
+        }
+
+        .inv-input:focus  { border-color: var(--bleu-marin); background: white; }
+        .inv-input.error  { border-color: var(--rouge); }
+
+        .inv-form-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .inv-add-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 16px;
+            background: #5E7D9A;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .inv-add-btn:active { background: var(--bleu-clair); }
+
+        /* ── TABLEAU EXCEL ── */
+        .inv-table-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 14px;
+        }
+
+        /* Zone capturée pour le JPG */
+        #inv-cap-zone {
+            background: white;
+        }
+
+        /* En-tête de capture */
+        .inv-cap-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px 10px;
+            border-bottom: 2px solid var(--bleu-marin);
+        }
+
+        .inv-cap-header img { height: 36px; object-fit: contain; }
+
+        .inv-cap-brand strong {
+            font-family: 'Nunito', sans-serif;
+            font-size: 13px;
+            color: var(--bleu-marin);
+            display: block;
+            font-weight: 900;
+        }
+
+        .inv-cap-brand span { font-size: 11px; color: #999; }
+
+        /* Tableau style Excel */
+        .inv-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .inv-table thead tr {
+            background: #5E7D9A;
+        }
+
+        .inv-table th {
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .inv-table th:first-child { width: 40px; text-align: center; border-radius: 0; }
+
+        .inv-table td {
+            padding: 10px 12px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* Alternance de couleurs — style tableur */
+        .inv-table tbody tr:nth-child(even) { background: #f7faff; }
+        .inv-table tbody tr:nth-child(odd)  { background: white; }
+        .inv-table tbody tr:hover { background: #eef4ff; }
+
+        /* Colonnes */
+        .inv-td-num  { color: #aaa; font-weight: 700; width: 36px; text-align: center; font-size: 12px; }
+        .inv-td-nom  { color: var(--bleu-marin); font-weight: 700; min-width: 120px; }
+        .inv-td-desc { color: #666; min-width: 120px; font-size: 12px; font-family: monospace; }
+        .inv-td-date { color: #888; font-size: 11px; white-space: nowrap; }
+        .inv-td-del  { width: 70px; }
+
+        .inv-empty-row td {
+            text-align: center;
+            color: #ccc;
+            padding: 30px 10px;
+            font-size: 13px;
+        }
+
+        /* Boutons action ligne */
+        .inv-edit-btn, .inv-del-btn {
+            background: none;
+            border: none;
+            border-radius: 7px;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .inv-edit-btn { background: rgba(0,116,217,0.08); color: var(--bleu-clair); }
+        .inv-del-btn  { background: rgba(231,76,60,0.08); color: var(--rouge); }
+        .inv-edit-btn .material-icons,
+        .inv-del-btn .material-icons { font-size: 15px; }
+
+        /* ── BOUTONS D'ACTION ── */
+        .inv-actions-bar {
+            display: flex;
+            gap: 10px;
+            padding: 0 0 4px;
+        }
+
+        .inv-btn-cap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 13px;
+            background: var(--kaki);
+            color: var(--bleu-marin);
+            border: none;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .inv-btn-cap:active { opacity: 0.8; }
+
+        .inv-btn-clr {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 13px 16px;
+            background: rgba(231,76,60,0.07);
+            color: var(--rouge);
+            border: 1.5px solid rgba(231,76,60,0.2);
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .inv-btn-clr:active { opacity: 0.8; }
+
+        /* ── FOOTER NAV ── */
+        #main-footer {
+            display: flex; justify-content: space-around; align-items: center;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+            background: white; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); z-index: 1000;
+        }
+        .nav-item {
+            text-align: center; text-decoration: none; color: #004D40;
+            font-size: 0.75em; padding: 5px; position: relative;
+        }
+        .nav-item .material-icons { color: #004D40; font-size: 24px; display: block; }
+        .nav-item.active .material-icons { color: var(--kaki); }
+
+        @keyframes pulseBadge {
+            0%   { box-shadow: 0 0 0 0 rgba(231,76,60,0.7); transform: scale(1); }
+            50%  { transform: scale(1.15); }
+            70%  { box-shadow: 0 0 0 8px rgba(231,76,60,0); }
+            100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== PAGE LOADER ===== -->
+<div id="page-loader">
+    <div class="pl-inner">
+        <div class="pl-ring"></div>
+        <img src="/lescayesdropshipping.png" alt="LCD" class="pl-logo">
+    </div>
+</div>
+
+<!-- ===== TOP BAR ===== -->
+<header id="top-bar">
+    <button class="tb-back-btn" onclick="goBack()">
+        <span class="material-icons">arrow_back</span>
+    </button>
+    <div class="tb-brand">
+        <img src="lescayesdropshipping.png" alt="LCD" class="tb-logo">
+        <span class="tb-title">Envantè Atik</span>
+    </div>
+    <button class="tb-back-btn" onclick="invCapture()" title="Telechaje imaj envantè an">
+        <span class="material-icons">file_download</span>
+    </button>
+</header>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main id="main-content">
+
+    <!-- En-tête de page avec compteur -->
+    <div class="inv-page-header">
+        <div class="inv-page-header-left">
+            <div class="inv-page-title">Envantè LCD</div>
+            <div class="inv-page-subtitle">14030 NW 5th Pl, North Miami FL 33168</div>
+        </div>
+        <div class="inv-page-count">
+            <div class="inv-page-count-num" id="inv-count">0</div>
+            <div class="inv-page-count-lbl">Atik</div>
+        </div>
+    </div>
+
+    <!-- Formulaire d'ajout -->
+    <div class="inv-form-card">
+        <div class="inv-form-title">
+            <span class="material-icons" style="font-size:18px; color:var(--bleu-marin);">add_box</span>
+            Ajoute yon atik
+        </div>
+        <div class="inv-form-grid">
+            <input type="text" id="inv-nom" class="inv-input inv-input-full"
+                   placeholder="Deskripsyon koli sa (ex: TV 55p, Machin à coudre...)">
+            <input type="text" id="inv-tracking" class="inv-input"
+                   placeholder="Nimewo anbalaj lan">
+<input type="text" id="inv-date" class="inv-input" 
+       placeholder="Dat livrezon an" 
+       onfocus="(this.type='date')" 
+       onblur="if(!this.value)this.type='text'">
+            <div class="inv-form-actions">
+            <button class="inv-add-btn" id="inv-add-btn-main" onclick="invAdd()">
+                <span class="material-icons" style="font-size:18px;">add_circle</span>
+                Ajoute
+            </button>
+        </div>
+    </div>
+
+    <!-- Zone capturée pour export JPG -->
+    <div id="inv-cap-zone" class="inv-table-card">
+        <!-- En-tête branding pour export -->
+        <div class="inv-cap-header">
+            <img src="lescayesdropshipping.png" alt="LCD">
+            <div class="inv-cap-brand">
+                <strong>Les Cayes Dropshipping</strong>
+                <span>14030 NW 5th Pl, North Miami FL 33168</span>
+            </div>
+        </div>
+
+        <!-- Tableau style Excel -->
+        <div style="overflow-x: auto;">
+            <table class="inv-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Deskripsyon</th>
+                        <th>Nimewo #</th>
+                        <th>Dat Livrezon</th>
+                        <th class="inv-hide-cap">Aksyon</th>
+                    </tr>
+                </thead>
+                <tbody id="inv-tbody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="inv-actions-bar">
+        <button class="inv-btn-cap" onclick="invCapture()">
+            <span class="material-icons" style="font-size:18px;">file_download</span>
+            Telechaje imaj envantè an
+        </button>
+        <button class="inv-btn-clr" onclick="invClear()">
+            <span class="material-icons" style="font-size:18px;">delete_sweep</span>
+            Efase tout
+        </button>
+    </div>
+
+</main>
+
+<!-- ===== FOOTER NAVIGATION ===== -->
+<footer id="main-footer">
+    <a href="index.html" class="nav-item">
+        <span class="material-icons">home</span>
+        <p>Akèy</p>
+    </a>
+    <a href="decouvrir.html" class="nav-item">
+        <span class="material-icons">info</span>
+        <p>Règ</p>
+    </a>
+    <a href="transaction.html" class="nav-item" style="position: relative;">
+        <span class="material-icons">list_alt</span>
+        <p>Tranzaksyon</p>
+    </a>
+    <a href="moncompte.html" class="nav-item" style="position: relative;">
+        <span class="material-icons">person</span>
+        <p>Kont mwen</p>
+    </a>
+</footer>
+
+<script>
+// ── PAGE LOADER ──────────────────────────────────────────────
+window.goTo = function (url) {
+    document.getElementById('page-loader').classList.add('show');
+    setTimeout(() => { window.location.href = url; }, 480);
+};
+
+window.goBack = function () {
+    if (document.referrer) {
+        history.back();
+    } else {
+        goTo('index.html');
+    }
+};
+
+window.addEventListener('load', () => {
+    const l = document.getElementById('page-loader');
+    if (l) l.classList.remove('show');
+});
+
+// ── INVENTAIRE — Clé localStorage partagée avec index.js ──
+const INV_KEY = 'lcd_inventaire';
+
+function invLoad() {
+    return JSON.parse(localStorage.getItem(INV_KEY) || '[]');
+}
+
+function invSave(data) {
+    localStorage.setItem(INV_KEY, JSON.stringify(data));
+}
+
+function escHtml(str) {
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatInvDate(dateStr) {
+    if (!dateStr) return '—';
+    const [y, m, d] = dateStr.split('-');
+    return `${d}/${m}/${y}`;
+}
+
+function invRender() {
+    const tbody  = document.getElementById('inv-tbody');
+    const countEl = document.getElementById('inv-count');
+    if (!tbody) return;
+
+    const items = invLoad();
+    if (countEl) countEl.textContent = items.length;
+
+    if (items.length === 0) {
+        tbody.innerHTML = `
+            <tr class="inv-empty-row">
+                <td colspan="5">
+                    <span class="material-icons" style="font-size:36px;display:block;margin:0 auto 8px;color:#ddd;">inventory_2</span>
+                    Pa gen atik nan enventè a pou kounye a
+                </td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = items.map((item, i) => `
+        <tr>
+            <td class="inv-td-num">${i + 1}</td>
+            <td class="inv-td-nom">${escHtml(item.desc)}</td>
+            <td class="inv-td-desc">${escHtml(item.tracking || '—')}</td>
+            <td class="inv-td-date">${item.date ? formatInvDate(item.date) : '—'}</td>
+            <td class="inv-td-del inv-hide-cap" style="display:flex;gap:4px;align-items:center;">
+                <button class="inv-edit-btn" onclick="invEdit(${item.id})" title="Modifye">
+                    <span class="material-icons">edit</span>
+                </button>
+                <button class="inv-del-btn" onclick="invDelete(${item.id})" title="Efase">
+                    <span class="material-icons">delete</span>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+window.invAdd = function () {
+    const nomEl    = document.getElementById('inv-nom');
+    const trackEl  = document.getElementById('inv-tracking');
+    const dateEl   = document.getElementById('inv-date');
+    const addBtn   = document.getElementById('inv-add-btn-main');
+    const editId   = addBtn ? parseInt(addBtn.getAttribute('data-edit-id') || '0') : 0;
+
+    const desc     = nomEl.value.trim();
+    const tracking = trackEl.value.trim();
+    const date     = dateEl.value;
+
+    if (!desc) {
+        nomEl.classList.add('error');
+        setTimeout(() => nomEl.classList.remove('error'), 1200);
+        return;
+    }
+
+    let items = invLoad();
+
+    if (editId) {
+        items = items.map(it => it.id === editId ? { ...it, desc, tracking, date } : it);
+        addBtn.innerHTML = '<span class="material-icons" style="font-size:18px;">add_circle</span> Ajoute';
+        addBtn.removeAttribute('data-edit-id');
+    } else {
+        items.push({ id: Date.now(), desc, tracking, date });
+    }
+
+    invSave(items);
+    nomEl.value    = '';
+    trackEl.value  = '';
+    dateEl.value   = '';
+    invRender();
+};
+
+window.invEdit = function (id) {
+    const items = invLoad();
+    const item  = items.find(it => it.id === id);
+    if (!item) return;
+
+    document.getElementById('inv-nom').value      = item.desc || '';
+    document.getElementById('inv-tracking').value = item.tracking || '';
+    document.getElementById('inv-date').value     = item.date || '';
+
+    const addBtn = document.getElementById('inv-add-btn-main');
+    if (addBtn) {
+        addBtn.innerHTML = '<span class="material-icons" style="font-size:18px;">save</span> Sove';
+        addBtn.setAttribute('data-edit-id', String(id));
+    }
+
+    document.getElementById('inv-nom').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
+
+window.invDelete = function (id) {
+    if (!confirm('Efase atik sa a?')) return;
+    invSave(invLoad().filter(it => it.id !== id));
+    invRender();
+};
+
+window.invClear = function () {
+    if (!confirm('Efase TOUT atik yo nan enventè a?')) return;
+    invSave([]);
+    invRender();
+};
+
+// Export JPG via html2canvas
+window.invCapture = function () {
+    const zone = document.getElementById('inv-cap-zone');
+    if (!zone) return;
+
+    // Cache la colonne Actions pendant la capture
+    document.querySelectorAll('.inv-hide-cap').forEach(el => el.style.display = 'none');
+
+    if (typeof html2canvas === 'undefined') {
+        alert('Bibliyotèk telechajman an pa chaje. Verifye koneksyon entènèt ou.');
+        document.querySelectorAll('.inv-hide-cap').forEach(el => el.style.display = '');
+        return;
+    }
+
+    html2canvas(zone, {
+        scale: 2,
+        backgroundColor: '#ffffff',
+        useCORS: true,
+        logging: false
+    }).then(canvas => {
+        document.querySelectorAll('.inv-hide-cap').forEach(el => el.style.display = '');
+        const link = document.createElement('a');
+        const date = new Date().toISOString().slice(0, 10);
+        link.download = `inventaire-LCD-${date}.jpg`;
+        link.href     = canvas.toDataURL('image/jpeg', 0.92);
+        link.click();
+    }).catch(err => {
+        document.querySelectorAll('.inv-hide-cap').forEach(el => el.style.display = '');
+        console.error('Erreur export:', err);
+        alert('Telechajman echwe. Eseye ankò.');
+    });
+};
+
+// ── INIT ──────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+    invRender();
+});
+</script>
+</body>
+</html>

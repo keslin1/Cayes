@@ -8,7 +8,6 @@
     
     <link rel="stylesheet" href="base.css"> 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
-
     <link rel="manifest" href="/manifest.json">
 
     <style>
@@ -48,47 +47,47 @@
             color: var(--bleu-marin);
             margin-left: 15px;
         }
-/* Badge sou cloche la */
-.icon-right { position: relative; display: flex; align-items: center; }
-#notif-badge {
-    position: absolute;
-    top: -5px;
-    left: 15px;
-    background-color: var(--rouge-alerte);
-    color: white;
-    border-radius: 50%;
-    padding: 2px 6px;
-    font-size: 10px;
-    font-weight: bold;
-    display: none; /* l ap parèt sèlman si gen mesaj */
-}
 
-/* Modal Mesaj */
-.message-modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background-color: rgba(0,0,0,0.5);
-}
-.message-content {
-    background-color: white;
-    margin: 15% auto;
-    padding: 20px;
-    width: 85%;
-    max-width: 400px;
-    border-radius: 15px;
-    max-height: 70vh;
-    overflow-y: auto;
-}
-.message-item {
-    padding: 10px;
-    border-bottom: 1px solid #eee;
-    font-size: 0.9em;
-}
-.message-item.unread { background-color: #f0f8ff; border-left: 4px solid var(--bleu-marin); }
-.message-time { font-size: 0.7em; color: #888; display: block; }
-       
+        .icon-right { position: relative; display: flex; align-items: center; }
+
+        #notif-badge {
+            position: absolute;
+            top: -5px;
+            left: 15px;
+            background-color: var(--rouge-alerte);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .message-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .message-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            width: 85%;
+            max-width: 400px;
+            border-radius: 15px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .message-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9em;
+        }
+        .message-item.unread { background-color: #f0f8ff; border-left: 4px solid var(--bleu-marin); }
+        .message-time { font-size: 0.7em; color: #888; display: block; }
+
         .section-title {
             font-size: 1.1em; 
             font-weight: 600;
@@ -140,8 +139,6 @@
             box-sizing: border-box;
         }
 
-        .action-card.locked { opacity: 0.6; background-color: #f9f9f9; }
-
         .action-card .material-icons.left {
             margin-right: 15px;
             color: var(--bleu-marin);
@@ -149,7 +146,6 @@
         }
         
         .action-card .material-icons.right { color: #ccc; margin-left: auto; }
-        
         .action-card span { display: flex; align-items: center; font-weight: 500; }
 
         #btn-installer {
@@ -168,7 +164,7 @@
             cursor: pointer;
         }
 
-        #profile-form-container { display: block; margin-top: 20px; }
+        #profile-form-container { display: none; margin-top: 20px; }
 
         #profile-form {
             background-color: var(--blanc-fond);
@@ -176,7 +172,49 @@
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
+
+        /* ─── Photo Profil ─── */
+        .profile-photo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile-avatar-wrap {
+            position: relative;
+            width: 90px; height: 90px;
+            margin-bottom: 10px;
+        }
+        #profile-avatar-img {
+            width: 90px; height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--kaki);
+            background: var(--gri-claire);
+        }
+        .avatar-edit-btn {
+            position: absolute;
+            bottom: 2px; right: 2px;
+            background: var(--bleu-marin);
+            color: white;
+            border-radius: 50%;
+            width: 26px; height: 26px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+        .avatar-edit-btn .material-icons { font-size: 14px; }
+        #avatar-file-input { display: none; }
+        .profile-display-name {
+            font-weight: 700;
+            font-size: 1.1em;
+            color: var(--bleu-marin);
+        }
+        .profile-display-address {
+            font-size: 0.85em;
+            color: #777;
+        }
+
         #profile-form label {
             display: block;
             margin: 15px 0 5px 0;
@@ -184,13 +222,14 @@
             color: var(--bleu-marin);
         }
 
-        #profile-form input, #profile-form textarea {
+        #profile-form input, #profile-form textarea, #profile-form select {
             width: 100%;
             padding: 12px;
             border: 1px solid var(--gri-claire);
             border-radius: 8px;
             box-sizing: border-box; 
             font-size: 1em;
+            font-family: inherit;
         }
 
         #save-profile-btn {
@@ -206,30 +245,25 @@
             font-size: 1.1em;
         }
 
-
-.spinner {
-    width: 45px;
-    height: 45px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid var(--vert-menu);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+        .spinner {
+            width: 45px; height: 45px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--vert-menu);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
         
-         #main-footer {
+        #main-footer {
             display: flex;
             justify-content: space-around;
             align-items: center;
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 60px;
+            bottom: 0; left: 0;
+            width: 100%; height: 60px;
             background-color: var(--blanc-fond); 
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1000;
@@ -243,33 +277,27 @@
             padding: 5px;
             position: relative;
         }
-        
-        #main-footer .material-icons {
-            color: var(--vert-menu); 
-            font-size: 24px;
-        }
-
-        .nav-item { text-align: center; text-decoration: none; color: var(--vert-menu); font-size: 0.75em; padding: 5px; }
+        #main-footer .material-icons { color: var(--vert-menu); font-size: 24px; }
         .nav-item.active .material-icons { color: var(--kaki); }
     </style>
 </head>
 <body>
 
 <header class="header-top">
-    <h1>Kont mwen</h1>
+    <div id="top-bar-brand" style="display:flex; align-items:center; gap:9px; flex:1;">
+        <img src="lescayesdropshipping.png" alt="LCD" id="top-bar-logo" style="width:30px; height:30px; border-radius:7px; object-fit:contain;">
+        <span id="top-bar-title" style="font-size:14px; font-weight:900; color:var(--bleu-marin); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:180px;">Kont mwen</span>
+    </div>
     <div class="icon-right">
-        <div style="position: relative; cursor: pointer; display: flex; align-items: center;" onclick="openMessageModal()">
+        <div style="position:relative; cursor:pointer; display:flex; align-items:center;" onclick="openMessageModal()">
             <span class="material-icons">notifications</span>
-            <span id="notif-badge" style="position: absolute; top: -5px; left: 15px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;">0</span>
+            <span id="notif-badge">0</span>
         </div>
-
-        <div style="cursor: pointer; display: flex; align-items: center; margin-left: 20px;" onclick="scrollToProfile()">
+        <div style="cursor:pointer; display:flex; align-items:center; margin-left:20px;" onclick="scrollToProfile()">
             <span class="material-icons">person</span>
         </div>
     </div>
 </header>
-
-
 
 <div id="messageModal" class="message-modal">
     <div class="message-content">
@@ -284,337 +312,395 @@
     </div>
 </div>
 
+<main id="main-content">
 
-    <main id="main-content">
-        
-        <button id="btn-installer">
-            <span class="material-icons">get_app</span>
-            Ajoute LCDrop sou ekran w
-        </button>
-
-        <h2 class="section-title">Enfòmasyon pèsonèl</h2>
-        
-        <div class="info-card">
-            <div class="info-card-line">
-                <span class="material-icons">person</span>
-                <strong>Non:</strong> <span id="profile-name-display">Non w pako anrejistre</span>
-            </div>
-            <div class="info-card-line">
-                <span class="material-icons">email</span>
-                <strong>Imèl:</strong> <span id="profile-email-display">Imèl ou pako anrejistre</span>
-            </div>
-            <div class="info-card-line">
-                <span class="material-icons">phone</span>
-                <strong>Telefòn:</strong> <span id="profile-phone-display">Telefòn ou pako anrejistre</span>
-            </div>
-            <div class="info-card-line">
-                <span class="material-icons">location_on</span>
-                <strong>Adrès:</strong> <span id="profile-address-display">Adrès ou pako anrejistre</span>
-            </div>
+    <!-- ─── PHOTO PROFIL ─── -->
+    <div class="profile-photo-section" style="padding-top:15px;">
+        <div class="profile-avatar-wrap">
+            <img id="profile-avatar-img" src="lescayesdropshipping.png" alt="Foto pwofil">
+            <label class="avatar-edit-btn" for="avatar-file-input" title="Chanje foto">
+                <span class="material-icons">photo_camera</span>
+            </label>
+            <input type="file" id="avatar-file-input" accept="image/*">
         </div>
-        
-        <h2 class="section-title">Aksyon</h2>
-        
-        <a href="javascript:void(0)" id="edit-profile-btn" class="action-card">
-            <span>
-                <span class="material-icons left">edit</span>
-                Mete pwofil mwen ajou
-            </span>
-            <span class="material-icons right">chevron_right</span>
-        </a>
-        
-<div id="profile-form-container">
-    <h2 class="section-title">Anrejistre pwofil mwen</h2>
-    <form id="profile-form">
-        <input type="hidden" name="form_type" value="user_profile_update">
+        <span class="profile-display-name" id="mc-display-name">—</span>
+        <span class="profile-display-address" id="mc-display-address">—</span>
+    </div>
 
-        <label for="nom">Non konplè (pou livrezon)</label>
-        <input type="text" id="nom" name="nom" required placeholder="egz: jean marc">
+    <button id="btn-installer">
+        <span class="material-icons">get_app</span>
+        Ajoute LCDrop sou ekran w
+    </button>
 
-        <label for="email">Adrès imèl (obligatwa)</label>
-        <input type="email" id="email" name="email" required placeholder="egz: jean12@gmail.com">
-
-        <label for="phone">Telefòn Whatsapp</label>
-        <input type="tel" id="phone" name="phone" placeholder="+509 xx xx xx xx">
-
-        <label for="address">Adrès detaye</label>
-        <textarea id="address" name="address" required placeholder="egz: simon, toupre hotel josafa"></textarea>
-
-        <label for="reference">Referans (obligatwa)</label>
-        <select id="reference" name="reference" required>
-            <option value="">Chwazi yon opsyon</option>
-            <option value="Facebook">Facebook</option>
-            <option value="TikTok">TikTok</option>
-            <option value="IA">IA</option>
-            <option value="WhatsApp">WhatsApp</option>
-        </select>
-
-        <div id="whatsapp-friend-container" style="display:none; margin-top: 10px;">
-            <label for="whatsapp_name">Non moun ki refere-w la:</label>
-            <input type="text" id="whatsapp_name" name="whatsapp_name" placeholder="Rantre non referans Whatsapp la">
+    <h2 class="section-title">Enfòmasyon pèsonèl</h2>
+    
+    <div class="info-card">
+        <div class="info-card-line">
+            <span class="material-icons">person</span>
+            <strong>Non:</strong> <span id="profile-name-display">Non w pako anrejistre</span>
         </div>
+        <div class="info-card-line">
+            <span class="material-icons">email</span>
+            <strong>Imèl:</strong> <span id="profile-email-display">Imèl ou pako anrejistre</span>
+        </div>
+        <div class="info-card-line">
+            <span class="material-icons">phone</span>
+            <strong>Telefòn:</strong> <span id="profile-phone-display">Telefòn ou pako anrejistre</span>
+        </div>
+        <div class="info-card-line">
+            <span class="material-icons">location_on</span>
+            <strong>Adrès:</strong> <span id="profile-address-display">Adrès ou pako anrejistre</span>
+        </div>
+    </div>
+    
+    <h2 class="section-title">Aksyon</h2>
+    
+    <a href="javascript:void(0)" id="edit-profile-btn" class="action-card">
+        <span>
+            <span class="material-icons left">edit</span>
+            Mete pwofil mwen ajou
+        </span>
+        <span class="material-icons right">chevron_right</span>
+    </a>
+    
+    <div id="profile-form-container">
+        <h2 class="section-title">Anrejistre pwofil mwen</h2>
+        <form id="profile-form">
+            <input type="hidden" name="form_type" value="user_profile_update">
 
-        <button type="submit" id="save-profile-btn">Anrejistre enfòmasyon m yo</button>
-    </form>
-</div>
-    </main>
+            <label for="nom">Non konplè (pou livrezon)</label>
+            <input type="text" id="nom" name="nom" required placeholder="egz: jean marc">
+
+            <label for="email">Adrès imèl (obligatwa)</label>
+            <input type="email" id="email" name="email" required placeholder="egz: jean12@gmail.com">
+
+            <label for="phone">Telefòn Whatsapp</label>
+            <input type="tel" id="phone" name="phone" placeholder="+509 xx xx xx xx">
+
+            <label for="address">Adrès detaye</label>
+            <textarea id="address" name="address" required placeholder="egz: simon, toupre hotel josafa"></textarea>
+
+            <label for="reference">Referans (obligatwa)</label>
+            <select id="reference" name="reference" required>
+                <option value="">Chwazi yon opsyon</option>
+                <option value="Facebook">Facebook</option>
+                <option value="TikTok">TikTok</option>
+                <option value="IA">IA</option>
+                <option value="WhatsApp">WhatsApp</option>
+            </select>
+
+            <div id="whatsapp-friend-container" style="display:none; margin-top:10px;">
+                <label for="whatsapp_name">Non moun ki refere-w la:</label>
+                <input type="text" id="whatsapp_name" name="whatsapp_name" placeholder="Rantre non referans Whatsapp la">
+            </div>
+
+            <button type="submit" id="save-profile-btn">Anrejistre enfòmasyon m yo</button>
+        </form>
+    </div>
+
+</main>
 
 <footer id="main-footer">
-    <a href="index.html" class="nav-item">
+    <a href="index.html" class="nav-item" style="text-decoration:none; color:inherit;">
         <span class="material-icons">home</span>
         <p>Akèy</p>
     </a>
-    <a href="decouvrir.html" class="nav-item">
+    <a href="decouvrir.html" class="nav-item" style="text-decoration:none; color:inherit;">
         <span class="material-icons">info</span>
         <p>Règ</p>
     </a>
-    <a href="transaction.html" class="nav-item">
+    <a href="transaction.html" class="nav-item" style="text-decoration:none; color:inherit;">
         <span class="material-icons">list_alt</span>
         <p>Tranzaksyon</p>
     </a>
-    <a href="moncompte.html" class="nav-item active" style="position: relative;">
+    <a href="moncompte.html" class="nav-item active" style="position:relative;">
         <span class="material-icons">person</span>
         <p>Kont mwen</p>
-        <span id="footer-badge" style="position: absolute; top: 2px; right: 15px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; font-weight: bold; display: none;">0</span>
+        <span id="footer-badge" style="position:absolute; top:2px; right:15px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px; font-weight:bold; display:none;">0</span>
     </a>
 </footer>
 
+<!-- ===== FIREBASE (module) ===== -->
+<script type="module">
+    import { initializeApp }                             from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, onAuthStateChanged }               from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc }         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-<script>
-    // ===== KONFIGIRASYON =====
+    const firebaseConfig = {
+        apiKey:            "AIzaSyClITNBRZPS7uCGFtbCvcW3CE-KH3VHOyI",
+        authDomain:        "les-cayes-dropshipping.firebaseapp.com",
+        projectId:         "les-cayes-dropshipping",
+        storageBucket:     "les-cayes-dropshipping.firebasestorage.app",
+        messagingSenderId: "32618386616",
+        appId:             "1:32618386616:web:ab8641da3659263fe0904d",
+        measurementId:     "G-PNG051JBNN"
+    };
+
+    const app     = initializeApp(firebaseConfig);
+    const auth    = getAuth(app);
+    const db      = getFirestore(app);
+    const storage = getStorage(app);
+
     const MESSAGE_KEY    = 'lcd_user_messages';
-    const MAX_MESSAGES   = 10; // Maksimòm mesaj nan cloche a
+    const MAX_MESSAGES   = 10;
     const userStorageKey = 'user_profile_data';
-    const notifSound     = new Audio('notification.mp3');
+    const AVATAR_KEY     = 'lcd_user_avatar';
 
-    // Debloke son nan premye klike
-    document.addEventListener('click', () => {
-        notifSound.play().then(() => { notifSound.pause(); notifSound.currentTime = 0; }).catch(() => {});
-    }, { once: true });
-
-    function playNotifSound() {
-        notifSound.currentTime = 0;
-        notifSound.play().catch(() => {});
-    }
-
-    // ===== GESTION MESAJ =====
+    // ── Notifications ──
     function getMessages() {
         try { return JSON.parse(localStorage.getItem(MESSAGE_KEY)) || []; }
         catch (e) { return []; }
     }
 
-    // Sove yon nouvo mesaj — limite a 10, retire pi vye a si depase
     function saveMessage(title, body) {
         let messages = getMessages();
-
-        // Evite kopi egzak nan 2 segond
         const isDuplicate = messages.some(m => m.title === title && m.body === body && (Date.now() - m.id) < 2000);
         if (isDuplicate) return;
-
-        messages.unshift({
-            id:    Date.now(),
-            title: title,
-            body:  body,
-            time:  new Date().toLocaleString('fr-HT'),
-            read:  false
-        });
-
-        // Si nou depase 10, retire dènye a (pi vye a)
-        if (messages.length > MAX_MESSAGES) {
-            messages = messages.slice(0, MAX_MESSAGES);
-        }
-
+        messages.unshift({ id: Date.now(), title, body, time: new Date().toLocaleString('fr-HT'), read: false });
+        if (messages.length > MAX_MESSAGES) messages = messages.slice(0, MAX_MESSAGES);
         localStorage.setItem(MESSAGE_KEY, JSON.stringify(messages));
         updateBadgeUI();
-        playNotifSound();
     }
 
-    // ===== BADGE UI — cloche + footer badge "Kont mwen" =====
     function updateBadgeUI() {
         const messages    = getMessages();
         const unreadCount = messages.filter(m => !m.read).length;
-
-        // Badge cloche (moncompte.html)
-        const bellBadge = document.getElementById('notif-badge');
-        if (bellBadge) {
-            bellBadge.style.display  = unreadCount > 0 ? 'block' : 'none';
-            bellBadge.textContent    = unreadCount > 0 ? unreadCount : '';
-        }
-
-        // Badge footer "Kont mwen" (moncompte.html ak index.html)
+        const bellBadge   = document.getElementById('notif-badge');
         const footerBadge = document.getElementById('footer-badge');
-        if (footerBadge) {
-            footerBadge.style.display = unreadCount > 0 ? 'block' : 'none';
-            footerBadge.textContent   = unreadCount > 0 ? unreadCount : '';
-        }
-
-        // Badge systèm (icône app)
-        if ('setAppBadge' in navigator && unreadCount > 0) {
-            navigator.setAppBadge(unreadCount).catch(() => {});
-        } else if ('clearAppBadge' in navigator && unreadCount === 0) {
-            navigator.clearAppBadge().catch(() => {});
-        }
+        if (bellBadge)   { bellBadge.style.display   = unreadCount > 0 ? 'block' : 'none'; bellBadge.textContent   = unreadCount > 0 ? unreadCount : ''; }
+        if (footerBadge) { footerBadge.style.display  = unreadCount > 0 ? 'block' : 'none'; footerBadge.textContent = unreadCount > 0 ? unreadCount : ''; }
+        if ('setAppBadge' in navigator && unreadCount > 0) navigator.setAppBadge(unreadCount).catch(() => {});
+        else if ('clearAppBadge' in navigator && unreadCount === 0) navigator.clearAppBadge().catch(() => {});
     }
 
-    // ===== CLOCHE — Ouvri modal mesaj =====
-    function openMessageModal() {
+    window.openMessageModal = function() {
         const modal = document.getElementById('messageModal');
         if (!modal) return;
         modal.style.display = 'block';
-
         const list     = document.getElementById('message-list');
         const messages = getMessages();
-
         if (messages.length === 0) {
             list.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Ou pa gen okenn mesaj.</p>';
             return;
         }
-
-        // Afiche mesaj yo — mesaj ki pa li yo an blè
         list.innerHTML = messages.map(m => `
             <div class="message-item ${m.read ? '' : 'unread'}">
                 <strong>${m.title}</strong>
                 <p style="margin:5px 0;">${m.body}</p>
                 <span class="message-time">${m.time}</span>
-            </div>
-        `).join('');
-
-        // Mache tout mesaj kòm "li" epi retire badge yo
+            </div>`).join('');
         const updatedMessages = messages.map(m => ({ ...m, read: true }));
         localStorage.setItem(MESSAGE_KEY, JSON.stringify(updatedMessages));
         updateBadgeUI();
-    }
+    };
 
-    function closeMessageModal() {
+    window.closeMessageModal = function() {
         const modal = document.getElementById('messageModal');
         if (modal) modal.style.display = 'none';
         updateBadgeUI();
-    }
-
-    // Fèmen modal si klike deyò
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('messageModal')) closeMessageModal();
     };
 
-    // ===== SERVICE WORKER — resevwa mesaj Firebase =====
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('messageModal')) window.closeMessageModal();
+    };
+
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'SAVE_NOTIF') {
-                saveMessage(event.data.title, event.data.body);
-            }
+            if (event.data && event.data.type === 'SAVE_NOTIF') saveMessage(event.data.title, event.data.body);
         });
     }
 
-    // ===== SCROLL VÈ PWOFIL =====
-    function scrollToProfile() {
+    window.scrollToProfile = function() {
         const infoCard = document.querySelector('.info-card');
         if (infoCard) {
             infoCard.scrollIntoView({ behavior: 'smooth' });
-            infoCard.style.border = "2px solid var(--kaki)";
-            setTimeout(() => { infoCard.style.border = "none"; }, 2000);
+            infoCard.style.border = '2px solid var(--kaki)';
+            setTimeout(() => { infoCard.style.border = 'none'; }, 2000);
         }
+    };
+
+    // ── Photo Profil ──
+    function loadAvatar() {
+        const avatarData = localStorage.getItem(AVATAR_KEY);
+        const img        = document.getElementById('profile-avatar-img');
+        if (img && avatarData) img.src = avatarData;
+        else if (img) img.src = 'lescayesdropshipping.png';
     }
 
-    // ===== INICIALIZASYON =====
-    document.addEventListener('DOMContentLoaded', () => {
-        const form            = document.getElementById('profile-form');
-        const formContainer   = document.getElementById('profile-form-container');
-        const editProfileBtn  = document.getElementById('edit-profile-btn');
+    function initAvatarUpload(uid) {
+        const input = document.getElementById('avatar-file-input');
+        if (!input) return;
+        input.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(ev) {
+                const data = ev.target.result;
+                localStorage.setItem(AVATAR_KEY, data);
+                const img = document.getElementById('profile-avatar-img');
+                if (img) img.src = data;
 
-        // Afiche done pwofil si li egziste
-        const updateUI = () => {
-            const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-            const isProfileComplete = !!(profile.nom && profile.email);
+                // Upload vers Firebase Storage si connecté
+                if (uid) {
+                    try {
+                        const storageRef = ref(storage, 'avatars/' + uid + '.jpg');
+                        await uploadString(storageRef, data, 'data_url');
+                    } catch (err) { console.log('Avatar upload error:', err); }
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
 
-            if (isProfileComplete) {
-                document.getElementById('profile-name-display').textContent    = profile.nom;
-                document.getElementById('profile-email-display').textContent   = profile.email;
-                document.getElementById('profile-phone-display').textContent   = profile.phone   || 'pako anrejistre';
-                document.getElementById('profile-address-display').textContent = profile.address || 'pako anrejistre';
-                formContainer.style.display = 'none';
-            } else {
-                formContainer.style.display = 'block';
+    // ── UI mise à jour ──
+    function updateUI(profile) {
+        const p = profile || {};
+        document.getElementById('profile-name-display').textContent    = p.nom     || 'Non w pako anrejistre';
+        document.getElementById('profile-email-display').textContent   = p.email   || 'Imèl ou pako anrejistre';
+        document.getElementById('profile-phone-display').textContent   = p.phone   || 'pako anrejistre';
+        document.getElementById('profile-address-display').textContent = p.address || 'pako anrejistre';
+
+        const mcName = document.getElementById('mc-display-name');
+        const mcAddr = document.getElementById('mc-display-address');
+        if (mcName) mcName.textContent = p.nom     || '—';
+        if (mcAddr) mcAddr.textContent = p.address ? p.address.split(',')[0] : '—';
+    }
+
+    // ── Initialisation principale ──
+    onAuthStateChanged(auth, async (user) => {
+        let profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+
+        if (user) {
+            // Charger profil depuis Firestore
+            try {
+                const snap = await getDoc(doc(db, 'users', user.uid));
+                if (snap.exists()) {
+                    profile = snap.data();
+                    localStorage.setItem(userStorageKey, JSON.stringify(profile));
+                }
+            } catch (e) {
+                console.log('Firestore read error:', e);
             }
-        };
+            initAvatarUpload(user.uid);
+        } else {
+            initAvatarUpload(null);
+        }
 
-        updateUI();
-        updateBadgeUI(); // Rafrechi badge lè paj la ouvri
+        loadAvatar();
+        updateUI(profile);
+        updateBadgeUI();
 
-        // Bouton "Mete ajou pwofil"
+        // ── Formulaire édition profil ──
+        const formContainer  = document.getElementById('profile-form-container');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        const form           = document.getElementById('profile-form');
+
         if (editProfileBtn) {
             editProfileBtn.addEventListener('click', () => {
+                if (!formContainer) return;
                 formContainer.style.display = 'block';
                 formContainer.scrollIntoView({ behavior: 'smooth' });
-                const profile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
-                if (profile.nom)     document.getElementById('nom').value     = profile.nom;
-                if (profile.email)   document.getElementById('email').value   = profile.email;
-                if (profile.phone)   document.getElementById('phone').value   = profile.phone;
-                if (profile.address) document.getElementById('address').value = profile.address;
+                // Pré-remplir le formulaire
+                const currentProfile = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                if (currentProfile.nom)     document.getElementById('nom').value     = currentProfile.nom;
+                if (currentProfile.email)   document.getElementById('email').value   = currentProfile.email;
+                if (currentProfile.phone)   document.getElementById('phone').value   = currentProfile.phone;
+                if (currentProfile.address) document.getElementById('address').value = currentProfile.address;
+                if (currentProfile.reference) document.getElementById('reference').value = currentProfile.reference;
+                if (currentProfile.whatsapp_referant) {
+                    const wn = document.getElementById('whatsapp_name');
+                    if (wn) wn.value = currentProfile.whatsapp_referant;
+                    const wc = document.getElementById('whatsapp-friend-container');
+                    if (wc && currentProfile.reference === 'WhatsApp') wc.style.display = 'block';
+                }
             });
         }
 
-        // Champ referans — montre/kache WhatsApp
+        // Logique conditionnelle WhatsApp
         const referenceSelect         = document.getElementById('reference');
         const whatsappFriendContainer = document.getElementById('whatsapp-friend-container');
         if (referenceSelect) {
             referenceSelect.addEventListener('change', (e) => {
-                whatsappFriendContainer.style.display = e.target.value === 'WhatsApp' ? 'block' : 'none';
+                if (whatsappFriendContainer) whatsappFriendContainer.style.display = e.target.value === 'WhatsApp' ? 'block' : 'none';
             });
         }
 
-        // Soumèt fòm pwofil
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
+        // ── Soumission formulaire ──
+        if (form) {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
 
-            const profileData = {
-                nom:               document.getElementById('nom').value.trim(),
-                email:             document.getElementById('email').value.trim(),
-                phone:             document.getElementById('phone').value.trim(),
-                address:           document.getElementById('address').value.trim(),
-                reference:         document.getElementById('reference').value,
-                whatsapp_referant: document.getElementById('whatsapp_name').value.trim()
-            };
+                const profileData = {
+                    nom:               document.getElementById('nom').value.trim(),
+                    email:             document.getElementById('email').value.trim(),
+                    phone:             document.getElementById('phone').value.trim(),
+                    address:           document.getElementById('address').value.trim(),
+                    reference:         document.getElementById('reference').value,
+                    whatsapp_referant: (document.getElementById('whatsapp_name')?.value || '').trim()
+                };
 
-            localStorage.setItem(userStorageKey, JSON.stringify(profileData));
+                // Sauvegarde locale immédiate
+                const existing = JSON.parse(localStorage.getItem(userStorageKey)) || {};
+                const merged   = Object.assign({}, existing, profileData);
+                localStorage.setItem(userStorageKey, JSON.stringify(merged));
+                localStorage.setItem('lcd_user_registered', 'true');
 
-            const formData = new FormData();
-            formData.append("access_key",        "a2d5b024-731b-4a8c-a5d4-d46a64e4f60a");
-            formData.append("nom",               profileData.nom);
-            formData.append("email",             profileData.email);
-            formData.append("phone",             profileData.phone);
-            formData.append("address",           profileData.address);
-            formData.append("reference",         profileData.reference);
-            formData.append("whatsapp_referant", profileData.whatsapp_referant);
-            formData.append("subject",           "Nouvo Pwofil LCDrop: " + profileData.nom);
+                const saveBtn      = document.getElementById('save-profile-btn');
+                const originalText = saveBtn.textContent;
+                saveBtn.textContent = 'Analize...';
+                saveBtn.disabled    = true;
 
-            const saveBtn      = document.getElementById('save-profile-btn');
-            const originalText = saveBtn.textContent;
-            saveBtn.textContent = "Ap voye...";
-            saveBtn.disabled    = true;
-
-            fetch("https://api.web3forms.com/submit", { method: "POST", body: formData })
-            .then(async (response) => {
-                if (response.ok) {
-                    alert('Pwofil ou anrejistre ak siksè !');
-                    updateUI();
-                } else {
-                    const result = await response.json();
-                    alert('Erè: ' + result.message);
+                // Sauvegarde Firestore si connecté
+                if (user) {
+                    try {
+                        await setDoc(doc(db, 'users', user.uid), merged, { merge: true });
+                    } catch (err) { console.log('Firestore write error:', err); }
                 }
-            })
-            .catch(err => {
-                console.error("Erreur:", err);
-                alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo pou voye email la.');
-                updateUI();
-            })
-            .finally(() => {
+
+                // Envoi Web3Forms
+                const formData = new FormData();
+                formData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
+                formData.append('subject',    'Mizajou Pwofil LCDrop: ' + profileData.nom);
+                Object.keys(profileData).forEach(k => formData.append(k, profileData[k]));
+
+                try {
+                    const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+                    if (response.ok) { alert('Pwofil ou anrejistre ak siksè !'); }
+                    else { alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo.'); }
+                } catch (err) {
+                    alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo pou voye email la.');
+                }
+
                 saveBtn.textContent = originalText;
                 saveBtn.disabled    = false;
-            });
-        });
-    });
-</script>
+                updateUI(merged);
 
+                if (formContainer) formContainer.style.display = 'none';
+            });
+        }
+    });
+
+    // ── A2HS Install Button ──
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        const btn = document.getElementById('btn-installer');
+        if (btn) btn.style.display = 'flex';
+    });
+
+    const btnInstaller = document.getElementById('btn-installer');
+    if (btnInstaller) {
+        btnInstaller.addEventListener('click', async () => {
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            if (outcome === 'accepted') btnInstaller.style.display = 'none';
+        });
+    }
+</script>
 
 </body>
 </html>
