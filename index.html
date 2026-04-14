@@ -18,19 +18,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="/lescayesdropshipping.png">
-    <!-- ===== PROTEKSYON KONT FLASH OVERLAY — kache overlay touswit si kont deja egziste ===== -->
-    <script>
-      (function() {
-        try {
-          var isReg     = localStorage.getItem('lcd_user_registered') === 'true';
-          var profile   = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
-          var hasProfile = !!(profile.nom && profile.email);
-          if (isReg || hasProfile) {
-            document.write('<style>#registration-overlay{display:none!important;}</style>');
-          }
-        } catch(e) {}
-      })();
-    </script>
 </head>
 <body>
 
@@ -106,9 +93,10 @@
 <!-- ===== BANNER ENSTALE — affiche après 30s si pas installé ===== -->
 <div id="install-banner" class="hidden install-blink">
   <div class="install-info">
-    <span><strong>Mete aplikasyon an sou ekran telefòn ou</strong></span>
+    <strong>Enstale aplikasyon an</strong>
+    <span>Pou gen sèvis lan sou telefòn ou</span>
   </div>
-  <button id="install-btn">Telechaje (1 MB)</button>
+  <button id="install-btn">Enstale</button>
 </div>
 
 <!-- ===== TOP BAR ===== -->
@@ -137,7 +125,7 @@
 <!-- ===== SIDE DRAWER ===== -->
 <aside id="app-drawer">
   <div class="drw-head">
-    <img src="lescayesdropshipping.png" alt="LCD" class="drw-logo" id="drw-avatar-img">
+    <img src="lescayesdropshipping.png" alt="LCD" class="drw-logo">
     <div class="drw-info">
       <span class="drawer-head-name" id="drw-nom">Les Cayes Dropshipping</span>
       <span class="drw-loc" id="drw-loc">Haiti-Sud</span>
@@ -161,7 +149,12 @@
       <span class="drw-label" id="drw-kiyès-label">Kiyès mwen ye</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
-      
+
+    <a class="drw-item" onclick="goTo('calcul.html')">
+      <span class="drw-icon"><span class="material-icons">calculate</span></span>
+      <span class="drw-label">Kalkile pri koli m</span>
+      <span class="material-icons drw-arrow">chevron_right</span>
+    </a>
     <a class="drw-item" onclick="goTo('inventaire.html')">
       <span class="drw-icon"><span class="material-icons">inventory_2</span></span>
       <span class="drw-label">Fè envantè atik mwen</span>
@@ -226,7 +219,7 @@
                     <p>siw pa gen kat, pataje link panye w nap order yo pou ou.</p>
                 </div>
             </div>
-            <div class="carousel-item" style="background-image: url('Kontr.jpg');">
+            <div class="carousel-item" style="background-image: url('kontr.jpg');">
                 <div class="banner-text">
                     <h1>achte zouti modèn pou travay</h1>
                     <p>pou devni pi pèfòman nan metye w lan.</p>
@@ -240,14 +233,6 @@
         <div class="header-content">
 
             <div id="info-livrezon-container">
-
-                <!-- ===== OFFRE PREMYE KÒMAND ===== -->
-                <div id="promo-first-order" style="display:none; margin-bottom:10px;">
-                  <p id="promo-text" style="font-style:italic; font-size:0.82em; color:rgba(255,255,255,0.92); margin:0; line-height:1.5;">
-                    Benefisye de $3,99 par liv pou premye kòmand ou, olye de $4,90. <br>Òf sa ap ekspire nan : <span id="promo-countdown" style="font-weight:900; color:#FF7F50;"></span>
-                  </p>
-                </div>
-
                 <div class="info-step">
                     <p class="info-title">1. Jou anbakman :</p>
                     <div class="info-detail">13 AVRIL</div>
@@ -266,7 +251,7 @@
                     <span id="like-icon" class="material-icons">thumb_up_off_alt</span>
                     <span id="like-count">1</span>
                 </button>
-                <a href="#comments-container" class="react-btn react-btn-comment" title="Ekri yon avis">
+                <a href="#avis-clients" class="react-btn react-btn-comment" title="Ekri yon avis">
                     <span class="material-icons">chat_bubble_outline</span>
                     <span>Avis</span>
                 </a>
@@ -528,9 +513,9 @@
             welcomeData.append('subject',    'Byenveni ' + nom + ', koneksyon w lan reyisi');
             welcomeData.append('message',
                 'Byenveni ' + nom + ', koneksyon w lan reyisi.\n\n' +
-                'Hello kliyan, byenvini nan Les Cayes Dropshipping: sèvis lojistik ki pi sekirize Ayiti an. Tanpri:\n' +
-                '• li tout enfòmasyon nan pati \'RÈG\' platfòm lan pou konprann sèvis lojistik sila. Epi ajoute aplikasyon an sou telefòn ou, pouw ka suiv nou\n\n' +
-                'Nou santi n' navré paske jodi a w' deside antame premye eksperyans ou ak nou 🥰. Ce n'est que l' début, n' espere w pap regrèt desizyon sa. Tchao '
+                'Hello kliyan, byenvini sou Les Cayes Dropshipping: sèvis lojistik ki pi sekirize Ayiti an. Tanpri:\n' +
+                '• enstale aplikasyon an, e li tout enfòmasyon nan pati \'RÈG\' sèvis lan.\n\n' +
+                'We can\'t wait to start your first experience with us.'
             );
 
             const btn = document.getElementById('btn-submit');
@@ -545,12 +530,13 @@
             btn.textContent = 'Kreye Kont Mwen →';
             btn.disabled = false;
 
-            // Kache overlay avan reload
             const overlay = document.getElementById('registration-overlay');
             if (overlay) overlay.style.display = 'none';
 
-            // Reload pou evite boucle: onAuthStateChanged wè lcd_user_registered=true
-            window.location.reload();
+            const drwNom = document.getElementById('drw-nom');
+            if (drwNom) drwNom.textContent = nom;
+
+            if (window.initKiyesDrawer) window.initKiyesDrawer(nom);
         });
     }
 </script>
@@ -599,9 +585,22 @@
         if (box) box.style.display = sel && sel.value === 'WhatsApp' ? 'flex' : 'none';
     }
 
-    // allerPwofil défini dans index.js — pas de doublon ici
+    // ── Kiyès X ye — drawer nav sans page-loader ──
+    window.allerPwofil = function() {
+        closeDrawer();
+        window.location.href = 'pwofil.html';
+    };
 
-    // initKiyesDrawer défini dans index.js — pas de doublon ici
+    window.initKiyesDrawer = function(nom) {
+        const item  = document.getElementById('drw-kiyès');
+        const label = document.getElementById('drw-kiyès-label');
+        if (!item) return;
+        item.style.display = 'flex';
+        if (label && nom) {
+            const prenom = nom.trim().split(' ')[0];
+            label.textContent = 'Kiyès ' + prenom.toUpperCase() + ' ye';
+        }
+    };
 
     // ── A2HS Install Banner — afficher après 30s si pas encore installé ──
     let deferredPrompt = null;
@@ -621,24 +620,14 @@
     const installBtn = document.getElementById('install-btn');
     if (installBtn) {
         installBtn.addEventListener('click', async () => {
-            // 1. Demander la permission de notification Firebase
-            if ('Notification' in window && Notification.permission === 'default') {
-                try { await Notification.requestPermission(); } catch(e) {}
+            if (!deferredPrompt) return;
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            deferredPrompt = null;
+            if (outcome === 'accepted') {
+                const banner = document.getElementById('install-banner');
+                if (banner) banner.classList.add('hidden');
             }
-            // 2. Lancer le prompt d'installation PWA
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                if (outcome === 'accepted') {
-                    const banner = document.getElementById('install-banner');
-                    if (banner) banner.classList.add('hidden');
-                    return;
-                }
-            }
-            // Fermer le banner dans tous les cas
-            const banner = document.getElementById('install-banner');
-            if (banner) banner.classList.add('hidden');
         });
     }
 
