@@ -21,7 +21,7 @@
 </head>
 <body>
 
-<!-- ===== PAGE LOADER (transition entre pages) ===== -->
+<!-- ===== PAGE LOADER (transition entre pages — sans logo rotatif) ===== -->
 <div id="page-loader">
   <div class="pl-inner">
     <div class="pl-ring"></div>
@@ -34,13 +34,18 @@
     <img src="lescayesdropshipping.png" alt="Les Cayes Dropshipping" class="logo-main">
     <h2>Byenvini</h2>
     <p>Ranpli pwofil ou pou w kòmanse ak sèvis la.</p>
+
+    <!-- Indicateur de progression -->
     <div id="form-progress-bar" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
       <div style="flex:1; height:4px; background:#eee; border-radius:4px; overflow:hidden; margin-right:10px;">
         <div id="progress-fill" style="height:100%; background:var(--bleu-marin); border-radius:4px; transition:width 0.4s ease; width:20%;"></div>
       </div>
       <span id="progress-label" style="font-size:12px; font-weight:700; color:var(--bleu-marin); white-space:nowrap;">1 / 5</span>
     </div>
+
     <form id="registration-form">
+
+      <!-- Étape 1 : Nom -->
       <div class="reg-step" id="step-1">
         <div class="input-container">
           <span class="material-icons">person</span>
@@ -48,6 +53,8 @@
         </div>
         <button type="button" class="btn-next" onclick="regNext(1)">Kontinye →</button>
       </div>
+
+      <!-- Étape 2 : Email -->
       <div class="reg-step" id="step-2" style="display:none;">
         <div class="input-container">
           <span class="material-icons">email</span>
@@ -55,6 +62,8 @@
         </div>
         <button type="button" class="btn-next" onclick="regNext(2)">Kontinye →</button>
       </div>
+
+      <!-- Étape 3 : Téléphone -->
       <div class="reg-step" id="step-3" style="display:none;">
         <div class="input-container">
           <span class="material-icons">phone</span>
@@ -62,6 +71,8 @@
         </div>
         <button type="button" class="btn-next" onclick="regNext(3)">Kontinye →</button>
       </div>
+
+      <!-- Étape 4 : Adresse -->
       <div class="reg-step" id="step-4" style="display:none;">
         <div class="input-container">
           <span class="material-icons">location_on</span>
@@ -69,6 +80,8 @@
         </div>
         <button type="button" class="btn-next" onclick="regNext(4)">Kontinye →</button>
       </div>
+
+      <!-- Étape 5 : Référence + champ conditionnel WhatsApp -->
       <div class="reg-step" id="step-5" style="display:none;">
         <div class="input-container">
           <span class="material-icons">explore</span>
@@ -86,12 +99,13 @@
         </div>
         <button type="submit" id="btn-submit">Kreye Kont Mwen →</button>
       </div>
+
     </form>
   </div>
 </div>
 
-<!-- ===== BANNER ENSTALE — affiche après 30s si pas installé ===== -->
-<div id="install-banner" class="hidden install-blink">
+<!-- ===== BANNER ENSTALE ===== -->
+<div id="install-banner" class="hidden">
   <div class="install-info">
     <strong>Enstale aplikasyon an</strong>
     <span>Pou gen sèvis lan sou telefòn ou</span>
@@ -114,12 +128,7 @@
   </button>
 </header>
 
-<!-- ===== ANNOUNCEMENT BAR — sous la top bar ===== -->
-<div class="announcement-bar announcement-bar-fixed">
-    <div class="scrolling-text">
-        Tanpri avan w achte kwakseswa voye nan adrès nou, ou dwe share kaptidekran fason w konfigire adrès lan sou kont ou pou evite erè ak dezagreman nan sèvis lan!
-    </div>
-</div>
+<!-- ===== DRAWER OVERLAY ===== -->
 <div id="drawer-overlay" onclick="closeDrawer()"></div>
 
 <!-- ===== SIDE DRAWER ===== -->
@@ -139,30 +148,22 @@
     <div class="drw-section-lbl">Navigation</div>
     <a class="drw-item active" onclick="goTo('index.html')">
       <span class="drw-icon"><span class="material-icons">home</span></span>
-      <span class="drw-label">Akèy</span>
+      <span class="drw-label">AKÈY</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
-
-    <!-- KIYÈS X YE — visible seulement si profil existe, SANS page-loader -->
-    <a class="drw-item drw-item-kiyès" id="drw-kiyès" onclick="allerPwofil()" style="display:none;">
-      <span class="drw-icon drw-icon-kiyès"><span class="material-icons">manage_accounts</span></span>
-      <span class="drw-label" id="drw-kiyès-label">Kiyès mwen ye</span>
-      <span class="material-icons drw-arrow">chevron_right</span>
-    </a>
-
     <a class="drw-item" onclick="goTo('calcul.html')">
       <span class="drw-icon"><span class="material-icons">calculate</span></span>
-      <span class="drw-label">Kalkile pri koli m</span>
+      <span class="drw-label">KALKILE PRI KOLI M</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
     <a class="drw-item" onclick="goTo('inventaire.html')">
       <span class="drw-icon"><span class="material-icons">inventory_2</span></span>
-      <span class="drw-label">Fè envantè atik mwen</span>
+      <span class="drw-label">FÈ ENVANTÈ ATIK MWEN</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
     <a class="drw-item" onclick="goTo('transaction.html')">
       <span class="drw-icon"><span class="material-icons">account_balance_wallet</span></span>
-      <span class="drw-label">Monnen m nan sèvis la</span>
+      <span class="drw-label">MONNEN M NAN SÈVIS LA</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
 
@@ -170,12 +171,12 @@
     <div class="drw-section-lbl">Lòt Paj</div>
     <a class="drw-item" onclick="goTo('decouvrir.html')">
       <span class="drw-icon"><span class="material-icons">info</span></span>
-      <span class="drw-label">Règ ak kondisyon</span>
+      <span class="drw-label">RÈG AK KONDISYON</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
     <a class="drw-item" onclick="goTo('moncompte.html')">
       <span class="drw-icon"><span class="material-icons">person</span></span>
-      <span class="drw-label">Pwofil mwen</span>
+      <span class="drw-label">PWOFIL MWEN</span>
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
 
@@ -228,7 +229,7 @@
         </div>
     </section>
 
-    <!-- ===== INFO LIVREZON + BOUTONS RÉACTION ===== -->
+    <!-- ===== HEADER (Annonce + Livrezon + Like) ===== -->
     <header id="main-header">
         <div class="header-content">
 
@@ -245,25 +246,31 @@
                 </div>
             </div>
 
-            <!-- Unlike · Commentaire (milieu) · Like -->
-            <div class="livrezon-react-row">
-                                <button id="like-btn" onclick="toggleLike()" class="react-btn react-btn-like" title="Like">
-                    <span id="like-icon" class="material-icons">thumb_up_off_alt</span>
-                    <span id="like-count">1</span>
+            <!-- Bouton Like -->
+            <div style="display:flex; align-items:center; justify-content:center; margin-top:15px; gap:10px; background:rgba(255,255,255,0.5); padding:10px; border-radius:20px;">
+                <button id="like-btn" onclick="toggleLike()" style="background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:8px; color:var(--bleu-marin); transition:transform 0.2s;">
+                    <span id="like-icon" class="material-icons" style="font-size:32px;">thumb_up_off_alt</span>
+                    <span id="like-count" style="font-weight:900; font-size:1.4em; color:var(--bleu-marin);">1</span>
                 </button>
-                <a href="#avis-clients" class="react-btn react-btn-comment" title="Ekri yon avis">
-                    <span class="material-icons">chat_bubble_outline</span>
-                    <span>Avis</span>
-                </a>
-                <button id="unlike-btn" onclick="toggleUnlike()" class="react-btn react-btn-unlike" title="Unlike">
-                    <span class="material-icons" id="unlike-icon">thumb_down_off_alt</span>
-                </button>
+                <audio id="like-sound" src="bouton.mp3" preload="auto"></audio>
             </div>
 
-            <audio id="like-sound" src="bouton.mp3" preload="auto"></audio>
+            <!-- CTA Inscription -->
+            <div id="register-cta" class="register-cta hidden">
+                <span class="material-icons" style="font-size:20px; color:#8fbc8f;">verified_user</span>
+                <p>Kreye yon kont gratis pou resevwa òf spesyal sèvis la.</p>
+                <button onclick="showRegistrationOverlay()">Kreye kont mwen →</button>
+            </div>
 
         </div>
     </header>
+
+    <!-- Bann defileman -->
+    <div class="announcement-bar">
+        <div class="scrolling-text">
+            Tanpri avan w achte kwakseswa voye nan adrès nou, ou dwe share kaptidekran fason w konfigire adrès lan sou kont ou pou evite erè ak dezagreman nan sèvis lan!
+        </div>
+    </div>
 
     <section class="container"></section>
 
@@ -291,9 +298,9 @@
         </div>
         <div id="comments-container"></div>
         <div class="add-avis">
-            <h3>Bay avi pa w</h3>
+            <h3>Bay avis pa w</h3>
             <textarea id="user-comment" placeholder="Ekri eksperyans ou la..."></textarea>
-            <button onclick="ajouterAvis()" class="btn-ajoute-avis">Pibliye kòmantè pa w'</button>
+            <button onclick="ajouterAvis()">Pibliye kòmantè pa w'</button>
         </div>
     </section>
 
@@ -361,10 +368,7 @@
     import { getAnalytics }                      from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
     import { getAuth, onAuthStateChanged }       from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { getMessaging, getToken, onMessage, isSupported } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
-
-    // ── Vérification HTTPS / localhost avant tout init Firebase Messaging ──
-    const isSecureContext = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
     const firebaseConfig = {
         apiKey:            "AIzaSyClITNBRZPS7uCGFtbCvcW3CE-KH3VHOyI",
@@ -380,20 +384,9 @@
     const analytics = getAnalytics(app);
     const auth      = getAuth(app);
     const db        = getFirestore(app);
+    const messaging = getMessaging(app);
 
-    // ── Messaging : seulement si HTTPS ET navigateur compatible ──
-    let messaging = null;
-    if (isSecureContext) {
-        try {
-            const supported = await isSupported();
-            if (supported) {
-                messaging = getMessaging(app);
-            }
-        } catch (e) {
-            console.warn('Firebase Messaging non disponible :', e);
-        }
-    }
-
+    // ── Sauvegarde notification locale ──
     function saveMessage(title, body) {
         const KEY = 'lcd_user_messages';
         let msgs = JSON.parse(localStorage.getItem(KEY)) || [];
@@ -405,68 +398,79 @@
         updateNotifBadges();
     }
 
+    // ── Mise à jour badges cloche ──
     function updateNotifBadges() {
         const msgs        = JSON.parse(localStorage.getItem('lcd_user_messages')) || [];
         const unread      = msgs.filter(m => !m.read).length;
         const dot         = document.getElementById('tb-dot');
         const footerBadge = document.getElementById('footer-badge');
-        if (dot)         { dot.style.display        = unread > 0 ? 'block' : 'none'; }
-        if (footerBadge) { footerBadge.style.display = unread > 0 ? 'block' : 'none'; footerBadge.textContent = unread > 0 ? unread : ''; }
+        if (dot)         { dot.style.display         = unread > 0 ? 'block' : 'none'; }
+        if (footerBadge) { footerBadge.style.display  = unread > 0 ? 'block' : 'none'; footerBadge.textContent = unread > 0 ? unread : ''; }
     }
+    // Expose pour appel depuis index.js si nécessaire
     window.updateNotifBadges = updateNotifBadges;
 
+    // ── Auth state — Synchronisation header + overlay ──
     onAuthStateChanged(auth, async (user) => {
-        const overlay = document.getElementById('registration-overlay');
-        const drwNom  = document.getElementById('drw-nom');
-        const drwLoc  = document.getElementById('drw-loc');
+        const overlay        = document.getElementById('registration-overlay');
+        const registerCta    = document.getElementById('register-cta');
+        const drwNom         = document.getElementById('drw-nom');
+        const drwLoc         = document.getElementById('drw-loc');
 
         if (user) {
+            // Utilisateur connecté : masquer overlay, charger profil
             if (overlay) overlay.style.display = 'none';
+            if (registerCta) registerCta.classList.add('hidden');
             localStorage.setItem('lcd_user_registered', 'true');
+
             try {
                 const snap = await getDoc(doc(db, 'users', user.uid));
                 if (snap.exists()) {
                     const data = snap.data();
+                    // Mise à jour localStorage pour synchronisation avec moncompte.html
                     localStorage.setItem('user_profile_data', JSON.stringify(data));
+                    // Mise à jour header drawer
                     if (drwNom) drwNom.textContent = data.nom     || user.displayName || 'Kliyan';
                     if (drwLoc) drwLoc.textContent = data.address ? data.address.split(',')[0] : 'Haiti-Sud';
-                    if (window.initKiyesDrawer) window.initKiyesDrawer(data.nom);
                 } else {
                     if (drwNom) drwNom.textContent = user.displayName || 'Kliyan';
                 }
             } catch (e) {
+                // Fallback localStorage
                 const local = JSON.parse(localStorage.getItem('user_profile_data')) || {};
                 if (drwNom && local.nom) drwNom.textContent = local.nom;
-                if (window.initKiyesDrawer && local.nom) window.initKiyesDrawer(local.nom);
             }
             updateNotifBadges();
+
         } else {
-            const isRegistered    = localStorage.getItem('lcd_user_registered') === 'true';
-            const localProfile    = JSON.parse(localStorage.getItem('user_profile_data')) || {};
+            // Utilisateur non connecté
+            const isRegistered = localStorage.getItem('lcd_user_registered') === 'true';
+            const localProfile = JSON.parse(localStorage.getItem('user_profile_data')) || {};
             const hasLocalProfile = !!(localProfile.nom && localProfile.email);
 
             if (!isRegistered && !hasLocalProfile) {
+                // Première visite : afficher overlay inscription
                 if (overlay) overlay.style.display = 'flex';
             } else {
+                // Profil local existant : masquer overlay, afficher CTA secondaire
                 if (overlay) overlay.style.display = 'none';
+                if (registerCta) registerCta.classList.remove('hidden');
                 if (drwNom && localProfile.nom) drwNom.textContent = localProfile.nom;
                 if (drwLoc && localProfile.address) drwLoc.textContent = localProfile.address.split(',')[0];
-                if (window.initKiyesDrawer && localProfile.nom) window.initKiyesDrawer(localProfile.nom);
             }
         }
     });
 
-    if (messaging) {
-        onMessage(messaging, (payload) => {
-            const { title, body } = payload.notification;
-            saveMessage(title, body);
-            const notif = new Notification(title, { body, icon: "/lescayesdropshipping.png" });
-            notif.onclick = (e) => { e.preventDefault(); window.location.href = "moncompte.html?tab=mesaj"; };
-        });
-    }
+    // ── Réception messages Firebase ──
+    onMessage(messaging, (payload) => {
+        const { title, body } = payload.notification;
+        saveMessage(title, body);
+        const notif = new Notification(title, { body, icon: "/lescayesdropshipping.png" });
+        notif.onclick = (e) => { e.preventDefault(); window.location.href = "moncompte.html?tab=mesaj"; };
+    });
 
+    // ── Service Worker & Notifications ──
     async function initNotifications() {
-        if (!messaging) return;
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
             try {
@@ -475,48 +479,39 @@
         }
     }
 
-    if (isSecureContext && 'serviceWorker' in navigator) {
+    if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/firebase-messaging-sw.js')
             .then(() => { initNotifications(); })
             .catch(err => console.log('Erreur SW:', err));
     }
 
-    // ── Soumission formulaire inscription ──
+    // ── Soumission formulaire inscription (Web3Forms) ──
     const regForm = document.getElementById('registration-form');
     if (regForm) {
         regForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const nom       = document.getElementById('reg-nom').value.trim();
-            const email     = document.getElementById('reg-email').value.trim();
-            const phone     = document.getElementById('reg-phone').value.trim();
-            const address   = document.getElementById('reg-address').value.trim();
+            const nom      = document.getElementById('reg-nom').value.trim();
+            const email    = document.getElementById('reg-email').value.trim();
+            const phone    = document.getElementById('reg-phone').value.trim();
+            const address  = document.getElementById('reg-address').value.trim();
             const reference = document.getElementById('reg-reference').value;
-            const referant  = document.getElementById('reg-referant-name').value.trim();
+            const referant = document.getElementById('reg-referant-name').value.trim();
 
-            if (!nom || !email) { alert('Non ak imèl obligatwa.'); return; }
+            if (!nom || !email) {
+                alert('Non ak imèl obligatwa.');
+                return;
+            }
 
             const profileData = { nom, email, phone, address, reference, whatsapp_referant: referant };
             localStorage.setItem('user_profile_data', JSON.stringify(profileData));
             localStorage.setItem('lcd_user_registered', 'true');
 
-            // Web3Forms — enregistrement principal
+            // Envoi Web3Forms
             const formData = new FormData();
             formData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
             formData.append('subject',    'Nouvo Enskripsyon LCDrop: ' + nom);
             Object.keys(profileData).forEach(k => formData.append(k, profileData[k]));
-
-            // Web3Forms — email de bienvenue automatique
-            const welcomeData = new FormData();
-            welcomeData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
-            welcomeData.append('to',         'lescayesdropshipping@gmail.com');
-            welcomeData.append('subject',    'Byenveni ' + nom + ', koneksyon w lan reyisi');
-            welcomeData.append('message',
-                'Byenveni ' + nom + ', koneksyon w lan reyisi.\n\n' +
-                'Hello kliyan, byenvini sou Les Cayes Dropshipping: sèvis lojistik ki pi sekirize Ayiti an. Tanpri:\n' +
-                '• enstale aplikasyon an, e li tout enfòmasyon nan pati \'RÈG\' sèvis lan.\n\n' +
-                'We can\'t wait to start your first experience with us.'
-            );
 
             const btn = document.getElementById('btn-submit');
             btn.textContent = 'Anrejistre...';
@@ -524,8 +519,7 @@
 
             try {
                 await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
-                await fetch('https://api.web3forms.com/submit', { method: 'POST', body: welcomeData });
-            } catch (err) {}
+            } catch (e) {}
 
             btn.textContent = 'Kreye Kont Mwen →';
             btn.disabled = false;
@@ -533,10 +527,9 @@
             const overlay = document.getElementById('registration-overlay');
             if (overlay) overlay.style.display = 'none';
 
+            // Mise à jour drawer
             const drwNom = document.getElementById('drw-nom');
             if (drwNom) drwNom.textContent = nom;
-
-            if (window.initKiyesDrawer) window.initKiyesDrawer(nom);
         });
     }
 </script>
@@ -544,8 +537,9 @@
 <!-- ===== JAVASCRIPT PRINCIPAL ===== -->
 <script src="index.js"></script>
 
-<!-- ===== LOGIQUE FORMULAIRE & INSTALL ===== -->
+<!-- ===== LOGIQUE FORMULAIRE SÉQUENTIEL & INSTALL ===== -->
 <script>
+    // ── Formulaire progressif ──
     const TOTAL_STEPS = 5;
 
     function updateProgress(step) {
@@ -569,6 +563,7 @@
             }
         });
         if (!valid) return;
+
         if (stepEl) stepEl.style.display = 'none';
         const nextEl = document.getElementById('step-' + (currentStep + 1));
         if (nextEl) {
@@ -585,36 +580,18 @@
         if (box) box.style.display = sel && sel.value === 'WhatsApp' ? 'flex' : 'none';
     }
 
-    // ── Kiyès X ye — drawer nav sans page-loader ──
-    window.allerPwofil = function() {
-        closeDrawer();
-        window.location.href = 'pwofil.html';
-    };
+    function showRegistrationOverlay() {
+        const overlay = document.getElementById('registration-overlay');
+        if (overlay) overlay.style.display = 'flex';
+    }
 
-    window.initKiyesDrawer = function(nom) {
-        const item  = document.getElementById('drw-kiyès');
-        const label = document.getElementById('drw-kiyès-label');
-        if (!item) return;
-        item.style.display = 'flex';
-        if (label && nom) {
-            const prenom = nom.trim().split(' ')[0];
-            label.textContent = 'Kiyès ' + prenom.toUpperCase() + ' ye';
-        }
-    };
-
-    // ── A2HS Install Banner — afficher après 30s si pas encore installé ──
+    // ── A2HS Install Banner ──
     let deferredPrompt = null;
-    const isAlreadyInstalled = window.matchMedia('(display-mode: standalone)').matches || !!window.navigator.standalone;
-
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        if (!isAlreadyInstalled) {
-            setTimeout(() => {
-                const banner = document.getElementById('install-banner');
-                if (banner) banner.classList.remove('hidden');
-            }, 30000);
-        }
+        const banner = document.getElementById('install-banner');
+        if (banner) banner.classList.remove('hidden');
     });
 
     const installBtn = document.getElementById('install-btn');
