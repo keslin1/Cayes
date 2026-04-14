@@ -18,6 +18,19 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="apple-touch-icon" href="/lescayesdropshipping.png">
+    <!-- ===== PROTEKSYON KONT FLASH OVERLAY — kache overlay touswit si kont deja egziste ===== -->
+    <script>
+      (function() {
+        try {
+          var isReg     = localStorage.getItem('lcd_user_registered') === 'true';
+          var profile   = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
+          var hasProfile = !!(profile.nom && profile.email);
+          if (isReg || hasProfile) {
+            document.write('<style>#registration-overlay{display:none!important;}</style>');
+          }
+        } catch(e) {}
+      })();
+    </script>
 </head>
 <body>
 
@@ -532,16 +545,12 @@
             btn.textContent = 'Kreye Kont Mwen →';
             btn.disabled = false;
 
+            // Kache overlay avan reload
             const overlay = document.getElementById('registration-overlay');
             if (overlay) overlay.style.display = 'none';
 
-            // Initialise l'offre promo dès la première inscription
-            if (window.initPromoFirstOrder) window.initPromoFirstOrder();
-
-            const drwNom = document.getElementById('drw-nom');
-            if (drwNom) drwNom.textContent = nom;
-
-            if (window.initKiyesDrawer) window.initKiyesDrawer(nom);
+            // Reload pou evite boucle: onAuthStateChanged wè lcd_user_registered=true
+            window.location.reload();
         });
     }
 </script>
@@ -590,22 +599,9 @@
         if (box) box.style.display = sel && sel.value === 'WhatsApp' ? 'flex' : 'none';
     }
 
-    // ── Kiyès X ye — drawer nav sans page-loader ──
-    window.allerPwofil = function() {
-        closeDrawer();
-        window.location.href = 'pwofil.html';
-    };
+    // allerPwofil défini dans index.js — pas de doublon ici
 
-    window.initKiyesDrawer = function(nom) {
-        const item  = document.getElementById('drw-kiyès');
-        const label = document.getElementById('drw-kiyès-label');
-        if (!item) return;
-        item.style.display = 'flex';
-        if (label && nom) {
-            const prenom = nom.trim().split(' ')[0];
-            label.textContent = 'What`s ' + prenom.toUpperCase() + ' s` profil';
-        }
-    };
+    // initKiyesDrawer défini dans index.js — pas de doublon ici
 
     // ── A2HS Install Banner — afficher après 30s si pas encore installé ──
     let deferredPrompt = null;
