@@ -147,28 +147,6 @@ function updateNotifBadges() {
 }
 window.updateNotifBadges = updateNotifBadges;
 
-// ── HEADER secondaire ─────────────────────────────────────────
-function refreshHeader() {
-  var profile  = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
-  var nameElem = document.getElementById('user-display-name');
-  var cityElem = document.getElementById('user-display-city');
-
-  if (nameElem) {
-    var nm = (profile.nom || '').trim();
-    nameElem.textContent = nm
-      ? (nm.length > 12 ? nm.substring(0, 10) + '...' : nm)
-      : 'Les Cayes Dropshipping';
-  }
-  if (cityElem) {
-    var addr = (profile.address || '').trim();
-    if (addr) {
-      var vil = addr.split(',')[0].trim().split(' ')[0];
-      cityElem.textContent = vil.length > 10 ? vil.substring(0, 8) + '...' : vil;
-    } else {
-      cityElem.textContent = 'Haïti-Sud';
-    }
-  }
-}
 
 // ── NOTIFICATIONS ────────────────────────────────────────────────
 window.requestPermission = function () {
@@ -688,7 +666,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 3. Top bar fixe
   refreshTopBar();
-  refreshHeader();
 
   // 4. Badges notifikasyon
   updateNotifBadges();
@@ -726,6 +703,20 @@ document.addEventListener('DOMContentLoaded', function () {
   var profile = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
   if (profile.nom) {
     window.initKiyesDrawer(profile.nom);
+  }
+
+  // 10b. Bouton CTA "Kreye yon kont" — afficher seulement si pas de profil local
+  var ctaKont = document.getElementById('cta-kreye-kont');
+  if (ctaKont) {
+    var isReg     = localStorage.getItem('lcd_user_registered') === 'true';
+    var profLocal = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
+    var hasProf   = !!(profLocal.nom && profLocal.email);
+    // Le module Firebase va gérer l'état final — ici on initialise l'état par défaut
+    if (!isReg && !hasProf) {
+      ctaKont.style.display = 'block';
+    } else {
+      ctaKont.style.display = 'none';
+    }
   }
 
   // 11. Unlike — rétablir état

@@ -333,7 +333,7 @@
     </button>
 
     <h2 class="section-title">Enfòmasyon pèsonèl</h2>
-    
+
     <div class="info-card">
         <div class="info-card-line">
             <span class="material-icons">person</span>
@@ -565,6 +565,12 @@
         const mcAddr = document.getElementById('mc-display-address');
         if (mcName) mcName.textContent = p.nom     || '—';
         if (mcAddr) mcAddr.textContent = p.address ? p.address.split(',')[0] : '—';
+
+        // ── Visibilite bouton édition ──
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        if (editProfileBtn) {
+            editProfileBtn.style.display = '';
+        }
     }
 
     // ── Initialisation principale ──
@@ -675,7 +681,6 @@
                 saveBtn.textContent = originalText;
                 saveBtn.disabled    = false;
                 updateUI(merged);
-
                 if (formContainer) formContainer.style.display = 'none';
             });
         }
