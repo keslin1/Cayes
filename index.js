@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 96;
+let   baseLikes      = 103;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
