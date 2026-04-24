@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 103;
+let   baseLikes      = 109;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -323,6 +323,53 @@ var simulationAvis = [
   { id: 106, non: "Tania S.",       stars: 2, text: "Nanpwen anak, asistans red red. Machandiz mw rive an plizye okazyon, men yo rive san manke anyen.",                   publishedAt: getRefDate(59) },
   { id: 107, non: "Ricardo J.",     stars: 1, text: "Okazyn chak mwa sèlman ki pwoblm pu mw, men pou pri a, sekirite; pa gen plenyen.",                                    publishedAt: getRefDate(2) }
 ];
+
+function startCountdown() {
+    const display = document.getElementById('countdown-timer');
+    const statusDiv = document.getElementById('colis-status');
+    const subText = document.getElementById('info-sub-text');
+    
+    // Durée du compte à rebours : 20 heures en millisecondes
+    const duration = 20 * 60 * 60 * 1000;
+    
+    // On vérifie si une heure de fin existe déjà, sinon on la crée
+    let endTime = localStorage.getItem('lcd_countdown_end');
+    
+    if (!endTime) {
+        endTime = Date.now() + duration;
+        localStorage.setItem('lcd_countdown_end', endTime);
+    }
+
+    const timerInterval = setInterval(() => {
+        const now = Date.now();
+        const timeLeft = endTime - now;
+
+        if (timeLeft <= 0) {
+            // Une fois terminé
+            clearInterval(timerInterval);
+            statusDiv.innerHTML = "Disponib (Samdi 25 avril)";
+            statusDiv.style.color = "#d4af37"; // Optionnel : change la couleur en Or
+            subText.textContent = "Koli yo pare pou livrezon!";
+            localStorage.removeItem('lcd_countdown_end'); // Nettoyage
+            return;
+        }
+
+        // Calcul des heures, minutes, secondes
+        const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
+        const seconds = Math.floor((timeLeft / 1000) % 60);
+
+        // Affichage formaté 00:00:00
+        display.textContent = 
+            (hours < 10 ? "0" + hours : hours) + ":" + 
+            (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+            (seconds < 10 ? "0" + seconds : seconds);
+            
+    }, 1000);
+}
+
+// Lancer le compteur au chargement
+document.addEventListener('DOMContentLoaded', startCountdown);
 
 function buildStars(avisId, currentStars, isInteractive) {
   var html = '<span class="stars-row">';

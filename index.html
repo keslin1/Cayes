@@ -414,52 +414,6 @@
         localStorage.setItem(KEY, JSON.stringify(msgs));
         updateNotifBadges();
     }
-function startCountdown() {
-    const display = document.getElementById('countdown-timer');
-    const statusDiv = document.getElementById('colis-status');
-    const subText = document.getElementById('info-sub-text');
-    
-    // Durée du compte à rebours : 20 heures en millisecondes
-    const duration = 20 * 60 * 60 * 1000;
-    
-    // On vérifie si une heure de fin existe déjà, sinon on la crée
-    let endTime = localStorage.getItem('lcd_countdown_end');
-    
-    if (!endTime) {
-        endTime = Date.now() + duration;
-        localStorage.setItem('lcd_countdown_end', endTime);
-    }
-
-    const timerInterval = setInterval(() => {
-        const now = Date.now();
-        const timeLeft = endTime - now;
-
-        if (timeLeft <= 0) {
-            // Une fois terminé
-            clearInterval(timerInterval);
-            statusDiv.innerHTML = "Disponib (Samdi 25 avril)";
-            statusDiv.style.color = "#d4af37"; // Optionnel : change la couleur en Or
-            subText.textContent = "Koli yo pare pou livrezon!";
-            localStorage.removeItem('lcd_countdown_end'); // Nettoyage
-            return;
-        }
-
-        // Calcul des heures, minutes, secondes
-        const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((timeLeft / (1000 * 60)) % 60);
-        const seconds = Math.floor((timeLeft / 1000) % 60);
-
-        // Affichage formaté 00:00:00
-        display.textContent = 
-            (hours < 10 ? "0" + hours : hours) + ":" + 
-            (minutes < 10 ? "0" + minutes : minutes) + ":" + 
-            (seconds < 10 ? "0" + seconds : seconds);
-            
-    }, 1000);
-}
-
-// Lancer le compteur au chargement
-document.addEventListener('DOMContentLoaded', startCountdown);
 
     function updateNotifBadges() {
         const msgs        = JSON.parse(localStorage.getItem('lcd_user_messages')) || [];
