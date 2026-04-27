@@ -28,68 +28,6 @@
   </div>
 </div>
 
-<!-- ===== OVERLAY ENSKRIPSYON (deklanché pa itilizatè) ===== -->
-<div id="registration-overlay" style="display:none;">
-  <div class="login-card">
-    <img src="lescayesdropshipping.png" alt="Les Cayes Dropshipping" class="logo-main">
-    <h2>Byenvini</h2>
-    <p>Ranpli pwofil ou pou w kòmanse ak sèvis la.</p>
-    <div id="form-progress-bar" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;">
-      <div style="flex:1; height:4px; background:#eee; border-radius:4px; overflow:hidden; margin-right:10px;">
-        <div id="progress-fill" style="height:100%; background:var(--bleu-marin); border-radius:4px; transition:width 0.4s ease; width:20%;"></div>
-      </div>
-      <span id="progress-label" style="font-size:12px; font-weight:700; color:var(--bleu-marin); white-space:nowrap;">1 / 5</span>
-    </div>
-    <form id="registration-form">
-      <div class="reg-step" id="step-1">
-        <div class="input-container">
-          <span class="material-icons">person</span>
-          <input type="text" id="reg-nom" placeholder="Non konplè (pou livrezon)" autocomplete="name">
-        </div>
-        <button type="button" class="btn-next" onclick="regNext(1)">Kontinye →</button>
-      </div>
-      <div class="reg-step" id="step-2" style="display:none;">
-        <div class="input-container">
-          <span class="material-icons">email</span>
-          <input type="email" id="reg-email" placeholder="Adrès imèl (obligatwa)" autocomplete="email">
-        </div>
-        <button type="button" class="btn-next" onclick="regNext(2)">Kontinye →</button>
-      </div>
-      <div class="reg-step" id="step-3" style="display:none;">
-        <div class="input-container">
-          <span class="material-icons">phone</span>
-          <input type="tel" id="reg-phone" placeholder="Telefòn Whatsapp (+509...)" autocomplete="tel">
-        </div>
-        <button type="button" class="btn-next" onclick="regNext(3)">Kontinye →</button>
-      </div>
-      <div class="reg-step" id="step-4" style="display:none;">
-        <div class="input-container">
-          <span class="material-icons">location_on</span>
-          <input type="text" id="reg-address" placeholder="Adrès detaye (Simon, etc.)" autocomplete="street-address">
-        </div>
-        <button type="button" class="btn-next" onclick="regNext(4)">Kontinye →</button>
-      </div>
-      <div class="reg-step" id="step-5" style="display:none;">
-        <div class="input-container">
-          <span class="material-icons">explore</span>
-          <select id="reg-reference" style="width:100%;border:none;background:transparent;outline:none;font-size:15px;color:#555;" onchange="toggleReferant()">
-            <option value="">Kijan w konnen nou?</option>
-            <option value="Facebook">Facebook</option>
-            <option value="TikTok">TikTok</option>
-            <option value="WhatsApp">Yon zanmi (WhatsApp)</option>
-            <option value="IA">Intelligence Artificielle</option>
-          </select>
-        </div>
-        <div id="referant-container" style="display:none;" class="input-container">
-          <span class="material-icons">groups</span>
-          <input type="text" id="reg-referant-name" placeholder="Non moun ki refere-w la">
-        </div>
-        <button type="submit" id="btn-submit">Kreye Kont Mwen →</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 <!-- ===== BANNER ENSTALE — affiche après 30s si pas installé ===== -->
 <div id="install-banner" class="hidden install-blink">
   <div class="install-info">
@@ -333,22 +271,12 @@
       <div class="flip-decor-circle flip-c2" style="opacity:0.06;"></div>
 
       <!-- En-tête -->
-      <div class="flip-top-row">
-        <span class="flip-badge-pill" style="background:rgba(46,204,113,0.2);border-color:rgba(46,204,113,0.4);color:#5fffaa;">✔ Istorik · Avril</span>
-        <span class="flip-hint-tap">
+<div class="flip-top-row">
+  <span class="flip-history-simple-title">Istorik dènyè okazyon</span>
+<span class="flip-hint-tap">
           <span class="material-icons" style="font-size:13px;vertical-align:middle;">touch_app</span>
           Retounen
         </span>
-      </div>
-
-      <!-- Route -->
-      <div class="flip-route-row">
-        <span class="flip-city" style="opacity:0.6;">Floride</span>
-        <span class="flip-route-arrow">
-          <span class="flip-plane" style="opacity:0.5;">✈</span>
-          <span class="flip-line" style="opacity:0.3;"></span>
-        </span>
-        <span class="flip-city" style="opacity:0.6;">Les Cayes</span>
       </div>
 
       <div class="flip-divider" style="opacity:0.3;"></div>
@@ -579,12 +507,10 @@
     window.updateNotifBadges = updateNotifBadges;
 
     onAuthStateChanged(auth, async (user) => {
-        const overlay = document.getElementById('registration-overlay');
         const drwNom  = document.getElementById('drw-nom');
         const drwLoc  = document.getElementById('drw-loc');
 
         if (user) {
-            if (overlay) overlay.style.display = 'none';
             localStorage.setItem('lcd_user_registered', 'true');
             // Masquer le bouton CTA — utilisateur déjà connecté
             const ctaBtn = document.getElementById('cta-kreye-kont');
@@ -611,9 +537,8 @@
             const localProfile    = JSON.parse(localStorage.getItem('user_profile_data')) || {};
             const hasLocalProfile = !!(localProfile.nom && localProfile.email);
 
-            // Jamais forcer l'overlay — l'utilisateur choisit lui-même
-            if (overlay) overlay.style.display = 'none';
-
+            // Jamais forcer l'overlay supprimé — l'utilisateur choisit via moncompte.html
+            
             if (isRegistered || hasLocalProfile) {
                 // Profil local existant — sync drawer, cacher CTA
                 if (drwNom && localProfile.nom) drwNom.textContent = localProfile.nom;
@@ -654,115 +579,14 @@
             .catch(err => console.log('Erreur SW:', err));
     }
 
-    // ── Soumission formulaire inscription ──
-    const regForm = document.getElementById('registration-form');
-    if (regForm) {
-        regForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const nom       = document.getElementById('reg-nom').value.trim();
-            const email     = document.getElementById('reg-email').value.trim();
-            const phone     = document.getElementById('reg-phone').value.trim();
-            const address   = document.getElementById('reg-address').value.trim();
-            const reference = document.getElementById('reg-reference').value;
-            const referant  = document.getElementById('reg-referant-name').value.trim();
-
-            if (!nom || !email) { alert('Non ak imèl obligatwa.'); return; }
-
-            const profileData = { nom, email, phone, address, reference, whatsapp_referant: referant };
-            localStorage.setItem('user_profile_data', JSON.stringify(profileData));
-            localStorage.setItem('lcd_user_registered', 'true');
-
-            // Web3Forms — enregistrement principal
-            const formData = new FormData();
-            formData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
-            formData.append('subject',    'Nouvo Enskripsyon LCDrop: ' + nom);
-            Object.keys(profileData).forEach(k => formData.append(k, profileData[k]));
-
-            // Web3Forms — email de bienvenue automatique
-            const welcomeData = new FormData();
-            welcomeData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
-            welcomeData.append('to',         'lescayesdropshipping@gmail.com');
-            welcomeData.append('subject',    'Byenveni ' + nom + ', koneksyon w lan reyisi');
-            welcomeData.append('message',
-                'Byenveni ' + nom + ', koneksyon w lan reyisi.\n\n' +
-                'Hello kliyan, byenvini sou Les Cayes Dropshipping: sèvis lojistik ki pi sekirize Ayiti an. Tanpri:\n' +
-                '• enstale aplikasyon an, e li tout enfòmasyon nan pati \'RÈG\' sèvis lan.\n\n' +
-                'We can\'t wait to start your first experience with us.'
-            );
-
-            const btn = document.getElementById('btn-submit');
-            btn.textContent = 'Anrejistre...';
-            btn.disabled = true;
-
-            try {
-                await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
-                await fetch('https://api.web3forms.com/submit', { method: 'POST', body: welcomeData });
-            } catch (err) {}
-
-            btn.textContent = 'Kreye Kont Mwen →';
-            btn.disabled = false;
-
-            const overlay = document.getElementById('registration-overlay');
-            if (overlay) overlay.style.display = 'none';
-
-            // Masquer le bouton CTA après inscription
-            const ctaBtn = document.getElementById('cta-kreye-kont');
-            if (ctaBtn) ctaBtn.style.display = 'none';
-
-            const drwNom = document.getElementById('drw-nom');
-            if (drwNom) drwNom.textContent = nom;
-
-            if (window.initKiyesDrawer) window.initKiyesDrawer(nom);
-        });
-    }
+    // ── Fin du bloc Firebase ──
 </script>
 
 <!-- ===== JAVASCRIPT PRINCIPAL ===== -->
 <script src="index.js"></script>
 
-<!-- ===== LOGIQUE FORMULAIRE & INSTALL ===== -->
+<!-- ===== LOGIQUE INSTALL ===== -->
 <script>
-    const TOTAL_STEPS = 5;
-
-    function updateProgress(step) {
-        const fill  = document.getElementById('progress-fill');
-        const label = document.getElementById('progress-label');
-        if (fill)  fill.style.width = ((step / TOTAL_STEPS) * 100) + '%';
-        if (label) label.textContent = step + ' / ' + TOTAL_STEPS;
-    }
-
-    function regNext(currentStep) {
-        const stepEl = document.getElementById('step-' + currentStep);
-        const inputs = stepEl ? stepEl.querySelectorAll('input, select') : [];
-        let valid = true;
-        inputs.forEach(inp => {
-            if (!inp.value.trim() && inp.id !== 'reg-referant-name') {
-                inp.style.borderBottom = '2px solid red';
-                inp.focus();
-                valid = false;
-            } else {
-                inp.style.borderBottom = '';
-            }
-        });
-        if (!valid) return;
-        if (stepEl) stepEl.style.display = 'none';
-        const nextEl = document.getElementById('step-' + (currentStep + 1));
-        if (nextEl) {
-            nextEl.style.display = 'block';
-            const firstInput = nextEl.querySelector('input, select');
-            if (firstInput) firstInput.focus();
-        }
-        updateProgress(currentStep + 1);
-    }
-
-    function toggleReferant() {
-        const sel = document.getElementById('reg-reference');
-        const box = document.getElementById('referant-container');
-        if (box) box.style.display = sel && sel.value === 'WhatsApp' ? 'flex' : 'none';
-    }
-
-    // ── Kiyès X ye — drawer nav sans page-loader ──
     window.allerPwofil = function() {
         closeDrawer();
         window.location.href = 'pwofil.html';
