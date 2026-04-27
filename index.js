@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 109;
+let   baseLikes      = 120;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -388,7 +388,11 @@ function aficheAvis() {
   var votes     = JSON.parse(localStorage.getItem('avis_votes') || '{}');
   var toutAvis  = localAvis.concat(simulationAvis);
 
-  container.innerHTML = toutAvis.map(function (a) {
+  // Créer le track de défilement
+  var track = document.createElement('div');
+  track.id = 'avis-scroll-track';
+
+  track.innerHTML = toutAvis.map(function (a) {
     var isUser       = localAvis.some(function (la) { return la.id === a.id; });
     var starsAffiche = votes[a.id] !== undefined ? votes[a.id] : (a.stars || 0);
     var dateAffiche  = formatDateRelative(a.publishedAt || a.id);
@@ -413,7 +417,165 @@ function aficheAvis() {
       + '</div>'
       + '</div>';
   }).join('');
+
+  container.innerHTML = '';
+  container.appendChild(track);
+
+  // Démarrer l'animation de permutation
+  startAvisRotation();
 }
+
+// ── ANIMATION PERMUTATION AVIS ────────────────────────────────────
+var _avisRotInterval = null;
+
+function startAvisRotation() {
+  if (_avisRotInterval) clearInterval(_avisRotInterval);
+
+  var section = document.getElementById('avis-clients');
+  var isPaused = false;
+
+  if (section) {
+    section.addEventListener('mouseenter', function () { isPaused = true; });
+    section.addEventListener('mouseleave', function () { isPaused = false; });
+  }
+
+  _avisRotInterval = setInterval(function () {
+    if (isPaused) return;
+    var track = document.getElementById('avis-scroll-track');
+    if (!track) return;
+    var cards = track.querySelectorAll('.comment-card');
+    if (cards.length < 2) return;
+
+    // Slide-up animation sur la première carte
+    var first = cards[0];
+    first.style.transition  = 'opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease, padding 0.5s ease, margin 0.5s ease';
+    first.style.opacity     = '0';
+    first.style.transform   = 'translateY(-18px)';
+    first.style.maxHeight   = first.scrollHeight + 'px';
+    first.style.overflow    = 'hidden';
+
+    setTimeout(function () {
+      first.style.maxHeight = '0';
+      first.style.padding   = '0';
+    }, 200);
+
+    setTimeout(function () {
+      // Réinitialiser les styles inline avant de déplacer
+      first.style.transition  = 'none';
+      first.style.opacity     = '0.7';
+      first.style.transform   = '';
+      first.style.maxHeight   = '';
+      first.style.padding     = '';
+      first.style.overflow    = '';
+
+      // Déplacer en dernière position
+      track.appendChild(first);
+
+      // Mettre à jour les opacités
+      var updated = track.querySelectorAll('.comment-card');
+      updated.forEach(function (c, i) {
+        c.style.transition = 'opacity 0.4s ease';
+        c.style.opacity    = i === 0 ? '1' : '0.7';
+      });
+    }, 550);
+  }, 3000);
+}
+
+// ── FLIP CARD OKAZYON ─────────────────────────────────────────────
+window.flipOkazyon = function () {
+  var flipper = document.getElementById('okazyon-flipper');
+  if (!flipper) return;
+  flipper.classList.toggle('flipped');
+};
+
+// ── PULSING DOTS LOGIQUE ──────────────────────────────────────────
+function initPulsingDots() {
+  if (typeof LCD_DATES === 'undefined') return;
+
+  // Injecter les labels depuis LCD_DATES
+  var labelAnbak = document.getElementById('lcd-anbakman-label');
+  var labelAriv  = document.getElementById('arrival-date');
+  var histDepa   = document.getElementById('hist-depa');
+  var histArive  = document.getElementById('hist-arive');
+  var histJou    = document.getElementById('hist-jou');
+
+  if (labelAnbak) labelAnbak.textContent = LCD_DATES.anbakman_label;
+  if (labelAriv)  labelAriv.textContent  = LCD_DATES.arivaj_label;
+  if (histDepa)   histDepa.textContent   = LCD_DATES.hist_depa;
+  if (histArive)  histArive.textContent  = LCD_DATES.hist_arive;
+  if (histJou)    histJou.textContent    = LCD_DATES.hist_jou;
+
+  var today    = new Date();
+  today.setHours(0,0,0,0);
+
+  var dAnbak   = new Date(LCD_DATES.anbakman_iso);
+  var dArivaj  = new Date(LCD_DATES.arivaj_iso);
+  dAnbak.setHours(0,0,0,0);
+  dArivaj.setHours(0,0,0,0);
+
+  var dotAnbak  = document.getElementById('dot-anbakman');
+  var dotArivaj = document.getElementById('dot-arivaj');
+
+  // Dot anbakman : pulse toujours (c'est la date cible permanente)
+  if (dotAnbak) {
+    dotAnbak.classList.add('pulsing');
+  }
+
+  // Dot arivaj : logique conditionnelle
+  if (dotArivaj) {
+    if (today < dAnbak) {
+      // Avant anbakman : pâle et fixe
+      dotArivaj.classList.add('pale');
+    } else if (today >= dAnbak && today <= dArivaj) {
+      // Entre anbakman et arivaj : pulse
+      dotArivaj.classList.add('pulsing');
+    }
+    // Après arivaj : rien (point statique normal)
+  }
+}
+
+// ── GALERIE LIVREZON ─────────────────────────────────────────────
+window.ouvrirGalerie = function () {
+  var modal = document.getElementById('galerie-modal');
+  var grid  = document.getElementById('galerie-grid');
+  if (!modal || !grid) return;
+
+  // Générer les 4 vignettes
+  grid.innerHTML = '';
+  for (var i = 1; i <= 4; i++) {
+    var src = 'okazyon' + i + '.jpg';
+    var img = document.createElement('img');
+    img.src = src;
+    img.alt = 'Livrezon ' + i;
+    img.setAttribute('data-src', src);
+    img.addEventListener('click', function () {
+      ouvrirLightbox(this.getAttribute('data-src'));
+    });
+    grid.appendChild(img);
+  }
+
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+};
+
+window.fermerGalerie = function (e) {
+  var modal = document.getElementById('galerie-modal');
+  if (modal) modal.style.display = 'none';
+  document.body.style.overflow = '';
+};
+
+function ouvrirLightbox(src) {
+  var lb    = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightbox-img');
+  if (!lb || !lbImg) return;
+  lbImg.src = src;
+  lb.style.display = 'flex';
+}
+
+window.fermerLightbox = function () {
+  var lb = document.getElementById('lightbox');
+  if (lb) lb.style.display = 'none';
+};
 
 window.ajouterAvis = function () {
   var textInput = document.getElementById('user-comment');
@@ -672,6 +834,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 5. Avis kliyan
   aficheAvis();
+
+  // 5b. Flip card dates + pulsing dots
+  initPulsingDots();
 
   // 6. Carousel
   initBannerCarousel();

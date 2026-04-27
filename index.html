@@ -228,19 +228,174 @@
     <header id="main-header">
         <div class="header-content">
 
-            <div id="info-livrezon-container">
-                <div class="info-step">
-                    <p class="info-title">1. Dat anbakman :</p>
-                    <div class="info-detail">13 AVRIL</div>
-                    <p class="info-sub">Nou fè anbakman chak mwa, ou peye sèlman $4,90 par liv. Machandiz ou yo gen tout tan pou yo livre, pou yo rejwenn ou <strong>nan yon sèl okazyon!</strong></p>
-                </div>
-<div class="info-step no-border">
-    <p class="info-title">2. Jou arivaj :</p>
-    <div class="info-detail" id="colis-status">
-        <span id="arrival-date">Samdi 25 Avril</span>
+<!-- ===== FLIP CARD OKAZYON ===== -->
+<!-- Variables dates — modifye isit chak mwa -->
+<script>
+  var LCD_DATES = {
+    /* Okazyon aktyèl (recto) */
+    anbakman_label : "Madi 12 Me",
+    arivaj_label   : "Samdi 23 Me",
+    anbakman_iso   : "2025-05-12",   /* YYYY-MM-DD */
+    arivaj_iso     : "2025-05-23",
+
+    /* Istorik (verso) */
+    hist_depa      : "13 Avril",
+    hist_arive     : "25 Avril",
+    hist_jou       : "12",           /* duree en jours */
+  };
+</script>
+
+<!-- ===== FLIP CARD OKAZYON ===== -->
+<!-- Variables dates — modifye isit chak mwa -->
+<script>
+  var LCD_DATES = {
+    /* Okazyon aktyèl (recto) */
+    anbakman_label : "Madi 12 Me",
+    arivaj_label   : "Samdi 23 Me",
+    anbakman_iso   : "2025-05-12",
+    arivaj_iso     : "2025-05-23",
+
+    /* Istorik (verso) */
+    hist_depa      : "13 Avril",
+    hist_arive     : "25 Avril",
+    hist_jou       : "12",
+  };
+</script>
+
+<div id="okazyon-flip-wrapper">
+  <div id="okazyon-flipper" onclick="flipOkazyon()" title="Klike pou wè istorik">
+
+    <!-- ══ RECTO ══ -->
+    <div class="okazyon-face okazyon-front">
+
+      <!-- Décor fond : cercles géométriques -->
+      <div class="flip-decor-circle flip-c1"></div>
+      <div class="flip-decor-circle flip-c2"></div>
+
+      <!-- En-tête -->
+      <div class="flip-top-row">
+        <span class="flip-badge-pill">Pwochèn okazyon</span>
+        <span class="flip-hint-tap">
+          <span class="material-icons" style="font-size:13px;vertical-align:middle;">touch_app</span>
+          Tape pou vire dèyè
+        </span>
+      </div>
+
+      <!-- Route -->
+      <div class="flip-route-row">
+        <span class="flip-city">Floride</span>
+        <span class="flip-route-arrow">
+          <span class="flip-plane">✈</span>
+          <span class="flip-line"></span>
+        </span>
+        <span class="flip-city">Les Cayes</span>
+      </div>
+
+      <!-- Divider -->
+      <div class="flip-divider"></div>
+
+      <!-- Deux dates côte à côte -->
+      <div class="flip-dates-grid">
+        <div class="flip-date-col">
+          <p class="flip-date-label">
+            <span class="pulse-dot" id="dot-anbakman"></span>Dat anbakman
+          </p>
+          <div class="flip-date-value" id="lcd-anbakman-label">Madi 12 Me</div>
+        </div>
+        <div class="flip-date-separator"></div>
+        <div class="flip-date-col">
+          <p class="flip-date-label">
+            <span class="pulse-dot" id="dot-arivaj"></span>Jou arivaj
+          </p>
+          <div class="flip-date-value" id="arrival-date">Samdi 23 Me</div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="flip-divider"></div>
+
+      <!-- Texte info + statut -->
+      <div class="flip-info-body">
+        <div class="flip-info-col" id="colis-status">
+          <p class="info-sub"><strong>Vwayaj chak mwa.</strong> Koliw yo gen ase tan pou éxpédié, e disponib yon sèl kou.</p>
+        </div>
+        <div class="flip-info-col" id="info-sub-text-col">
+          <p class="info-sub" id="info-sub-text">Plase kòmand ou yo pou yo rive nan adrès nou avan le 9.</p>
+        </div>
+      </div>
+
     </div>
-    <p class="info-sub" id="info-sub-text">Annatandan ou ka kòmande pou shipment lòt mwa!</p>
+
+    <!-- ══ VERSO ══ -->
+    <div class="okazyon-face okazyon-back">
+
+      <div class="flip-decor-circle flip-c1" style="opacity:0.08;"></div>
+      <div class="flip-decor-circle flip-c2" style="opacity:0.06;"></div>
+
+      <!-- En-tête -->
+      <div class="flip-top-row">
+        <span class="flip-badge-pill" style="background:rgba(46,204,113,0.2);border-color:rgba(46,204,113,0.4);color:#5fffaa;">✔ Istorik · Avril</span>
+        <span class="flip-hint-tap">
+          <span class="material-icons" style="font-size:13px;vertical-align:middle;">touch_app</span>
+          Retounen
+        </span>
+      </div>
+
+      <!-- Route -->
+      <div class="flip-route-row">
+        <span class="flip-city" style="opacity:0.6;">Floride</span>
+        <span class="flip-route-arrow">
+          <span class="flip-plane" style="opacity:0.5;">✈</span>
+          <span class="flip-line" style="opacity:0.3;"></span>
+        </span>
+        <span class="flip-city" style="opacity:0.6;">Les Cayes</span>
+      </div>
+
+      <div class="flip-divider" style="opacity:0.3;"></div>
+
+      <!-- Deux dates historiques -->
+      <div class="flip-dates-grid">
+        <div class="flip-date-col">
+          <p class="flip-date-label" style="color:rgba(255,255,255,0.5);">Depa</p>
+          <div class="flip-date-value" id="hist-depa" style="color:#a8d8ff;">13 Avril</div>
+        </div>
+        <div class="flip-date-separator" style="opacity:0.3;"></div>
+        <div class="flip-date-col">
+          <p class="flip-date-label" style="color:rgba(255,255,255,0.5);">Arivaj</p>
+          <div class="flip-date-value" id="hist-arive" style="color:#a8d8ff;">25 Avril</div>
+        </div>
+      </div>
+
+      <!-- Badge livré -->
+      <div class="hist-badge-livree">
+        <span class="material-icons" style="font-size:15px;">check_circle</span>
+        Livré · <span id="hist-jou">12</span> jou
+      </div>
+
+      <div class="flip-divider" style="opacity:0.3;"></div>
+
+      <!-- Bouton galerie -->
+      <button class="flip-galerie-btn" onclick="event.stopPropagation(); ouvrirGalerie()">
+        👁️ &nbsp;Wè foto kèk prèv livrezon
+      </button>
+
+    </div>
+
+  </div><!-- /okazyon-flipper -->
+</div><!-- /okazyon-flip-wrapper -->
+
+<!-- ===== MODAL GALERIE LIVREZON ===== -->
+<div id="galerie-modal" style="display:none;" onclick="fermerGalerie(event)">
+  <div class="galerie-inner" onclick="event.stopPropagation()">
+    <button class="galerie-close" onclick="fermerGalerie()">✕</button>
+    <h3 class="galerie-titre">📦 Prèv Livrezon — Avril</h3>
+    <div class="galerie-grid" id="galerie-grid"></div>
+  </div>
 </div>
+
+<!-- LIGHTBOX agrandissement -->
+<div id="lightbox" style="display:none;" onclick="fermerLightbox()">
+  <img id="lightbox-img" src="" alt="Prèv livrezon">
 </div>
 
             <!-- Unlike · Commentaire (milieu) · Like -->
@@ -329,7 +484,6 @@
                 </a>
             </div>
             <div class="contact-info-footer">
-                <p><strong>Haïti Sud :</strong> Suisse Haiti Market anfas poto elektrik LAM124 (Matinière) : Camp-Perrin</p>
                 <p><strong>Adresse USA :</strong> 14030 NW 5th Pl, North Miami, Florida, 33168 : États-Unis</p>
             </div>
         </div>
