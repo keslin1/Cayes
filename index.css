@@ -424,22 +424,31 @@ body {
   box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.06) inset;
 }
 
-/* ── RECTO : nuit profonde + reflets or ── */
+/* ── Recto : ── */
 .okazyon-front {
-  background:
-    radial-gradient(ellipse at 80% 10%, rgba(201,167,0,0.28) 0%, transparent 55%),
-    radial-gradient(ellipse at 10% 90%, rgba(0,90,160,0.35) 0%, transparent 55%),
-    linear-gradient(145deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
-}
-
-/* ── VERSO : nuit ardoise + émeraude ── */
-.okazyon-back {
   background:
     radial-gradient(ellipse at 85% 15%, rgba(0,200,130,0.22) 0%, transparent 55%),
     radial-gradient(ellipse at 5% 85%, rgba(90,0,160,0.2) 0%, transparent 55%),
     linear-gradient(145deg, #0d1b2a 0%, #1b2838 40%, #0a2540 100%);
   transform: rotateY(180deg);
 }
+/* ── verso : ── */
+.okazyon-back {
+  background:
+    /* Nou kenbe ti ekla limyè nan kwen yo pou bèl aparans la */
+    radial-gradient(ellipse at 80% 10%, rgba(200, 180, 0, 0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 10% 90%, rgba(0, 109, 109, 0.3) 0%, transparent 55%),
+    /* Men dégradé baz ou vle a ki soti nan ansyen kòd la */
+    linear-gradient(135deg, #1a1a2e 0%, #006d6d 55%, #c8b400 100%);
+}
+
+/* Pou Face Arrière (Verso) a toujou rete an koyerans */
+.okazyon-back {
+  background: linear-gradient(135deg, #0f1626 0%, #1a1a2e 100%);
+  /* Yon vèsyon pi sombre pou montre diferans lè l vire a */
+}
+
+
 
 /* Cercles décoratifs */
 .flip-decor-circle { position: absolute; border-radius: 50%; pointer-events: none; }
