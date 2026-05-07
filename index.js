@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 120;
+let   baseLikes      = 156;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -104,17 +104,8 @@ function refreshTopBar() {
   }
 }
 
-// ── KIYÈS X YE — afficher dans le drawer ──────────────────────
-window.initKiyesDrawer = function (nom) {
-  var item  = document.getElementById('drw-kiyès');
-  var label = document.getElementById('drw-kiyès-label');
-  if (!item) return;
-  item.style.display = 'flex';
-  if (label && nom) {
-    var prenom = nom.trim().split(' ')[0];
-    label.textContent = 'KIYÈS ' + prenom.toUpperCase() + ' YE';
-  }
-};
+// ── KIYÈS DRAWER — supprimé (menu retiré) ──
+// initKiyesDrawer non utilisé
 
 // Navigation vers pwofil.html SANS page-loader
 window.allerPwofil = function () {
@@ -488,57 +479,143 @@ window.flipOkazyon = function () {
   flipper.classList.toggle('flipped');
 };
 
-// ── PULSING DOTS LOGIQUE ──────────────────────────────────────────
-function initPulsingDots() {
-  if (typeof LCD_DATES === 'undefined') return;
+// ── CALCUL AUTOMATIQUE DATES LCD TRACKING ────────────────────────
+function getLastSaturdayOfMonth(year, month) {
+  // month: 0-indexed
+  var lastDay = new Date(year, month + 1, 0);
+  var dayOfWeek = lastDay.getDay(); // 0=dim, 6=sam
+  var diff = dayOfWeek >= 6 ? 0 : dayOfWeek + 1;
+  var lastSat = new Date(year, month + 1, 0 - diff);
+  return lastSat;
+}
 
-  // Injecter les labels depuis LCD_DATES
-  var labelAnbak = document.getElementById('lcd-anbakman-label');
-  var labelAriv  = document.getElementById('arrival-date');
-  var histDepa   = document.getElementById('hist-depa');
-  var histArive  = document.getElementById('hist-arive');
-  var histJou    = document.getElementById('hist-jou');
+var KT_MOIS = ['Janvye', 'Fevriye', 'Mas', 'Avril', 'Me', 'Jen', 'Jiyè', 'Ut', 'Septanm', 'Oktòb', 'Novanm', 'Desanm'];
+var KT_JOU  = ['Dimanch', 'Lendi', 'Madi', 'Mèkredi', 'Jedi', 'Vandredi', 'Samdi'];
 
-  if (labelAnbak) labelAnbak.textContent = LCD_DATES.anbakman_label;
-  if (labelAriv)  labelAriv.textContent  = LCD_DATES.arivaj_label;
-  if (histDepa)   histDepa.textContent   = LCD_DATES.hist_depa;
-  if (histArive)  histArive.textContent  = LCD_DATES.hist_arive;
-  if (histJou)    histJou.textContent    = LCD_DATES.hist_jou;
+function formatDateKT(d) {
+  return KT_JOU[d.getDay()] + ' ' + d.getDate() + ' ' + KT_MOIS[d.getMonth()];
+}
 
-  var today    = new Date();
-  today.setHours(0,0,0,0);
+function calcLCDDates() {
+  var now   = new Date();
+  var y     = now.getFullYear();
+  var m     = now.getMonth(); // 0-indexed
 
-  var dAnbak   = new Date(LCD_DATES.anbakman_iso);
-  var dArivaj  = new Date(LCD_DATES.arivaj_iso);
-  dAnbak.setHours(0,0,0,0);
-  dArivaj.setHours(0,0,0,0);
+  // Dates du mois courant
+  var ramase    = new Date(y, m, 15); // 15 du mois
+  var depa      = new Date(y, m, 18); // 18 du mois
+  var disponib  = getLastSaturdayOfMonth(y, m);
 
-  var dotAnbak  = document.getElementById('dot-anbakman');
-  var dotArivaj = document.getElementById('dot-arivaj');
-
-  // Dot anbakman : pulse toujours (c'est la date cible permanente)
-  if (dotAnbak) {
-    dotAnbak.classList.add('pulsing');
+  // Si le mois est terminé (on est après le dernier samedi), passer au suivant
+  var today = new Date(); today.setHours(0,0,0,0);
+  if (today > disponib) {
+    m = m + 1;
+    if (m > 11) { m = 0; y++; }
+    ramase   = new Date(y, m, 15);
+    depa     = new Date(y, m, 18);
+    disponib = getLastSaturdayOfMonth(y, m);
   }
 
-  // Dot arivaj : logique conditionnelle
-  if (dotArivaj) {
-    if (today < dAnbak) {
-      // Avant anbakman : pâle et fixe
-      dotArivaj.classList.add('pale');
-    } else if (today >= dAnbak && today <= dArivaj) {
-      // Entre anbakman et arivaj : pulse
-      dotArivaj.classList.add('pulsing');
+  return { ramase: ramase, depa: depa, disponib: disponib, today: today };
+}
+
+function initLCDTrackingBloc() {
+  var dates = calcLCDDates();
+  var today = dates.today;
+
+  // Dates affichées
+  var el0 = document.getElementById('ltb-date-0');
+  var el1 = document.getElementById('ltb-date-1');
+  var el2 = document.getElementById('ltb-date-2');
+  var el3 = document.getElementById('ltb-date-3');
+  if (el0) el0.textContent = 'Disponib';
+  if (el1) el1.textContent = formatDateKT(dates.ramase);
+  if (el2) el2.textContent = formatDateKT(dates.depa);
+  if (el3) el3.textContent = formatDateKT(dates.disponib);
+
+  // Statut dynamique
+  var statutEl  = document.getElementById('ltb-statut-text');
+  var statutDot = document.getElementById('ltb-statut-dot');
+  var dotWrap   = document.getElementById('ltb-statut-dot-wrap');
+  var statut, dotClass, isPulse = false;
+
+  if (today < dates.ramase) {
+    statut   = 'Nou ouvri pou resevwa koli';
+    dotClass = 'ltb-dot-live';
+    isPulse  = true; // pulsation orange
+  } else if (today.getTime() === dates.ramase.getTime()) {
+    statut   = 'Dènye jou ramase';
+    dotClass = 'ltb-dot-orange';
+  } else if (today <= dates.depa) {
+    statut   = 'Preparasyon pou vwayaj';
+    dotClass = 'ltb-dot-orange';
+  } else if (today <= dates.disponib) {
+    statut   = 'Vwayaj en cours ✈';
+    dotClass = 'ltb-dot-blue';
+  } else {
+    statut   = 'Koli disponib Haiti';
+    dotClass = 'ltb-dot-kaki';
+  }
+
+  if (statutEl)  statutEl.textContent = statut;
+  if (statutDot) statutDot.className  = 'ltb-statut-dot ' + dotClass;
+  if (dotWrap)   dotWrap.classList.toggle('ltb-dot-pulse', isPulse);
+
+  // Colorier les étapes selon progression
+  var steps     = [0, 1, 2, 3];
+  var stepDates = [null, dates.ramase, dates.depa, dates.disponib];
+
+  steps.forEach(function (i) {
+    var step = document.getElementById('ltb-step-' + i);
+    if (!step) return;
+    step.classList.remove('ltb-step-done', 'ltb-step-active');
+    if (i === 0) {
+      step.classList.add('ltb-step-done');
+    } else if (today >= stepDates[i]) {
+      step.classList.add('ltb-step-done');
+    } else if (i > 0 && today >= stepDates[i - 1]) {
+      step.classList.add('ltb-step-active');
     }
-    // Après arivaj : rien (point statique normal)
+  });
+
+  // Connecteurs actifs
+  for (var c = 0; c <= 2; c++) {
+    var conn = document.getElementById('ltb-conn-' + c);
+    if (!conn) continue;
+    conn.classList.remove('ltb-conn-done');
+    var nextDate = stepDates[c + 1];
+    if (nextDate && today >= nextDate) {
+      conn.classList.add('ltb-conn-done');
+    }
   }
 }
 
+// Ancienne fonction conservée pour compatibilité
+function initPulsingDots() {
+  // Remplacée par initLCDTrackingBloc
+}
+window.initPulsingDots = initPulsingDots;
+
 // ── GALERIE LIVREZON ─────────────────────────────────────────────
+// Données okazyon pasé — mete ajou chak mwa
+var LCD_HIST = {
+  depa     : '13 Avril 2026',
+  disponib : '25 Avril 2026',
+  jou      : '12'
+};
+
 window.ouvrirGalerie = function () {
   var modal = document.getElementById('galerie-modal');
   var grid  = document.getElementById('galerie-grid');
   if (!modal || !grid) return;
+
+  // Injecter recap okazyon pasé
+  var elDepa = document.getElementById('gal-hist-depa');
+  var elDisp = document.getElementById('gal-hist-disponib');
+  var elJou  = document.getElementById('gal-hist-jou');
+  if (elDepa) elDepa.textContent = LCD_HIST.depa;
+  if (elDisp) elDisp.textContent = LCD_HIST.disponib;
+  if (elJou)  elJou.textContent  = LCD_HIST.jou + ' jou ✅';
 
   // Générer les 4 vignettes
   grid.innerHTML = '';
@@ -835,8 +912,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // 5. Avis kliyan
   aficheAvis();
 
-  // 5b. Flip card dates + pulsing dots
-  initPulsingDots();
+  // 5b. Tracking bloc LCD dates (calcul automatique)
+  initLCDTrackingBloc();
 
   // 6. Carousel
   initBannerCarousel();
@@ -864,11 +941,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var dot    = document.getElementById('tb-dot');
   if (dot) dot.style.display = unread > 0 ? 'block' : 'none';
 
-  // 10. Kiyès drawer — si profil existant
-  var profile = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
-  if (profile.nom) {
-    window.initKiyesDrawer(profile.nom);
-  }
+  // 10. Kiyès drawer supprimé
 
   // 10b. Bouton CTA "Kreye yon kont" — afficher seulement si pas de profil local
   var ctaKont = document.getElementById('cta-kreye-kont');

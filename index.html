@@ -81,14 +81,6 @@
       <span class="material-icons drw-arrow">chevron_right</span>
     </a>
 
-    <!-- KIYÈS X YE — visible seulement si profil existe, SANS page-loader -->
-    <a class="drw-item drw-item-kiyès" id="drw-kiyès" onclick="allerPwofil()" style="display:none;">
-      <span class="drw-icon drw-icon-kiyès"><span class="material-icons">manage_accounts</span></span>
-      <span class="drw-label" id="drw-kiyès-label">Kiyès mwen ye</span>
-      <span class="material-icons drw-arrow">chevron_right</span>
-    </a>
-
-
     <a class="drw-item" onclick="goTo('inventaire.html')">
       <span class="drw-icon"><span class="material-icons">inventory_2</span></span>
       <span class="drw-label">Fè envantè atik mwen</span>
@@ -162,164 +154,103 @@
         </div>
     </section>
 
-    <!-- ===== INFO LIVREZON + BOUTONS RÉACTION ===== -->
+    <!-- ===== BLOC SUIVI LIVREZON (style épuré) ===== -->
     <header id="main-header">
         <div class="header-content">
 
-<!-- ===== FLIP CARD OKAZYON ===== -->
-<!-- Variables dates — modifye isit chak mwa -->
-<script>
-  var LCD_DATES = {
-    /* Okazyon aktyèl (recto) */
-    anbakman_label : "Madi 12 Me",
-    arivaj_label   : "Samdi 23 Me",
-    anbakman_iso   : "2025-05-12",   /* YYYY-MM-DD */
-    arivaj_iso     : "2025-05-23",
+<!-- ===== BLOC TRACKING LCD ===== -->
+<div id="lcd-tracking-bloc">
 
-    /* Istorik (verso) */
-    hist_depa      : "13 Avril",
-    hist_arive     : "25 Avril",
-    hist_jou       : "12",           /* duree en jours */
-  };
-</script>
+  <!-- Statut dynamique -->
+  <div class="ltb-statut-row">
+    <span class="ltb-statut-dot-wrap" id="ltb-statut-dot-wrap">
+      <span class="ltb-statut-dot" id="ltb-statut-dot"></span>
+    </span>
+    <span class="ltb-statut-text" id="ltb-statut-text">Chajman...</span>
+  </div>
 
-<!-- ===== FLIP CARD OKAZYON ===== -->
-<!-- Variables dates — modifye isit chak mwa -->
-<script>
-  var LCD_DATES = {
-    /* Okazyon aktyèl (recto) */
-    anbakman_label : "Madi 12 Me",
-    arivaj_label   : "Samdi 23 Me",
-    anbakman_iso   : "2025-05-12",
-    arivaj_iso     : "2025-05-23",
+  <!-- Note info -->
+  <div class="ltb-note-info">
+    ℹ️ Vwayaj chak mwa. Koli w yo gen ase tan pou ekspedye, e y ap disponib yon sèl kou lè vwayaj la rive.
+  </div>
 
-    /* Istorik (verso) */
-    hist_depa      : "13 Avril",
-    hist_arive     : "25 Avril",
-    hist_jou       : "12",
-  };
-</script>
+  <div class="ltb-divider"></div>
 
-<div id="okazyon-flip-wrapper">
-  <div id="okazyon-flipper" onclick="flipOkazyon()" title="Klike pou wè istorik">
-
-    <!-- ══ RECTO ══ -->
-    <div class="okazyon-face okazyon-front">
-
-      <!-- Décor fond : cercles géométriques -->
-      <div class="flip-decor-circle flip-c1"></div>
-      <div class="flip-decor-circle flip-c2"></div>
-
-<div style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-bottom: 14px;">
-  
-  <span class="flip-badge-pill">Pwochèn okazyon</span>
-  
-  <span style="font-size: 10px; opacity: 0.7; display: flex; align-items: center; gap: 4px; white-space: nowrap;">
-    <span class="material-icons" style="font-size: 13px;">touch_app</span>
-    Tape pou vire dèyè
-  </span>
-
-</div>
-
-
-      <!-- Route -->
-      <div class="flip-route-row">
-        <span class="flip-city">Floride</span>
-        <span class="flip-route-arrow">
-          <span class="flip-plane">✈</span>
-          <span class="flip-line"></span>
-        </span>
-        <span class="flip-city">Les Cayes</span>
-      </div>
-
-      <!-- Divider -->
-      <div class="flip-divider"></div>
-
-      <!-- Deux dates côte à côte -->
-      <div class="flip-dates-grid">
-        <div class="flip-date-col">
-          <p class="flip-date-label">
-            <span class="pulse-dot" id="dot-anbakman"></span>Dat anbakman
-          </p>
-          <div class="flip-date-value" id="lcd-anbakman-label">Madi 12 Me</div>
-        </div>
-        <div class="flip-date-separator"></div>
-        <div class="flip-date-col">
-          <p class="flip-date-label">
-            <span class="pulse-dot" id="dot-arivaj"></span>Jou arivaj
-          </p>
-          <div class="flip-date-value" id="arrival-date">Samdi 23 Me</div>
-        </div>
-      </div>
-
-      <!-- Divider -->
-      <div class="flip-divider"></div>
-
-      <!-- Texte info + statut -->
-      <div class="flip-info-body">
-        <div class="flip-info-col" id="colis-status">
-          <p class="info-sub"><strong>Vwayaj chak mwa.</strong> Koliw yo gen ase tan pou éxpédié, e disponib yon sèl kou.</p>
-        </div>
-        <div class="flip-info-col" id="info-sub-text-col">
-          <p class="info-sub" id="info-sub-text">Plase kòmand ou yo pou yo rive nan adrès nou avan le 9.</p>
-        </div>
-      </div>
-
+  <!-- Timeline 4 étapes -->
+  <div class="ltb-timeline">
+    <div class="ltb-step" id="ltb-step-0">
+      <div class="ltb-step-dot"></div>
+      <div class="ltb-step-label">Kòmande kounya</div>
+      <div class="ltb-step-date" id="ltb-date-0"></div>
     </div>
-
-    <!-- ══ VERSO ══ -->
-    <div class="okazyon-face okazyon-back">
-
-      <div class="flip-decor-circle flip-c1" style="opacity:0.08;"></div>
-      <div class="flip-decor-circle flip-c2" style="opacity:0.06;"></div>
-
-      <!-- En-tête -->
-<div class="flip-top-row">
-  <span class="flip-history-simple-title">Istorik dènyè okazyon</span>
-<span class="flip-hint-tap">
-          <span class="material-icons" style="font-size:13px;vertical-align:middle;">touch_app</span>
-          Retounen
-        </span>
-      </div>
-
-      <div class="flip-divider" style="opacity:0.3;"></div>
-
-      <!-- Deux dates historiques -->
-      <div class="flip-dates-grid">
-        <div class="flip-date-col">
-          <p class="flip-date-label" style="color:rgba(255,255,255,0.5);">Depa</p>
-          <div class="flip-date-value" id="hist-depa" style="color:#a8d8ff;">13 Avril</div>
-        </div>
-        <div class="flip-date-separator" style="opacity:0.3;"></div>
-        <div class="flip-date-col">
-          <p class="flip-date-label" style="color:rgba(255,255,255,0.5);">Arivaj</p>
-          <div class="flip-date-value" id="hist-arive" style="color:#a8d8ff;">25 Avril</div>
-        </div>
-      </div>
-
-      <!-- Badge livré -->
-      <div class="hist-badge-livree">
-        <span class="material-icons" style="font-size:15px;">check_circle</span>
-        Livré · <span id="hist-jou">12</span> jou
-      </div>
-
-      <div class="flip-divider" style="opacity:0.3;"></div>
-
-      <!-- Bouton galerie -->
-      <button class="flip-galerie-btn" onclick="event.stopPropagation(); ouvrirGalerie()">
-        👁️ &nbsp;Wè foto kèk prèv livrezon
-      </button>
-
+    <div class="ltb-connector" id="ltb-conn-0"></div>
+    <div class="ltb-step" id="ltb-step-1">
+      <div class="ltb-step-dot"></div>
+      <div class="ltb-step-label">Nap ramase</div>
+      <div class="ltb-step-date" id="ltb-date-1"></div>
     </div>
+    <div class="ltb-connector" id="ltb-conn-1"></div>
+    <div class="ltb-step" id="ltb-step-2">
+      <div class="ltb-step-dot"></div>
+      <div class="ltb-step-label">Vwayaj la kòmanse</div>
+      <div class="ltb-step-date" id="ltb-date-2"></div>
+    </div>
+    <div class="ltb-connector" id="ltb-conn-2"></div>
+    <div class="ltb-step" id="ltb-step-3">
+      <div class="ltb-step-dot"></div>
+      <div class="ltb-step-label">Koli disponib</div>
+      <div class="ltb-step-date" id="ltb-date-3"></div>
+    </div>
+  </div>
 
-  </div><!-- /okazyon-flipper -->
-</div><!-- /okazyon-flip-wrapper -->
+  <div class="ltb-divider"></div>
+
+  <!-- Bouton détails (galerie preuves) -->
+  <button class="ltb-detail-btn" onclick="ouvrirGalerie()">
+    Détails occasion récente &rsaquo;
+  </button>
+
+  <div class="ltb-divider"></div>
+
+  <!-- Section annonces -->
+  <div class="ltb-annonces">
+    <div class="ltb-annonce-row">
+      <span class="ltb-annonce-icon">📢</span>
+      <span class="ltb-annonce-text">Plase kòmand ou yo pou yo rive nan adrès nou avan le <strong id="ltb-deadline-day">9</strong> nan mwa a pou asire w koli w pati nan pwochen vwayaj la.</span>
+    </div>
+    <div class="ltb-annonce-row ltb-annonce-warn">
+        <div class="ltb-ticker-wrap">
+        <span class="ltb-ticker-text">Tanpri, avan w achte kèlkeswa sa w ap voye nan adrès nou, ou dwe share kaptid ekran fason w konfigire adrès la sou kont ou pou evite tout malantandi!</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /lcd-tracking-bloc -->
 
 <!-- ===== MODAL GALERIE LIVREZON ===== -->
 <div id="galerie-modal" style="display:none;" onclick="fermerGalerie(event)">
   <div class="galerie-inner" onclick="event.stopPropagation()">
     <button class="galerie-close" onclick="fermerGalerie()">✕</button>
     <h3 class="galerie-titre">📦 Prèv Livrezon — Avril</h3>
+
+    <!-- Résumé okazyon pasé -->
+    <div class="galerie-recap">
+      <div class="galerie-recap-row">
+        <span class="galerie-recap-label">Depa</span>
+        <span class="galerie-recap-val" id="gal-hist-depa">13 Avril 2026</span>
+      </div>
+      <div class="galerie-recap-sep"></div>
+      <div class="galerie-recap-row">
+        <span class="galerie-recap-label">Disponib</span>
+        <span class="galerie-recap-val" id="gal-hist-disponib">25 Avril 2026</span>
+      </div>
+      <div class="galerie-recap-sep"></div>
+      <div class="galerie-recap-row">
+        <span class="galerie-recap-label">Dire</span>
+        <span class="galerie-recap-val galerie-recap-badge" id="gal-hist-jou">12 jou ✅</span>
+      </div>
+    </div>
+
     <div class="galerie-grid" id="galerie-grid"></div>
   </div>
 </div>
@@ -329,25 +260,25 @@
   <img id="lightbox-img" src="" alt="Prèv livrezon">
 </div>
 
-            <!-- Unlike · Commentaire (milieu) · Like -->
-            <div class="livrezon-react-row">
-                                <button id="like-btn" onclick="toggleLike()" class="react-btn react-btn-like" title="Like">
-                    <span id="like-icon" class="material-icons">thumb_up_off_alt</span>
-                    <span id="like-count">1</span>
-                </button>
-                <a href="#avis-clients" class="react-btn react-btn-comment" title="Ekri yon avis">
-                    <span class="material-icons">chat_bubble_outline</span>
-                    <span>Avis</span>
-                </a>
-                <button id="unlike-btn" onclick="toggleUnlike()" class="react-btn react-btn-unlike" title="Unlike">
-                    <span class="material-icons" id="unlike-icon">thumb_down_off_alt</span>
-                </button>
-            </div>
-
-            <audio id="like-sound" src="bouton.mp3" preload="auto"></audio>
-
         </div>
     </header>
+
+    <!-- Boutons réaction Like / Avis / Unlike -->
+    <div class="livrezon-react-row">
+        <button id="like-btn" onclick="toggleLike()" class="react-btn react-btn-like" title="Like">
+            <span id="like-icon" class="material-icons">thumb_up_off_alt</span>
+            <span id="like-count">1</span>
+        </button>
+        <a href="#avis-clients" class="react-btn react-btn-comment" title="Ekri yon avis">
+            <span class="material-icons">chat_bubble_outline</span>
+            <span>Avis</span>
+        </a>
+        <button id="unlike-btn" onclick="toggleUnlike()" class="react-btn react-btn-unlike" title="Unlike">
+            <span class="material-icons" id="unlike-icon">thumb_down_off_alt</span>
+        </button>
+    </div>
+
+    <audio id="like-sound" src="bouton.mp3" preload="auto"></audio>
 
     <section class="container"></section>
 
@@ -588,6 +519,50 @@
 <!-- ===== JAVASCRIPT PRINCIPAL ===== -->
 <script src="index.js"></script>
 
+<!-- ===== LOGIQUE DOUBLE RETOUR (style Facebook/TikTok) ===== -->
+<script>
+(function () {
+  var lastBackTime = 0;
+  var DOUBLE_BACK_MS = 2000; // 2 secondes entre les deux appuis
+
+  // Désactiver le retour navigateur naturel
+  history.pushState(null, '', location.href);
+
+  window.addEventListener('popstate', function () {
+    var now = Date.now();
+    // Si le drawer est ouvert, le fermer d'abord
+    var drawer = document.getElementById('app-drawer');
+    if (drawer && drawer.classList.contains('open')) {
+      window.closeDrawer();
+      history.pushState(null, '', location.href);
+      return;
+    }
+    // Sinon, logique double-retour
+    if (now - lastBackTime < DOUBLE_BACK_MS) {
+      // Deuxième appui : demander confirmation
+      if (confirm('Èske ou vle kite aplikasyon an?')) {
+        // Vrai retour
+        history.back();
+      } else {
+        history.pushState(null, '', location.href);
+      }
+    } else {
+      lastBackTime = now;
+      // Afficher un toast temporaire
+      var toast = document.getElementById('back-toast');
+      if (toast) {
+        toast.classList.add('show');
+        setTimeout(function () { toast.classList.remove('show'); }, 1800);
+      }
+      history.pushState(null, '', location.href);
+    }
+  });
+})();
+</script>
+
+<!-- Toast "Tapez encore pour quitter" -->
+<div id="back-toast">Tape tounen ankò pou kite aplikasyon an</div>
+
 <!-- ===== LOGIQUE INSTALL ===== -->
 <script>
     window.allerPwofil = function() {
@@ -595,16 +570,7 @@
         window.location.href = 'pwofil.html';
     };
 
-    window.initKiyesDrawer = function(nom) {
-        const item  = document.getElementById('drw-kiyès');
-        const label = document.getElementById('drw-kiyès-label');
-        if (!item) return;
-        item.style.display = 'flex';
-        if (label && nom) {
-            const prenom = nom.trim().split(' ')[0];
-            label.textContent = 'Kiyès ' + prenom.toUpperCase() + ' ye';
-        }
-    };
+    // ── initKiyesDrawer supprimé (menu Kiyès X ye retiré) ──
 
     // ── A2HS Install Banner — afficher après 30s si pas encore installé ──
     let deferredPrompt = null;

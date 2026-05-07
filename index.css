@@ -297,292 +297,344 @@ body {
 .drw-footer-ver { font-size: 11px; color: #aaa; text-align: center; padding: 12px; }
 
 
-/* ── FLIP CARD OKAZYON — v3 ── */
+/* ── BLOC TRACKING LCD (style épuré) ── */
 
-#okazyon-flip-wrapper {
+#lcd-tracking-bloc {
   margin: 15px auto 0;
-  width: 95%;
-  max-width: 420px;
-  aspect-ratio: 1 / 1;
-  perspective: 900px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-
-#okazyon-flipper {
   width: 100%;
-  height: 100%;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.65s cubic-bezier(0.4, 0.2, 0.2, 1);
-  border-radius: 20px;
+  max-width: 100%;
+  background: transparent;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  padding: 14px 16px;
+  font-family: sans-serif;
+  color: #222;
 }
 
-#okazyon-flipper.flipped {
-  transform: rotateY(180deg);
+/* Titre transporteur — supprimé, styles conservés pour rétrocompat */
+.ltb-header         { display: none; }
+.ltb-transporteur-label,
+.ltb-transporteur-name { display: none; }
+
+.ltb-divider {
+  height: 1px;
+  background: #ddd;
+  margin: 12px 0;
 }
 
-.okazyon-face {
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  overflow: hidden;
-  padding: 22px 22px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  color: #fff;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.28), 0 1px 0 rgba(255,255,255,0.06) inset;
-}
-
-/* ── Recto (face avant — visible pa defò) ── */
-.okazyon-front {
-  background:
-    radial-gradient(ellipse at 85% 15%, rgba(0,200,130,0.22) 0%, transparent 55%),
-    radial-gradient(ellipse at 5% 85%, rgba(90,0,160,0.2) 0%, transparent 55%),
-    linear-gradient(145deg, #0d1b2a 0%, #1b2838 40%, #0a2540 100%);
-  /* Pas de rotation — face visible par défaut */
-}
-
-/* ── Verso (Istorik — visible seulement après flip) ── */
-.okazyon-back {
-  background:
-    /* Touche d'orange en haut à droite ~10% */
-    radial-gradient(ellipse at 88% 8%, rgba(255,140,0,0.30) 0%, transparent 45%),
-    /* Subtil reflet orange en bas à gauche */
-    radial-gradient(ellipse at 12% 92%, rgba(255,100,0,0.15) 0%, transparent 40%),
-    /* Base dominante bleu marine ~90% */
-    linear-gradient(150deg, #0a1628 0%, #0d2045 35%, #0f2a5a 65%, #0d1f42 100%);
-  /* Caché par défaut — tourne lors du flip */
-  transform: rotateY(180deg);
-}
-
-
-
-/* Cercles décoratifs */
-.flip-decor-circle { position: absolute; border-radius: 50%; pointer-events: none; }
-.flip-c1 {
-  width: 180px; height: 180px; top: -60px; right: -50px;
-  background: radial-gradient(circle, rgba(255,215,0,0.12) 0%, transparent 70%);
-}
-.flip-c2 {
-  width: 120px; height: 120px; bottom: -30px; left: -30px;
-  background: radial-gradient(circle, rgba(0,180,255,0.1) 0%, transparent 70%);
-}
-
-.flip-history-simple-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.1px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6); /* blan yon ti jan pal pou l pa vòlè ekla lòt enfòmasyon yo */
-  background: none;  /* asire pa gen background */
-  padding: 0;        /* retire espas initil */
-  border: none;      /* retire tout liy bò */
-}
-
-.flip-badge-pill {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  background: rgba(255,215,0,0.14);
-  border: 1px solid rgba(255,215,0,0.35);
-  color: #FFD700;
-  border-radius: 20px;
-  padding: 4px 11px;
-}
-
-.flip-hint-tap {
-  font-size: 10px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.32);
+/* ── Statut ── */
+.ltb-statut-row {
   display: flex;
   align-items: center;
-  gap: 3px;
-}
-
-/* Route avion */
-.flip-route-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
   gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
 }
 
-.flip-city {
-  font-size: 0.85em;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.9);
-  white-space: nowrap;
-}
-
-.flip-route-arrow {
-  flex: 1;
+/* Wrapper pour le dot + halo pulsation */
+.ltb-statut-dot-wrap {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 4px;
-  position: relative;
   justify-content: center;
 }
 
-.flip-plane { font-size: 14px; position: relative; z-index: 1; }
+.ltb-statut-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1;
+}
 
-.flip-line {
+/* Pulsation orange — classe ajoutée quand état "live" (resepsyon ouvè) */
+.ltb-statut-dot-wrap.ltb-dot-pulse::before {
+  content: '';
   position: absolute;
-  left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.5), transparent);
+  inset: -3px;
+  border-radius: 50%;
+  background: #FF8C00;
+  opacity: 0.4;
+  animation: ltbDotPulse 1.5s ease-out infinite;
 }
 
-/* Divider */
-.flip-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-  margin: 10px 0;
-  flex-shrink: 0;
+@keyframes ltbDotPulse {
+  0%   { transform: scale(0.8); opacity: 0.5; }
+  70%  { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(0.8); opacity: 0; }
 }
 
-/* Grille dates */
-.flip-dates-grid {
-  display: flex;
-  align-items: stretch;
-  margin: 4px 0 10px;
-  flex-shrink: 0;
+.ltb-dot-live   { background: #FF8C00; }   /* orange pulsant — resepsyon ouvè */
+.ltb-dot-orange { background: #e67e22; }   /* orange fixe */
+.ltb-dot-blue   { background: #2980b9; }   /* bleu — vwayaj an kous */
+.ltb-dot-kaki   { background: #556B2F; }   /* kaki foncé — disponib */
+
+/* Note info */
+.ltb-note-info {
+  font-size: 12px;
+  color: #556B2F;
+  line-height: 1.5;
+  margin-bottom: 4px;
 }
 
-.flip-date-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0 6px;
-}
-
-.flip-date-col:first-child { padding-left: 0; }
-.flip-date-col:last-child  { padding-right: 0; text-align: right; }
-
-.flip-date-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.5);
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.flip-date-col:last-child .flip-date-label { justify-content: flex-end; }
-
-.flip-date-value {
-  font-size: 1.05em;
-  font-weight: 900;
-  color: #FFD700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.flip-date-separator {
-  width: 1px;
-  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);
-  margin: 0 6px;
-  align-self: stretch;
-}
-
-/* Corps texte */
-.flip-info-body {
-  display: flex;
-  gap: 10px;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.flip-info-col {
-  flex: 1;
+/* ── Timeline ── */
+.ltb-timeline {
   display: flex;
   align-items: flex-start;
+  gap: 0;
+  padding: 4px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
+.ltb-timeline::-webkit-scrollbar { display: none; }
 
-.flip-info-col .info-sub {
-  font-size: 0.72em;
-  line-height: 1.45;
-  color: rgba(255,255,255,0.7);
-  font-weight: 400;
-  margin: 0;
-}
-
-.flip-info-col .info-sub strong { color: rgba(255,255,255,0.95); }
-
-/* Badge livré */
-.hist-badge-livree {
-  display: inline-flex;
+.ltb-step {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 215, 0, 0.15);
-  border: 1px solid rgba(255, 215, 0, 0.4);
-  color: #FFD700;
-  font-size: 12px;
-  font-weight: 800;
-  border-radius: 20px;
-  padding: 6px 14px;
-  width: fit-content;
-  margin: 8px 0 0;
+  min-width: 60px;
+  flex: 1;
+  text-align: center;
+}
+
+.ltb-step-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ddd;
+  border: 2px solid #bbb;
+  margin-bottom: 6px;
   flex-shrink: 0;
 }
 
+/* Étape accomplie — kaki foncé */
+.ltb-step.ltb-step-done .ltb-step-dot {
+  background: #556B2F;
+  border-color: #556B2F;
+}
+.ltb-step.ltb-step-done .ltb-step-label { color: #333; font-weight: 700; }
+.ltb-step.ltb-step-done .ltb-step-date  { color: #556B2F; }
 
-/* Bouton galerie */
-.flip-galerie-btn {
-  margin-top: auto;
-  background: rgba(255,255,255,0.08);
-  border: 1px solid rgba(255,255,255,0.2);
-  color: #fff;
-  border-radius: 12px;
-  padding: 10px 16px;
+/* Étape en cours — rouge */
+.ltb-step.ltb-step-active .ltb-step-dot {
+  background: #fff;
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.18);
+}
+.ltb-step.ltb-step-active .ltb-step-label { color: #ffc0cb; font-weight: 800; }
+.ltb-step.ltb-step-active .ltb-step-date  { color: #ffc0cb; font-weight: 700; }
+
+/* Étape future — grisé */
+.ltb-step-label {
+  font-size: 10px;
+  color: #aaa;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.ltb-step-date {
+  font-size: 10px;
+  color: #bbb;
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+/* Connecteur */
+.ltb-connector {
+  flex-shrink: 0;
+  width: 24px;
+  height: 1px;
+  background: #ddd;
+  margin-top: 5px;
+  align-self: flex-start;
+}
+.ltb-connector.ltb-conn-done { background: #556B2F; }
+
+/* Bouton détails */
+.ltb-detail-btn {
+  background: none;
+  border: none;
+  color: #FF8C00;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
+  padding: 0;
   font-family: inherit;
-  width: 100%;
-  text-align: center;
-  transition: background 0.2s;
-  flex-shrink: 0;
+  display: block;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
-.flip-galerie-btn:hover { background: rgba(255,255,255,0.15); }
+/* ── Annonces ── */
+.ltb-annonces {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-/* Pulsing dots */
-.pulse-dot {
+.ltb-annonce-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 12px;
+  color: #333;
+  line-height: 1.5;
+}
+
+.ltb-annonce-icon { flex-shrink: 0; font-size: 14px; }
+
+/* Ticker défilement droite → gauche en boucle */
+.ltb-annonce-warn {
+  color: #555;
+  align-items: center;
+}
+
+.ltb-ticker-wrap {
+  overflow: hidden;
+  flex: 1;
+  white-space: nowrap;
+}
+
+.ltb-ticker-text {
   display: inline-block;
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: #8fbc8f;
+  white-space: nowrap;
+  animation: ltbTickerScroll 18s linear infinite;
+}
+
+@keyframes ltbTickerScroll {
+  0%   { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ── Recap galerie okazyon pasé ── */
+.galerie-recap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 14px;
+  gap: 6px;
+}
+
+.galerie-recap-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.galerie-recap-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #999;
+  letter-spacing: 0.06em;
+}
+
+.galerie-recap-val {
+  font-size: 12px;
+  font-weight: 700;
+  color: #222;
+}
+
+.galerie-recap-badge {
+  color: #556B2F;
+  background: rgba(85,107,47,0.1);
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 11px;
+}
+
+.galerie-recap-sep {
+  width: 1px;
+  height: 32px;
+  background: #e0e0e0;
   flex-shrink: 0;
 }
 
-.pulse-dot.pulsing {
-  animation: dotPulse 1.4s ease-in-out infinite;
+/* Boutons réaction (remis) */
+.livrezon-react-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 8px 0 4px;
+  padding: 0 16px;
 }
 
-.pulse-dot.pale { opacity: 0.25; }
-
-@keyframes dotPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0.7); transform: scale(1); }
-  50%       { box-shadow: 0 0 0 5px rgba(255,215,0,0); transform: scale(1.2); }
+.react-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.2s, transform 0.15s;
 }
 
-@keyframes fadeInFace {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+.react-btn:active { transform: scale(0.93); }
+.react-btn .material-icons { font-size: 22px; }
+
+.react-btn-unlike {
+  color: #888;
+  background: #f5f5f5;
+}
+.react-btn-unlike:hover { background: #fce4e4; color: var(--rouge); }
+
+.react-btn-comment {
+  color: var(--bleu-marin);
+  background: #f0f4ff;
+  text-decoration: none;
+  flex: 1;
+  max-width: 120px;
+}
+.react-btn-comment:hover { background: #dce8ff; }
+
+.react-btn-like {
+  color: var(--bleu-marin);
+  background: #f5f5f5;
+}
+.react-btn-like:hover { background: #e8f5e9; color: var(--vert-menu); }
+
+/* ── TOAST DOUBLE RETOUR ── */
+#back-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(0,0,0,0.78);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 24px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: opacity 0.25s, transform 0.25s;
+}
+
+#back-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
 /* ── MODAL GALERIE ── */
@@ -659,57 +711,6 @@ body {
   color: rgba(255,255,255,0.85);
   font-weight: normal;
 }
-
-/* ── BOUTONS RÉACTION (unlike gauche / commentaire milieu / like droite) ── */
-.livrezon-react-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin: 8px 0 4px;
-  padding: 0 4px;
-}
-
-.react-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-family: inherit;
-  font-size: 13px;
-  font-weight: 700;
-  transition: background 0.2s, transform 0.15s;
-}
-
-.react-btn:active { transform: scale(0.93); }
-
-.react-btn .material-icons { font-size: 22px; }
-
-.react-btn-unlike {
-  color: #888;
-  background: #f5f5f5;
-}
-.react-btn-unlike:hover { background: #fce4e4; color: var(--rouge); }
-
-.react-btn-comment {
-  color: var(--bleu-marin);
-  background: #f0f4ff;
-  text-decoration: none;
-  flex: 1;
-  max-width: 120px;
-}
-.react-btn-comment:hover { background: #dce8ff; }
-
-.react-btn-like {
-  color: var(--bleu-marin);
-  background: #f5f5f5;
-}
-.react-btn-like:hover { background: #e8f5e9; color: var(--vert-menu); }
 
 /* ── CAROUSEL BANNER ── */
 #banner-carousel {
