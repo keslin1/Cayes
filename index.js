@@ -62,6 +62,17 @@ window.closeDrawer = function () {
   }, { passive: true });
 })();
 
+// ── CLICK-AWAY : fermer le drawer si clic en dehors ──
+document.addEventListener('click', function (e) {
+  var drawer = document.getElementById('app-drawer');
+  if (!drawer || !drawer.classList.contains('open')) return;
+  // Si le clic est à l'intérieur du drawer ou sur le bouton hamburger, ne rien faire
+  var hamburger = document.getElementById('hamburger-btn');
+  if (drawer.contains(e.target)) return;
+  if (hamburger && hamburger.contains(e.target)) return;
+  window.closeDrawer();
+}, true);
+
 // Sync drawer avec profil localStorage
 function syncDrw() {
   var p = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
@@ -274,6 +285,16 @@ window.closeModal = function (modalId) {
   if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
 };
 
+// ── BOUTON AVIS : scroll direct vers le textarea ─────────────────
+window.focusAvisInput = function (e) {
+  e.preventDefault();
+  var textarea = document.getElementById('user-comment');
+  if (!textarea) return;
+  // Scroll vers le textarea avec un léger offset
+  textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(function () { textarea.focus(); }, 400);
+};
+
 // ── SISTÈM AVIS KLIYAN ───────────────────────────────────────────
 function getRefDate(daysAgo, minutesAgo) {
   minutesAgo = minutesAgo || 0;
@@ -379,11 +400,8 @@ function aficheAvis() {
   var votes     = JSON.parse(localStorage.getItem('avis_votes') || '{}');
   var toutAvis  = localAvis.concat(simulationAvis);
 
-  // Créer le track de défilement
-  var track = document.createElement('div');
-  track.id = 'avis-scroll-track';
-
-  track.innerHTML = toutAvis.map(function (a) {
+  // Construire le HTML de chaque carte
+  function buildCard(a) {
     var isUser       = localAvis.some(function (la) { return la.id === a.id; });
     var starsAffiche = votes[a.id] !== undefined ? votes[a.id] : (a.stars || 0);
     var dateAffiche  = formatDateRelative(a.publishedAt || a.id);
@@ -407,24 +425,58 @@ function aficheAvis() {
           : '')
       + '</div>'
       + '</div>';
-  }).join('');
+  }
 
-  container.innerHTML = '';
-  container.appendChild(track);
+  // Créer les groupes de 2
+  var groupCount = Math.ceil(toutAvis.length / 2);
+  var groupsHTML = '';
+  for (var g = 0; g < groupCount; g++) {
+    var cardA = toutAvis[g * 2];
+    var cardB = toutAvis[g * 2 + 1];
+    groupsHTML += '<div class="avis-group" data-group="' + g + '">'
+      + buildCard(cardA)
+      + (cardB ? buildCard(cardB) : '')
+      + '</div>';
+  }
 
-  // Démarrer l'animation de permutation
+  container.innerHTML = '<div id="avis-carousel-wrap">' + groupsHTML + '</div>';
+
+  // Démarrer la rotation
   startAvisRotation();
 }
 
-// ── ANIMATION PERMUTATION AVIS ────────────────────────────────────
+// ── ANIMATION CARROUSEL AVIS (groupes de 2, 8s, fondu croisé) ────
 var _avisRotInterval = null;
 
 function startAvisRotation() {
-  if (_avisRotInterval) clearInterval(_avisRotInterval);
+  if (_avisRotInterval) { clearInterval(_avisRotInterval); _avisRotInterval = null; }
 
+  var wrap = document.getElementById('avis-carousel-wrap');
+  if (!wrap) return;
+
+  var groups    = wrap.querySelectorAll('.avis-group');
+  var total     = groups.length;
+  if (total < 2) {
+    // Un seul groupe : tout afficher directement, pas d'animation
+    if (groups[0]) groups[0].style.opacity = '1';
+    return;
+  }
+
+  var current   = 0;
+  var isPaused  = false;
+
+  // Initialiser : premier groupe visible, les autres cachés
+  groups.forEach(function (g, i) {
+    g.style.transition = 'none';
+    g.style.opacity    = i === 0 ? '1' : '0';
+    g.style.position   = i === 0 ? 'relative' : 'absolute';
+    g.style.top        = '0';
+    g.style.left       = '0';
+    g.style.width      = '100%';
+  });
+
+  // Pause au survol
   var section = document.getElementById('avis-clients');
-  var isPaused = false;
-
   if (section) {
     section.addEventListener('mouseenter', function () { isPaused = true; });
     section.addEventListener('mouseleave', function () { isPaused = false; });
@@ -432,44 +484,50 @@ function startAvisRotation() {
 
   _avisRotInterval = setInterval(function () {
     if (isPaused) return;
-    var track = document.getElementById('avis-scroll-track');
-    if (!track) return;
-    var cards = track.querySelectorAll('.comment-card');
-    if (cards.length < 2) return;
 
-    // Slide-up animation sur la première carte
-    var first = cards[0];
-    first.style.transition  = 'opacity 0.5s ease, transform 0.5s ease, max-height 0.5s ease, padding 0.5s ease, margin 0.5s ease';
-    first.style.opacity     = '0';
-    first.style.transform   = 'translateY(-18px)';
-    first.style.maxHeight   = first.scrollHeight + 'px';
-    first.style.overflow    = 'hidden';
+    var wrap2 = document.getElementById('avis-carousel-wrap');
+    if (!wrap2) { clearInterval(_avisRotInterval); return; }
+    var grps = wrap2.querySelectorAll('.avis-group');
+    if (!grps.length) return;
 
+    var next = (current + 1) % grps.length;
+
+    // Préparer le prochain groupe (déjà invisible en absolute)
+    grps[next].style.position   = 'absolute';
+    grps[next].style.top        = '0';
+    grps[next].style.left       = '0';
+    grps[next].style.width      = '100%';
+    grps[next].style.opacity    = '0';
+    grps[next].style.transition = 'none';
+
+    // Forcer reflow
+    void grps[next].offsetWidth;
+
+    // Fondu croisé : prochain entre, actuel sort
+    grps[next].style.transition = 'opacity 0.8s ease';
+    grps[current].style.transition = 'opacity 0.8s ease';
+    grps[next].style.opacity    = '1';
+    grps[current].style.opacity = '0';
+
+    // Après l'animation, repositionner
+    var outgoing = current;
     setTimeout(function () {
-      first.style.maxHeight = '0';
-      first.style.padding   = '0';
-    }, 200);
+      var w = document.getElementById('avis-carousel-wrap');
+      if (!w) return;
+      var gs = w.querySelectorAll('.avis-group');
+      if (gs[next]) {
+        gs[next].style.position = 'relative';
+        gs[next].style.top      = '';
+        gs[next].style.left     = '';
+        gs[next].style.width    = '';
+      }
+      if (gs[outgoing]) {
+        gs[outgoing].style.position = 'absolute';
+      }
+    }, 850);
 
-    setTimeout(function () {
-      // Réinitialiser les styles inline avant de déplacer
-      first.style.transition  = 'none';
-      first.style.opacity     = '0.7';
-      first.style.transform   = '';
-      first.style.maxHeight   = '';
-      first.style.padding     = '';
-      first.style.overflow    = '';
-
-      // Déplacer en dernière position
-      track.appendChild(first);
-
-      // Mettre à jour les opacités
-      var updated = track.querySelectorAll('.comment-card');
-      updated.forEach(function (c, i) {
-        c.style.transition = 'opacity 0.4s ease';
-        c.style.opacity    = i === 0 ? '1' : '0.7';
-      });
-    }, 550);
-  }, 3000);
+    current = next;
+  }, 8000);
 }
 
 // ── FLIP CARD OKAZYON ─────────────────────────────────────────────
@@ -561,20 +619,32 @@ function initLCDTrackingBloc() {
   if (statutDot) statutDot.className  = 'ltb-statut-dot ' + dotClass;
   if (dotWrap)   dotWrap.classList.toggle('ltb-dot-pulse', isPulse);
 
-  // Colorier les étapes selon progression
+  // Colorier les étapes selon progression — logique dynamique
+  // Règle : toutes les étapes passées = vert kaki (done)
+  //         première étape non encore atteinte = rose (active)
+  //         les suivantes = grisé (futur)
   var steps     = [0, 1, 2, 3];
   var stepDates = [null, dates.ramase, dates.depa, dates.disponib];
+
+  // Trouver le premier step non accompli (sera coloré en rose)
+  var activeStepFound = false;
 
   steps.forEach(function (i) {
     var step = document.getElementById('ltb-step-' + i);
     if (!step) return;
     step.classList.remove('ltb-step-done', 'ltb-step-active');
+
     if (i === 0) {
+      // Étape 0 (Kòmande kounya) — toujours accomplie
       step.classList.add('ltb-step-done');
     } else if (today >= stepDates[i]) {
+      // Date passée → vert kaki (done)
       step.classList.add('ltb-step-done');
-    } else if (i > 0 && today >= stepDates[i - 1]) {
+    } else if (!activeStepFound) {
+      // Première étape non atteinte → rose (active = prochaine cible)
       step.classList.add('ltb-step-active');
+      activeStepFound = true;
+      // Pas de classe pour les suivantes → elles restent grises (défaut CSS)
     }
   });
 
