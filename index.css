@@ -74,7 +74,7 @@ body {
 @keyframes plSpin { to { transform: rotate(360deg); } }
 
 
-/* ── TOP BAR — fixé tout en haut ── */
+/* ── TOP BAR — sticky indépendant, sans saccade ── */
 #top-bar {
   position: fixed;
   top: 0;
@@ -88,6 +88,10 @@ body {
   gap: 10px;
   z-index: 600;
   box-shadow: var(--shadow-sm);
+  will-change: transform;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 #hamburger-btn, #top-bar-bell {
@@ -374,14 +378,14 @@ body {
 .ltb-step.ltb-step-done .ltb-step-label { color: #333; font-weight: 700; }
 .ltb-step.ltb-step-done .ltb-step-date  { color: #556B2F; }
 
-/* Étape en cours — rouge */
+/* Étape en cours — rose (indique l'échéance prochaine) */
 .ltb-step.ltb-step-active .ltb-step-dot {
   background: #fff;
-  border-color: #c0392b;
-  box-shadow: 0 0 0 3px rgba(192,57,43,0.18);
+  border-color: #e91e8c;
+  box-shadow: 0 0 0 3px rgba(233,30,140,0.18);
 }
-.ltb-step.ltb-step-active .ltb-step-label { color: #ffc0cb; font-weight: 800; }
-.ltb-step.ltb-step-active .ltb-step-date  { color: #ffc0cb; font-weight: 700; }
+.ltb-step.ltb-step-active .ltb-step-label { color: : #ffc0cb; font-weight: 800; }
+.ltb-step.ltb-step-active .ltb-step-date  { color: : #ffc0cb; font-weight: 700; }
 
 /* Étape future — grisé */
 .ltb-step-label {
@@ -774,7 +778,20 @@ body {
   overflow: hidden;
 }
 
-/* Wrapper de défilement animé */
+/* ── CARROUSEL AVIS — système par groupes de 2 ── */
+#avis-carousel-wrap {
+  position: relative;
+  min-height: 180px; /* espace réservé pendant les transitions */
+  overflow: hidden;
+}
+
+.avis-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Wrapper de défilement animé — conservé pour compat */
 #avis-scroll-track {
   display: flex;
   flex-direction: column;
@@ -782,19 +799,12 @@ body {
   will-change: transform;
 }
 
-/* Chaque carte en mode carousel */
-#avis-scroll-track .comment-card {
+/* Chaque carte */
+#comments-container .comment-card {
   border-bottom: 1px solid #f0f0f0;
   padding: 14px 0;
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  opacity: 0.7;
+  transition: opacity 0.6s ease;
 }
-
-#avis-scroll-track .comment-card:first-child {
-  opacity: 1;
-}
-
-#avis-scroll-track .comment-card:last-child { border-bottom: none; }
 
 .comment-author { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 
