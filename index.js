@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 156;
+let   baseLikes      = 163;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -586,7 +586,9 @@ function initLCDTrackingBloc() {
   var el1 = document.getElementById('ltb-date-1');
   var el2 = document.getElementById('ltb-date-2');
   var el3 = document.getElementById('ltb-date-3');
-  if (el0) el0.textContent = 'Disponib';
+  // Étape 0 : afficher la plage d'envoi "1 Mois à 15 Mois"
+  var moisDebut = KT_MOIS[dates.ramase.getMonth()];
+  if (el0) el0.textContent = '1 ' + moisDebut + ' à ' + dates.ramase.getDate() + ' ' + moisDebut;
   if (el1) el1.textContent = formatDateKT(dates.ramase);
   if (el2) el2.textContent = formatDateKT(dates.depa);
   if (el3) el3.textContent = formatDateKT(dates.disponib);
@@ -600,19 +602,23 @@ function initLCDTrackingBloc() {
   if (today < dates.ramase) {
     statut   = 'Nou ouvri pou resevwa koli';
     dotClass = 'ltb-dot-live';
-    isPulse  = true; // pulsation orange
+    isPulse  = true; // pulsation orange — fenêtre d'envoi ouverte
   } else if (today.getTime() === dates.ramase.getTime()) {
-    statut   = 'Dènye jou ramase';
-    dotClass = 'ltb-dot-orange';
+    statut   = 'Dènye jou nap resevwa koli';
+    dotClass = 'ltb-dot-live';
+    isPulse  = true; // pulsation orange — dernier jour
   } else if (today <= dates.depa) {
     statut   = 'Preparasyon pou vwayaj';
-    dotClass = 'ltb-dot-orange';
+    dotClass = 'ltb-dot-live';
+    isPulse  = true; // pulsation orange — en préparation
   } else if (today <= dates.disponib) {
-    statut   = 'Vwayaj en cours ✈';
-    dotClass = 'ltb-dot-blue';
+    statut   = 'Nou nan lè a ✈';
+    dotClass = 'ltb-dot-live';
+    isPulse  = true; // pulsation orange — en transit
   } else {
-    statut   = 'Koli disponib Haiti';
+    statut   = 'Koli disponib aux Cayes';
     dotClass = 'ltb-dot-kaki';
+    isPulse  = false; // pas de pulsation — colis arrivés
   }
 
   if (statutEl)  statutEl.textContent = statut;
