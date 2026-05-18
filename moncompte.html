@@ -279,6 +279,62 @@
         }
         #main-footer .material-icons { color: var(--vert-menu); font-size: 24px; }
         .nav-item.active .material-icons { color: var(--kaki); }
+
+        /* ─── Badge NEW animation ─── */
+        @keyframes pulseBadge {
+            0%   { box-shadow: 0 0 0 0 rgba(231,76,60,0.7); }
+            70%  { box-shadow: 0 0 0 6px rgba(231,76,60,0); }
+            100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); }
+        }
+
+        /* ─── Toggle Notification Switch ─── */
+        .notif-toggle-card {
+            background-color: var(--blanc-fond);
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .notif-toggle-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .notif-toggle-left .material-icons {
+            color: var(--bleu-marin);
+            font-size: 24px;
+        }
+        .notif-toggle-label {
+            font-weight: 600;
+            font-size: 0.95em;
+            color: var(--noir-texte);
+        }
+        .notif-toggle-sub {
+            font-size: 0.75em;
+            color: #888;
+            margin-top: 2px;
+        }
+        /* Switch pill */
+        .switch { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc;
+            transition: .3s; border-radius: 26px;
+        }
+        .slider:before {
+            position: absolute; content: "";
+            height: 20px; width: 20px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .3s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--vert-menu); }
+        input:checked + .slider:before { transform: translateX(22px); }
     </style>
 </head>
 <body>
@@ -331,6 +387,21 @@
         <span class="material-icons">get_app</span>
         Ajoute LCDrop sou ekran w
     </button>
+
+    <!-- ─── TOGGLE NOTIFICATION ─── -->
+    <div class="notif-toggle-card">
+        <div class="notif-toggle-left">
+            <span class="material-icons">notifications_active</span>
+            <div>
+                <div class="notif-toggle-label">Notifikasyon</div>
+                <div class="notif-toggle-sub" id="notif-status-text">Chajman...</div>
+            </div>
+        </div>
+        <label class="switch">
+            <input type="checkbox" id="notif-toggle-input">
+            <span class="slider"></span>
+        </label>
+    </div>
 
     <h2 class="section-title">Enfòmasyon pèsonèl</h2>
 
@@ -405,9 +476,10 @@
         <span class="material-icons">home</span>
         <p>Akèy</p>
     </a>
-    <a href="decouvrir.html" class="nav-item" style="text-decoration:none; color:inherit;">
+    <a href="decouvrir.html" class="nav-item" style="text-decoration:none; color:inherit; position:relative;">
         <span class="material-icons">info</span>
         <p>Règ</p>
+        <span id="new-badge" style="position:absolute; top:-4px; right:-2px; background:#e74c3c; color:white; border-radius:4px; padding:1px 4px; font-size:8px; font-weight:900; letter-spacing:0.3px; box-shadow:0 0 0 0 rgba(231,76,60,0.7); animation:pulseBadge 1.2s ease-out infinite; line-height:14px;">NEW</span>
     </a>
     <a href="transaction.html" class="nav-item" style="text-decoration:none; color:inherit;">
         <span class="material-icons">list_alt</span>
@@ -426,6 +498,7 @@
     import { getAuth, onAuthStateChanged }               from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
     import { getFirestore, doc, getDoc, setDoc }         from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { getStorage, ref, uploadString, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    import { getMessaging, getToken, isSupported }       from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
     const firebaseConfig = {
         apiKey:            "AIzaSyClITNBRZPS7uCGFtbCvcW3CE-KH3VHOyI",
@@ -446,8 +519,18 @@
     const MAX_MESSAGES   = 10;
     const userStorageKey = 'user_profile_data';
     const AVATAR_KEY     = 'lcd_user_avatar';
+    const NOTIF_PERM_KEY = 'lcd_notif_enabled';
 
-    // ── Notifications ──
+    const isSecureContext = location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+    let messaging = null;
+    if (isSecureContext) {
+        try {
+            const supported = await isSupported();
+            if (supported) messaging = getMessaging(app);
+        } catch (e) { console.warn('Messaging non disponible:', e); }
+    }
+
+    // ── Notifications : lecture / sauvegarde ──
     function getMessages() {
         try { return JSON.parse(localStorage.getItem(MESSAGE_KEY)) || []; }
         catch (e) { return []; }
@@ -505,9 +588,78 @@
         if (event.target === document.getElementById('messageModal')) window.closeMessageModal();
     };
 
+    // ── Écoute messages du Service Worker (notifications en arrière-plan) ──
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.addEventListener('message', (event) => {
-            if (event.data && event.data.type === 'SAVE_NOTIF') saveMessage(event.data.title, event.data.body);
+            if (event.data && event.data.type === 'SAVE_NOTIF') {
+                saveMessage(event.data.title, event.data.body);
+            }
+        });
+    }
+
+    // ── Toggle Notification ──
+    async function enableNotifications() {
+        if (!messaging) {
+            updateToggleUI(false, 'Navigatè ou pa sipòte notifikasyon');
+            return false;
+        }
+        try {
+            const permission = await Notification.requestPermission();
+            if (permission !== 'granted') {
+                updateToggleUI(false, 'Ou refize notifikasyon yo');
+                localStorage.setItem(NOTIF_PERM_KEY, 'false');
+                return false;
+            }
+            await navigator.serviceWorker.register('/firebase-messaging-sw.js');
+            await getToken(messaging, { vapidKey: 'BP9kFGPwxqYaXOC-Ip3AY6L2eBMs0og181TRWEL03ROFvVf-0Onw3QibLba06Q5dZnjlQh7381JplG838ygul70' });
+            localStorage.setItem(NOTIF_PERM_KEY, 'true');
+            updateToggleUI(true, 'Aktif — ou pral resevwa mizajou');
+            return true;
+        } catch (err) {
+            console.log('Notification enable error:', err);
+            updateToggleUI(false, 'Pa ka aktive notifikasyon yo');
+            localStorage.setItem(NOTIF_PERM_KEY, 'false');
+            return false;
+        }
+    }
+
+    function updateToggleUI(isOn, statusText) {
+        const toggle     = document.getElementById('notif-toggle-input');
+        const statusEl   = document.getElementById('notif-status-text');
+        if (toggle)   toggle.checked  = isOn;
+        if (statusEl) statusEl.textContent = statusText;
+    }
+
+    function initNotifToggle() {
+        const toggle   = document.getElementById('notif-toggle-input');
+        const statusEl = document.getElementById('notif-status-text');
+        if (!toggle) return;
+
+        // État actuel
+        const currentPerm   = Notification.permission;
+        const userPref      = localStorage.getItem(NOTIF_PERM_KEY);
+        const isCurrentlyOn = currentPerm === 'granted' && userPref !== 'false';
+
+        if (currentPerm === 'denied') {
+            updateToggleUI(false, 'Bloke — chanje nan paramèt navigatè ou');
+            toggle.disabled = true;
+        } else if (isCurrentlyOn) {
+            updateToggleUI(true, 'Aktif — ou pral resevwa mizajou');
+        } else {
+            updateToggleUI(false, 'Klike pou aktive notifikasyon yo');
+        }
+
+        toggle.addEventListener('change', async function() {
+            if (this.checked) {
+                this.disabled = true;
+                if (statusEl) statusEl.textContent = 'Ap aktive...';
+                const success = await enableNotifications();
+                this.disabled = false;
+                if (!success) this.checked = false;
+            } else {
+                localStorage.setItem(NOTIF_PERM_KEY, 'false');
+                updateToggleUI(false, 'Dezaktive — ou p ap resevwa mizajou');
+            }
         });
     }
 
@@ -596,6 +748,7 @@
         loadAvatar();
         updateUI(profile);
         updateBadgeUI();
+        initNotifToggle();
 
         // ── Formulaire édition profil ──
         const formContainer  = document.getElementById('profile-form-container');
