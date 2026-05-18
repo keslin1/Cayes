@@ -359,9 +359,10 @@
         <span class="material-icons">list_alt</span>
         <p>Tranzaksyon</p>
     </a>
-    <a href="moncompte.html" class="nav-item" style="position:relative;">
+    <a href="moncompte.html" class="nav-item" id="nav-moncompte" style="position:relative;" onclick="markMoncompteVisited()">
         <span class="material-icons">person</span>
         <p>Kont mwen</p>
+        <span id="new-badge-mc" style="position:absolute; top:-4px; right:-2px; background:#e74c3c; color:white; border-radius:4px; padding:1px 4px; font-size:8px; font-weight:900; letter-spacing:0.3px; line-height:14px; animation:pulseBadge 1.2s ease-out infinite; display:none;">NEW</span>
         <span id="footer-badge" style="position:absolute; top:2px; right:15px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:10px; font-weight:bold; display:none;">0</span>
     </a>
 </footer>
@@ -503,6 +504,20 @@
             .then(() => { initNotifications(); })
             .catch(err => console.log('Erreur SW:', err));
     }
+
+    // ── Badge NEW sur "Kont mwen" ──
+    // S'affiche une seule fois tant que l'utilisateur n'a pas encore visité moncompte.html
+    (function initNewBadgeMC() {
+        const badge   = document.getElementById('new-badge-mc');
+        const visited = localStorage.getItem('lcd_moncompte_visited');
+        if (badge && !visited) badge.style.display = 'block';
+    })();
+
+    window.markMoncompteVisited = function() {
+        localStorage.setItem('lcd_moncompte_visited', 'true');
+        const badge = document.getElementById('new-badge-mc');
+        if (badge) badge.style.display = 'none';
+    };
 
     // ── Fin du bloc Firebase ──
 </script>
