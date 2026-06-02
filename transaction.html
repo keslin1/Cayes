@@ -23,6 +23,11 @@
             --binance-yellow: #f0b90b;
             --trading-green: #0ecb81;
             --trading-red: #f6465d;
+            /* Wise service palette */
+            --wise-teal: #00b9ff;
+            --wise-orange: #ff9800;
+            --wise-dark: #1a1f26;
+            --usdt-green: #26a17b;
         }
 
 body {
@@ -38,6 +43,50 @@ body {
     padding-bottom: 80px;
     min-height: 100vh;
 }
+
+/* ===== NAVIGATION ONGLETS ===== */
+.tab-nav {
+    display: flex;
+    width: 92%;
+    max-width: 500px;
+    margin: 20px auto 0 auto;
+    background: rgba(255,255,255,0.07);
+    border-radius: 14px;
+    padding: 5px;
+    gap: 5px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.tab-btn {
+    flex: 1;
+    padding: 11px 6px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-size: 0.78em;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.28s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.02em;
+}
+.tab-btn .material-icons { font-size: 17px; }
+.tab-btn.active {
+    background: linear-gradient(135deg, #00b9ff, #0082c8);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(0,185,255,0.35);
+}
+.tab-btn:nth-child(2).active {
+    background: linear-gradient(135deg, var(--binance-yellow), #e0a800);
+    box-shadow: 0 4px 14px rgba(240,185,11,0.35);
+    color: #1a1000;
+}
+.tab-section { display: none; }
+.tab-section.active { display: block; }
 
 /* ===== AKÒDYON ===== */
 .intro-section {
@@ -140,7 +189,7 @@ body {
     border-radius: 30px; font-size: 0.88em; font-weight: 600;
 }
 
-/* ===== PÈMAN ===== */
+/* ===== PÈMAN (epargne section) ===== */
 #payment-info-container { 
     padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; 
     backdrop-filter: blur(10px); border: 1px solid rgba(0,206,209,0.2); 
@@ -156,7 +205,7 @@ body {
 .payment-option img { width: 42px; height: 42px; object-fit: contain; border-radius: 6px; margin-right: 12px; }
 .payment-option p { margin: 0; font-weight: 500; }
 
-/* ===== MODAL ===== */
+/* ===== MODAL (epargne) ===== */
 .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
 .modal-content { 
     background-color: #1a1a1a; margin: 15% auto; padding: 25px; border-radius: 15px; 
@@ -169,8 +218,237 @@ body {
     100% { transform: scale(1); text-shadow: 0 0 0px rgba(255,223,0,0); }
 }
 .modal-content strong { display: inline-block; color: #ffdf00; animation: pulse-gold 2s infinite ease-in-out; }
-.close-btn { float: right; font-size: 24px; cursor: pointer; color: #666; }
-.close-btn:hover { color: #fff; }
+.close-btn-modal { float: right; font-size: 24px; cursor: pointer; color: #666; }
+.close-btn-modal:hover { color: #fff; }
+
+/* ===== WISE RECHAJ SERVICE ===== */
+.wise-container {
+    width: 92%;
+    max-width: 500px;
+    margin: 25px auto;
+}
+.wise-header-section { text-align: center; margin-bottom: 22px; }
+.wise-main-title {
+    color: #ffffff;
+    font-size: 1.55em;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+    letter-spacing: -0.01em;
+}
+.wise-subtitle { color: rgba(255,255,255,0.55); font-size: 0.88em; margin: 0; }
+
+.wise-pricing-card {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    margin-bottom: 22px;
+    background: linear-gradient(135deg, #e67e22, #ff9800);
+}
+.wise-card-header {
+    padding: 18px 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 1.25em;
+    font-weight: 800;
+}
+.wise-card-body {
+    background-color: #fff;
+    margin: 0 14px;
+    padding: 16px 18px;
+    border-radius: 6px;
+    color: #333;
+}
+.wise-check-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.92em;
+}
+.wise-check-item:last-child { margin-bottom: 0; }
+.wise-check-item .material-icons { color: #4caf50; margin-right: 10px; font-size: 18px; flex-shrink: 0; }
+.wise-card-footer {
+    padding: 16px 20px;
+    text-align: center;
+    color: #fff;
+}
+.wise-current-price {
+    font-size: 1.7em;
+    font-weight: 800;
+    display: block;
+}
+
+/* Simulateur Wise */
+.wise-calculator {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.35);
+}
+.wise-watermark {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    width: 80%; opacity: 0.07; pointer-events: none;
+}
+.wise-facture-header {
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+.wise-facture-header h3 { margin: 0 0 4px 0; color: #1a1f26; font-size: 1.05em; font-weight: 800; }
+
+@keyframes pulse-tax {
+    0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(38,161,123,0.7); }
+    5%   { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(38,161,123,0); }
+    10%  { transform: scale(1); box-shadow: 0 0 0 0 rgba(38,161,123,0); }
+    100% { transform: scale(1); }
+}
+.wise-info-btn {
+    cursor: pointer; color: var(--usdt-green); font-size: 30px;
+    border: 2px solid var(--usdt-green); border-radius: 50%; padding: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    animation: pulse-tax 8s infinite ease-in-out;
+    vertical-align: middle;
+}
+.wise-input-group input {
+    width: 100%;
+    background: #f9f9f9;
+    border: 2px solid var(--wise-teal);
+    padding: 12px;
+    border-radius: 10px;
+    color: #333;
+    font-size: 1.05em;
+    text-align: center;
+    box-sizing: border-box;
+    outline: none;
+    margin-bottom: 14px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+.wise-input-label { font-size: 0.83em; margin-bottom: 5px; font-weight: 700; color: #333; }
+.wise-result-row { display: flex; justify-content: space-between; margin: 7px 0; font-size: 0.97em; color: #444; }
+.wise-total-row {
+    border-top: 2px dashed #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+    font-weight: 800;
+    font-size: 1.25em;
+    color: #d35400;
+}
+.wise-warning {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: #856404;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 10px;
+    display: none;
+}
+.wise-facture-footer {
+    font-size: 0.78em;
+    color: #888;
+    text-align: center;
+    margin-top: 14px;
+    font-style: italic;
+    border-top: 1px solid #f0f0f0;
+    padding-top: 10px;
+}
+
+/* Natcash unique pèman */
+.natcash-block {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 12px;
+    padding: 18px;
+    margin: 22px auto 0 auto;
+    text-align: center;
+}
+.natcash-block h4 {
+    margin: 0 0 14px 0;
+    font-size: 0.92em;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+.natcash-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #1a1f26, #0f1318);
+    border: 1.5px solid rgba(0,185,255,0.35);
+    border-radius: 50px;
+    padding: 12px 22px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1em;
+    box-shadow: 0 4px 14px rgba(0,185,255,0.15);
+}
+.natcash-pill img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; }
+.natcash-name-badge {
+    background: rgba(0,185,255,0.1);
+    border: 1px solid rgba(0,185,255,0.25);
+    border-radius: 8px;
+    padding: 8px 14px;
+    margin-top: 12px;
+    font-size: 0.82em;
+    color: rgba(255,255,255,0.65);
+    display: inline-block;
+}
+.natcash-name-badge strong { color: #00b9ff; font-size: 1.05em; }
+
+/* Agent section */
+.wise-agent-section {
+    text-align: center;
+    margin-top: 24px;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.wise-agent-img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px solid var(--wise-teal);
+    object-fit: cover;
+}
+.wise-agent-name {
+    color: #ffffff;
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 1em;
+}
+.wise-agent-label { color: #ff99cc; font-size: 0.85em; font-weight: 600; margin-bottom: 12px; }
+
+/* Frais modal (Wise) */
+#fraisModal {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.82); z-index: 1000; justify-content: center; align-items: center;
+}
+#fraisModal .frais-modal-content {
+    background: var(--wise-dark); padding: 24px; border-radius: 15px; width: 85%;
+    max-width: 400px; border: 2px solid var(--wise-teal);
+}
+#fraisModal .frais-modal-content h2 { color: var(--wise-teal); text-align: center; margin-top: 0; font-size: 1.1em; }
+#fraisModal ul { list-style: none; padding: 0; text-align: left; color: #e0e0e0; }
+#fraisModal ul li {
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.92em;
+}
+#fraisModal ul li:last-child { border-bottom: none; }
+.frais-close-btn {
+    background: var(--wise-teal); color: white; border: none; padding: 13px 22px;
+    border-radius: 30px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 14px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
 
 /* ===== FOOTER ===== */
 #main-footer {
@@ -185,111 +463,230 @@ body {
 </head>
 <body>
 
-<!-- ===== AKÒDYON ===== -->
-<div class="intro-section">
-    <div class="slogan-top">
-        "Kote ti monnen w ap travay jodi a, vin gwo kòb pou reponn a emergency w demen!"
-    </div>
-
-    <div class="accordion-item">
-        <button class="accordion-header">
-            Kisa sistèm sa ye ? <span class="material-icons">expand_more</span>
-        </button>
-        <div class="accordion-content">
-            <p>Sistèm <strong>LCD Epargne Kwasans</strong> se yon inovasyon sou platfòm Les Cayes Dropshipping lan ki pèmèt kliyan an kapab kite "<strong>monnen</strong> l gen nan sèvis lan <strong>fè pitit</strong>", olye l achte sirèt oswa mete l pèdi nan bous li.</p>
-        </div>
-    </div>
-
-    <div class="accordion-item">
-        <button class="accordion-header">
-            Nan ki objektif ? <span class="material-icons">expand_more</span>
-        </button>
-        <div class="accordion-content">
-            <p>Se yon fason pou nou di <strong>"mèsi" pou fidelite w</strong>, pandan nap chèche fasilite w reponn a lòt fakti koli w.</p>
-        </div>
-    </div>
-
-    <div class="accordion-item">
-        <button class="accordion-header">
-            Kòman sa fonksyone ? <span class="material-icons">expand_more</span>
-        </button>
-        <div class="accordion-content">
-            <p>
-                • <strong>Kredi:</strong> Algorit sa se pou sèlman kliyan ki gen monnen nan men n. LCD baw yon kòd valid par imel pou aktive lansman an.<br><br>
-                • <strong>Kwasans:</strong> Chak 30 jou ou ka mete lajan w pran valè sou platfòm lan. Paregzanp 1 goud gen posiblite pou arondi l a 25 goud.<br><br>
-                • <strong>Retrè:</strong> Sa se just yon algorit kap travay monnen w lan pou arondi l piwo. Yon fwa ke tan an fini, ou voye kaptidekran an pou n kontablize l pou ou. Tout se fait par email.
-            </p>
-        </div>
-    </div>
+<!-- ===== NAVIGATION ONGLETS ===== -->
+<div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('wise')" id="tab-wise">
+        <span class="material-icons">credit_card</span> Sèvis rechaj Wise
+    </button>
+    <button class="tab-btn" onclick="switchTab('epargne')" id="tab-epargne">
+        <span class="material-icons">trending_up</span> Epay kwasans
+    </button>
 </div>
 
-<!-- ===== TRADING CARD ===== -->
-<section class="trading-card">
-    <div class="trading-header">
-        <p class="trading-title">LCD / EPARGNE KWASANS</p>
-        <span id="live-indicator" style="font-size:0.7em; color:#848e9c; display:flex; align-items:center; gap:5px;">
-            <span id="live-dot" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#555; flex-shrink:0;"></span>
-            LIVE
-        </span>
-    </div>
+<!-- ============================================================ -->
+<!-- SECTION 1 : SÈVIS RECHAJ WISE (afiche pa defo)             -->
+<!-- ============================================================ -->
+<div id="section-wise" class="tab-section active">
+    <div class="wise-container">
 
-    <div id="trading-chart">
-        <canvas id="growthChart"></canvas>
-    </div>
+        <div class="wise-header-section">
+            <h1 class="wise-main-title">Sèvis rechaj Wise</h1>
+            <p class="wise-subtitle">Rechaje kat Wise ou a pi bon taux dola sou mache a.</p>
+        </div>
 
-    <div class="money-counter-engine">
-        <div class="counter-label">VALÈ AKTYÈL</div>
-        <div class="counter-main">
-            <span id="counter-int">0</span><span class="counter-decimals">.<span id="counter-dec">000000</span></span>
-            <span style="font-size:0.3em; color:#848e9c;"> HTG</span>
+        <!-- Kat enfòmasyon -->
+        <div class="wise-pricing-card">
+            <div class="wise-card-header">Rechaje kat Wise ou</div>
+            <div class="wise-card-body">
+                <div class="wise-check-item">
+                    <span class="material-icons">check</span>
+                    <span>Nou aksepte pèman Natcash sèlman.</span>
+                </div>
+                <div class="wise-check-item">
+                    <span class="material-icons">check</span>
+                    <span>Rechaj minimòm : <strong>50$</strong></span>
+                </div>
+                <div class="wise-check-item">
+                    <span class="material-icons">check</span>
+                    <span>Rechaje kat ou nan mwens ke 5 h!</span>
+                </div>
+            </div>
+            <div class="wise-card-footer">
+                <span class="wise-current-price">Taux : 132 HTG / $</span>
+            </div>
+        </div>
+
+        <!-- Simulatè kalkil -->
+        <div class="wise-calculator">
+            <img src="lescayesdropshipping.png" class="wise-watermark" alt="LCD">
+
+            <div class="wise-facture-header">
+                <h3>Kalkil pèman</h3>
+                <p style="font-size:0.73em; color:var(--usdt-green); margin:4px 0 8px 0; font-weight:700;">
+                    Verifye frè rechaj yo nan bouton sa
+                </p>
+                <span class="material-icons wise-info-btn" onclick="toggleFraisModal()">payments</span>
+            </div>
+
+            <div class="wise-input-group">
+                <p class="wise-input-label">Kantite dola w bezwen sou kat ou :</p>
+                <input type="number" id="wiseUsdAmount" placeholder="Minimòm 50$..." oninput="calculateWiseTotal()">
+            </div>
+
+            <div id="wiseWarning" class="wise-warning">
+                ⚠️ Minimòm rechaj se 50$. Antre yon montan egal oswa siperyè a 50$.
+            </div>
+
+            <div id="wiseInvoice">
+                <div class="wise-result-row"><span>Kantite mande :</span> <span id="wResDola">—</span></div>
+                <div class="wise-result-row"><span>Frè sèvis :</span> <span id="wResFrais">—</span></div>
+                <div class="wise-result-row"><span>Taux afiche :</span> <span>132 HTG / $</span></div>
+                <div class="wise-result-row wise-total-row">
+                    <span>Total pou peye :</span> <span id="wHtgTotal">— HTG</span>
+                </div>
+                <div class="wise-facture-footer">
+                    Pran yon kaptidekran epi voye l bay sèvis asistans pou konfime.
+                </div>
+            </div>
+        </div>
+
+        <!-- Natcash — sèl mwayen pèman -->
+        <div class="natcash-block">
+            <h4>Sèl mwayen pèman aksepte</h4>
+            <div class="natcash-pill">
+                <img src="natcash1.png" alt="Natcash">
+                <span>Natcash &nbsp;·&nbsp; +509 3560-8869</span>
+            </div>
+            <div class="natcash-name-badge">
+                Non sou kont lan : <strong>Les Cayes Dropshipping</strong>
+            </div>
+        </div>
+
+        <!-- Agent -->
+        <div class="wise-agent-section">
+            <p class="wise-agent-label">Kontakte ajan sila pou rechaje kat ou.</p>
+            <a href="https://wa.me/50935608869">
+                <img src="LCD.jpg" alt="Sèvis asistans LCD" class="wise-agent-img">
+            </a>
+            <p class="wise-agent-name">Sèvis asistans</p>
+        </div>
+
+    </div>
+</div><!-- fin #section-wise -->
+
+<!-- ============================================================ -->
+<!-- SECTION 2 : EPAY KWASANS (ansyen kontni)                   -->
+<!-- ============================================================ -->
+<div id="section-epargne" class="tab-section">
+
+    <!-- AKÒDYON -->
+    <div class="intro-section">
+        <div class="slogan-top">
+            "Kote ti monnen w ap travay jodi a, vin gwo kòb pou reponn a emergency w demen!"
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                Kisa sistèm sa ye ? <span class="material-icons">expand_more</span>
+            </button>
+            <div class="accordion-content">
+                <p>Sistèm <strong>LCD Epargne Kwasans</strong> se yon inovasyon sou platfòm Les Cayes Dropshipping lan ki pèmèt kliyan an kapab kite "<strong>monnen</strong> l gen nan sèvis lan <strong>fè pitit</strong>", olye l achte sirèt oswa mete l pèdi nan bous li.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                Nan ki objektif ? <span class="material-icons">expand_more</span>
+            </button>
+            <div class="accordion-content">
+                <p>Se yon fason pou nou di <strong>"mèsi" pou fidelite w</strong>, pandan nap chèche fasilite w reponn a lòt fakti koli w.</p>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <button class="accordion-header">
+                Kòman sa fonksyone ? <span class="material-icons">expand_more</span>
+            </button>
+            <div class="accordion-content">
+                <p>
+                    • <strong>Kredi:</strong> Algorit sa se pou sèlman kliyan ki gen monnen nan men n. LCD baw yon kòd valid par imel pou aktive lansman an.<br><br>
+                    • <strong>Kwasans:</strong> Chak 30 jou ou ka mete lajan w pran valè sou platfòm lan. Paregzanp 1 goud gen posiblite pou arondi l a 25 goud.<br><br>
+                    • <strong>Retrè:</strong> Sa se just yon algorit kap travay monnen w lan pou arondi l piwo. Yon fwa ke tan an fini, ou voye kaptidekran an pou n kontablize l pou ou. Tout se fait par email.
+                </p>
+            </div>
         </div>
     </div>
 
-    <img src="lescayesdropshipping.png" class="trading-watermark" id="watermark-specimen">
+    <!-- TRADING CARD -->
+    <section class="trading-card">
+        <div class="trading-header">
+            <p class="trading-title">LCD / EPARGNE KWASANS</p>
+            <span id="live-indicator" style="font-size:0.7em; color:#848e9c; display:flex; align-items:center; gap:5px;">
+                <span id="live-dot" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#555; flex-shrink:0;"></span>
+                LIVE
+            </span>
+        </div>
 
-    <div id="setup-area" class="trading-form">
-        <input type="text" id="code-input" class="trading-input" placeholder="Antre kòd LCD ou a">
-        <input type="number" id="amount-input" class="trading-input" placeholder="Kantite monnen (HTG)">
-        <button id="start-btn" class="btn-trade btn-green">Depoze monnen an</button>
+        <div id="trading-chart">
+            <canvas id="growthChart"></canvas>
+        </div>
+
+        <div class="money-counter-engine">
+            <div class="counter-label">VALÈ AKTYÈL</div>
+            <div class="counter-main">
+                <span id="counter-int">0</span><span class="counter-decimals">.<span id="counter-dec">000000</span></span>
+                <span style="font-size:0.3em; color:#848e9c;"> HTG</span>
+            </div>
+        </div>
+
+        <img src="lescayesdropshipping.png" class="trading-watermark" id="watermark-specimen">
+
+        <div id="setup-area" class="trading-form">
+            <input type="text" id="code-input" class="trading-input" placeholder="Antre kòd LCD ou a">
+            <input type="number" id="amount-input" class="trading-input" placeholder="Kantite monnen (HTG)">
+            <button id="start-btn" class="btn-trade btn-green">Depoze monnen an</button>
+        </div>
+
+        <div id="active-area" style="display:none; margin-top:20px;">
+            <button id="status-btn" class="btn-trade scintillant" style="width:100%;">An kous...</button>
+            <p id="timer-label" style="text-align:center; color:#848e9c; font-size:0.8em; margin-top:8px;"></p>
+        </div>
+    </section>
+
+    <!-- BOUTON EMAIL -->
+    <div class="email-contact-block">
+        <p>Ou vle ajoute kredi w genyen oswa w gen kesyon sou sa?</p>
+        <a href="mailto:lescayesdropshipping@gmail.com?subject=Asistans%20Tranzaksyon%20LCD">
+            <span class="material-icons" style="font-size:18px;">email</span>
+            Kontakte imel sistèm lan
+        </a>
     </div>
 
-    <div id="active-area" style="display:none; margin-top:20px;">
-        <button id="status-btn" class="btn-trade scintillant" style="width:100%;">An kous...</button>
-        <p id="timer-label" style="text-align:center; color:#848e9c; font-size:0.8em; margin-top:8px;"></p>
+    <!-- OPSYON PÈMAN (Natcash sèlman) -->
+    <div id="payment-info-container">
+        <h3 style="text-align:center; font-size:1em; margin-top:0;">Mwayen pèman aksepte :</h3>
+        <div class="payment-option" data-type="Natcash">
+            <img src="natcash1.png" alt="Natcash"> <p>Natcash</p>
+        </div>
     </div>
-</section>
 
-<!-- ===== BOUTON EMAIL (anba trading-card, anvan pèman) ===== -->
-<div class="email-contact-block">
-    <p>Ou vle ajoute kredi w genyen oswa w' gen kesyon sou sa?</p>
-    <a href="mailto:lescayesdropshipping@gmail.com?subject=Asistans%20Tranzaksyon%20LCD">
-        <span class="material-icons" style="font-size:18px;">email</span>
-        Kontakte imel sistèm lan
-    </a>
-</div>
+    <!-- MODAL PÈMAN -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn-modal">&times;</span>
+            <h3 id="modal-title">Pèman</h3>
+            <p id="modal-instructions" style="margin:10px 0;"></p>
+            <p id="modal-details" style="font-weight:bold; font-size:1.8em; color:var(--binance-yellow); margin:15px 0; letter-spacing:2px;"></p>
+            <p style="font-size:0.8em; color:#888;">Non kont: <strong>Les Cayes Dropshipping</strong></p>
+        </div>
+    </div>
 
-<!-- ===== OPSYON PÈMAN ===== -->
-<div id="payment-info-container">
-    <h3 style="text-align:center; font-size:1em;">Mwayen pi kouran kliyan yo fè tranzaksyon:</h3>
-    <div class="payment-option" data-type="Natcash">
-        <img src="natcash1.png" alt="Natcash"> <p>Natcash</p>
-    </div>
-    <div class="payment-option" data-type="MonCash">
-        <img src="img0.png" alt="Moncash"> <p>Moncash</p>
-    </div>
-    <div class="payment-option" data-type="Sogebank">
-        <img src="img6.png" alt="Sogebank"> <p>Sogebank (Fakti)</p>
-    </div>
-</div>
+</div><!-- fin #section-epargne -->
 
-<!-- ===== MODAL PÈMAN ===== -->
-<div id="payment-modal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn">&times;</span>
-        <h3 id="modal-title">Pèman</h3>
-        <p id="modal-instructions" style="margin:10px 0;"></p>
-        <p id="modal-details" style="font-weight:bold; font-size:1.8em; color:var(--binance-yellow); margin:15px 0; letter-spacing:2px;"></p>
-        <p style="font-size:0.8em; color:#888;">Non kont: <strong>Kes* Ben*</strong></p>
+<!-- ===== MODAL FRAIS WISE ===== -->
+<div id="fraisModal" onclick="toggleFraisModal()">
+    <div class="frais-modal-content" onclick="event.stopPropagation()">
+        <h2>Frè ak taks 💸💳</h2>
+        <ul>
+            <li><span>20$ → 39$</span> <strong>4$</strong></li>
+            <li><span>40$ → 99$</span> <strong>7$</strong></li>
+            <li><span>100$ → 199$</span> <strong>10$</strong></li>
+            <li><span>200$ → 299$</span> <strong>15$</strong></li>
+            <li><span>300$ → 399$</span> <strong>20$</strong></li>
+            <li><span>400$ → 499$</span> <strong>16$</strong></li>
+            <li style="color: var(--wise-orange);"><span>500$ e plis</span> <strong>9%</strong></li>
+        </ul>
+        <button class="frais-close-btn" onclick="toggleFraisModal()">Dakò</button>
     </div>
 </div>
 
@@ -305,10 +702,19 @@ body {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 
-// ===================================================
-// AKÒDYON — fonksyone san DOMContentLoaded
-// paske script la anba HTML la, DOM deja prèt
-// ===================================================
+// =====================================================
+// NAVIGASYON ONGLETS
+// =====================================================
+function switchTab(tab) {
+    document.querySelectorAll('.tab-section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.getElementById('section-' + tab).classList.add('active');
+    document.getElementById('tab-' + tab).classList.add('active');
+}
+
+// =====================================================
+// AKÒDYON (epargne)
+// =====================================================
 document.querySelectorAll('.accordion-header').forEach(function(btn) {
     btn.addEventListener('click', function() {
         var item = btn.parentElement;
@@ -319,12 +725,76 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
     });
 });
 
-// ===================================================
-// TOUT LOJIK TRADING
-// ===================================================
+// =====================================================
+// WISE RECHAJ — ALGORITM KALKIL
+// Taux afiche kliyan: 132 HTG
+// Taux entèn (taxes inkliz): 150 HTG
+// =====================================================
+var WISE_TAUX_AFFICHE = 132;
+var WISE_TAUX_INTERNE = 150; // sèkrè — pa janm afiche
+
+function getWiseFrais(amount) {
+    if (amount < 20)  return 0;
+    if (amount <= 39) return 4;
+    if (amount <= 99) return 7;
+    if (amount <= 199) return 10;
+    if (amount <= 299) return 15;
+    if (amount <= 399) return 20;
+    if (amount <= 499) return 16;
+    return amount * 0.09;
+}
+
+function calculateWiseTotal() {
+    var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
+    var warning = document.getElementById('wiseWarning');
+    var invoice = document.getElementById('wiseInvoice');
+
+    // Bloke si mwens ke 50$
+    if (usd > 0 && usd < 50) {
+        warning.style.display = 'block';
+        invoice.style.opacity = '0.35';
+        document.getElementById('wResDola').textContent  = '—';
+        document.getElementById('wResFrais').textContent = '—';
+        document.getElementById('wHtgTotal').textContent = '— HTG';
+        return;
+    }
+
+    warning.style.display = 'none';
+    invoice.style.opacity = '1';
+
+    if (usd === 0) {
+        document.getElementById('wResDola').textContent  = '—';
+        document.getElementById('wResFrais').textContent = '—';
+        document.getElementById('wHtgTotal').textContent = '— HTG';
+        return;
+    }
+
+    var frais = getWiseFrais(usd);
+
+    document.getElementById('wResDola').textContent = usd.toFixed(2) + ' $';
+
+    if (usd >= 500) {
+        document.getElementById('wResFrais').textContent = frais.toFixed(2) + ' $ (9%)';
+    } else {
+        document.getElementById('wResFrais').textContent = frais.toFixed(2) + ' $';
+    }
+
+    // Cerveau algoritm: (usd + frais) × 150 HTG
+    var totalHTG = (usd + frais) * WISE_TAUX_INTERNE;
+    document.getElementById('wHtgTotal').textContent = Math.ceil(totalHTG).toLocaleString() + ' HTG';
+}
+
+function toggleFraisModal() {
+    var m = document.getElementById('fraisModal');
+    m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+}
+
+// =====================================================
+// TOUT LOJIK TRADING (epargne)
+// =====================================================
 (function() {
     var CODES_VALIDES = ["LCD01a", "LCD5#1", "LCD#2A", "LCD2$", "LCD$4Y"];
-    var TOTAL_MS      = 30 * 24 * 60 * 60 * 1000; // 30 jou an milisegond
+    var TOTAL_MS      = 30 * 24 * 60 * 60 * 1000;
 
     var setupArea  = document.getElementById('setup-area');
     var activeArea = document.getElementById('active-area');
@@ -338,9 +808,6 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
     var liveTickInterval  = null;
     var growthChart       = null;
 
-    // -------------------------------------------------
-    // KALKIL GAIN selon montan investi
-    // -------------------------------------------------
     function calculerGain(montant) {
         if (montant >= 1   && montant <= 24)  return 25;
         if (montant >= 25  && montant <= 99)  return 100;
@@ -351,9 +818,6 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         return Math.ceil((montant + 1) / 100) * 100;
     }
 
-    // -------------------------------------------------
-    // LIVE DOT — gri=inaktif, wouj=aktif
-    // -------------------------------------------------
     function setLiveDot(active) {
         var dot = document.getElementById('live-dot');
         if (!dot) return;
@@ -366,47 +830,35 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         }
     }
 
-    // -------------------------------------------------
-    // COMPTEUR HTG — rafraîchi chak 80ms
-    // -------------------------------------------------
- function startCounter(investi, gain, dateDebut) {
-    var BOOST_MS = 60 * 1000; // 60 segond pou boost 3% la
-    clearInterval(animationInterval);
-    animationInterval = setInterval(function() {
-        var elapsed = Math.min(Date.now() - dateDebut, TOTAL_MS);
-        var current;
+    function startCounter(investi, gain, dateDebut) {
+        var BOOST_MS = 60 * 1000;
+        clearInterval(animationInterval);
+        animationInterval = setInterval(function() {
+            var elapsed = Math.min(Date.now() - dateDebut, TOTAL_MS);
+            var current;
+            if (elapsed < BOOST_MS) {
+                var boostProgress = elapsed / BOOST_MS;
+                var boostTarget   = investi * 1.03;
+                current = investi + (boostTarget - investi) * boostProgress;
+            } else {
+                var t = elapsed / TOTAL_MS;
+                current = investi + (gain - investi) * (1 - Math.exp(-3.5 * t));
+            }
+            var decimals = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
+            counterInt.textContent = Math.floor(current);
+            counterDec.textContent = decimals;
+        }, 80);
+    }
 
-        if (elapsed < BOOST_MS) {
-            // 60 premye segond: monte rapidman 3% 
-            var boostProgress = elapsed / BOOST_MS;
-            var boostTarget   = investi * 1.03;
-            current = investi + (boostTarget - investi) * boostProgress;
-        } else {
-            // Apre 60 segond: kwasans normal jiska gain final
-            var t = elapsed / TOTAL_MS;
-            current = investi + (gain - investi) * (1 - Math.exp(-3.5 * t));
-        }
-
-        var decimals = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
-        counterInt.textContent = Math.floor(current);
-        counterDec.textContent = decimals;
-    }, 80);
-}
-    // -------------------------------------------------
-    // GRAFIK REYÈL (sesyon aktif)
-    // Pwen or = jou reyèl ki pase selon dateDebut
-    // -------------------------------------------------
     function renderChart(investi, gain, dateDebut) {
         var canvas = document.getElementById('growthChart');
         if (!canvas) return;
         var ctx = canvas.getContext('2d');
-
         if (growthChart)      { growthChart.destroy(); growthChart = null; }
         if (liveTickInterval) { clearInterval(liveTickInterval); liveTickInterval = null; }
 
         var POINTS = 30;
         var labels = [], data = [];
-
         for (var i = 0; i <= POINTS; i++) {
             var t     = i / POINTS;
             var curve = investi + (gain - investi) * (1 - Math.exp(-3.5 * t));
@@ -414,14 +866,12 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
             data.push(+(curve + noise).toFixed(2));
             labels.push('J' + i);
         }
-        data[0]      = investi; // J0 = montant egzak
-        data[POINTS] = gain;    // J30 = gain egzak
+        data[0]      = investi;
+        data[POINTS] = gain;
 
-        // Jou reyèl ki pase
         var elapsed    = Math.min(Date.now() - dateDebut, TOTAL_MS);
         var jouPase    = elapsed / (24 * 60 * 60 * 1000);
         var currentIdx = Math.min(Math.floor(jouPase), POINTS);
-
         var dataPast   = data.slice(0, currentIdx + 1);
         var dataFuture = new Array(currentIdx).fill(null).concat(data.slice(currentIdx));
         var ptRadius   = dataPast.map(function(_, i) { return i === dataPast.length - 1 ? 8 : 0; });
@@ -436,80 +886,54 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
                         data: dataPast,
                         borderColor: '#0ecb81',
                         backgroundColor: 'rgba(14,203,129,0.08)',
-                        borderWidth: 2.5,
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: ptRadius,
-                        pointBackgroundColor: '#f0b90b',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2
+                        borderWidth: 2.5, fill: true, tension: 0.4,
+                        pointRadius: ptRadius, pointBackgroundColor: '#f0b90b',
+                        pointBorderColor: '#fff', pointBorderWidth: 2
                     },
                     {
-                        label: 'Trajektwa',
-                        data: dataFuture,
-                        borderColor: 'rgba(255,255,255,0.15)',
-                        borderWidth: 1.5,
-                        borderDash: [5, 5],
-                        fill: false,
-                        tension: 0.4,
-                        pointRadius: 0
+                        label: 'Trajektwa', data: dataFuture,
+                        borderColor: 'rgba(255,255,255,0.15)', borderWidth: 1.5,
+                        borderDash: [5, 5], fill: false, tension: 0.4, pointRadius: 0
                     }
                 ]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, maintainAspectRatio: false,
                 animation: { duration: 700, easing: 'easeInOutQuart' },
                 plugins: {
                     legend: { display: false },
                     tooltip: { callbacks: { label: function(c) { return c.parsed.y !== null ? c.parsed.y.toFixed(2) + ' HTG' : ''; } } }
                 },
                 scales: {
-                    x: {
-                        ticks: {
-                            color: '#848e9c', font: { size: 8 }, maxRotation: 0,
-                            callback: function(val, idx) { return idx % 5 === 0 ? labels[idx] : ''; }
-                        },
-                        grid: { color: 'rgba(59,61,67,0.25)' }
-                    },
-                    y: {
-                        ticks: { color: '#848e9c', font: { size: 8 }, callback: function(v) { return v.toFixed(0) + ' G'; } },
-                        grid: { color: 'rgba(59,61,67,0.25)' }
-                    }
+                    x: { ticks: { color: '#848e9c', font: { size: 8 }, maxRotation: 0, callback: function(val, idx) { return idx % 5 === 0 ? labels[idx] : ''; } }, grid: { color: 'rgba(59,61,67,0.25)' } },
+                    y: { ticks: { color: '#848e9c', font: { size: 8 }, callback: function(v) { return v.toFixed(0) + ' G'; } }, grid: { color: 'rgba(59,61,67,0.25)' } }
                 }
             }
         });
 
-        // Live tick — vibrayon chak 3 segond pou efè mache vivan
         liveTickInterval = setInterval(function() {
             if (!growthChart) return;
             var ds = growthChart.data.datasets[0];
             if (!ds.data.length) return;
-            var el    = Math.min(Date.now() - dateDebut, TOTAL_MS);
-            var tNow  = el / TOTAL_MS;
-            var base  = investi + (gain - investi) * (1 - Math.exp(-3.5 * tNow));
+            var el   = Math.min(Date.now() - dateDebut, TOTAL_MS);
+            var tNow = el / TOTAL_MS;
+            var base = investi + (gain - investi) * (1 - Math.exp(-3.5 * tNow));
             var noise = (Math.random() - 0.48) * base * 0.006;
             ds.data[ds.data.length - 1] = +(base + noise).toFixed(2);
             growthChart.update('none');
         }, 3000);
     }
 
-    // -------------------------------------------------
-    // GRAFIK DEMO (pa gen sesyon)
-    // Montre tout 30 jou konplè pou moun wè egzanp la
-    // -------------------------------------------------
     function renderDemoChart() {
         var canvas = document.getElementById('growthChart');
         if (!canvas) return;
         var ctx = canvas.getContext('2d');
-
         if (growthChart)      { growthChart.destroy(); growthChart = null; }
         if (liveTickInterval) { clearInterval(liveTickInterval); liveTickInterval = null; }
 
         var POINTS = 30;
         var invDem = 300, gainDem = 600;
         var labels = [], data = [];
-
         for (var i = 0; i <= POINTS; i++) {
             var t     = i / POINTS;
             var curve = invDem + (gainDem - invDem) * (1 - Math.exp(-3.5 * t));
@@ -517,51 +941,24 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
             data.push(+(curve + noise).toFixed(2));
             labels.push('J' + i);
         }
-        data[0]      = invDem;
-        data[POINTS] = gainDem;
+        data[0] = invDem; data[POINTS] = gainDem;
 
         growthChart = new Chart(ctx, {
             type: 'line',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Egzanp',
-                    data: data,
-                    borderColor: 'rgba(14,203,129,0.35)',
-                    backgroundColor: 'rgba(14,203,129,0.04)',
-                    borderWidth: 1.5,
-                    borderDash: [4, 4],
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 0
-                }]
-            },
+            data: { labels: labels, datasets: [{ label: 'Egzanp', data: data, borderColor: 'rgba(14,203,129,0.35)', backgroundColor: 'rgba(14,203,129,0.04)', borderWidth: 1.5, borderDash: [4,4], fill: true, tension: 0.4, pointRadius: 0 }] },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: { duration: 700 },
+                responsive: true, maintainAspectRatio: false, animation: { duration: 700 },
                 plugins: { legend: { display: false }, tooltip: { enabled: false } },
                 scales: {
-                    x: {
-                        ticks: {
-                            color: '#848e9c', font: { size: 8 }, maxRotation: 0,
-                            callback: function(val, idx) { return idx % 5 === 0 ? labels[idx] : ''; }
-                        },
-                        grid: { color: 'rgba(59,61,67,0.25)' }
-                    },
-                    y: {
-                        ticks: { color: '#848e9c', font: { size: 8 }, callback: function(v) { return v.toFixed(0) + ' G'; } },
-                        grid: { color: 'rgba(59,61,67,0.25)' }
-                    }
+                    x: { ticks: { color: '#848e9c', font: { size: 8 }, maxRotation: 0, callback: function(val, idx) { return idx % 5 === 0 ? labels[idx] : ''; } }, grid: { color: 'rgba(59,61,67,0.25)' } },
+                    y: { ticks: { color: '#848e9c', font: { size: 8 }, callback: function(v) { return v.toFixed(0) + ' G'; } }, grid: { color: 'rgba(59,61,67,0.25)' } }
                 }
             }
         });
 
-        // Compteur = 0 nan mòd demo
         counterInt.textContent = '0';
         counterDec.textContent = '000000';
 
-        // Ti mouvman vivan menm nan demo
         liveTickInterval = setInterval(function() {
             if (!growthChart) return;
             var ds  = growthChart.data.datasets[0];
@@ -573,32 +970,21 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         }, 3000);
     }
 
-    // -------------------------------------------------
-    // TCHEKE ESTATI SESYON nan localStorage
-    // -------------------------------------------------
     function checkStatus() {
         var session = null;
         try { session = JSON.parse(localStorage.getItem('lcd_trading_session')); } catch(e) {}
 
-        if (!session) {
-            // Mòd demo — pa gen sesyon aktif
-            setLiveDot(false);
-            renderDemoChart();
-            return;
-        }
+        if (!session) { setLiveDot(false); renderDemoChart(); return; }
 
-        // Sesyon egziste — kache fòm la, montre bouton estati
         setLiveDot(true);
         setupArea.style.display  = 'none';
         activeArea.style.display = 'block';
 
         var now = Date.now();
-
         renderChart(session.investi, session.gain, session.dateDebut);
         startCounter(session.investi, session.gain, session.dateDebut);
 
         if (now < session.dateFin) {
-            // Toujou an kous
             statusBtn.className   = 'btn-trade btn-orange scintillant';
             statusBtn.textContent = 'Kite monnen w fè pitit...';
             statusBtn.style.width = '100%';
@@ -606,7 +992,6 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
             var jouReste = Math.ceil((session.dateFin - now) / (1000 * 60 * 60 * 24));
             timerLabel.textContent = 'Jou ' + jouPase + ' / 30 — Kòb ou ap disponib nan ' + jouReste + ' jou';
         } else {
-            // 30 jou fini — montre watermark ak bouton rekipere
             setLiveDot(false);
             statusBtn.className   = 'btn-trade btn-green';
             statusBtn.textContent = 'REKIPERE LAJAN W';
@@ -620,33 +1005,19 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         }
     }
 
-    // -------------------------------------------------
-    // BOUTON DEPOZE
-    // -------------------------------------------------
     document.getElementById('start-btn').addEventListener('click', function() {
         var code    = document.getElementById('code-input').value.trim();
         var montant = parseFloat(document.getElementById('amount-input').value);
         var codesUtilises = [];
         try { codesUtilises = JSON.parse(localStorage.getItem('lcd_codes_utilises')) || []; } catch(e) {}
 
-        if (!CODES_VALIDES.includes(code)) {
-            alert('Ou pa gen kredi nan sèvis lan.'); return;
-        }
-        if (codesUtilises.includes(code)) {
-            alert('Kòd sa a itilize deja!'); return;
-        }
-        if (isNaN(montant) || montant <= 0) {
-            alert('Antre yon montan ki valid.'); return;
-        }
+        if (!CODES_VALIDES.includes(code))    { alert('Ou pa gen kredi nan sèvis lan.'); return; }
+        if (codesUtilises.includes(code))     { alert('Kòd sa a itilize deja!'); return; }
+        if (isNaN(montant) || montant <= 0)   { alert('Antre yon montan ki valid.'); return; }
 
         var gain    = calculerGain(montant);
         var now     = Date.now();
-        var session = {
-            investi:   montant,
-            gain:      gain,
-            dateDebut: now,
-            dateFin:   now + TOTAL_MS
-        };
+        var session = { investi: montant, gain: gain, dateDebut: now, dateFin: now + TOTAL_MS };
 
         codesUtilises.push(code);
         localStorage.setItem('lcd_codes_utilises', JSON.stringify(codesUtilises));
@@ -654,9 +1025,6 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         location.reload();
     });
 
-    // -------------------------------------------------
-    // BOUTON REKIPERE
-    // -------------------------------------------------
     document.getElementById('status-btn').addEventListener('click', function() {
         if (statusBtn.classList.contains('btn-green')) {
             var s = null;
@@ -669,13 +1037,9 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         }
     });
 
-    // -------------------------------------------------
-    // MODAL PÈMAN — klike sou opsyon → montre detay
-    // -------------------------------------------------
+    // Modal pèman (epargne - Natcash sèlman)
     var paymentData = {
-        'Natcash':  { title: 'Natcash',         instructions: 'Voye lajan an sou nimewo sa a:',                details: '+509 35 60 88 69' },
-        'MonCash':  { title: 'Moncash',          instructions: 'Voye lajan an sou nimewo sa a:',                details: '+509 31 01 39 68' },
-        'Sogebank': { title: 'Sogebank (Fakti)', instructions: 'Fè transfè sou nimewo kont an goud sa a:',     details: '25-0149-242-1'    }
+        'Natcash': { title: 'Natcash', instructions: 'Voye lajan an sou nimewo sa a:', details: '+509 35 60 88 69' }
     };
 
     document.querySelectorAll('.payment-option').forEach(function(option) {
@@ -690,7 +1054,7 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         });
     });
 
-    document.querySelector('.close-btn').addEventListener('click', function() {
+    document.querySelector('.close-btn-modal').addEventListener('click', function() {
         document.getElementById('payment-modal').style.display = 'none';
     });
 
@@ -699,15 +1063,12 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
         if (e.target === modal) modal.style.display = 'none';
     });
 
-    // -------------------------------------------------
-    // LANSE — tcheke sesyon lè paj la chaje
-    // -------------------------------------------------
     checkStatus();
+})();
 
-})(); 
-    localStorage.setItem('transaction_visited', 'true');
-    var b = document.getElementById('new-badge');
-    if (b) b.style.display = 'none';
+localStorage.setItem('transaction_visited', 'true');
+var b = document.getElementById('new-badge');
+if (b) b.style.display = 'none';
 </script>
 </body>
 </html>
