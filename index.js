@@ -562,24 +562,21 @@ function calcLCDDates() {
     var ramase = new Date(y, m, 11);
     while (ramase.getDay() !== 6) ramase.setDate(ramase.getDate() + 1);
 
-    // Départ : lundi suivant le samedi de chargement
+    // Départ : lundi suivant le chargement
     var depa = new Date(ramase);
-    depa.setDate(depa.getDate() + 2); // sam → lun
+    depa.setDate(depa.getDate() + 2);
 
     // Date limite commande : veille du chargement
     var limiteCmd = new Date(ramase);
     limiteCmd.setDate(limiteCmd.getDate() - 1);
 
-    // Disponibilité : premier dimanche >= depa + 6, dans le même mois
+    // Disponibilité : premier dimanche >= depa + 10, dans le même mois
     var minDisp = new Date(depa);
-    minDisp.setDate(minDisp.getDate() + 6);
+    minDisp.setDate(minDisp.getDate() + 10);
     var disponib = new Date(minDisp);
-    // Aller au dimanche suivant si pas déjà un dimanche
     while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() + 1);
-    // Garantir même mois
     if (disponib.getMonth() !== m) {
-      // Reculer au dernier dimanche du mois
-      disponib = new Date(y, m + 1, 0); // dernier jour du mois
+      disponib = new Date(y, m + 1, 0);
       while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() - 1);
     }
 
@@ -590,7 +587,6 @@ function calcLCDDates() {
   var m = today.getMonth();
   var dates = computeForMonth(y, m);
 
-  // Si on est après la disponibilité, passer au mois suivant
   if (today > dates.disponib) {
     m = m + 1;
     if (m > 11) { m = 0; y++; }
@@ -610,7 +606,7 @@ function initLCDTrackingBloc() {
   var el1 = document.getElementById('ltb-date-1');
   var el2 = document.getElementById('ltb-date-2');
   var el3 = document.getElementById('ltb-date-3');
-  // Étape 0 : date limite pour passer commande (veille du chargement)
+  // Étape 0 : date limite commande (veille du chargement)
   var moisDebut = KT_MOIS[dates.ramase.getMonth()];
   if (el0) el0.textContent = '1 ' + moisDebut + ' — ' + formatDateKT(dates.limiteCmd);
   if (el1) el1.textContent = formatDateKT(dates.ramase);
@@ -696,15 +692,25 @@ window.initPulsingDots = initPulsingDots;
 // ── GALERIE LIVREZON ─────────────────────────────────────────────
 // Données okazyon pasé — mete ajou chak mwa
 var LCD_HIST = {
-  depa     : '15 Avril 2026',
-  disponib : '26 Avril 2026',
-  jou      : '11'
+  depa     : '16 Me 2026',
+  disponib : '31 Me 2026',
+  jou      : '13'
 };
 
 window.ouvrirGalerie = function () {
   var modal = document.getElementById('galerie-modal');
   var grid  = document.getElementById('galerie-grid');
   if (!modal || !grid) return;
+
+  // Phrase d'annonce automatique
+  var annonceDates  = calcLCDDates();
+  var annonceLimite = annonceDates.limiteCmd;
+  var annonceJour   = annonceLimite.getDate();
+  var annonceMois   = KT_MOIS[annonceLimite.getMonth()];
+  var annonceEl     = document.getElementById('gal-annonce');
+  if (annonceEl) {
+    annonceEl.textContent = 'Plase kòmand ou yo pou yo rive nan adrès nou avan le "' + annonceJour + ' ' + annonceMois + '" nan mwa a pou asire w koli w pati nan pwochen vwayaj la';
+  }
 
   // Injecter recap okazyon pasé
   var elDepa = document.getElementById('gal-hist-depa');
