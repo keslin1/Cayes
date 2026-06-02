@@ -300,19 +300,7 @@ body {
 }
 .wise-facture-header h3 { margin: 0 0 4px 0; color: #1a1f26; font-size: 1.05em; font-weight: 800; }
 
-@keyframes pulse-tax {
-    0%   { transform: scale(1); box-shadow: 0 0 0 0 rgba(38,161,123,0.7); }
-    5%   { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(38,161,123,0); }
-    10%  { transform: scale(1); box-shadow: 0 0 0 0 rgba(38,161,123,0); }
-    100% { transform: scale(1); }
-}
-.wise-info-btn {
-    cursor: pointer; color: var(--usdt-green); font-size: 30px;
-    border: 2px solid var(--usdt-green); border-radius: 50%; padding: 4px;
-    display: inline-flex; align-items: center; justify-content: center;
-    animation: pulse-tax 8s infinite ease-in-out;
-    vertical-align: middle;
-}
+
 .wise-input-group input {
     width: 100%;
     background: #f9f9f9;
@@ -379,14 +367,13 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(135deg, #1a1f26, #0f1318);
-    border: 1.5px solid rgba(0,185,255,0.35);
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.18);
     border-radius: 50px;
     padding: 12px 22px;
     color: #fff;
     font-weight: 700;
     font-size: 1em;
-    box-shadow: 0 4px 14px rgba(0,185,255,0.15);
 }
 .natcash-pill img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; }
 .natcash-name-badge {
@@ -401,54 +388,9 @@ body {
 }
 .natcash-name-badge strong { color: #00b9ff; font-size: 1.05em; }
 
-/* Agent section */
-.wise-agent-section {
-    text-align: center;
-    margin-top: 24px;
-    padding: 20px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.08);
-}
-.wise-agent-img {
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    border: 3px solid var(--wise-teal);
-    object-fit: cover;
-}
-.wise-agent-name {
-    color: #ffffff;
-    margin-top: 10px;
-    font-weight: 700;
-    font-size: 1em;
-}
-.wise-agent-label { color: #ff99cc; font-size: 0.85em; font-weight: 600; margin-bottom: 12px; }
 
-/* Frais modal (Wise) */
-#fraisModal {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.82); z-index: 1000; justify-content: center; align-items: center;
-}
-#fraisModal .frais-modal-content {
-    background: var(--wise-dark); padding: 24px; border-radius: 15px; width: 85%;
-    max-width: 400px; border: 2px solid var(--wise-teal);
-}
-#fraisModal .frais-modal-content h2 { color: var(--wise-teal); text-align: center; margin-top: 0; font-size: 1.1em; }
-#fraisModal ul { list-style: none; padding: 0; text-align: left; color: #e0e0e0; }
-#fraisModal ul li {
-    padding: 8px 0;
-    border-bottom: 1px solid #333;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.92em;
-}
-#fraisModal ul li:last-child { border-bottom: none; }
-.frais-close-btn {
-    background: var(--wise-teal); color: white; border: none; padding: 13px 22px;
-    border-radius: 30px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 14px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-}
+
+
 
 /* ===== FOOTER ===== */
 #main-footer {
@@ -512,10 +454,6 @@ body {
 
             <div class="wise-facture-header">
                 <h3>Kalkil pèman</h3>
-                <p style="font-size:0.73em; color:var(--usdt-green); margin:4px 0 8px 0; font-weight:700;">
-                    Verifye frè rechaj yo nan bouton sa
-                </p>
-                <span class="material-icons wise-info-btn" onclick="toggleFraisModal()">payments</span>
             </div>
 
             <div class="wise-input-group">
@@ -552,14 +490,6 @@ body {
             </div>
         </div>
 
-        <!-- Agent -->
-        <div class="wise-agent-section">
-            <p class="wise-agent-label">Kontakte ajan sila pou rechaje kat ou.</p>
-            <a href="https://wa.me/50935608869">
-                <img src="LCD.jpg" alt="Sèvis asistans LCD" class="wise-agent-img">
-            </a>
-            <p class="wise-agent-name">Sèvis asistans</p>
-        </div>
 
     </div>
 </div><!-- fin #section-wise -->
@@ -673,22 +603,6 @@ body {
 
 </div><!-- fin #section-epargne -->
 
-<!-- ===== MODAL FRAIS WISE ===== -->
-<div id="fraisModal" onclick="toggleFraisModal()">
-    <div class="frais-modal-content" onclick="event.stopPropagation()">
-        <h2>Frè ak taks 💸💳</h2>
-        <ul>
-            <li><span>20$ → 39$</span> <strong>4$</strong></li>
-            <li><span>40$ → 99$</span> <strong>7$</strong></li>
-            <li><span>100$ → 199$</span> <strong>10$</strong></li>
-            <li><span>200$ → 299$</span> <strong>15$</strong></li>
-            <li><span>300$ → 399$</span> <strong>20$</strong></li>
-            <li><span>400$ → 499$</span> <strong>16$</strong></li>
-            <li style="color: var(--wise-orange);"><span>500$ e plis</span> <strong>9%</strong></li>
-        </ul>
-        <button class="frais-close-btn" onclick="toggleFraisModal()">Dakò</button>
-    </div>
-</div>
 
 <!-- ===== FOOTER ===== -->
 <footer id="main-footer">
@@ -728,21 +642,10 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
 // =====================================================
 // WISE RECHAJ — ALGORITM KALKIL
 // Taux afiche kliyan: 132 HTG
-// Taux entèn (taxes inkliz): 150 HTG
+// Frè sèvis: 18 HTG × chak dola (diferans 150 - 132)
 // =====================================================
 var WISE_TAUX_AFFICHE = 132;
-var WISE_TAUX_INTERNE = 150; // sèkrè — pa janm afiche
-
-function getWiseFrais(amount) {
-    if (amount < 20)  return 0;
-    if (amount <= 39) return 4;
-    if (amount <= 99) return 7;
-    if (amount <= 199) return 10;
-    if (amount <= 299) return 15;
-    if (amount <= 399) return 20;
-    if (amount <= 499) return 16;
-    return amount * 0.09;
-}
+var WISE_FRE_HTG_PAR_DOLA = 18; // sèkrè — pa janm afiche kòm taux
 
 function calculateWiseTotal() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
@@ -769,24 +672,15 @@ function calculateWiseTotal() {
         return;
     }
 
-    var frais = getWiseFrais(usd);
+    // Frè = 18 HTG × usd, converti en pourcentage du montant HTG affiché
+    var fraisHTG   = WISE_FRE_HTG_PAR_DOLA * usd;
+    var baseHTG    = WISE_TAUX_AFFICHE * usd;
+    var pct        = ((fraisHTG / baseHTG) * 100).toFixed(1);
+    var totalHTG   = baseHTG + fraisHTG; // = 150 × usd
 
-    document.getElementById('wResDola').textContent = usd.toFixed(2) + ' $';
-
-    if (usd >= 500) {
-        document.getElementById('wResFrais').textContent = frais.toFixed(2) + ' $ (9%)';
-    } else {
-        document.getElementById('wResFrais').textContent = frais.toFixed(2) + ' $';
-    }
-
-    // Cerveau algoritm: (usd + frais) × 150 HTG
-    var totalHTG = (usd + frais) * WISE_TAUX_INTERNE;
+    document.getElementById('wResDola').textContent  = usd.toFixed(2) + ' $';
+    document.getElementById('wResFrais').textContent = Math.round(fraisHTG).toLocaleString() + ' HTG (' + pct + '%)';
     document.getElementById('wHtgTotal').textContent = Math.ceil(totalHTG).toLocaleString() + ' HTG';
-}
-
-function toggleFraisModal() {
-    var m = document.getElementById('fraisModal');
-    m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
 }
 
 // =====================================================
