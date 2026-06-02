@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 163;
+let   baseLikes      = 245;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -555,26 +555,50 @@ function formatDateKT(d) {
 }
 
 function calcLCDDates() {
-  var now   = new Date();
-  var y     = now.getFullYear();
-  var m     = now.getMonth(); // 0-indexed
-
-  // Dates du mois courant
-  var ramase    = new Date(y, m, 15); // 15 du mois
-  var depa      = new Date(y, m, 18); // 18 du mois
-  var disponib  = getLastSaturdayOfMonth(y, m);
-
-  // Si le mois est terminé (on est après le dernier samedi), passer au suivant
   var today = new Date(); today.setHours(0,0,0,0);
-  if (today > disponib) {
-    m = m + 1;
-    if (m > 11) { m = 0; y++; }
-    ramase   = new Date(y, m, 15);
-    depa     = new Date(y, m, 18);
-    disponib = getLastSaturdayOfMonth(y, m);
+
+  function computeForMonth(y, m) {
+    // Chargement : premier samedi >= 11 du mois (entre le 11 et le 17)
+    var ramase = new Date(y, m, 11);
+    while (ramase.getDay() !== 6) ramase.setDate(ramase.getDate() + 1);
+
+    // Départ : lundi suivant le samedi de chargement
+    var depa = new Date(ramase);
+    depa.setDate(depa.getDate() + 2); // sam → lun
+
+    // Date limite commande : veille du chargement
+    var limiteCmd = new Date(ramase);
+    limiteCmd.setDate(limiteCmd.getDate() - 1);
+
+    // Disponibilité : premier dimanche >= depa + 6, dans le même mois
+    var minDisp = new Date(depa);
+    minDisp.setDate(minDisp.getDate() + 6);
+    var disponib = new Date(minDisp);
+    // Aller au dimanche suivant si pas déjà un dimanche
+    while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() + 1);
+    // Garantir même mois
+    if (disponib.getMonth() !== m) {
+      // Reculer au dernier dimanche du mois
+      disponib = new Date(y, m + 1, 0); // dernier jour du mois
+      while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() - 1);
+    }
+
+    return { ramase: ramase, depa: depa, disponib: disponib, limiteCmd: limiteCmd };
   }
 
-  return { ramase: ramase, depa: depa, disponib: disponib, today: today };
+  var y = today.getFullYear();
+  var m = today.getMonth();
+  var dates = computeForMonth(y, m);
+
+  // Si on est après la disponibilité, passer au mois suivant
+  if (today > dates.disponib) {
+    m = m + 1;
+    if (m > 11) { m = 0; y++; }
+    dates = computeForMonth(y, m);
+  }
+
+  dates.today = today;
+  return dates;
 }
 
 function initLCDTrackingBloc() {
@@ -586,9 +610,9 @@ function initLCDTrackingBloc() {
   var el1 = document.getElementById('ltb-date-1');
   var el2 = document.getElementById('ltb-date-2');
   var el3 = document.getElementById('ltb-date-3');
-  // Étape 0 : afficher la plage d'envoi "1 Mois à 15 Mois"
+  // Étape 0 : date limite pour passer commande (veille du chargement)
   var moisDebut = KT_MOIS[dates.ramase.getMonth()];
-  if (el0) el0.textContent = '1 ' + moisDebut + ' à ' + dates.ramase.getDate() + ' ' + moisDebut;
+  if (el0) el0.textContent = '1 ' + moisDebut + ' — ' + formatDateKT(dates.limiteCmd);
   if (el1) el1.textContent = formatDateKT(dates.ramase);
   if (el2) el2.textContent = formatDateKT(dates.depa);
   if (el3) el3.textContent = formatDateKT(dates.disponib);
@@ -630,7 +654,7 @@ function initLCDTrackingBloc() {
   //         première étape non encore atteinte = rose (active)
   //         les suivantes = grisé (futur)
   var steps     = [0, 1, 2, 3];
-  var stepDates = [null, dates.ramase, dates.depa, dates.disponib];
+  var stepDates = [dates.limiteCmd, dates.ramase, dates.depa, dates.disponib];
 
   // Trouver le premier step non accompli (sera coloré en rose)
   var activeStepFound = false;
@@ -640,10 +664,7 @@ function initLCDTrackingBloc() {
     if (!step) return;
     step.classList.remove('ltb-step-done', 'ltb-step-active');
 
-    if (i === 0) {
-      // Étape 0 (Kòmande kounya) — toujours accomplie
-      step.classList.add('ltb-step-done');
-    } else if (today >= stepDates[i]) {
+    if (today >= stepDates[i]) {
       // Date passée → vert kaki (done)
       step.classList.add('ltb-step-done');
     } else if (!activeStepFound) {
@@ -675,9 +696,9 @@ window.initPulsingDots = initPulsingDots;
 // ── GALERIE LIVREZON ─────────────────────────────────────────────
 // Données okazyon pasé — mete ajou chak mwa
 var LCD_HIST = {
-  depa     : '13 Avril 2026',
-  disponib : '25 Avril 2026',
-  jou      : '12'
+  depa     : '15 Avril 2026',
+  disponib : '26 Avril 2026',
+  jou      : '11'
 };
 
 window.ouvrirGalerie = function () {
