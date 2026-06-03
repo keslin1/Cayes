@@ -80,7 +80,7 @@ body {
     color: #fff;
     box-shadow: 0 4px 14px rgba(0,185,255,0.35);
 }
-.tab-btn:nth-child(2).active {
+.tab-btn:nth-child(1).active {
     background: linear-gradient(135deg, var(--binance-yellow), #e0a800);
     box-shadow: 0 4px 14px rgba(240,185,11,0.35);
     color: #1a1000;
@@ -460,18 +460,18 @@ body {
 
 <!-- ===== NAVIGATION ONGLETS ===== -->
 <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('wise')" id="tab-wise">
-        <span class="material-icons">credit_card</span> Sèvis rechaj Wise
-    </button>
-    <button class="tab-btn" onclick="switchTab('epargne')" id="tab-epargne">
+    <button class="tab-btn active" onclick="switchTab('epargne')" id="tab-epargne">
         <span class="material-icons">trending_up</span> Epay kwasans
+    </button>
+    <button class="tab-btn" onclick="switchTab('wise')" id="tab-wise">
+        <span class="material-icons">credit_card</span> Sèvis rechaj Wise
     </button>
 </div>
 
 <!-- ============================================================ -->
-<!-- SECTION 1 : SÈVIS RECHAJ WISE (afiche pa defo)             -->
+<!-- SECTION 1 : SÈVIS RECHAJ WISE                               -->
 <!-- ============================================================ -->
-<div id="section-wise" class="tab-section active">
+<div id="section-wise" class="tab-section">
     <div class="wise-container">
 
         <div class="wise-header-section">
@@ -550,7 +550,7 @@ body {
 <!-- ============================================================ -->
 <!-- SECTION 2 : EPAY KWASANS (ansyen kontni)                   -->
 <!-- ============================================================ -->
-<div id="section-epargne" class="tab-section">
+<div id="section-epargne" class="tab-section active">
 
     <!-- AKÒDYON -->
     <div class="intro-section">
