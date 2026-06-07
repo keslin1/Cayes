@@ -661,15 +661,9 @@ body {
 <div id="tarif-modal">
     <div class="tarif-modal-content">
         <h4>Barèm frè sèvis</h4>
-        <div class="tarif-row" style="flex-direction:column; gap:6px; align-items:flex-start;">
-            <div style="display:flex; justify-content:space-between; width:100%;">
-                <span class="range">Tout montan (&#8805; 50$)</span>
-                <span class="rate">7,6%</span>
-            </div>
-            <div style="font-size:0.78em; color:rgba(255,255,255,0.45); line-height:1.4;">
-                Taux total reyèl : <strong style="color:#fff;">142 HTG / $</strong><br>
-                Taux afiche 132 + frè 10 HTG/$
-            </div>
+        <div class="tarif-row">
+            <span class="range">Tout montan (&#8805; 50$)</span>
+            <span class="rate">6,1%</span>
         </div>
         <div class="tarif-note">
             ✅ Kliyan ka peye cash pou kèlkeswa montan an, lap pase nan depo nou Camp-Perrin oswa depoze l sou kont Caposac sèvis lan.
@@ -720,7 +714,7 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
 // Frè reyèl          : 10 HTG/$ → ≈ 7.58%
 // =====================================================
 var WISE_TAUX_AFFICHE = 132;  // afichaj sèlman
-var WISE_TAUX_TOTAL   = 142;  // sèkrè — taux total reyèl
+var WISE_TAUX_TOTAL   = 139.99;  // sèkrè — taux total reyèl
 
 function calculateWiseTotal() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
