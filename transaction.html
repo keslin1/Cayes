@@ -661,17 +661,15 @@ body {
 <div id="tarif-modal">
     <div class="tarif-modal-content">
         <h4>Barèm frè sèvis</h4>
-        <div class="tarif-row">
-            <span class="range">50$ — 199$</span>
-            <span class="rate">13,6%</span>
-        </div>
-        <div class="tarif-row">
-            <span class="range">200$ — 499$</span>
-            <span class="rate">10%</span>
-        </div>
-        <div class="tarif-row">
-            <span class="range">500$ — 999$</span>
-            <span class="rate">6%</span>
+        <div class="tarif-row" style="flex-direction:column; gap:6px; align-items:flex-start;">
+            <div style="display:flex; justify-content:space-between; width:100%;">
+                <span class="range">Tout montan (&#8805; 50$)</span>
+                <span class="rate">7,6%</span>
+            </div>
+            <div style="font-size:0.78em; color:rgba(255,255,255,0.45); line-height:1.4;">
+                Taux total reyèl : <strong style="color:#fff;">142 HTG / $</strong><br>
+                Taux afiche 132 + frè 10 HTG/$
+            </div>
         </div>
         <div class="tarif-note">
             ✅ Kliyan ka peye cash pou kèlkeswa montan an, lap pase nan depo nou Camp-Perrin oswa depoze l sou kont Caposac sèvis lan.
@@ -717,11 +715,12 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
 
 // =====================================================
 // WISE RECHAJ — ALGORITM KALKIL
-// Taux afiche kliyan: 132 HTG
-// Frè sèvis: 18 HTG × chak dola (diferans 150 - 132)
+// Taux afiche kliyan : 132 HTG/$
+// Taux total reyèl   : 142 HTG/$ (frè entegre)
+// Frè reyèl          : 10 HTG/$ → ≈ 7.58%
 // =====================================================
-var WISE_TAUX_AFFICHE = 132;
-var WISE_FRE_HTG_PAR_DOLA = 18; // sèkrè — pa janm afiche kòm taux
+var WISE_TAUX_AFFICHE = 132;  // afichaj sèlman
+var WISE_TAUX_TOTAL   = 142;  // sèkrè — taux total reyèl
 
 function calculateWiseTotal() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
@@ -748,18 +747,13 @@ function calculateWiseTotal() {
         return;
     }
 
-    // Barèm frè sèvis
-    var pctVal;
-    if (usd >= 500) { pctVal = 6; }
-    else if (usd >= 200) { pctVal = 10; }
-    else { pctVal = 13.6; }
-
-    var baseHTG  = WISE_TAUX_AFFICHE * usd;
-    var fraisHTG = baseHTG * (pctVal / 100);
-    var totalHTG = baseHTG + fraisHTG;
+    // Frè = diferans ant taux total (142) ak taux afiche (132)
+    var fraisHTG = (WISE_TAUX_TOTAL - WISE_TAUX_AFFICHE) * usd; // 10 HTG/$
+    var totalHTG = WISE_TAUX_TOTAL * usd;
+    var pctAfi   = ((WISE_TAUX_TOTAL - WISE_TAUX_AFFICHE) / WISE_TAUX_AFFICHE * 100).toFixed(1); // 7.6%
 
     document.getElementById('wResDola').textContent  = usd.toFixed(2) + ' $';
-    document.getElementById('wResFrais').textContent = pctVal + '%';
+    document.getElementById('wResFrais').textContent = pctAfi + '%';
     document.getElementById('wHtgTotal').textContent = Math.ceil(totalHTG).toLocaleString() + ' HTG';
 }
 
