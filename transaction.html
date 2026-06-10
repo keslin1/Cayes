@@ -4,456 +4,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google" content="notranslate" />
-    <title>tranzaksyon | les cayes dropshipping</title>
-    
-    <link rel="stylesheet" href="base.css"> 
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
+    <title>Tranzaksyon | Les Cayes Dropshipping</title>
+
+    <link rel="stylesheet" href="base.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
         :root {
-            --bleu-marin: #001f3f; 
-            --kaki: #8fbc8f;              
-            --gri-clair: #f4f4f9;         
-            --noir-texte: #333;           
-            --blanc-fond: #ffffff;        
-            --rouge-alerte: #d32f2f;
-            --vert-menu: #004D40; 
-            --bleu-leje: #e3f2fd;
-            --trading-bg: #0b0e11;
-            --binance-yellow: #f0b90b;
+            --bleu-marin:    #001f3f;
+            --kaki:          #8fbc8f;
+            --gri-clair:     #f4f4f9;
+            --noir-texte:    #333;
+            --blanc-fond:    #ffffff;
+            --rouge-alerte:  #d32f2f;
+            --vert-menu:     #004D40;
+            --bleu-leje:     #e3f2fd;
+            --trading-bg:    #0b0e11;
+            --binance-yellow:#f0b90b;
             --trading-green: #0ecb81;
-            --trading-red: #f6465d;
-            /* Wise service palette */
-            --wise-teal: #00b9ff;
-            --wise-orange: #ff9800;
-            --wise-dark: #1a1f26;
-            --usdt-green: #26a17b;
+            --trading-red:   #f6465d;
+            --wise-teal:     #00b9ff;
         }
 
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: 
-        radial-gradient(circle at 10% 20%, rgba(0, 206, 209, 0.8) 0%, transparent 40%), 
-        radial-gradient(circle at 90% 80%, rgba(255, 255, 224, 0.9) 0%, transparent 40%),
-        linear-gradient(135deg, #000000 0%, #0a1a1a 50%, #000000 100%);
-    background-attachment: fixed;
-    background-size: cover;
-    color: #ffffff;
-    margin: 0;
-    padding-bottom: 80px;
-    min-height: 100vh;
-}
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
-/* ===== NAVIGATION ONGLETS ===== */
-.tab-nav {
-    display: flex;
-    width: 92%;
-    max-width: 500px;
-    margin: 20px auto 0 auto;
-    background: rgba(255,255,255,0.07);
-    border-radius: 14px;
-    padding: 5px;
-    gap: 5px;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-.tab-btn {
-    flex: 1;
-    padding: 11px 6px;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: 0.78em;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.28s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    background: transparent;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.02em;
-}
-.tab-btn .material-icons { font-size: 17px; }
-.tab-btn.active {
-    background: linear-gradient(135deg, #00b9ff, #0082c8);
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(0,185,255,0.35);
-}
-.tab-btn:nth-child(1).active {
-    background: linear-gradient(135deg, var(--binance-yellow), #e0a800);
-    box-shadow: 0 4px 14px rgba(240,185,11,0.35);
-    color: #1a1000;
-}
-.tab-section { display: none; }
-.tab-section.active { display: block; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(0,206,209,0.8) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255,255,224,0.9) 0%, transparent 40%),
+                linear-gradient(135deg, #000000 0%, #0a1a1a 50%, #000000 100%);
+            background-attachment: fixed;
+            background-size: cover;
+            color: #ffffff;
+            padding-bottom: 80px;
+            min-height: 100vh;
+        }
 
-/* ===== AKÒDYON ===== */
-.intro-section {
-    width: 92%;
-    max-width: 500px;
-    margin: 25px auto;
-    background: var(--blanc-fond);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
-.accordion-item { border-bottom: 1px solid #eee; }
-.accordion-header {
-    width: 100%; padding: 18px 15px; background: #fff; border: none;
-    display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer; font-weight: 600; color: var(--bleu-marin); transition: 0.3s;
-}
-.accordion-header:hover { background: var(--bleu-leje); }
-.accordion-content {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    background: #fafafa;
-}
-.accordion-content p {
-    padding: 15px 20px; margin: 0; font-size: 0.92em; line-height: 1.6; color: #444;
-}
-.accordion-header .material-icons { transition: transform 0.3s; color: var(--kaki); font-size: 20px; }
-.accordion-item.active .accordion-header { background: var(--bleu-leje); }
-.accordion-item.active .accordion-content { max-height: 300px; }
-.accordion-item.active .material-icons { transform: rotate(180deg); }
-.slogan-top {
-    background: linear-gradient(135deg, var(--bleu-marin), #003366);
-    color: white; padding: 22px 15px; text-align: center;
-    font-style: italic; font-size: 1em; font-weight: 500;
-    border-radius: 12px 12px 0 0; line-height: 1.4;
-}
+        /* ===== NAVIGATION ONGLETS ===== */
+        .tab-nav {
+            display: flex;
+            width: 92%; max-width: 500px;
+            margin: 20px auto 0;
+            background: rgba(255,255,255,0.07);
+            border-radius: 14px;
+            padding: 5px; gap: 5px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .tab-btn {
+            flex: 1; padding: 11px 6px; border: none; border-radius: 10px;
+            font-family: 'Segoe UI', Arial, sans-serif; font-size: 0.78em; font-weight: 700;
+            cursor: pointer; transition: all 0.28s ease;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+            background: transparent; color: rgba(255,255,255,0.45); letter-spacing: 0.02em;
+        }
+        .tab-btn .material-icons { font-size: 17px; }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #00b9ff, #0082c8);
+            color: #fff; box-shadow: 0 4px 14px rgba(0,185,255,0.35);
+        }
+        .tab-btn:nth-child(1).active {
+            background: linear-gradient(135deg, var(--binance-yellow), #e0a800);
+            box-shadow: 0 4px 14px rgba(240,185,11,0.35); color: #1a1000;
+        }
+        .tab-section { display: none; }
+        .tab-section.active { display: block; }
 
-/* ===== TRADING CARD ===== */
-.trading-card {
-    background-color: var(--trading-bg); color: #eaecef;
-    padding: 20px; border-radius: 12px;
-    width: 92%; margin: 30px auto;
-    position: relative; border: 1px solid #3b3d43; overflow: hidden;
-}
-.trading-header {
-    display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
-}
-.trading-title { font-size: 1.1em; font-weight: bold; color: var(--binance-yellow); margin: 0; }
-#trading-chart { width: 100%; height: 220px; position: relative; border-bottom: 1px solid #3b3d43; overflow: hidden; }
-#trading-chart canvas { width: 100% !important; height: 220px !important; }
+        /* ===== AKÒDYON ===== */
+        .intro-section {
+            width: 92%; max-width: 500px; margin: 25px auto;
+            background: var(--blanc-fond); border-radius: 12px;
+            overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .slogan-top {
+            background: linear-gradient(135deg, var(--bleu-marin), #003366);
+            color: white; padding: 22px 15px; text-align: center;
+            font-style: italic; font-size: 1em; font-weight: 500;
+            border-radius: 12px 12px 0 0; line-height: 1.4;
+        }
+        .accordion-item { border-bottom: 1px solid #eee; }
+        .accordion-header {
+            width: 100%; padding: 18px 15px; background: #fff; border: none;
+            display: flex; justify-content: space-between; align-items: center;
+            cursor: pointer; font-weight: 600; color: var(--bleu-marin); transition: 0.3s;
+        }
+        .accordion-header:hover { background: var(--bleu-leje); }
+        .accordion-header .material-icons { transition: transform 0.3s; color: var(--kaki); font-size: 20px; }
+        .accordion-content {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+            background: #fafafa;
+        }
+        .accordion-content p { padding: 15px 20px; margin: 0; font-size: 0.92em; line-height: 1.6; color: #444; }
+        .accordion-item.active .accordion-header { background: var(--bleu-leje); }
+        .accordion-item.active .accordion-content { max-height: 300px; }
+        .accordion-item.active .material-icons { transform: rotate(180deg); }
 
-.money-counter-engine {
-    margin: 12px auto; text-align: center;
-    background: rgba(11,14,17,0.85); padding: 12px;
-    border-radius: 10px; border: 1px solid var(--binance-yellow); max-width: 85%;
-}
-.counter-label { font-size: 0.75em; color: #848e9c; margin-bottom: 4px; letter-spacing: 1px; }
-.counter-main {
-    font-size: 2.2em; font-weight: 900; color: var(--trading-green);
-    font-family: 'Courier New', monospace; text-shadow: 0 0 15px rgba(14,203,129,0.5);
-}
-.counter-decimals { font-size: 0.45em; color: rgba(14,203,129,0.8); vertical-align: middle; letter-spacing: 1px; }
+        /* ===== TRADING CARD ===== */
+        .trading-card {
+            background-color: var(--trading-bg); color: #eaecef;
+            padding: 20px; border-radius: 12px;
+            width: 92%; margin: 30px auto;
+            border: 1px solid #3b3d43; overflow: hidden;
+        }
+        .trading-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .trading-title { font-size: 1.1em; font-weight: bold; color: var(--binance-yellow); margin: 0; }
+        #trading-chart { width: 100%; height: 220px; border-bottom: 1px solid #3b3d43; overflow: hidden; }
+        #trading-chart canvas { width: 100% !important; height: 220px !important; }
 
-.trading-watermark {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%); width: 70%;
-    opacity: 0.04; pointer-events: none; z-index: 5; display: none;
-}
-.trading-form { display: grid; gap: 12px; margin-top: 20px; }
-.trading-input {
-    background: #1e2329; border: 1px solid #474d57;
-    color: white; padding: 12px; border-radius: 6px; text-align: center; font-size: 1em;
-}
-.btn-trade { padding: 15px; border-radius: 8px; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; }
-.btn-orange { background-color: #f39c12; color: #fff; }
-.btn-green  { background-color: var(--trading-green); color: #fff; }
+        .money-counter-engine {
+            margin: 12px auto; text-align: center;
+            background: rgba(11,14,17,0.85); padding: 12px;
+            border-radius: 10px; border: 1px solid var(--binance-yellow); max-width: 85%;
+        }
+        .counter-label { font-size: 0.75em; color: #848e9c; margin-bottom: 4px; letter-spacing: 1px; }
+        .counter-main {
+            font-size: 2.2em; font-weight: 900; color: var(--trading-green);
+            font-family: 'Courier New', monospace; text-shadow: 0 0 15px rgba(14,203,129,0.5);
+        }
+        .counter-decimals { font-size: 0.45em; color: rgba(14,203,129,0.8); vertical-align: middle; letter-spacing: 1px; }
 
-@keyframes pulse-orange {
-    0%   { box-shadow: 0 0 0 0 rgba(243,156,18,0.7); }
-    70%  { box-shadow: 0 0 0 10px rgba(243,156,18,0); }
-    100% { box-shadow: 0 0 0 0 rgba(243,156,18,0); }
-}
-.scintillant { animation: pulse-orange 2s infinite; }
+        .trading-form { display: grid; gap: 12px; margin-top: 20px; }
+        .trading-input {
+            background: #1e2329; border: 1px solid #474d57;
+            color: white; padding: 12px; border-radius: 6px;
+            text-align: center; font-size: 1em;
+        }
+        .btn-trade { padding: 15px; border-radius: 8px; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; width: 100%; }
+        .btn-orange { background-color: #f39c12; color: #fff; }
+        .btn-green  { background-color: var(--trading-green); color: #fff; }
 
-@keyframes livePulse {
-    0%   { box-shadow: 0 0 0 0 rgba(246,70,93,0.7); }
-    70%  { box-shadow: 0 0 0 7px rgba(246,70,93,0); }
-    100% { box-shadow: 0 0 0 0 rgba(246,70,93,0); }
-}
+        @keyframes pulse-orange {
+            0%   { box-shadow: 0 0 0 0 rgba(243,156,18,0.7); }
+            70%  { box-shadow: 0 0 0 10px rgba(243,156,18,0); }
+            100% { box-shadow: 0 0 0 0 rgba(243,156,18,0); }
+        }
+        .scintillant { animation: pulse-orange 2s infinite; }
 
-/* ===== BOUTON EMAIL ===== */
-.email-contact-block {
-    text-align: center; margin: 20px 4%;
-}
-.email-contact-block p { font-size: 0.78em; color: rgba(255,255,255,0.5); margin: 0 0 10px 0; }
-.email-contact-block a {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(0,206,209,0.1); border: 1px solid rgba(0,206,209,0.5);
-    color: #00ced1; text-decoration: none; padding: 12px 24px;
-    border-radius: 30px; font-size: 0.88em; font-weight: 600;
-}
+        @keyframes livePulse {
+            0%   { box-shadow: 0 0 0 0 rgba(246,70,93,0.7); }
+            70%  { box-shadow: 0 0 0 7px rgba(246,70,93,0); }
+            100% { box-shadow: 0 0 0 0 rgba(246,70,93,0); }
+        }
 
-/* ===== PÈMAN (epargne section) ===== */
-#payment-info-container { 
-    padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px; 
-    backdrop-filter: blur(10px); border: 1px solid rgba(0,206,209,0.2); 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5); color: #ffffff;
-    width: 92%; margin: 0 auto 30px auto; box-sizing: border-box;
-}
-.payment-option { 
-    display: flex; align-items: center; background: rgba(255,255,255,0.1); 
-    border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; 
-    padding: 12px; margin-bottom: 10px; cursor: pointer; transition: all 0.3s ease; 
-}
-.payment-option:hover { background: rgba(0,206,209,0.2); border-color: #00ced1; transform: scale(1.02); }
-.payment-option img { width: 42px; height: 42px; object-fit: contain; border-radius: 6px; margin-right: 12px; }
-.payment-option p { margin: 0; font-weight: 500; }
+        /* ===== BOUTON EMAIL ===== */
+        .email-contact-block { text-align: center; margin: 20px 4%; }
+        .email-contact-block p { font-size: 0.78em; color: rgba(255,255,255,0.5); margin: 0 0 10px 0; }
+        .email-contact-block a {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,206,209,0.1); border: 1px solid rgba(0,206,209,0.5);
+            color: #00ced1; text-decoration: none; padding: 12px 24px;
+            border-radius: 30px; font-size: 0.88em; font-weight: 600;
+        }
 
-/* ===== MODAL (epargne) ===== */
-.modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
-.modal-content { 
-    background-color: #1a1a1a; margin: 15% auto; padding: 25px; border-radius: 15px; 
-    width: 85%; max-width: 400px; text-align: center; color: #ffffff; 
-    border: 1px solid rgba(255,223,0,0.3);
-}
-@keyframes pulse-gold {
-    0%   { transform: scale(1); text-shadow: 0 0 0px rgba(255,223,0,0); }
-    50%  { transform: scale(1.05); text-shadow: 0 0 10px rgba(255,223,0,0.5); }
-    100% { transform: scale(1); text-shadow: 0 0 0px rgba(255,223,0,0); }
-}
-.modal-content strong { display: inline-block; color: #ffdf00; animation: pulse-gold 2s infinite ease-in-out; }
-.close-btn-modal { float: right; font-size: 24px; cursor: pointer; color: #666; }
-.close-btn-modal:hover { color: #fff; }
+        /* ===== PÈMAN EPARGNE ===== */
+        #payment-info-container {
+            padding: 20px; background: rgba(255,255,255,0.05); border-radius: 12px;
+            backdrop-filter: blur(10px); border: 1px solid rgba(0,206,209,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5); color: #ffffff;
+            width: 92%; margin: 0 auto 30px auto;
+        }
+        .payment-option {
+            display: flex; align-items: center;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px; padding: 12px; margin-bottom: 10px;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .payment-option:hover { background: rgba(0,206,209,0.2); border-color: #00ced1; transform: scale(1.02); }
+        .payment-option img { width: 42px; height: 42px; object-fit: contain; border-radius: 6px; margin-right: 12px; }
+        .payment-option p { margin: 0; font-weight: 500; }
 
-/* ===== WISE RECHAJ SERVICE ===== */
-.wise-container {
-    width: 92%;
-    max-width: 500px;
-    margin: 25px auto;
-}
-.wise-header-section { text-align: center; margin-bottom: 22px; }
-.wise-main-title {
-    color: #ffffff;
-    font-size: 1.55em;
-    font-weight: 800;
-    margin: 0 0 6px 0;
-    letter-spacing: -0.01em;
-}
-.wise-subtitle { color: rgba(255,255,255,0.55); font-size: 0.88em; margin: 0; }
+        /* ===== MODAL PÈMAN ===== */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); }
+        .modal-content {
+            background-color: #1a1a1a; margin: 15% auto; padding: 25px;
+            border-radius: 15px; width: 85%; max-width: 400px;
+            text-align: center; color: #ffffff; border: 1px solid rgba(255,223,0,0.3);
+        }
+        @keyframes pulse-gold {
+            0%   { transform: scale(1); text-shadow: 0 0 0px rgba(255,223,0,0); }
+            50%  { transform: scale(1.05); text-shadow: 0 0 10px rgba(255,223,0,0.5); }
+            100% { transform: scale(1); text-shadow: 0 0 0px rgba(255,223,0,0); }
+        }
+        .modal-content strong { display: inline-block; color: #ffdf00; animation: pulse-gold 2s infinite ease-in-out; }
+        .close-btn-modal { float: right; font-size: 24px; cursor: pointer; color: #666; }
+        .close-btn-modal:hover { color: #fff; }
 
-.wise-pricing-card {
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    margin-bottom: 22px;
-    background: linear-gradient(135deg, #e67e22, #ff9800);
-}
-.wise-card-header {
-    padding: 18px 20px;
-    text-align: center;
-    color: #fff;
-    font-size: 1.25em;
-    font-weight: 800;
-}
-.wise-card-body {
-    background-color: #fff;
-    margin: 0 14px;
-    padding: 16px 18px;
-    border-radius: 6px;
-    color: #333;
-}
-.wise-check-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    font-size: 0.92em;
-}
-.wise-check-item:last-child { margin-bottom: 0; }
-.wise-check-item .material-icons { color: #4caf50; margin-right: 10px; font-size: 18px; flex-shrink: 0; }
-.wise-card-footer {
-    padding: 16px 20px;
-    text-align: center;
-    color: #fff;
-}
-.wise-current-price {
-    font-size: 1.7em;
-    font-weight: 800;
-    display: block;
-}
+        /* ===== WISE RECHAJ SERVICE ===== */
+        .wise-container { width: 92%; max-width: 500px; margin: 25px auto; }
+        .wise-header-section { text-align: center; margin-bottom: 22px; }
+        .wise-main-title { color: #ffffff; font-size: 1.55em; font-weight: 800; margin: 0 0 6px 0; letter-spacing: -0.01em; }
+        .wise-subtitle { color: rgba(255,255,255,0.55); font-size: 0.88em; margin: 0; }
 
-/* Simulateur Wise */
-.wise-calculator {
-    background: #fff;
-    border-radius: 14px;
-    padding: 20px;
-    color: #333;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.35);
-}
-.wise-watermark {
-    position: absolute; top: 50%; left: 50%;
-    transform: translate(-50%, -50%) rotate(-30deg);
-    width: 80%; opacity: 0.07; pointer-events: none;
-}
-.wise-facture-header {
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 12px;
-    margin-bottom: 16px;
-    text-align: center;
-}
-.wise-facture-header h3 { margin: 0 0 4px 0; color: #1a1f26; font-size: 1.05em; font-weight: 800; }
+        .wise-pricing-card {
+            border-radius: 14px; overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 22px;
+            background: linear-gradient(135deg, #e67e22, #ff9800);
+        }
+        .wise-card-header { padding: 18px 20px; text-align: center; color: #fff; font-size: 1.25em; font-weight: 800; }
+        .wise-card-body { background-color: #fff; margin: 0 14px; padding: 16px 18px; border-radius: 6px; color: #333; }
+        .wise-check-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 0.92em; }
+        .wise-check-item:last-child { margin-bottom: 0; }
+        .wise-check-item .material-icons { color: #4caf50; margin-right: 10px; font-size: 18px; flex-shrink: 0; }
+        .wise-card-footer { padding: 16px 20px; text-align: center; color: #fff; }
+        .wise-current-price { font-size: 1.7em; font-weight: 800; display: block; }
 
+        /* Simulatè */
+        .wise-calculator {
+            background: #fff; border-radius: 14px; padding: 20px;
+            color: #333; position: relative; overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.35);
+        }
+        .wise-watermark {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%,-50%) rotate(-30deg);
+            width: 80%; opacity: 0.07; pointer-events: none;
+        }
+        .wise-facture-header { border-bottom: 2px solid #f0f0f0; padding-bottom: 12px; margin-bottom: 16px; text-align: center; }
+        .wise-facture-header h3 { margin: 0 0 4px 0; color: #1a1f26; font-size: 1.05em; font-weight: 800; }
+        .wise-input-group input {
+            width: 100%; background: #f9f9f9; border: 2px solid var(--wise-teal);
+            padding: 12px; border-radius: 10px; color: #333; font-size: 1.05em;
+            text-align: center; outline: none; margin-bottom: 14px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .wise-input-label { font-size: 0.83em; margin-bottom: 5px; font-weight: 700; color: #333; }
+        .wise-result-row { display: flex; justify-content: space-between; margin: 7px 0; font-size: 0.97em; color: #444; }
+        .wise-total-row {
+            border-top: 2px dashed #ddd; padding-top: 10px; margin-top: 10px;
+            font-weight: 800; font-size: 1.25em; color: #d35400;
+        }
+        .wise-warning {
+            background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px;
+            padding: 10px 14px; color: #856404; font-size: 0.85em; font-weight: 600;
+            text-align: center; margin-top: 10px; display: none;
+        }
+        .wise-facture-footer {
+            font-size: 0.78em; color: #888; text-align: center;
+            margin-top: 14px; font-style: italic;
+            border-top: 1px solid #f0f0f0; padding-top: 10px;
+        }
 
-.wise-input-group input {
-    width: 100%;
-    background: #f9f9f9;
-    border: 2px solid var(--wise-teal);
-    padding: 12px;
-    border-radius: 10px;
-    color: #333;
-    font-size: 1.05em;
-    text-align: center;
-    box-sizing: border-box;
-    outline: none;
-    margin-bottom: 14px;
-    font-family: 'Segoe UI', Arial, sans-serif;
-}
-.wise-input-label { font-size: 0.83em; margin-bottom: 5px; font-weight: 700; color: #333; }
-.wise-result-row { display: flex; justify-content: space-between; margin: 7px 0; font-size: 0.97em; color: #444; }
-.wise-total-row {
-    border-top: 2px dashed #ddd;
-    padding-top: 10px;
-    margin-top: 10px;
-    font-weight: 800;
-    font-size: 1.25em;
-    color: #d35400;
-}
-.wise-warning {
-    background: #fff3cd;
-    border: 1px solid #ffc107;
-    border-radius: 8px;
-    padding: 10px 14px;
-    color: #856404;
-    font-size: 0.85em;
-    font-weight: 600;
-    text-align: center;
-    margin-top: 10px;
-    display: none;
-}
-.wise-facture-footer {
-    font-size: 0.78em;
-    color: #888;
-    text-align: center;
-    margin-top: 14px;
-    font-style: italic;
-    border-top: 1px solid #f0f0f0;
-    padding-top: 10px;
-}
+        /* Natcash pèman */
+        .natcash-block {
+            background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.13);
+            border-radius: 12px; padding: 18px; margin: 22px auto 0; text-align: center;
+        }
+        .natcash-block h4 { margin: 0 0 14px 0; font-size: 0.92em; color: rgba(255,255,255,0.6); font-weight: 600; letter-spacing: 0.03em; }
+        .natcash-pill {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.18);
+            border-radius: 50px; padding: 12px 22px; color: #fff; font-weight: 700; font-size: 1em;
+        }
+        .natcash-pill img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; }
+        .natcash-name-badge {
+            background: rgba(0,185,255,0.1); border: 1px solid rgba(0,185,255,0.25);
+            border-radius: 8px; padding: 8px 14px; margin-top: 12px;
+            font-size: 0.82em; color: rgba(255,255,255,0.65); display: inline-block;
+        }
+        .natcash-name-badge strong { color: #00b9ff; font-size: 1.05em; }
 
-/* Natcash unique pèman */
-.natcash-block {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.13);
-    border-radius: 12px;
-    padding: 18px;
-    margin: 22px auto 0 auto;
-    text-align: center;
-}
-.natcash-block h4 {
-    margin: 0 0 14px 0;
-    font-size: 0.92em;
-    color: rgba(255,255,255,0.6);
-    font-weight: 600;
-    letter-spacing: 0.03em;
-}
-.natcash-pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    background: rgba(255,255,255,0.08);
-    border: 1.5px solid rgba(255,255,255,0.18);
-    border-radius: 50px;
-    padding: 12px 22px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 1em;
-}
-.natcash-pill img { width: 36px; height: 36px; object-fit: contain; border-radius: 6px; }
-.natcash-name-badge {
-    background: rgba(0,185,255,0.1);
-    border: 1px solid rgba(0,185,255,0.25);
-    border-radius: 8px;
-    padding: 8px 14px;
-    margin-top: 12px;
-    font-size: 0.82em;
-    color: rgba(255,255,255,0.65);
-    display: inline-block;
-}
-.natcash-name-badge strong { color: #00b9ff; font-size: 1.05em; }
-
-
-
-
-
-/* ===== BOUTON AIDE TARIF ===== */
-@keyframes pulse-help {
-    0%   { box-shadow: 0 0 0 0 rgba(0,185,255,0.7); }
-    70%  { box-shadow: 0 0 0 8px rgba(0,185,255,0); }
-    100% { box-shadow: 0 0 0 0 rgba(0,185,255,0); }
-}
-.help-btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 22px; height: 22px; border-radius: 50%;
-    background: rgba(0,185,255,0.18); border: 1.5px solid rgba(0,185,255,0.55);
-    color: #00b9ff; font-size: 0.75em; font-weight: 900;
-    cursor: pointer; margin-left: 6px; vertical-align: middle;
-    animation: pulse-help 2s infinite;
-    flex-shrink: 0; line-height: 1;
-}
-.help-btn:hover { background: rgba(0,185,255,0.35); }
-
-/* ===== MODAL TARIF ===== */
-#tarif-modal {
-    display: none; position: fixed; z-index: 2000;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.82);
-}
-.tarif-modal-content {
-    background: #0f1923; border: 1px solid rgba(0,185,255,0.3);
-    border-radius: 16px; margin: 18% auto; padding: 24px 22px;
-    width: 88%; max-width: 360px; color: #fff;
-    box-shadow: 0 0 30px rgba(0,185,255,0.15);
-}
-.tarif-modal-content h4 {
-    margin: 0 0 16px 0; font-size: 1em; font-weight: 800;
-    color: #00b9ff; letter-spacing: 0.02em; text-align: center;
-}
-.tarif-row {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 10px 14px; border-radius: 8px; margin-bottom: 8px;
-    background: rgba(255,255,255,0.05); border-left: 3px solid var(--kaki);
-    font-size: 0.9em;
-}
-.tarif-row .range { color: rgba(255,255,255,0.7); }
-.tarif-row .rate  { font-weight: 800; color: #fff; }
-.tarif-note {
-    margin-top: 12px; padding: 9px 12px; border-radius: 8px;
-    background: rgba(14,203,129,0.1); border: 1px solid rgba(14,203,129,0.3);
-    font-size: 0.8em; color: rgba(255,255,255,0.7); text-align: center;
-}
-.tarif-modal-content .close-tarif {
-    display: block; margin: 18px auto 0 auto;
-    background: rgba(0,185,255,0.15); border: 1px solid rgba(0,185,255,0.4);
-    color: #00b9ff; border-radius: 30px; padding: 9px 28px;
-    cursor: pointer; font-weight: 700; font-size: 0.88em;
-}
-
-
-#main-footer {
-    display: flex; justify-content: space-around; align-items: center;
-    position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
-    background-color: var(--blanc-fond); box-shadow: 0 -2px 5px rgba(0,0,0,0.1); z-index: 1000;
-}
-.nav-item { text-align: center; text-decoration: none; color: var(--vert-menu); font-size: 0.75em; padding: 5px; }
-#main-footer .material-icons { color: var(--vert-menu); font-size: 24px; }
-.nav-item.active .material-icons { color: var(--kaki); }
+        /* ===== FOOTER NAV ===== */
+        #main-footer {
+            display: flex; justify-content: space-around; align-items: center;
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+            background-color: var(--blanc-fond); box-shadow: 0 -2px 5px rgba(0,0,0,0.1); z-index: 1000;
+        }
+        .nav-item { text-align: center; text-decoration: none; color: var(--vert-menu); font-size: 0.75em; padding: 5px; }
+        #main-footer .material-icons { color: var(--vert-menu); font-size: 24px; }
+        .nav-item.active .material-icons { color: var(--kaki); }
     </style>
 </head>
 <body>
@@ -497,7 +316,7 @@ body {
                 </div>
             </div>
             <div class="wise-card-footer">
-                <span class="wise-current-price">Taux : 132 HTG / $</span>
+                <span class="wise-current-price">Taux : 135 HTG / $</span>
             </div>
         </div>
 
@@ -519,36 +338,34 @@ body {
             </div>
 
             <div id="wiseInvoice">
-                <div class="wise-result-row"><span>Kantite mande :</span> <span id="wResDola">—</span></div>
-                <div class="wise-result-row"><span>Frè sèvis : <button class="help-btn" onclick="document.getElementById('tarif-modal').style.display='block'" title="Wè tarif">?</button></span> <span id="wResFrais">—</span></div>
-                <div class="wise-result-row"><span>Taux afiche :</span> <span>132 HTG / $</span></div>
+                <div class="wise-result-row"><span>Kantite w mande :</span> <span id="wResDola">—</span></div>
+                <div class="wise-result-row"><span>Taux sèvis :</span> <span>135 HTG / $</span></div>
                 <div class="wise-result-row wise-total-row">
-                    <span>Total pou peye :</span> <span id="wHtgTotal">— HTG</span>
+                    <span>Total pou peye (Cash) :</span> <span id="wHtgTotal">— HTG</span>
                 </div>
                 <div class="wise-facture-footer">
-                    Pran yon kaptidekran epi voye l bay sèvis asistans pou konfime.
+                    Pran yon kaptidekran kalkil pèman an, peye epi voye yo bay sèvis asistans pou rechaje w.
                 </div>
             </div>
         </div>
 
         <!-- Natcash — sèl mwayen pèman -->
         <div class="natcash-block">
-            <h4>Sèl mwayen pèman aksepte</h4>
+            <h4>Men sèl mwayen pèman anliy ki aksepte:</h4>
             <div class="natcash-pill">
                 <img src="natcash1.png" alt="Natcash">
-                <span>Natcash &nbsp;·&nbsp; +509 3560-8869</span>
+                <span> +509 3560-8869</span>
             </div>
             <div class="natcash-name-badge">
-                Non sou kont lan : <strong>Les Cayes Dropshipping</strong>
+                Code agent : <strong>352995</strong>
             </div>
         </div>
-
 
     </div>
 </div><!-- fin #section-wise -->
 
 <!-- ============================================================ -->
-<!-- SECTION 2 : EPAY KWASANS (ansyen kontni)                   -->
+<!-- SECTION 2 : EPAY KWASANS                                    -->
 <!-- ============================================================ -->
 <div id="section-epargne" class="tab-section active">
 
@@ -557,7 +374,6 @@ body {
         <div class="slogan-top">
             "Kote ti monnen w ap travay jodi a, vin gwo kòb pou reponn a emergency w demen!"
         </div>
-
         <div class="accordion-item">
             <button class="accordion-header">
                 Kisa sistèm sa ye ? <span class="material-icons">expand_more</span>
@@ -566,7 +382,6 @@ body {
                 <p>Sistèm <strong>LCD Epargne Kwasans</strong> se yon inovasyon sou platfòm Les Cayes Dropshipping lan ki pèmèt kliyan an kapab kite "<strong>monnen</strong> l gen nan sèvis lan <strong>fè pitit</strong>", olye l achte sirèt oswa mete l pèdi nan bous li.</p>
             </div>
         </div>
-
         <div class="accordion-item">
             <button class="accordion-header">
                 Nan ki objektif ? <span class="material-icons">expand_more</span>
@@ -575,7 +390,6 @@ body {
                 <p>Se yon fason pou nou di <strong>"mèsi" pou fidelite w</strong>, pandan nap chèche fasilite w reponn a lòt fakti koli w.</p>
             </div>
         </div>
-
         <div class="accordion-item">
             <button class="accordion-header">
                 Kòman sa fonksyone ? <span class="material-icons">expand_more</span>
@@ -612,7 +426,7 @@ body {
             </div>
         </div>
 
-        <img src="lescayesdropshipping.png" class="trading-watermark" id="watermark-specimen">
+        <img src="lescayesdropshipping.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:70%; opacity:0.04; pointer-events:none; z-index:5; display:none;" id="watermark-specimen">
 
         <div id="setup-area" class="trading-form">
             <input type="text" id="code-input" class="trading-input" placeholder="Antre kòd LCD ou a">
@@ -621,7 +435,7 @@ body {
         </div>
 
         <div id="active-area" style="display:none; margin-top:20px;">
-            <button id="status-btn" class="btn-trade scintillant" style="width:100%;">An kous...</button>
+            <button id="status-btn" class="btn-trade scintillant">An kous...</button>
             <p id="timer-label" style="text-align:center; color:#848e9c; font-size:0.8em; margin-top:8px;"></p>
         </div>
     </section>
@@ -650,27 +464,11 @@ body {
             <h3 id="modal-title">Pèman</h3>
             <p id="modal-instructions" style="margin:10px 0;"></p>
             <p id="modal-details" style="font-weight:bold; font-size:1.8em; color:var(--binance-yellow); margin:15px 0; letter-spacing:2px;"></p>
-            <p style="font-size:0.8em; color:#888;">Non kont: <strong>Les Cayes Dropshipping</strong></p>
+            <p style="font-size:0.8em; color:#888;">Code agent: <strong>352995</strong></p>
         </div>
     </div>
 
 </div><!-- fin #section-epargne -->
-
-
-<!-- ===== MODAL TARIF FRÈ SÈVIS ===== -->
-<div id="tarif-modal">
-    <div class="tarif-modal-content">
-        <h4>Barèm frè sèvis</h4>
-        <div class="tarif-row">
-            <span class="range">Tout montan (&#8805; 50$)</span>
-            <span class="rate">6,1%</span>
-        </div>
-        <div class="tarif-note">
-            ✅ Kliyan ka peye cash pou kèlkeswa montan an, lap pase nan depo nou Camp-Perrin oswa depoze l sou kont Caposac sèvis lan.
-        </div>
-        <button class="close-tarif" onclick="document.getElementById('tarif-modal').style.display='none'">Fèmen</button>
-    </div>
-</div>
 
 <!-- ===== FOOTER ===== -->
 <footer id="main-footer">
@@ -685,6 +483,11 @@ body {
 <script>
 
 // =====================================================
+// TAUX UNIQUE : 135 HTG / $
+// =====================================================
+var TAUX = 135;
+
+// =====================================================
 // NAVIGASYON ONGLETS
 // =====================================================
 function switchTab(tab) {
@@ -695,7 +498,7 @@ function switchTab(tab) {
 }
 
 // =====================================================
-// AKÒDYON (epargne)
+// AKÒDYON
 // =====================================================
 document.querySelectorAll('.accordion-header').forEach(function(btn) {
     btn.addEventListener('click', function() {
@@ -708,25 +511,17 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
 });
 
 // =====================================================
-// WISE RECHAJ — ALGORITM KALKIL
-// Taux afiche kliyan : 132 HTG/$
-// Taux total reyèl   : 142 HTG/$ (frè entegre)
-// Frè reyèl          : 10 HTG/$ → ≈ 7.58%
+// WISE RECHAJ — KALKIL (taux unique 135 HTG/$)
 // =====================================================
-var WISE_TAUX_AFFICHE = 132;  // afichaj sèlman
-var WISE_TAUX_TOTAL   = 139.99;  // sèkrè — taux total reyèl
-
 function calculateWiseTotal() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
     var warning = document.getElementById('wiseWarning');
     var invoice = document.getElementById('wiseInvoice');
 
-    // Bloke si mwens ke 50$
     if (usd > 0 && usd < 50) {
         warning.style.display = 'block';
         invoice.style.opacity = '0.35';
         document.getElementById('wResDola').textContent  = '—';
-        document.getElementById('wResFrais').textContent = '—';
         document.getElementById('wHtgTotal').textContent = '— HTG';
         return;
     }
@@ -736,27 +531,20 @@ function calculateWiseTotal() {
 
     if (usd === 0) {
         document.getElementById('wResDola').textContent  = '—';
-        document.getElementById('wResFrais').textContent = '—';
         document.getElementById('wHtgTotal').textContent = '— HTG';
         return;
     }
 
-    // Frè = diferans ant taux total (142) ak taux afiche (132)
-    var fraisHTG = (WISE_TAUX_TOTAL - WISE_TAUX_AFFICHE) * usd; // 10 HTG/$
-    var totalHTG = WISE_TAUX_TOTAL * usd;
-    var pctAfi   = ((WISE_TAUX_TOTAL - WISE_TAUX_AFFICHE) / WISE_TAUX_AFFICHE * 100).toFixed(1); // 7.6%
-
     document.getElementById('wResDola').textContent  = usd.toFixed(2) + ' $';
-    document.getElementById('wResFrais').textContent = pctAfi + '%';
-    document.getElementById('wHtgTotal').textContent = Math.ceil(totalHTG).toLocaleString() + ' HTG';
+    document.getElementById('wHtgTotal').textContent = Math.ceil(usd * TAUX).toLocaleString() + ' HTG';
 }
 
 // =====================================================
-// TOUT LOJIK TRADING (epargne)
+// EPAY KWASANS — LOJIK TRADING
 // =====================================================
 (function() {
-    var CODES_VALIDES = ["LCD01a", "LCD5#1", "LCD#2A", "LCD2$", "LCD$4Y"];
-    var TOTAL_MS      = 30 * 24 * 60 * 60 * 1000;
+    var CODES_VALIDES  = ["LCD01a", "LCD5#1", "LCD#2A", "LCD2$", "LCD$4Y"];
+    var TOTAL_MS       = 30 * 24 * 60 * 60 * 1000;
 
     var setupArea  = document.getElementById('setup-area');
     var activeArea = document.getElementById('active-area');
@@ -770,6 +558,7 @@ function calculateWiseTotal() {
     var liveTickInterval  = null;
     var growthChart       = null;
 
+    // Barèm kwasans HTG
     function calculerGain(montant) {
         if (montant >= 1   && montant <= 24)  return 25;
         if (montant >= 25  && montant <= 99)  return 100;
@@ -783,13 +572,8 @@ function calculateWiseTotal() {
     function setLiveDot(active) {
         var dot = document.getElementById('live-dot');
         if (!dot) return;
-        if (active) {
-            dot.style.background = '#f6465d';
-            dot.style.animation  = 'livePulse 1.2s ease-out infinite';
-        } else {
-            dot.style.background = '#555';
-            dot.style.animation  = 'none';
-        }
+        dot.style.background = active ? '#f6465d' : '#555';
+        dot.style.animation  = active ? 'livePulse 1.2s ease-out infinite' : 'none';
     }
 
     function startCounter(investi, gain, dateDebut) {
@@ -800,15 +584,13 @@ function calculateWiseTotal() {
             var current;
             if (elapsed < BOOST_MS) {
                 var boostProgress = elapsed / BOOST_MS;
-                var boostTarget   = investi * 1.03;
-                current = investi + (boostTarget - investi) * boostProgress;
+                current = investi + (investi * 1.03 - investi) * boostProgress;
             } else {
                 var t = elapsed / TOTAL_MS;
                 current = investi + (gain - investi) * (1 - Math.exp(-3.5 * t));
             }
-            var decimals = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
             counterInt.textContent = Math.floor(current);
-            counterDec.textContent = decimals;
+            counterDec.textContent = Math.floor(Math.random() * 999999).toString().padStart(6, '0');
         }, 80);
     }
 
@@ -824,16 +606,13 @@ function calculateWiseTotal() {
         for (var i = 0; i <= POINTS; i++) {
             var t     = i / POINTS;
             var curve = investi + (gain - investi) * (1 - Math.exp(-3.5 * t));
-            var noise = (Math.random() - 0.5) * (gain - investi) * 0.008;
-            data.push(+(curve + noise).toFixed(2));
+            data.push(+(curve + (Math.random() - 0.5) * (gain - investi) * 0.008).toFixed(2));
             labels.push('J' + i);
         }
-        data[0]      = investi;
-        data[POINTS] = gain;
+        data[0] = investi; data[POINTS] = gain;
 
         var elapsed    = Math.min(Date.now() - dateDebut, TOTAL_MS);
-        var jouPase    = elapsed / (24 * 60 * 60 * 1000);
-        var currentIdx = Math.min(Math.floor(jouPase), POINTS);
+        var currentIdx = Math.min(Math.floor(elapsed / (24 * 60 * 60 * 1000)), POINTS);
         var dataPast   = data.slice(0, currentIdx + 1);
         var dataFuture = new Array(currentIdx).fill(null).concat(data.slice(currentIdx));
         var ptRadius   = dataPast.map(function(_, i) { return i === dataPast.length - 1 ? 8 : 0; });
@@ -843,20 +622,8 @@ function calculateWiseTotal() {
             data: {
                 labels: labels,
                 datasets: [
-                    {
-                        label: 'Kwasans ou',
-                        data: dataPast,
-                        borderColor: '#0ecb81',
-                        backgroundColor: 'rgba(14,203,129,0.08)',
-                        borderWidth: 2.5, fill: true, tension: 0.4,
-                        pointRadius: ptRadius, pointBackgroundColor: '#f0b90b',
-                        pointBorderColor: '#fff', pointBorderWidth: 2
-                    },
-                    {
-                        label: 'Trajektwa', data: dataFuture,
-                        borderColor: 'rgba(255,255,255,0.15)', borderWidth: 1.5,
-                        borderDash: [5, 5], fill: false, tension: 0.4, pointRadius: 0
-                    }
+                    { label: 'Kwasans ou', data: dataPast, borderColor: '#0ecb81', backgroundColor: 'rgba(14,203,129,0.08)', borderWidth: 2.5, fill: true, tension: 0.4, pointRadius: ptRadius, pointBackgroundColor: '#f0b90b', pointBorderColor: '#fff', pointBorderWidth: 2 },
+                    { label: 'Trajektwa',  data: dataFuture, borderColor: 'rgba(255,255,255,0.15)', borderWidth: 1.5, borderDash: [5,5], fill: false, tension: 0.4, pointRadius: 0 }
                 ]
             },
             options: {
@@ -875,13 +642,10 @@ function calculateWiseTotal() {
 
         liveTickInterval = setInterval(function() {
             if (!growthChart) return;
-            var ds = growthChart.data.datasets[0];
-            if (!ds.data.length) return;
-            var el   = Math.min(Date.now() - dateDebut, TOTAL_MS);
-            var tNow = el / TOTAL_MS;
+            var ds  = growthChart.data.datasets[0];
+            var tNow = Math.min(Date.now() - dateDebut, TOTAL_MS) / TOTAL_MS;
             var base = investi + (gain - investi) * (1 - Math.exp(-3.5 * tNow));
-            var noise = (Math.random() - 0.48) * base * 0.006;
-            ds.data[ds.data.length - 1] = +(base + noise).toFixed(2);
+            ds.data[ds.data.length - 1] = +(base + (Math.random() - 0.48) * base * 0.006).toFixed(2);
             growthChart.update('none');
         }, 3000);
     }
@@ -893,21 +657,18 @@ function calculateWiseTotal() {
         if (growthChart)      { growthChart.destroy(); growthChart = null; }
         if (liveTickInterval) { clearInterval(liveTickInterval); liveTickInterval = null; }
 
-        var POINTS = 30;
-        var invDem = 300, gainDem = 600;
+        var POINTS = 30, inv = 300, gain = 600;
         var labels = [], data = [];
         for (var i = 0; i <= POINTS; i++) {
-            var t     = i / POINTS;
-            var curve = invDem + (gainDem - invDem) * (1 - Math.exp(-3.5 * t));
-            var noise = (Math.random() - 0.5) * (gainDem - invDem) * 0.008;
-            data.push(+(curve + noise).toFixed(2));
+            var t = i / POINTS;
+            data.push(+(inv + (gain - inv) * (1 - Math.exp(-3.5 * t)) + (Math.random() - 0.5) * (gain - inv) * 0.008).toFixed(2));
             labels.push('J' + i);
         }
-        data[0] = invDem; data[POINTS] = gainDem;
+        data[0] = inv; data[POINTS] = gain;
 
         growthChart = new Chart(ctx, {
             type: 'line',
-            data: { labels: labels, datasets: [{ label: 'Egzanp', data: data, borderColor: 'rgba(14,203,129,0.35)', backgroundColor: 'rgba(14,203,129,0.04)', borderWidth: 1.5, borderDash: [4,4], fill: true, tension: 0.4, pointRadius: 0 }] },
+            data: { labels: labels, datasets: [{ data: data, borderColor: 'rgba(14,203,129,0.35)', backgroundColor: 'rgba(14,203,129,0.04)', borderWidth: 1.5, borderDash: [4,4], fill: true, tension: 0.4, pointRadius: 0 }] },
             options: {
                 responsive: true, maintainAspectRatio: false, animation: { duration: 700 },
                 plugins: { legend: { display: false }, tooltip: { enabled: false } },
@@ -923,11 +684,9 @@ function calculateWiseTotal() {
 
         liveTickInterval = setInterval(function() {
             if (!growthChart) return;
-            var ds  = growthChart.data.datasets[0];
+            var ds = growthChart.data.datasets[0];
             var idx = ds.data.length - 1;
-            var base = ds.data[idx] || invDem;
-            var noise = (Math.random() - 0.5) * base * 0.005;
-            ds.data[idx] = +(base + noise).toFixed(2);
+            ds.data[idx] = +(ds.data[idx] + (Math.random() - 0.5) * ds.data[idx] * 0.005).toFixed(2);
             growthChart.update('none');
         }, 3000);
     }
@@ -949,7 +708,6 @@ function calculateWiseTotal() {
         if (now < session.dateFin) {
             statusBtn.className   = 'btn-trade btn-orange scintillant';
             statusBtn.textContent = 'Kite monnen w fè pitit...';
-            statusBtn.style.width = '100%';
             var jouPase  = Math.floor((now - session.dateDebut) / (1000 * 60 * 60 * 24));
             var jouReste = Math.ceil((session.dateFin - now) / (1000 * 60 * 60 * 24));
             timerLabel.textContent = 'Jou ' + jouPase + ' / 30 — Kòb ou ap disponib nan ' + jouReste + ' jou';
@@ -957,7 +715,6 @@ function calculateWiseTotal() {
             setLiveDot(false);
             statusBtn.className   = 'btn-trade btn-green';
             statusBtn.textContent = 'REKIPERE LAJAN W';
-            statusBtn.style.width = '100%';
             timerLabel.textContent = 'Bravo! Kòb lan pare pou ou. ✅';
             watermark.style.display = 'block';
             clearInterval(animationInterval);
@@ -967,51 +724,43 @@ function calculateWiseTotal() {
         }
     }
 
+    // Depoze
     document.getElementById('start-btn').addEventListener('click', function() {
         var code    = document.getElementById('code-input').value.trim();
         var montant = parseFloat(document.getElementById('amount-input').value);
         var codesUtilises = [];
         try { codesUtilises = JSON.parse(localStorage.getItem('lcd_codes_utilises')) || []; } catch(e) {}
 
-        if (!CODES_VALIDES.includes(code))    { alert('Ou pa gen kredi nan sèvis lan.'); return; }
-        if (codesUtilises.includes(code))     { alert('Kòd sa a itilize deja!'); return; }
-        if (isNaN(montant) || montant <= 0)   { alert('Antre yon montan ki valid.'); return; }
+        if (!CODES_VALIDES.includes(code))  { alert('Ou pa gen kredi nan sèvis lan.');  return; }
+        if (codesUtilises.includes(code))   { alert('Kòd sa a itilize deja!');          return; }
+        if (isNaN(montant) || montant <= 0) { alert('Antre yon montan ki valid.');       return; }
 
-        var gain    = calculerGain(montant);
-        var now     = Date.now();
-        var session = { investi: montant, gain: gain, dateDebut: now, dateFin: now + TOTAL_MS };
-
+        var gain = calculerGain(montant);
+        var now  = Date.now();
         codesUtilises.push(code);
         localStorage.setItem('lcd_codes_utilises', JSON.stringify(codesUtilises));
-        localStorage.setItem('lcd_trading_session', JSON.stringify(session));
+        localStorage.setItem('lcd_trading_session', JSON.stringify({ investi: montant, gain: gain, dateDebut: now, dateFin: now + TOTAL_MS }));
         location.reload();
     });
 
+    // Rekipere
     document.getElementById('status-btn').addEventListener('click', function() {
-        if (statusBtn.classList.contains('btn-green')) {
-            var s = null;
-            try { s = JSON.parse(localStorage.getItem('lcd_trading_session')); } catch(e) {}
-            if (s) {
-                alert('Operasyon an fèt ak siksè! Ou gen ' + s.gain + ' HTG.\nVoye kaptidekran bay: lescayesdropshipping@gmail.com');
-                localStorage.removeItem('lcd_trading_session');
-            }
-            location.reload();
+        if (!statusBtn.classList.contains('btn-green')) return;
+        var s = null;
+        try { s = JSON.parse(localStorage.getItem('lcd_trading_session')); } catch(e) {}
+        if (s) {
+            alert('Operasyon an fèt ak siksè! Ou gen ' + s.gain + ' HTG.\nVoye kaptidekran bay: lescayesdropshipping@gmail.com');
+            localStorage.removeItem('lcd_trading_session');
         }
+        location.reload();
     });
 
-    // Modal pèman (epargne - Natcash sèlman)
-    var paymentData = {
-        'Natcash': { title: 'Natcash', instructions: 'Voye lajan an sou nimewo sa a:', details: '+509 35 60 88 69' }
-    };
-
+    // Modal pèman (Natcash)
     document.querySelectorAll('.payment-option').forEach(function(option) {
         option.addEventListener('click', function() {
-            var type = option.getAttribute('data-type');
-            var info = paymentData[type];
-            if (!info) return;
-            document.getElementById('modal-title').textContent        = info.title;
-            document.getElementById('modal-instructions').textContent = info.instructions;
-            document.getElementById('modal-details').textContent      = info.details;
+            document.getElementById('modal-title').textContent        = 'Natcash';
+            document.getElementById('modal-instructions').textContent = 'Voye lajan an sou nimewo sa a:';
+            document.getElementById('modal-details').textContent      = '+509 35 60 88 69';
             document.getElementById('payment-modal').style.display    = 'block';
         });
     });
@@ -1028,9 +777,9 @@ function calculateWiseTotal() {
     checkStatus();
 })();
 
+// Marke page vizite (pou new-badge nan index.html)
 localStorage.setItem('transaction_visited', 'true');
-var b = document.getElementById('new-badge');
-if (b) b.style.display = 'none';
+
 </script>
 </body>
 </html>
