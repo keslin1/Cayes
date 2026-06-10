@@ -264,6 +264,69 @@
         }
         .natcash-name-badge strong { color: #00b9ff; font-size: 1.05em; }
 
+        /* ===== RECHAJ ANLIY MODAL ===== */
+        #rechaj-anliy-modal {
+            display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.88);
+            overflow-y: auto;
+        }
+        .ra-modal-content {
+            background: #1a1a2e; margin: 5% auto; padding: 0;
+            border-radius: 18px; width: 90%; max-width: 420px;
+            color: #fff; border: 1px solid rgba(0,185,255,0.35);
+            box-shadow: 0 15px 50px rgba(0,185,255,0.15);
+            overflow: hidden;
+        }
+        .ra-modal-header {
+            background: linear-gradient(135deg, #0082c8, #00b9ff);
+            padding: 20px 20px 16px; position: relative;
+        }
+        .ra-modal-header h3 { margin: 0; font-size: 1.15em; font-weight: 800; }
+        .ra-modal-header p { margin: 5px 0 0; font-size: 0.82em; opacity: 0.85; }
+        .ra-close { position: absolute; right: 16px; top: 14px; font-size: 22px; cursor: pointer; opacity: 0.8; background: none; border: none; color: #fff; }
+        .ra-close:hover { opacity: 1; }
+        .ra-summary-box {
+            background: rgba(0,185,255,0.08); border: 1px solid rgba(0,185,255,0.2);
+            border-radius: 10px; padding: 14px 16px; margin: 18px 18px 0;
+            font-size: 0.9em; line-height: 1.6; color: rgba(255,255,255,0.85);
+        }
+        .ra-summary-box strong { color: #00b9ff; font-size: 1.05em; }
+        .ra-form-body { padding: 16px 18px 22px; display: grid; gap: 14px; }
+        .ra-label { font-size: 0.82em; font-weight: 700; color: rgba(255,255,255,0.6); margin-bottom: 4px; display: block; letter-spacing: 0.03em; }
+        .ra-input {
+            width: 100%; background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.15);
+            color: #fff; padding: 12px 14px; border-radius: 10px; font-size: 0.97em;
+            font-family: 'Segoe UI', Arial, sans-serif; outline: none; transition: border-color 0.2s;
+        }
+        .ra-input:focus { border-color: #00b9ff; background: rgba(0,185,255,0.07); }
+        .ra-input::placeholder { color: rgba(255,255,255,0.3); }
+        .ra-photo-label {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            background: rgba(255,255,255,0.06); border: 2px dashed rgba(0,185,255,0.35);
+            border-radius: 10px; padding: 18px; cursor: pointer;
+            font-size: 0.9em; color: rgba(255,255,255,0.6); transition: all 0.25s;
+        }
+        .ra-photo-label:hover { background: rgba(0,185,255,0.1); border-color: #00b9ff; color: #fff; }
+        .ra-photo-label .material-icons { font-size: 28px; color: #00b9ff; }
+        #ra-photo-preview {
+            display: none; width: 100%; max-height: 180px; object-fit: contain;
+            border-radius: 8px; border: 1px solid rgba(0,185,255,0.3); margin-top: 8px;
+        }
+        .ra-photo-name { font-size: 0.78em; color: #00b9ff; margin-top: 6px; display: none; }
+        .ra-submit-btn {
+            width: 100%; padding: 15px; border-radius: 10px; border: none;
+            background: linear-gradient(135deg, #0082c8, #00b9ff);
+            color: #fff; font-weight: 800; font-size: 1em; cursor: pointer;
+            letter-spacing: 0.04em; transition: opacity 0.2s;
+        }
+        .ra-submit-btn:hover { opacity: 0.88; }
+        .ra-submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+        .ra-success-msg {
+            display: none; text-align: center; padding: 20px;
+            color: #0ecb81; font-weight: 700; font-size: 0.95em;
+        }
+        .ra-success-msg .material-icons { font-size: 44px; display: block; margin-bottom: 8px; }
+
         /* ===== FOOTER NAV ===== */
         #main-footer {
             display: flex; justify-content: space-around; align-items: center;
@@ -308,15 +371,11 @@
                 </div>
                 <div class="wise-check-item">
                     <span class="material-icons">check</span>
-                    <span>Rechaj minimòm : <strong>50$</strong></span>
-                </div>
-                <div class="wise-check-item">
-                    <span class="material-icons">check</span>
                     <span>Rechaj efektye avan 1 h!</span>
                 </div>
             </div>
             <div class="wise-card-footer">
-                <span class="wise-current-price">Taux : 135 HTG / $</span>
+                <span class="wise-current-price">Kantite disponib : <span id="wise-stock">0</span> $</span>
             </div>
         </div>
 
@@ -330,14 +389,10 @@
 
             <div class="wise-input-group">
                 <p class="wise-input-label">Kantite dola w bezwen sou kat ou :</p>
-                <input type="number" id="wiseUsdAmount" placeholder="Minimòm 50$..." oninput="calculateWiseTotal()">
+                <input type="number" id="wiseUsdAmount" placeholder="Antre kantite dola..." oninput="calculateWiseTotal()">
             </div>
 
-            <div id="wiseWarning" class="wise-warning">
-                ⚠️ Minimòm rechaj se 50$. Antre yon montan egal oswa siperyè a 50$.
-            </div>
-
-            <div id="wiseInvoice">
+<div id="wiseInvoice">
                 <div class="wise-result-row"><span>Kantite w mande :</span> <span id="wResDola">—</span></div>
                 <div class="wise-result-row"><span>Taux sèvis :</span> <span>135 HTG / $</span></div>
                 <div class="wise-result-row wise-total-row">
@@ -357,7 +412,9 @@
                 <span> +509 3560-8869</span>
             </div>
             <div class="natcash-name-badge">
-                Code agent : <strong>352995</strong>
+                <a id="rechaj-anliy-link" href="#" onclick="openRechajAnliy(); return false;" style="color:#00b9ff; font-weight:700; font-size:1.05em; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
+                    <span class="material-icons" style="font-size:16px;">bolt</span>Rechaje anliy
+                </a>
             </div>
         </div>
 
@@ -470,6 +527,54 @@
 
 </div><!-- fin #section-epargne -->
 
+<!-- ===== MODAL RECHAJ ANLIY ===== -->
+<div id="rechaj-anliy-modal">
+    <div class="ra-modal-content">
+        <div class="ra-modal-header">
+            <button class="ra-close" onclick="closeRechajAnliy()">&times;</button>
+            <h3>⚡ Rechaj Wise anliy</h3>
+            <p>Konfime tranzaksyon HTG ou a pou nou rechaje kat ou</p>
+        </div>
+
+        <div class="ra-summary-box" id="ra-summary">
+            Ou vle rechaje kat ou pou <strong id="ra-usd-display">—</strong> $,<br>
+            wap voye <strong id="ra-htg-display">—</strong> HTG<br>
+            <span style="font-size:0.82em; color:rgba(255,255,255,0.5);" id="ra-datetime"></span>
+        </div>
+
+        <div class="ra-form-body">
+            <div>
+                <label class="ra-label">📧 Imel ou (pou konfirmasyon)</label>
+                <input type="email" id="ra-email" class="ra-input" placeholder="exemple@email.com">
+            </div>
+            <div>
+                <label class="ra-label">🏷️ Wisetag ou</label>
+                <input type="text" id="ra-wisetag" class="ra-input" placeholder="@VotreWiseTag">
+            </div>
+            <div>
+                <label class="ra-label">📸 Foto prèv tranzaksyon Natcash ou</label>
+                <label class="ra-photo-label" for="ra-photo-input">
+                    <span class="material-icons">photo_camera</span>
+                    <span id="ra-photo-text">Klike pou ajoute foto a</span>
+                </label>
+                <input type="file" id="ra-photo-input" accept="image/*" style="display:none" onchange="handleRaPhoto(this)">
+                <img id="ra-photo-preview" alt="Aperçu foto">
+                <div class="ra-photo-name" id="ra-photo-name"></div>
+            </div>
+
+            <button class="ra-submit-btn" id="ra-submit-btn" onclick="submitRechajAnliy()">
+                <span class="material-icons" style="vertical-align:middle; font-size:18px; margin-right:6px;">send</span>
+                Konfime tranzaksyon an
+            </button>
+
+            <div class="ra-success-msg" id="ra-success-msg">
+                <span class="material-icons">check_circle</span>
+                Tranzaksyon ou an voye! Nou ap rechaje kat ou anvan 1h. Mèsi!
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- ===== FOOTER ===== -->
 <footer id="main-footer">
     <a href="index.html" class="nav-item"><span class="material-icons">home</span><p>Akèy</p></a>
@@ -515,18 +620,8 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
 // =====================================================
 function calculateWiseTotal() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
-    var warning = document.getElementById('wiseWarning');
     var invoice = document.getElementById('wiseInvoice');
 
-    if (usd > 0 && usd < 50) {
-        warning.style.display = 'block';
-        invoice.style.opacity = '0.35';
-        document.getElementById('wResDola').textContent  = '—';
-        document.getElementById('wHtgTotal').textContent = '— HTG';
-        return;
-    }
-
-    warning.style.display = 'none';
     invoice.style.opacity = '1';
 
     if (usd === 0) {
@@ -777,8 +872,140 @@ function calculateWiseTotal() {
     checkStatus();
 })();
 
-// Marke page vizite (pou new-badge nan index.html)
-localStorage.setItem('transaction_visited', 'true');
+
+// =====================================================
+// RECHAJ ANLIY — MODAL + ENVOI EMAIL
+// =====================================================
+var raPhotoBase64 = null;
+var raPhotoMime   = null;
+var raPhotoName   = null;
+
+function openRechajAnliy() {
+    var usd = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
+    if (usd <= 0) {
+        alert('Tanpri antre kantite dola w vle rechaje a nan simulatè a anvan ou klike "Rechaje anliy".');
+        return;
+    }
+    var htg = Math.ceil(usd * TAUX);
+    var now = new Date();
+    var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                + ' ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
+
+    document.getElementById('ra-usd-display').textContent = usd.toFixed(2);
+    document.getElementById('ra-htg-display').textContent = htg.toLocaleString();
+    document.getElementById('ra-datetime').textContent    = dateStr;
+
+    // Reset form
+    document.getElementById('ra-email').value    = '';
+    document.getElementById('ra-wisetag').value  = '';
+    document.getElementById('ra-photo-input').value = '';
+    document.getElementById('ra-photo-preview').style.display = 'none';
+    document.getElementById('ra-photo-name').style.display    = 'none';
+    document.getElementById('ra-photo-name').textContent      = '';
+    document.getElementById('ra-photo-text').textContent      = 'Klike pou ajoute foto a';
+    document.getElementById('ra-success-msg').style.display   = 'none';
+    document.getElementById('ra-submit-btn').style.display    = 'block';
+    document.getElementById('ra-submit-btn').disabled         = false;
+    raPhotoBase64 = null; raPhotoMime = null; raPhotoName = null;
+
+    document.getElementById('rechaj-anliy-modal').style.display = 'block';
+}
+
+function closeRechajAnliy() {
+    document.getElementById('rechaj-anliy-modal').style.display = 'none';
+}
+
+window.addEventListener('click', function(e) {
+    var m = document.getElementById('rechaj-anliy-modal');
+    if (e.target === m) closeRechajAnliy();
+});
+
+function handleRaPhoto(input) {
+    if (!input.files || !input.files[0]) return;
+    var file = input.files[0];
+    raPhotoMime = file.type;
+    raPhotoName = file.name;
+    document.getElementById('ra-photo-text').textContent = file.name;
+    document.getElementById('ra-photo-name').textContent = '✅ ' + file.name;
+    document.getElementById('ra-photo-name').style.display = 'block';
+
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        raPhotoBase64 = e.target.result.split(',')[1];
+        var preview = document.getElementById('ra-photo-preview');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+function submitRechajAnliy() {
+    var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
+    var htg     = Math.ceil(usd * TAUX);
+    var email   = document.getElementById('ra-email').value.trim();
+    var wisetag = document.getElementById('ra-wisetag').value.trim();
+
+    if (!email)   { alert('Tanpri antre imel ou.'); return; }
+    if (!wisetag) { alert('Tanpri antre Wisetag ou.'); return; }
+    if (!raPhotoBase64) { alert('Tanpri ajoute foto prèv pèman Natcash ou a.'); return; }
+
+    var btn = document.getElementById('ra-submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Nap voye...';
+
+    var now     = new Date();
+    var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                + ' à ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
+
+    // Envoi via Web3Forms (supporte pièces jointes base64)
+    var payload = {
+        access_key: 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a',
+        subject:    'Rechaj Wise pou ' + usd.toFixed(2) + ' $',
+        from_name:  wisetag,
+        replyto:    email,
+        message:    'Bonswa,\n\nmwen swete rechaje kat mwen, mwen voye done yo pou nou; map tann feedback nou svp\n\n'
+                  + '———————————————\n'
+                  + 'Imel kliyan : ' + email + '\n'
+                  + 'Wisetag     : ' + wisetag + '\n'
+                  + 'Kantite USD : ' + usd.toFixed(2) + ' $\n'
+                  + 'Montan HTG  : ' + htg.toLocaleString() + ' HTG\n'
+                  + 'Dat / Lè    : ' + dateStr + '\n'
+                  + '———————————————',
+        attachment: raPhotoBase64
+    };
+
+    fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+        if (data.success) {
+            btn.style.display = 'none';
+            document.getElementById('ra-success-msg').style.display = 'block';
+        } else {
+            throw new Error(data.message || 'Erreur');
+        }
+    })
+    .catch(function() {
+        // Fallback : ouvrir client mail natif
+        var subject  = encodeURIComponent('Rechaj Wise pou ' + usd.toFixed(2) + ' $');
+        var body     = encodeURIComponent(
+            'Bonswa,\n\nmwen swete rechaje kat mwen, mwen voye done yo pou nou; map tann feedback nou svp\n\n'
+            + 'Imel  : ' + email + '\n'
+            + 'Wisetag : ' + wisetag + '\n'
+            + 'Kantite : ' + usd.toFixed(2) + ' $ / ' + htg.toLocaleString() + ' HTG\n'
+            + 'Dat : ' + dateStr + '\n\n'
+            + '[Tanpri ajoute foto prèv pèman an manyèlman nan imel sa a.]'
+        );
+        window.open('mailto:thomaskabe293@gmail.com?subject=' + subject + '&body=' + body);
+        btn.style.display = 'none';
+        document.getElementById('ra-success-msg').style.display = 'block';
+    });
+}
+
+
 
 </script>
 </body>
