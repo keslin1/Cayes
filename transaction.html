@@ -334,6 +334,87 @@
         }
         .ra-success-msg .material-icons { font-size: 44px; display: block; margin-bottom: 8px; }
 
+        /* ===== TOAST NATCASH ===== */
+        @keyframes toast-in {
+            from { transform: translateY(-110%); opacity: 0; }
+            to   { transform: translateY(0);     opacity: 1; }
+        }
+        @keyframes toast-out {
+            from { transform: translateY(0);     opacity: 1; }
+            to   { transform: translateY(-110%); opacity: 0; }
+        }
+        #natcash-toast {
+            position: fixed; top: 14px; left: 50%; transform: translateX(-50%) translateY(-110%);
+            z-index: 9999; width: 88%; max-width: 380px;
+            background: #0a1628;
+            border: 1.5px solid rgba(0,185,255,0.35);
+            border-radius: 14px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.65);
+            color: #fff; padding: 0; overflow: hidden;
+            opacity: 0; pointer-events: none;
+            transition: none;
+        }
+        #natcash-toast.show {
+            pointer-events: auto;
+            animation: toast-in 0.38s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        #natcash-toast.hide {
+            animation: toast-out 0.3s ease-in forwards;
+        }
+        .toast-header {
+            background: linear-gradient(90deg, #005eb8, #00b9ff);
+            padding: 11px 16px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .toast-header span { font-weight: 800; font-size: 0.92em; letter-spacing: 0.03em; }
+        .toast-close {
+            background: none; border: none; color: #fff; font-size: 20px;
+            cursor: pointer; opacity: 0.8; line-height: 1; padding: 0 2px;
+        }
+        .toast-close:hover { opacity: 1; }
+        .toast-body { padding: 14px 18px 16px; font-size: 0.9em; line-height: 1.7; color: rgba(255,255,255,0.88); }
+        .toast-body .toast-step { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px; }
+        .toast-body .toast-num {
+            background: #00b9ff; color: #fff; font-weight: 800; font-size: 0.78em;
+            border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .toast-body .toast-bullet { color: #00b9ff; font-weight: 700; margin-right: 4px; }
+        .toast-body .hi { color: #00b9ff; font-weight: 700; }
+        .toast-body .toast-name { color: #f0b90b; font-weight: 700; }
+
+        /* Natcash pill cliquable */
+        .natcash-pill { cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+        .natcash-pill:hover { background: rgba(0,185,255,0.15); border-color: #00b9ff; }
+
+        /* ===== RECHAJ ANLIY BUTTON ===== */
+        @keyframes cursor-run {
+            0%   { transform: translateX(-110%); }
+            100% { transform: translateX(110%); }
+        }
+        .rechaj-anliy-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            position: relative; overflow: hidden;
+            background: #005eb8;
+            color: #ffffff;
+            font-weight: 700; font-size: 0.97em;
+            padding: 11px 22px; border-radius: 50px;
+            text-decoration: none; border: none; cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,94,184,0.5);
+            transition: background 0.2s, box-shadow 0.2s;
+        }
+        .rechaj-anliy-btn:hover {
+            background: #0070d8;
+            box-shadow: 0 6px 22px rgba(0,94,184,0.65);
+        }
+        .rechaj-anliy-btn::after {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 55%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+            animation: cursor-run 1.6s linear infinite;
+        }
+        .rechaj-anliy-btn .material-icons { font-size: 17px; }
+
         /* ===== FOOTER NAV ===== */
         #main-footer {
             display: flex; justify-content: space-around; align-items: center;
@@ -413,9 +494,11 @@
 
 <div id="wiseInvoice">
                 <div class="wise-result-row"><span>Kantite w mande :</span> <span id="wResDola">—</span></div>
-                <div class="wise-result-row"><span>Taux sèvis :</span> <span>135 HTG / $</span></div>
+                <div class="wise-result-row"><span>Taux sèvis :</span> <span>140 HTG / $</span></div>
+                <div class="wise-result-row"><span>Frais Wise :</span> <span id="wFraisWise">—</span></div>
                 <div class="wise-result-row wise-total-row">
-                    <span>Total pou peye (Cash) :</span> <span id="wHtgTotal">— HTG</span>
+                    <span style="flex:1; padding-right:8px; font-size:0.88em;">Total pou peye :</span>
+                    <span id="wHtgTotal" style="flex-shrink:0; text-align:right; white-space:nowrap;">— HTG</span>
                 </div>
                 <div class="wise-facture-footer">
                     Pran yon kaptidekran kalkil pèman an, peye epi voye yo bay sèvis asistans pou rechaje w.
@@ -426,15 +509,15 @@
         <!-- Natcash — sèl mwayen pèman -->
         <div class="natcash-block">
             <h4>Men sèl mwayen pèman anliy ki aksepte:</h4>
-            <div class="natcash-pill">
+            <div class="natcash-pill" onclick="showNatcashToast()">
                 <img src="natcash1.png" alt="Natcash">
                 <span> +509 3560-8869</span>
             </div>
             <div class="natcash-name-badge">
-                <a id="rechaj-anliy-link" href="#" onclick="openRechajAnliy(); return false;" style="color:#00b9ff; font-weight:700; font-size:1.05em; text-decoration:none; display:inline-flex; align-items:center; gap:6px;">
-                    <span class="material-icons" style="font-size:16px;">bolt</span>Rechaje anliy
-                </a>
-            </div>
+                    <button class="rechaj-anliy-btn" onclick="openRechajAnliy()">
+                        <span class="material-icons">bolt</span>Rechaje anliy
+                    </button>
+                </div>
         </div>
 
     </div>
@@ -546,6 +629,37 @@
 
 </div><!-- fin #section-epargne -->
 
+<!-- ===== TOAST NATCASH ===== -->
+<div id="natcash-toast">
+    <div class="toast-header">
+        <span>📲 Enstriksyon depo Natcash</span>
+        <button class="toast-close" onclick="hideNatcashToast()">&times;</button>
+    </div>
+    <div class="toast-body">
+        <p style="margin:0 0 10px 0; color:rgba(255,255,255,0.6); font-size:0.83em;">Pou fè depo Natcash, ale nan :</p>
+        <div class="toast-step">
+            <span class="toast-num">1</span>
+            <span><span class="hi">Retrè</span></span>
+        </div>
+        <div class="toast-step">
+            <span class="toast-num">2</span>
+            <span>Nimewo <span class="hi">3560-8869</span></span>
+        </div>
+        <div class="toast-step">
+            <span class="toast-num">3</span>
+            <span>Kòd ajan : <span class="hi">352995</span></span>
+        </div>
+        <div class="toast-step">
+            <span style="width:20px; flex-shrink:0; text-align:center;">🔑</span>
+            <span>Kòd sekrè <span style="color:rgba(255,255,255,0.5); font-size:0.88em;">paw</span></span>
+        </div>
+        <div class="toast-step">
+            <span style="width:20px; flex-shrink:0; text-align:center;">✅</span>
+            <span>Konfime — Nom : <span class="toast-name">Keslin BENOIT</span></span>
+        </div>
+    </div>
+</div>
+
 <!-- ===== MODAL RECHAJ ANLIY ===== -->
 <div id="rechaj-anliy-modal">
     <div class="ra-modal-content">
@@ -607,9 +721,9 @@
 <script>
 
 // =====================================================
-// TAUX UNIQUE : 135 HTG / $
+// TAUX UNIQUE : 140 HTG / $
 // =====================================================
-var TAUX = 135;
+var TAUX = 140;
 
 // =====================================================
 // NAVIGASYON ONGLETS
@@ -635,8 +749,14 @@ document.querySelectorAll('.accordion-header').forEach(function(btn) {
 });
 
 // =====================================================
-// WISE RECHAJ — KALKIL (taux unique 135 HTG/$)
+// WISE RECHAJ — KALKIL (taux 140 HTG/$, frais palier)
 // =====================================================
+function getWiseFee(usd) {
+    if (usd <= 0) return 0;
+    var bracket = Math.floor((usd - 1) / 100); // 0-based bracket
+    return +(0.99 + bracket).toFixed(2);
+}
+
 function calculateWiseTotal() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
     var invoice = document.getElementById('wiseInvoice');
@@ -644,13 +764,18 @@ function calculateWiseTotal() {
     invoice.style.opacity = '1';
 
     if (usd === 0) {
-        document.getElementById('wResDola').textContent  = '—';
-        document.getElementById('wHtgTotal').textContent = '— HTG';
+        document.getElementById('wResDola').textContent    = '—';
+        document.getElementById('wFraisWise').textContent  = '—';
+        document.getElementById('wHtgTotal').textContent   = '— HTG';
         return;
     }
 
-    document.getElementById('wResDola').textContent  = usd.toFixed(2) + ' $';
-    document.getElementById('wHtgTotal').textContent = Math.ceil(usd * TAUX).toLocaleString() + ' HTG';
+    var frais   = getWiseFee(usd);
+    var totalHtg = Math.ceil((usd + frais) * TAUX);
+
+    document.getElementById('wResDola').textContent    = usd.toFixed(2) + ' $';
+    document.getElementById('wFraisWise').textContent  = frais.toFixed(2) + ' $';
+    document.getElementById('wHtgTotal').textContent   = totalHtg.toLocaleString() + ' HTG';
 }
 
 // =====================================================
@@ -905,7 +1030,8 @@ function openRechajAnliy() {
         alert('Tanpri antre kantite dola w vle rechaje a nan simulatè a anvan ou klike "Rechaje anliy".');
         return;
     }
-    var htg = Math.ceil(usd * TAUX);
+    var frais = getWiseFee(usd);
+    var htg = Math.ceil((usd + frais) * TAUX);
     var now = new Date();
     var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                 + ' ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
@@ -960,7 +1086,8 @@ function handleRaPhoto(input) {
 
 function submitRechajAnliy() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
-    var htg     = Math.ceil(usd * TAUX);
+    var frais   = getWiseFee(usd);
+    var htg     = Math.ceil((usd + frais) * TAUX);
     var email   = document.getElementById('ra-email').value.trim();
     var wisetag = document.getElementById('ra-wisetag').value.trim();
 
@@ -976,7 +1103,6 @@ function submitRechajAnliy() {
     var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                 + ' à ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
 
-    // Envoi via Web3Forms (supporte pièces jointes base64)
     var payload = {
         access_key: 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a',
         subject:    'Rechaj Wise pou ' + usd.toFixed(2) + ' $',
@@ -987,7 +1113,8 @@ function submitRechajAnliy() {
                   + 'Imel kliyan : ' + email + '\n'
                   + 'Wisetag     : ' + wisetag + '\n'
                   + 'Kantite USD : ' + usd.toFixed(2) + ' $\n'
-                  + 'Montan HTG  : ' + htg.toLocaleString() + ' HTG\n'
+                  + 'Frais Wise  : ' + frais.toFixed(2) + ' $\n'
+                  + 'Montan HTG  : ' + htg.toLocaleString() + ' HTG (@ 140 HTG/$)\n'
                   + 'Dat / Lè    : ' + dateStr + '\n'
                   + '———————————————',
         attachment: raPhotoBase64
@@ -1007,21 +1134,30 @@ function submitRechajAnliy() {
             throw new Error(data.message || 'Erreur');
         }
     })
-    .catch(function() {
-        // Fallback : ouvrir client mail natif
-        var subject  = encodeURIComponent('Rechaj Wise pou ' + usd.toFixed(2) + ' $');
-        var body     = encodeURIComponent(
-            'Bonswa,\n\nmwen swete rechaje kat mwen, mwen voye done yo pou nou; map tann feedback nou svp\n\n'
-            + 'Imel  : ' + email + '\n'
-            + 'Wisetag : ' + wisetag + '\n'
-            + 'Kantite : ' + usd.toFixed(2) + ' $ / ' + htg.toLocaleString() + ' HTG\n'
-            + 'Dat : ' + dateStr + '\n\n'
-            + '[Tanpri ajoute foto prèv pèman an manyèlman nan imel sa a.]'
-        );
-        window.open('mailto:thomaskabe293@gmail.com?subject=' + subject + '&body=' + body);
-        btn.style.display = 'none';
-        document.getElementById('ra-success-msg').style.display = 'block';
+    .catch(function(err) {
+        btn.disabled = false;
+        btn.textContent = 'Konfime tranzaksyon an';
+        alert('Yon erè te pase. Tanpri verifye koneksyon entènèt ou epi eseye ankò.');
+        console.error('Web3Forms error:', err);
     });
+}
+// =====================================================
+// TOAST NATCASH
+// =====================================================
+var _toastTimer = null;
+function showNatcashToast() {
+    var t = document.getElementById('natcash-toast');
+    t.classList.remove('hide');
+    t.classList.add('show');
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(hideNatcashToast, 8000);
+}
+function hideNatcashToast() {
+    var t = document.getElementById('natcash-toast');
+    t.classList.remove('show');
+    t.classList.add('hide');
+    clearTimeout(_toastTimer);
+    setTimeout(function() { t.classList.remove('hide'); }, 320);
 }
 
 
