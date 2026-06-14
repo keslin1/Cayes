@@ -303,6 +303,232 @@
         #main-footer .material-icons { color: var(--vert-menu); font-size: 24px; }
         .nav-item.active .material-icons { color: var(--kaki); }
         .cart-badge-nav { position: absolute; top: 0; right: 10px; background-color: var(--rouge-alerte); color: white; border-radius: 50%; padding: 2px 5px; font-size: 0.65em; font-weight: bold; display: none; }
+
+        /* ── Lyen "Voir une exemple" / "Détails occasion récente" ── */
+        .exemple-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: #ff9800;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.95em;
+        }
+        .exemple-link:active,
+        .exemple-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Modal generic overlay ── */
+        .lcd-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.55);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .lcd-modal-overlay.open {
+            display: flex;
+        }
+        .lcd-modal-box {
+            background: var(--blanc-fond);
+            border-radius: 14px;
+            width: 100%;
+            max-width: 380px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 18px;
+            box-sizing: border-box;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            position: relative;
+            animation: modalPop 0.25s ease-out;
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .lcd-modal-close {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: var(--gri-clair);
+            border: none;
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--noir-texte);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        .lcd-modal-title {
+            font-size: 1.15em;
+            font-weight: 900;
+            color: var(--bleu-marin);
+            margin: 0 0 12px 0;
+            padding-right: 35px;
+        }
+
+        /* ── Egzanp adrès (Option 2) ── */
+        .exemple-field-label {
+            font-size: 0.85em;
+            font-weight: 800;
+            color: var(--noir-texte);
+            margin: 14px 0 6px 0;
+        }
+        .exemple-field-label .star { color: #ff9800; }
+        .exemple-field-box {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 0.95em;
+            font-weight: 700;
+            color: var(--noir-texte);
+            background: #fff;
+        }
+        .exemple-field-box.placeholder {
+            color: #999;
+            font-weight: 400;
+        }
+        .exemple-field-box.highlight {
+            border-color: #ff9800;
+            background: #fff8ed;
+        }
+        .exemple-note {
+            margin-top: 14px;
+            background: var(--info-fond);
+            border-left: 4px solid var(--vert-info);
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 0.9em;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .exemple-note .material-icons {
+            color: var(--vert-info);
+            font-size: 20px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ── Galeri prèv livrezon (Option 3) ── */
+        .galerie-recap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--gri-clair);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 14px;
+        }
+        .galerie-recap-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            text-align: center;
+        }
+        .galerie-recap-label {
+            font-size: 0.75em;
+            color: #888;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .galerie-recap-val {
+            font-size: 0.9em;
+            font-weight: 800;
+            color: var(--bleu-marin);
+        }
+        .galerie-recap-badge {
+            color: #2e7d32;
+        }
+        .galerie-recap-sep {
+            width: 1px;
+            height: 28px;
+            background: #ddd;
+            margin: 0 6px;
+        }
+        .galerie-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+        .galerie-grid img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #eee;
+        }
+
+        /* ── Lightbox ── */
+        #lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 2100;
+            align-items: center;
+            justify-content: center;
+        }
+        #lightbox.open {
+            display: flex;
+        }
+        #lightbox img {
+            max-width: 92%;
+            max-height: 92%;
+            border-radius: 8px;
+        }
+
+        /* ── Lis Frè fiks elektwonik (Option 5) ── */
+        .frais-electronik-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .frais-electronik-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-style: italic;
+            font-size: 1.05em;
+        }
+        .frais-electronik-list li::before {
+            content: "•";
+            color: var(--noir-texte);
+            font-weight: bold;
+            margin-right: 2px;
+        }
+        .frais-item {
+            flex: 1;
+        }
+        .frais-highlight {
+            background-color: #fde68a;
+            padding: 0 2px;
+        }
+        .frais-arrow {
+            color: #333;
+        }
+        .frais-prix {
+            font-weight: 700;
+        }
+        .frais-electronik-footer {
+            margin: 18px 0 4px 0;
+            color: #999;
+            font-style: italic;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -327,41 +553,48 @@
 
                     <li class="hidden-scroll">
                         <h3>Pwotokòl acha :</h3>
-                        Lè wap achte anliy nan adrès nou, ou dwe mete <strong>nom ajan</strong> ki nan depatman wap resevwa koli a epi <strong>ajoute siyati w dèyè ak destinasyon an</strong> si tout fwa w pa aux Cayes. 
+                        Lè wap achte anliy nan adrès nou, ou dwe mete <strong>nom ajan</strong> ki nan depatman wap resevwa koli a epi <strong>ajoute siyati w dèyè</strong>. 
+                        <br><a href="#" class="exemple-link" onclick="ouvrirExemple(event)">Voir une exemple &rsaquo;</a>
                     </li>
                     
                     <li class="hidden-scroll">
                         <h3>Livrezon :</h3>
-                        Ou resevwa livrezon kòmand ou an <strong>Jérémie, Ti Goave, P-au-P, Léogane, Cap Haïtien</strong>. Les Cayes Dropshipping gen depo sèlman nan Sud.
-                        <p>Aprè temps ki estime nan premye paj platfòm nou an fin ekoule, atik ou genyen ki pa livre nan adrès nou ap ret pou lòt okazyon.</p> 
+                        Ou resevwa kòmand ou an <strong>aux Cayes</strong>. Les Cayes Dropshipping gen antrepo nou Camp-Perrin.
+                        <p>Nou livre w' devan pòt ou si koli an depase 15 lbs, oswa ou pran li nan yon pwen de rankont.</p>
+                        <a href="#" class="exemple-link" onclick="ouvrirGalerie(event)">Détails occasion récente &rsaquo;</a>
                     </li>
 
                     <li class="hidden-scroll">
                         <h3>Bagay entèdi :</h3>
-                        Nou <strong>pa pote</strong> materyèl ladwàn pa aksepte. Apre jou machandiz yo disponib lan, nou ka pran yon entèval <strong>1 à 3 jou</strong> pou depouye stock. Yon kliyan pa bezwen plede ekri n a chak fwa pou mande n' kijan sa ye. Kòmand ou an <strong>plase e lap livre</strong> nan dat ki estime an.
+                        Nou <strong>pa pote</strong> materyèl ladwàn pa aksepte.
                         <div class="info-box">
                             <span class="material-icons" style="color: var(--vert-info);">list</span> 
-                            <p style="margin: 0;"><strong>Lis bagay entèdi</strong> : Kagoul, sex-toy, materyèl enflamab, materyèl militè, fo lajan, dwòg.</p>
+                            <p style="margin: 0;"><strong>Lis bagay entèdi</strong> : Sex-toy, pwodui toksik danjere, materyèl militè, fo lajan, dwòg.</p>
                         </div>
                     </li>
                     
 <li class="hidden-scroll">
     <h3>Kontwòl :</h3>
     Frè <strong>enpòtasyon an</strong> se <strong>4,90 USD pa liv (lbs)</strong>. Pou pwa ki siperyè a 49 lbs, li ka redui jiska 3,99 USD.
-    <br>Kalkil frais an <strong>fèt an m³</strong> (selon poids reyèl ak volim koli an).
-    <br>Fòmil kalil lan se: <strong>L × l × H / 4000.</strong> Ou pap peye okenn frais siplemantè si l pa nan kategori elektwonik.
-    
+    <br>Kalkil frais an fèt an m³ (selon poids reyèl ak volim koli an).
+    <br>Fòmil kalil lan se: L × l × H / 4000.
+    <p style="margin: 12px 0 0 0;">Ou pap peye okenn frais siplemantè si l pa nan kategori elektwonik.</p>
+    <div class="info-box electronic-box">
+        <a href="#" onclick="ouvrirFraisElectronik(event)" style="display: flex; align-items: flex-start; gap: 12px; text-decoration: none; color: inherit;">
+            <span class="material-icons" style="color: var(--vert-info);">info</span>
+            <p style="margin: 0;">Klike sou bouton sa pou wè frais fiks elektwonik.</p>
+        </a>
+    </div>
 </li>
-
 <li class="hidden-scroll">
                         <h3>Resevwa koli w :</h3>
-                        Tout kòmand ki peze ant <strong>1 a 5 liv</strong> koute <strong>25 dola fiks</strong>. Wap resevwa yon fakti pou "coût importation" machandiz ou yo. 
-                        <br>Ou peye fakti sa lòske koli an disponib. Pa kite koli ret fè <strong>plis ke 4 jou nan depo n</strong>, se sèl fason nou pa tolere kliyan. Kalite atik ou yo depann de kalite founisè w chwazi sou platfòm wap achte an.
+                        Tout kòmand ki peze ant <strong>1 a 3 liv</strong> koute <strong>20 dola fiks</strong>. Wap resevwa yon fakti pou "coût importation" machandiz ou yo. 
+                        <br>Ou peye fakti sa lòske koli an disponib.
                     </li>
 
                     <li class="hidden-scroll">
-                        <h3>Sèvis pick-up :</h3>
-                        Nou <strong>pase pran</strong> pakè w yo lakay ou nan zòn sa yo Etazini : Michigan, Louisville, Tennessee, Indianapolis, Georgia, Orlando, ak Kentucky. Sèvis sa fèt <strong>sou planifikasyon pou orè ak frais sa mande.</strong>.
+                        <h3>Achte sou ALIBABA :</h3>
+                        Siw gen machandiz ki <strong>entèresew sou ALBB</strong>, ou ka pataje link li avèk nou pou edew evalye pri l oswa achte li pou ou. Nou pa fè kòmand grenn machandiz <strong>ki pi lou ke 30 kg (50 à 60 liv)</strong>.
                     </li>
                 </ol>
 
@@ -373,7 +606,7 @@
             
             <section id="section-avantaj" class="tab-content">
                 <img src="lescayesdropshipping.jpg" alt="Avantaj" id="main-section-image">
-                <h2 class="section-title">Poukisa w ka pran sèvis Les Cayes Dropshipping lan?</h2>
+                <h2 class="section-title">Pwen fò Les Cayes Dropshipping, e sa k' fè nou diferan</h2>
                 
                 <ul style="list-style: disc; padding-left: 20px;">
                     <li>
@@ -384,8 +617,8 @@
 
                     <li>
                         <h3>Acha pro :</h3>
-                        Nap achte sou entènèt depi <strong>2023</strong>.
-                        <br>Nou garanti <strong>erè pa janm soti nan nou</strong>. Wòl nou se achte e pote sa ou chwazi a, pote pou saw voye a.
+                        Nap achte sou entènèt depi <strong>2019</strong>.
+                        <br>Nou garanti <strong>erè pa janm soti nan nou</strong>. Wòl nou se achte e pote sa ou chwazi a.
                     </li>
 
                     <li>
@@ -395,8 +628,8 @@
 
                     <li>
                         <h3>Jere pwoblèm ak transparans :</h3>
-                        <p>Yo di pa <strong>gen sèvis shipping ki pafè</strong>; e wi se vre. Sèl ti pwoblèm ki konn genyen, se reta ak sila ki Okap ak Jeremi yo (le temps pou n fè chofè n fè livrezon pou ou).
-                             Men apresa: <strong>machandiz ou vin à temps e yo pap manke</strong> yon grenn atik. E si se ta le cas, nou verifye avèw pou yon posib ranbousman.</p>
+                        <p>Koli yo toujou disponib avan dat ke nou estime sou platfòm lan.
+                             Machandiz ou pap pèdi, lajan w an sekirite ak nou</strong>.</p>
 
                         <div class="remak-box">
                             <span class="material-icons" style="color: #ff9800;">info</span>
@@ -413,6 +646,90 @@
 
         </div>
     </main>
+
+    <!-- ===== MODAL "Voir une exemple" (Option 2) ===== -->
+    <div id="exemple-modal" class="lcd-modal-overlay" onclick="fermerExemple(event)">
+        <div class="lcd-modal-box" onclick="event.stopPropagation()">
+            <button class="lcd-modal-close" onclick="fermerExemple()">✕</button>
+            <h3 class="lcd-modal-title">Egzanp ajou adrès</h3>
+
+            <div class="exemple-field-label">Adrès <span class="star">*</span></div>
+            <div class="exemple-field-box">14030 NW 5th Pl</div>
+
+            <div class="exemple-field-label">Apatman, blòk, bilding, etaj, pyès, eks <span class="star">*</span></div>
+            <div class="exemple-field-box highlight">Nom ajan + siyati w (egz: Keslin BENOIT / AB-123)</div>
+
+            <div class="exemple-field-label">Eta, Vil <span class="star">*</span></div>
+            <div class="exemple-field-box">Florida, MIAMI</div>
+
+            <div class="exemple-field-label">Kòd postal <span class="star">*</span></div>
+            <div class="exemple-field-box">33168-3920</div>
+
+            <div class="exemple-note">
+                <span class="material-icons">info</span>
+                <p style="margin:0;">Se nan chan <strong>"Apatman, blòk, bilding, etaj, pyès, eks"</strong> pou ou mete <strong>nom ajan</strong> nan depatman ki pou resevwa koli a, ansanm ak <strong>siyati pa w</strong>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL GALERIE LIVREZON (Option 3) ===== -->
+    <div id="galerie-modal" class="lcd-modal-overlay" onclick="fermerGalerie(event)">
+        <div class="lcd-modal-box" onclick="event.stopPropagation()">
+            <button class="lcd-modal-close" onclick="fermerGalerie()">✕</button>
+            <h3 class="lcd-modal-title">📦 Prèv Livrezon — Avril</h3>
+
+            <div class="galerie-recap">
+                <div class="galerie-recap-row">
+                    <span class="galerie-recap-label">Depa</span>
+                    <span class="galerie-recap-val">13 Avril 2026</span>
+                </div>
+                <div class="galerie-recap-sep"></div>
+                <div class="galerie-recap-row">
+                    <span class="galerie-recap-label">Disponib</span>
+                    <span class="galerie-recap-val">25 Avril 2026</span>
+                </div>
+                <div class="galerie-recap-sep"></div>
+                <div class="galerie-recap-row">
+                    <span class="galerie-recap-label">Dire</span>
+                    <span class="galerie-recap-val galerie-recap-badge">12 jou ✅</span>
+                </div>
+            </div>
+
+            <div class="galerie-grid" id="galerie-grid">
+                <img src="preuve1.jpg" alt="Prèv livrezon 1" onclick="ouvrirLightbox(this.src)">
+                <img src="preuve2.jpg" alt="Prèv livrezon 2" onclick="ouvrirLightbox(this.src)">
+                <img src="preuve3.jpg" alt="Prèv livrezon 3" onclick="ouvrirLightbox(this.src)">
+                <img src="preuve4.jpg" alt="Prèv livrezon 4" onclick="ouvrirLightbox(this.src)">
+            </div>
+        </div>
+    </div>
+
+    <!-- LIGHTBOX agrandissement -->
+    <div id="lightbox" onclick="fermerLightbox()">
+        <img id="lightbox-img" src="" alt="Prèv livrezon">
+    </div>
+
+    <!-- ===== MODAL FRAIS FIKS ELEKTWONIK (Option 5) ===== -->
+    <div id="frais-electronik-modal" class="lcd-modal-overlay" onclick="fermerFraisElectronik(event)">
+        <div class="lcd-modal-box" onclick="event.stopPropagation()">
+            <button class="lcd-modal-close" onclick="fermerFraisElectronik()">✕</button>
+            <h3 class="lcd-modal-title">Frè fiks elektwonik</h3>
+
+            <ul class="frais-electronik-list">
+                <li><span class="frais-item">Iphone <span class="frais-highlight">8 - 12</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$45</span></li>
+                <li><span class="frais-item">Iphone <span class="frais-highlight">14 - 16</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$60</span></li>
+                <li><span class="frais-item">Iphone <span class="frais-highlight">17</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$80</span></li>
+                <li><span class="frais-item">Ti android</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$45</span></li>
+                <li><span class="frais-item">Gwo android</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$60</span></li>
+                <li><span class="frais-item">Laptop</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$80</span></li>
+                <li><span class="frais-item">Tablet apple</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$60</span></li>
+                <li><span class="frais-item">Tablet samsung</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$50</span></li>
+                <li><span class="frais-item">Starlink</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$140</span></li>
+            </ul>
+
+            <p class="frais-electronik-footer">Les Cayes Dropshipping &reg;</p>
+        </div>
+    </div>
 
     <footer id="main-footer">
         <a href="index.html" class="nav-item">
@@ -439,6 +756,38 @@
             const card = document.getElementById('flip-card');
             card.classList.toggle('flipped');
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function ouvrirExemple(e) {
+            if (e) e.preventDefault();
+            document.getElementById('exemple-modal').classList.add('open');
+        }
+        function fermerExemple(e) {
+            document.getElementById('exemple-modal').classList.remove('open');
+        }
+
+        function ouvrirGalerie(e) {
+            if (e) e.preventDefault();
+            document.getElementById('galerie-modal').classList.add('open');
+        }
+        function fermerGalerie(e) {
+            document.getElementById('galerie-modal').classList.remove('open');
+        }
+
+        function ouvrirLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').classList.add('open');
+        }
+        function fermerLightbox() {
+            document.getElementById('lightbox').classList.remove('open');
+        }
+
+        function ouvrirFraisElectronik(e) {
+            if (e) e.preventDefault();
+            document.getElementById('frais-electronik-modal').classList.add('open');
+        }
+        function fermerFraisElectronik(e) {
+            document.getElementById('frais-electronik-modal').classList.remove('open');
         }
 
         document.addEventListener('DOMContentLoaded', () => {
