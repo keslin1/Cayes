@@ -490,6 +490,29 @@
             border-radius: 8px;
         }
 
+        /* ── Icône "i" animée — anneau pulsant (frais elektwonik) ── */
+        .info-icon-pulse {
+            position: relative;
+            border-radius: 50%;
+        }
+        .info-icon-pulse::after {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 26px; height: 26px;
+            margin: -13px 0 0 -13px;
+            border-radius: 50%;
+            border: 2px solid #ff9800;
+            box-sizing: border-box;
+            animation: infoIconRing 1.8s ease-out infinite;
+            pointer-events: none;
+        }
+        @keyframes infoIconRing {
+            0%   { transform: scale(0.6); opacity: 0.9; border-color: #ff5722; }
+            70%  { transform: scale(1.15); opacity: 0.25; border-color: #ff9800; }
+            100% { transform: scale(0.6); opacity: 0; border-color: #ff9800; }
+        }
+
         /* ── Lis Frè fiks elektwonik (Option 5) ── */
         .frais-electronik-list {
             list-style: none;
@@ -542,7 +565,7 @@
                 
                 <ol class="condition-list">
                     <li style="opacity: 1; transform: none;">
-                        <h3>Acha e pèman :</h3>
+                        <h3>Si nap peye pou ou:</h3>
                         Sila kap ban nou achte, nou achte pou ou san ou pa peye anyen pou <strong>sèvis acha a</strong>.
                         <br>Ou peye <strong>an goud</strong> nan yon <strong>to fiks 135 gds</strong> pou pri atik ou yo vini an $ sou <strong>platfòm etranje</strong> wap achte an.
                         <div class="info-box">
@@ -552,8 +575,8 @@
                     </li>
 
                     <li class="hidden-scroll">
-                        <h3>Pwotokòl acha :</h3>
-                        Lè wap achte anliy nan adrès nou, ou dwe mete <strong>nom ajan</strong> ki nan depatman wap resevwa koli a epi <strong>ajoute siyati w dèyè</strong>. 
+                        <h3>Si wap order:</h3>
+                        Lè wap achte anliy nan adrès nou, ou dwe byen konfigire adrès lan sou account ou. Mete <strong>nom ajan</strong> ki nan depatman wap resevwa koli a epi <strong>ajoute siyati w dèyè</strong>. 
                         <br><a href="#" class="exemple-link" onclick="ouvrirExemple(event)">Voir une exemple &rsaquo;</a>
                     </li>
                     
@@ -581,7 +604,7 @@
     <p style="margin: 12px 0 0 0;">Ou pap peye okenn frais siplemantè si l pa nan kategori elektwonik.</p>
     <div class="info-box electronic-box">
         <a href="#" onclick="ouvrirFraisElectronik(event)" style="display: flex; align-items: flex-start; gap: 12px; text-decoration: none; color: inherit;">
-            <span class="material-icons" style="color: var(--vert-info);">info</span>
+            <span class="material-icons info-icon-pulse" style="color: var(--vert-info);">info</span>
             <p style="margin: 0;">Klike sou bouton sa pou wè frais fiks elektwonik.</p>
         </a>
     </div>
@@ -589,12 +612,12 @@
 <li class="hidden-scroll">
                         <h3>Resevwa koli w :</h3>
                         Tout kòmand ki peze ant <strong>1 a 3 liv</strong> koute <strong>20 dola fiks</strong>. Wap resevwa yon fakti pou "coût importation" machandiz ou yo. 
-                        <br>Ou peye fakti sa lòske koli an disponib.
+                        <br>Ou peye fakti sa lòske koli an vin jwenn ou.
                     </li>
 
                     <li class="hidden-scroll">
                         <h3>Achte sou ALIBABA :</h3>
-                        Siw gen machandiz ki <strong>entèresew sou ALBB</strong>, ou ka pataje link li avèk nou pou edew evalye pri l oswa achte li pou ou. Nou pa fè kòmand grenn machandiz <strong>ki pi lou ke 30 kg (50 à 60 liv)</strong>.
+                        Siw gen machandiz ki <strong>entèresew sou ALBB</strong>, ou ka pataje link li avèk nou pou edew evalye pri l oswa achte li pou ou. Nou pa fè kòmand unité machandiz <strong>ki pi lou ke 22 kg (49 liv)</strong>.
                     </li>
                 </ol>
 
@@ -653,21 +676,21 @@
             <button class="lcd-modal-close" onclick="fermerExemple()">✕</button>
             <h3 class="lcd-modal-title">Egzanp ajou adrès</h3>
 
+            <div class="exemple-field-label">Nom et prenom<span class="star">*</span></div>
+            <div class="exemple-field-box highlight">Nom ajan + nom paw (egz: Thomas Kabe LÒMSEDYE)</div>
+            
             <div class="exemple-field-label">Adrès <span class="star">*</span></div>
             <div class="exemple-field-box">14030 NW 5th Pl</div>
-
-            <div class="exemple-field-label">Apatman, blòk, bilding, etaj, pyès, eks <span class="star">*</span></div>
-            <div class="exemple-field-box highlight">Nom ajan + siyati w (egz: Keslin BENOIT / AB-123)</div>
 
             <div class="exemple-field-label">Eta, Vil <span class="star">*</span></div>
             <div class="exemple-field-box">Florida, MIAMI</div>
 
             <div class="exemple-field-label">Kòd postal <span class="star">*</span></div>
-            <div class="exemple-field-box">33168-3920</div>
+            <div class="exemple-field-box">33168</div>
 
             <div class="exemple-note">
                 <span class="material-icons">info</span>
-                <p style="margin:0;">Se nan chan <strong>"Apatman, blòk, bilding, etaj, pyès, eks"</strong> pou ou mete <strong>nom ajan</strong> nan depatman ki pou resevwa koli a, ansanm ak <strong>siyati pa w</strong>.</p>
+                <p style="margin:0;">Gen platfòm ki apsepte kòd postal kout la (33168), gen lòt ki egzije sa konplè a (33168-3920); kite l sou sa platfòm lan aksepte an. <strong>Nom ajan depatman Sud sèvis lan se Thomas Kabé.</strong> Konfigire kont lan jan n montrew la pou evite pwoblèm, tanpri.</p>
             </div>
         </div>
     </div>
@@ -676,33 +699,29 @@
     <div id="galerie-modal" class="lcd-modal-overlay" onclick="fermerGalerie(event)">
         <div class="lcd-modal-box" onclick="event.stopPropagation()">
             <button class="lcd-modal-close" onclick="fermerGalerie()">✕</button>
-            <h3 class="lcd-modal-title">📦 Prèv Livrezon — Avril</h3>
+            <h3 class="lcd-modal-title">📦 Prèv Livrezon — Okazyon Resan</h3>
 
             <div class="galerie-recap">
                 <div class="galerie-recap-row">
                     <span class="galerie-recap-label">Depa</span>
-                    <span class="galerie-recap-val">13 Avril 2026</span>
+                    <span class="galerie-recap-val" id="gal-hist-depa">—</span>
                 </div>
                 <div class="galerie-recap-sep"></div>
                 <div class="galerie-recap-row">
                     <span class="galerie-recap-label">Disponib</span>
-                    <span class="galerie-recap-val">25 Avril 2026</span>
+                    <span class="galerie-recap-val" id="gal-hist-disponib">—</span>
                 </div>
                 <div class="galerie-recap-sep"></div>
                 <div class="galerie-recap-row">
                     <span class="galerie-recap-label">Dire</span>
-                    <span class="galerie-recap-val galerie-recap-badge">12 jou ✅</span>
+                    <span class="galerie-recap-val galerie-recap-badge" id="gal-hist-jou">—</span>
                 </div>
             </div>
 
-            <div class="galerie-grid" id="galerie-grid">
-                <img src="preuve1.jpg" alt="Prèv livrezon 1" onclick="ouvrirLightbox(this.src)">
-                <img src="preuve2.jpg" alt="Prèv livrezon 2" onclick="ouvrirLightbox(this.src)">
-                <img src="preuve3.jpg" alt="Prèv livrezon 3" onclick="ouvrirLightbox(this.src)">
-                <img src="preuve4.jpg" alt="Prèv livrezon 4" onclick="ouvrirLightbox(this.src)">
-            </div>
+            <div class="galerie-grid" id="galerie-grid"></div>
         </div>
     </div>
+
 
     <!-- LIGHTBOX agrandissement -->
     <div id="lightbox" onclick="fermerLightbox()">
@@ -716,16 +735,20 @@
             <h3 class="lcd-modal-title">Frè fiks elektwonik</h3>
 
             <ul class="frais-electronik-list">
-                <li><span class="frais-item">Iphone <span class="frais-highlight">8 - 12</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$45</span></li>
-                <li><span class="frais-item">Iphone <span class="frais-highlight">14 - 16</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$60</span></li>
-                <li><span class="frais-item">Iphone <span class="frais-highlight">17</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$80</span></li>
+                <li><span class="frais-item">Iphone 8 - 12</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$45</span></li>
+                <li><span class="frais-item">Iphone 14 - 16</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$60</span></li>
+                <li><span class="frais-item">Iphone 17</span></span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$80</span></li>
                 <li><span class="frais-item">Ti android</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$45</span></li>
                 <li><span class="frais-item">Gwo android</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$60</span></li>
                 <li><span class="frais-item">Laptop</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$80</span></li>
                 <li><span class="frais-item">Tablet apple</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$60</span></li>
                 <li><span class="frais-item">Tablet samsung</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$50</span></li>
                 <li><span class="frais-item">Starlink</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$140</span></li>
-            </ul>
+            <li><span class="frais-item">Drone</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$80 - $100</span></li>
+            <li><span class="frais-item">Kamera pwofesyonèl</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$50 - $80</span></li>
+            <li><span class="frais-item">Dokiman (kat-kredi, pyès idantite, badge, ...)</span><span class="frais-arrow">&rarr;</span><span class="frais-prix">$25</span></li>
+            
+</ul>
 
             <p class="frais-electronik-footer">Les Cayes Dropshipping &reg;</p>
         </div>
@@ -766,8 +789,39 @@
             document.getElementById('exemple-modal').classList.remove('open');
         }
 
+        // ── Données okazyon pasé — mete ajou chak mwa (idantik ak index.js) ──
+        var LCD_HIST = {
+            depa     : '16 Me 2026',
+            disponib : '31 Me 2026',
+            jou      : '13'
+        };
+
         function ouvrirGalerie(e) {
             if (e) e.preventDefault();
+
+            var elDepa = document.getElementById('gal-hist-depa');
+            var elDisp = document.getElementById('gal-hist-disponib');
+            var elJou  = document.getElementById('gal-hist-jou');
+            if (elDepa) elDepa.textContent = LCD_HIST.depa;
+            if (elDisp) elDisp.textContent = LCD_HIST.disponib;
+            if (elJou)  elJou.textContent  = LCD_HIST.jou + ' jou ✅';
+
+            var grid = document.getElementById('galerie-grid');
+            if (grid) {
+                grid.innerHTML = '';
+                for (var i = 1; i <= 4; i++) {
+                    var src = 'okazyon' + i + '.jpg';
+                    var img = document.createElement('img');
+                    img.src = src;
+                    img.alt = 'Livrezon ' + i;
+                    img.setAttribute('data-src', src);
+                    img.addEventListener('click', function () {
+                        ouvrirLightbox(this.getAttribute('data-src'));
+                    });
+                    grid.appendChild(img);
+                }
+            }
+
             document.getElementById('galerie-modal').classList.add('open');
         }
         function fermerGalerie(e) {

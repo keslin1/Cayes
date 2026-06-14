@@ -116,6 +116,23 @@
 <!-- ===== CONTENU PRINCIPAL ===== -->
 <main id="main-content">
 
+    <!-- ===== NOTIFIKASYON : KOLI DISPONIB / DEMANN AVIS ===== -->
+    <div id="avis-prompt-banner" class="avis-prompt-banner" style="display:none;">
+        <div class="avis-prompt-icon">
+            <span class="material-icons">inventory_2</span>
+        </div>
+        <div class="avis-prompt-text">
+            <strong>Koli ou yo disponib!</strong>
+            <p>Èske ou deja al pran koli ou? Pataje yon ti avis sou eksperyans ou avèk nou.</p>
+        </div>
+        <div class="avis-prompt-actions">
+            <button class="avis-prompt-ok" onclick="confirmAvisPrompt()">D'akò</button>
+            <button class="avis-prompt-close" onclick="dismissAvisPromptOnly()" aria-label="Fèmen">
+                <span class="material-icons">close</span>
+            </button>
+        </div>
+    </div>
+
     <!-- ===== CAROUSEL BANNER ===== -->
     <section id="banner-carousel">
         <div class="carousel-container">
@@ -127,8 +144,8 @@
             </div>
             <div class="carousel-item" style="background-image: url('LCD 2.gif');">
                 <div class="banner-text">
-                    <h1>Livrezon nan 4 kwen peyi an</h1>
-                    <p>kliyan nan Sud, P-au-P, Okap, Jeremi, TiGwav, Leogane.</p>
+                    <h1>Livrezon nan tout zòn Sud lan</h1>
+                    <p>pou koli ki pi wo pase 15 liv.</p>
                 </div>
             </div>
             <div class="carousel-item" style="background-image: url('rechajkatwise.jpg');">
@@ -193,6 +210,11 @@
       <div class="ltb-step-label">Koli disponib</div>
       <div class="ltb-step-date" id="ltb-date-3"></div>
     </div>
+    <div class="ltb-connector" id="ltb-conn-3"></div>
+    <div class="ltb-step" id="ltb-step-4">
+      <div class="ltb-step-dot"></div>
+      <div class="ltb-step-label">Kòmantè</div>
+    </div>
   </div>
 
   <div class="ltb-divider"></div>
@@ -223,7 +245,7 @@
 <div id="galerie-modal" style="display:none;" onclick="fermerGalerie(event)">
   <div class="galerie-inner" onclick="event.stopPropagation()">
     <button class="galerie-close" onclick="fermerGalerie()">✕</button>
-    <h3 class="galerie-titre">📦 Prèv Livrezon — Mai</h3>
+    <h3 class="galerie-titre">📦 Prèv Livrezon — Avril</h3>
 
     <!-- Résumé okazyon pasé -->
     <div class="galerie-recap">

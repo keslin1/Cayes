@@ -1023,6 +1023,7 @@ function calculateWiseTotal() {
 var raPhotoBase64 = null;
 var raPhotoMime   = null;
 var raPhotoName   = null;
+var raPhotoFile   = null;
 
 function openRechajAnliy() {
     var usd = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
@@ -1070,18 +1071,77 @@ function handleRaPhoto(input) {
     var file = input.files[0];
     raPhotoMime = file.type;
     raPhotoName = file.name;
+
     document.getElementById('ra-photo-text').textContent = file.name;
-    document.getElementById('ra-photo-name').textContent = '✅ ' + file.name;
+    document.getElementById('ra-photo-name').textContent = '⏳ Ap prepare foto a...';
     document.getElementById('ra-photo-name').style.display = 'block';
 
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        raPhotoBase64 = e.target.result.split(',')[1];
-        var preview = document.getElementById('ra-photo-preview');
-        preview.src = e.target.result;
-        preview.style.display = 'block';
+    compressRaPhoto(file, function(compressedFile) {
+        raPhotoFile = compressedFile;
+
+        var sizeKb = Math.round(compressedFile.size / 1024);
+        document.getElementById('ra-photo-name').textContent = '✅ ' + file.name + ' (' + sizeKb + ' Ko)';
+
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            raPhotoBase64 = e.target.result.split(',')[1];
+            var preview = document.getElementById('ra-photo-preview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(compressedFile);
+    });
+}
+
+// Redui dimansyon ak pwa imaj la anvan l voye bay Web3Forms
+// (foto kamera telefòn yo souvan twò gwo, sa fè soumisyon an echwe)
+function compressRaPhoto(file, callback) {
+    // Si se pa yon imaj (ex: PDF), voye l jan li ye
+    if (!file.type || file.type.indexOf('image/') !== 0) {
+        callback(file);
+        return;
+    }
+
+    var img = new Image();
+    var url = URL.createObjectURL(file);
+
+    img.onload = function() {
+        URL.revokeObjectURL(url);
+
+        var MAX_DIM = 1600;
+        var width   = img.width;
+        var height  = img.height;
+
+        if (width > MAX_DIM || height > MAX_DIM) {
+            if (width >= height) {
+                height = Math.round(height * (MAX_DIM / width));
+                width  = MAX_DIM;
+            } else {
+                width  = Math.round(width * (MAX_DIM / height));
+                height = MAX_DIM;
+            }
+        }
+
+        var canvas = document.createElement('canvas');
+        canvas.width  = width;
+        canvas.height = height;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(function(blob) {
+            if (!blob) { callback(file); return; }
+            var compressedFile = new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' });
+            // Si lè konprime a pi gwo pase orijinal la (ka rive sou ti imaj), kenbe orijinal la
+            callback(compressedFile.size < file.size ? compressedFile : file);
+        }, 'image/jpeg', 0.75);
     };
-    reader.readAsDataURL(file);
+
+    img.onerror = function() {
+        URL.revokeObjectURL(url);
+        callback(file);
+    };
+
+    img.src = url;
 }
 
 function submitRechajAnliy() {
@@ -1093,22 +1153,17 @@ function submitRechajAnliy() {
 
     if (!email)   { alert('Tanpri antre imel ou.'); return; }
     if (!wisetag) { alert('Tanpri antre Wisetag ou.'); return; }
-    if (!raPhotoBase64) { alert('Tanpri ajoute foto prèv pèman Natcash ou a.'); return; }
+    if (!raPhotoFile) { alert('Tanpri ajoute foto prèv pèman Natcash ou a.'); return; }
 
     var btn = document.getElementById('ra-submit-btn');
     btn.disabled = true;
-    btn.textContent = 'Nap voye...';
+    btn.textContent = 'Pasyante yon ti moman...';
 
     var now     = new Date();
     var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                 + ' à ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
 
-    var payload = {
-        access_key: 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a',
-        subject:    'Rechaj Wise pou ' + usd.toFixed(2) + ' $',
-        from_name:  wisetag,
-        replyto:    email,
-        message:    'Bonswa,\n\nmwen swete rechaje kat mwen, mwen voye done yo pou nou; map tann feedback nou svp\n\n'
+    var message = 'Bonswa,\n\nmwen swete rechaje kat mwen, mwen voye done yo pou nou; map tann feedback nou svp\n\n'
                   + '———————————————\n'
                   + 'Imel kliyan : ' + email + '\n'
                   + 'Wisetag     : ' + wisetag + '\n'
@@ -1116,29 +1171,59 @@ function submitRechajAnliy() {
                   + 'Frais Wise  : ' + frais.toFixed(2) + ' $\n'
                   + 'Montan HTG  : ' + htg.toLocaleString() + ' HTG (@ 140 HTG/$)\n'
                   + 'Dat / Lè    : ' + dateStr + '\n'
-                  + '———————————————',
-        attachment: raPhotoBase64
-    };
+                  + '———————————————';
+
+    var formData = new FormData();
+    formData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
+    formData.append('subject',    'Rechaj Wise pou ' + usd.toFixed(2) + ' $');
+    formData.append('from_name',  wisetag);
+    formData.append('replyto',    email);
+    formData.append('message',    message);
+    formData.append('email',      email);
+    formData.append('wisetag',    wisetag);
+    formData.append('montant_usd', usd.toFixed(2));
+    formData.append('frais_wise',  frais.toFixed(2));
+    formData.append('montant_htg', htg.toString());
+    formData.append('attachment', raPhotoFile, raPhotoFile.name);
 
     fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: { 'Accept': 'application/json' },
+        body: formData
     })
-    .then(function(r) { return r.json(); })
+    .then(function(r) {
+        if (!r.ok) {
+            if (r.status === 413) {
+                throw new Error('PAYLOAD_TOO_LARGE');
+            }
+            throw new Error('HTTP_' + r.status);
+        }
+        return r.json();
+    })
     .then(function(data) {
         if (data.success) {
             btn.style.display = 'none';
             document.getElementById('ra-success-msg').style.display = 'block';
         } else {
-            throw new Error(data.message || 'Erreur');
+            btn.disabled = false;
+            btn.textContent = 'Konfime tranzaksyon an';
+            alert('Web3Forms pa aksepte demand lan: ' + (data.message || 'erè enkoni') + '. Tanpri eseye ankò.');
+            console.error('Web3Forms rejected:', data);
         }
     })
     .catch(function(err) {
         btn.disabled = false;
         btn.textContent = 'Konfime tranzaksyon an';
-        alert('Yon erè te pase. Tanpri verifye koneksyon entènèt ou epi eseye ankò.');
-        console.error('Web3Forms error:', err);
+
+        var msg = err && err.message;
+        if (msg === 'PAYLOAD_TOO_LARGE') {
+            alert('Foto a twò gwo pou l ka voye. Tanpri eseye pran yon lòt foto oswa chwazi yon foto ki gen pi piti pwa, epi eseye ankò.');
+        } else if (msg && msg.indexOf('HTTP_') === 0) {
+            alert('Web3Forms voye yon erè (' + msg.replace('HTTP_', '') + '). Tanpri eseye ankò nan kèk minit.');
+        } else {
+            alert('Yon erè te pase pandan n ap voye done yo. Tanpri verifye koneksyon entènèt ou epi eseye ankò.');
+        }
+        console.error('Web3Forms submission error:', err);
     });
 }
 // =====================================================

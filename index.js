@@ -285,7 +285,53 @@ window.closeModal = function (modalId) {
   if (modal) { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }
 };
 
-// ── BOUTON AVIS : scroll direct vers le textarea ─────────────────
+// ── NOTIFIKASYON DEMANN AVIS (koli disponib) ─────────────────────
+var AVIS_PROMPT_KEY = 'lcd_avis_prompt_ack';
+
+function dateKey(d) {
+  return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+}
+
+function initAvisPromptBanner() {
+  var banner = document.getElementById('avis-prompt-banner');
+  if (!banner) return;
+
+  var dates = calcLCDDates();
+  var today = dates.today;
+
+  // Fenèt aktif : apre disponibilite, jiska 5 jou apre (komante)
+  var inWindow = today > dates.disponib && today <= dates.komante;
+  if (!inWindow) { banner.style.display = 'none'; return; }
+
+  var ackKey = AVIS_PROMPT_KEY + '_' + dateKey(dates.disponib);
+  var acked  = localStorage.getItem(ackKey) === 'true';
+  if (acked) { banner.style.display = 'none'; return; }
+
+  banner.style.display = 'flex';
+}
+
+window.confirmAvisPrompt = function () {
+  var dates  = calcLCDDates();
+  var ackKey = AVIS_PROMPT_KEY + '_' + dateKey(dates.disponib);
+  localStorage.setItem(ackKey, 'true');
+
+  var banner = document.getElementById('avis-prompt-banner');
+  if (banner) banner.style.display = 'none';
+
+  var textarea = document.getElementById('user-comment');
+  if (textarea) {
+    textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    setTimeout(function () { textarea.focus(); }, 400);
+  }
+};
+
+window.dismissAvisPromptOnly = function () {
+  // Fèmen sèlman pou sesyon sa — pa anrejistre akò, va reparèt pwochen vizit
+  var banner = document.getElementById('avis-prompt-banner');
+  if (banner) banner.style.display = 'none';
+};
+
+
 window.focusAvisInput = function (e) {
   e.preventDefault();
   var textarea = document.getElementById('user-comment');
@@ -580,14 +626,18 @@ function calcLCDDates() {
       while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() - 1);
     }
 
-    return { ramase: ramase, depa: depa, disponib: disponib, limiteCmd: limiteCmd };
+    // Kòmantè : 5 jou apre disponibilite — fenèt pou kite avis
+    var komante = new Date(disponib);
+    komante.setDate(komante.getDate() + 5);
+
+    return { ramase: ramase, depa: depa, disponib: disponib, komante: komante, limiteCmd: limiteCmd };
   }
 
   var y = today.getFullYear();
   var m = today.getMonth();
   var dates = computeForMonth(y, m);
 
-  if (today > dates.disponib) {
+  if (today > dates.komante) {
     m = m + 1;
     if (m > 11) { m = 0; y++; }
     dates = computeForMonth(y, m);
@@ -612,6 +662,7 @@ function initLCDTrackingBloc() {
   if (el1) el1.textContent = formatDateKT(dates.ramase);
   if (el2) el2.textContent = formatDateKT(dates.depa);
   if (el3) el3.textContent = formatDateKT(dates.disponib);
+  // Étape 4 "Kòmantè" — pas de date affichée
 
   // Statut dynamique
   var statutEl  = document.getElementById('ltb-statut-text');
@@ -635,10 +686,14 @@ function initLCDTrackingBloc() {
     statut   = 'Nou nan lè a ✈';
     dotClass = 'ltb-dot-live';
     isPulse  = true; // pulsation orange — en transit
+  } else if (today <= dates.komante) {
+    statut   = 'Koli disponib aux Cayes';
+    dotClass = 'ltb-dot-kaki';
+    isPulse  = false; // pas de pulsation — colis arrivés, fenèt avis ouvè
   } else {
     statut   = 'Koli disponib aux Cayes';
     dotClass = 'ltb-dot-kaki';
-    isPulse  = false; // pas de pulsation — colis arrivés
+    isPulse  = false;
   }
 
   if (statutEl)  statutEl.textContent = statut;
@@ -649,11 +704,14 @@ function initLCDTrackingBloc() {
   // Règle : toutes les étapes passées = vert kaki (done)
   //         première étape non encore atteinte = rose (active)
   //         les suivantes = grisé (futur)
+  // Étape 4 "Kòmantè" : suit immédiatement l'étape 3 (koli disponib) —
+  //         dès que "Koli disponib" est vert, "Kòmantè" devient vert aussi.
   var steps     = [0, 1, 2, 3];
   var stepDates = [dates.limiteCmd, dates.ramase, dates.depa, dates.disponib];
 
   // Trouver le premier step non accompli (sera coloré en rose)
   var activeStepFound = false;
+  var step3Done = today >= dates.disponib;
 
   steps.forEach(function (i) {
     var step = document.getElementById('ltb-step-' + i);
@@ -671,6 +729,13 @@ function initLCDTrackingBloc() {
     }
   });
 
+  // Étape 4 "Kòmantè" — vert dès que l'étape 3 (koli disponib) est verte
+  var step4 = document.getElementById('ltb-step-4');
+  if (step4) {
+    step4.classList.remove('ltb-step-done', 'ltb-step-active');
+    if (step3Done) step4.classList.add('ltb-step-done');
+  }
+
   // Connecteurs actifs
   for (var c = 0; c <= 2; c++) {
     var conn = document.getElementById('ltb-conn-' + c);
@@ -680,6 +745,13 @@ function initLCDTrackingBloc() {
     if (nextDate && today >= nextDate) {
       conn.classList.add('ltb-conn-done');
     }
+  }
+
+  // Connecteur 3 (entre "koli disponib" et "kòmantè") — vert en même temps que l'étape 3
+  var conn3 = document.getElementById('ltb-conn-3');
+  if (conn3) {
+    conn3.classList.remove('ltb-conn-done');
+    if (step3Done) conn3.classList.add('ltb-conn-done');
   }
 }
 
@@ -765,8 +837,10 @@ window.ajouterAvis = function () {
   if (!text) return;
 
   var profile   = JSON.parse(localStorage.getItem(userStorageKey) || '{}');
-  var userName  = profile.nom || 'Oumenm';
+  var profNom   = (profile.nom || '').trim();
+  var userName  = profNom || 'Itilizatè enkoni';
   var localAvis = JSON.parse(localStorage.getItem('user_simulated_avis') || '[]');
+  var isNewAvis = !editId;
 
   if (editId) {
     localAvis = localAvis.map(function (a) {
@@ -780,7 +854,49 @@ window.ajouterAvis = function () {
   localStorage.setItem('user_simulated_avis', JSON.stringify(localAvis));
   textInput.value = '';
   aficheAvis();
+
+  if (isNewAvis) sendAvisNotification(userName, profile.email, text);
 };
+
+// ── Notifikasyon Web3Forms lè yon kliyan kite yon avis ───────────
+function sendAvisNotification(userName, userEmail, avisText) {
+  var createdRaw = localStorage.getItem('lcd_account_created');
+  var createdStr = 'Pa disponib';
+  if (createdRaw) {
+    try {
+      var cd = new Date(createdRaw);
+      createdStr = cd.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+                 + ' à ' + cd.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
+    } catch (e) { /* ignore */ }
+  }
+
+  var now     = new Date();
+  var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
+              + ' à ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
+
+  var payload = {
+    access_key: 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a',
+    subject:    'Nouvo avis kliyan : ' + userName,
+    from_name:  userName,
+    replyto:    userEmail || 'noreply@lescayesdropshipping.com',
+    message:    'Yon kliyan kite yon avis sou aplikasyon an.\n\n'
+              + '———————————————\n'
+              + 'Non kliyan      : ' + userName + '\n'
+              + 'Imel kliyan     : ' + (userEmail || 'pa disponib') + '\n'
+              + 'Kont kreye le   : ' + createdStr + '\n'
+              + 'Dat avis        : ' + dateStr + '\n'
+              + '———————————————\n'
+              + 'Avis :\n' + avisText
+  };
+
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(payload)
+  }).catch(function (err) {
+    console.log('Web3Forms avis notification error:', err);
+  });
+}
 
 window.prepareEdit = function (id) {
   var localAvis = JSON.parse(localStorage.getItem('user_simulated_avis') || '[]');
@@ -1017,6 +1133,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 5b. Tracking bloc LCD dates (calcul automatique)
   initLCDTrackingBloc();
+
+  // 5c. Notifikasyon demann avis (koli disponib)
+  initAvisPromptBanner();
 
   // 6. Carousel
   initBannerCarousel();

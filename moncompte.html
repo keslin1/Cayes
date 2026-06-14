@@ -148,22 +148,6 @@
         .action-card .material-icons.right { color: #ccc; margin-left: auto; }
         .action-card span { display: flex; align-items: center; font-weight: 500; }
 
-        #btn-installer {
-            display: none;
-            background-color: var(--bleu-marin);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            border: none;
-            margin: 10px 0 20px 0;
-            width: 100%;
-            font-weight: bold;
-            font-size: 1em;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
         #profile-form-container { display: none; margin-top: 20px; }
 
         #profile-form {
@@ -267,6 +251,9 @@
             background-color: var(--blanc-fond); 
             box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
             z-index: 1000;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
         }
 
         .nav-item {
@@ -287,35 +274,56 @@
             100% { box-shadow: 0 0 0 0 rgba(231,76,60,0); }
         }
 
-        /* ─── Toggle Notification Switch ─── */
+        /* ─── Toggle Notification / Enstalasyon — côte à côte ─── */
+        .toggles-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
         .notif-toggle-card {
+            flex: 1;
+            min-width: 0;
             background-color: var(--blanc-fond);
-            padding: 16px 20px;
+            padding: 14px 14px;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            margin-bottom: 15px;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: space-between;
+            gap: 10px;
         }
         .notif-toggle-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            min-width: 0;
         }
         .notif-toggle-left .material-icons {
             color: var(--bleu-marin);
             font-size: 24px;
+            flex-shrink: 0;
         }
+        .notif-toggle-left > div { min-width: 0; }
         .notif-toggle-label {
             font-weight: 600;
-            font-size: 0.95em;
+            font-size: 0.9em;
             color: var(--noir-texte);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .notif-toggle-sub {
-            font-size: 0.75em;
+            font-size: 0.7em;
             color: #888;
             margin-top: 2px;
+            line-height: 1.3;
+        }
+        .notif-toggle-card .switch { align-self: flex-end; }
+
+        @media (max-width: 360px) {
+            .toggles-row { flex-direction: column; }
+            .notif-toggle-card { flex-direction: row; align-items: center; }
+            .notif-toggle-card .switch { align-self: center; }
         }
         /* Switch pill */
         .switch { position: relative; display: inline-block; width: 48px; height: 26px; flex-shrink: 0; }
@@ -335,9 +343,64 @@
         }
         input:checked + .slider { background-color: var(--vert-menu); }
         input:checked + .slider:before { transform: translateX(22px); }
+
+        /* ── Skeleton background animation ── */
+        #skeleton-bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+        .sk-layer { position: absolute; inset: 0; opacity: 0; }
+        .sk-layer-1 {
+            background: linear-gradient(90deg, transparent 0%, rgba(255,200,210,0.18) 30%, rgba(200,240,210,0.22) 50%, rgba(255,200,210,0.18) 70%, transparent 100%);
+            background-size: 200% 100%;
+            animation: skCycle1 20s ease-in-out infinite;
+        }
+        .sk-layer-2 {
+            background: linear-gradient(135deg, transparent 0%, rgba(255,182,193,0.14) 20%, rgba(210,245,215,0.20) 40%, rgba(255,182,193,0.16) 60%, rgba(210,245,215,0.12) 80%, transparent 100%);
+            background-size: 300% 300%;
+            animation: skCycle2 20s ease-in-out infinite;
+            animation-delay: 0.4s;
+        }
+        .sk-layer-3 {
+            background: radial-gradient(ellipse at 50% 50%, rgba(255,182,193,0.20) 0%, rgba(200,240,210,0.16) 35%, rgba(255,200,215,0.10) 65%, transparent 100%);
+            animation: skCycle3 20s ease-in-out infinite;
+            animation-delay: 0.8s;
+        }
+        @keyframes skCycle1 {
+            0%  { opacity:0; background-position:-100% 0; }
+            5%  { opacity:1; }
+            50% { opacity:1; background-position:200% 0; }
+            58% { opacity:0; }
+            99% { opacity:0; background-position:-100% 0; }
+            100%{ opacity:0; background-position:-100% 0; }
+        }
+        @keyframes skCycle2 {
+            0%  { opacity:0; background-position:0% 0%; }
+            5%  { opacity:1; }
+            50% { opacity:1; background-position:100% 100%; }
+            58% { opacity:0; }
+            99% { opacity:0; background-position:0% 0%; }
+            100%{ opacity:0; background-position:0% 0%; }
+        }
+        @keyframes skCycle3 {
+            0%  { opacity:0; transform:scale(0.85); }
+            5%  { opacity:1; }
+            25% { opacity:1; transform:scale(1.08); }
+            40% { opacity:1; transform:scale(0.92); }
+            50% { opacity:1; transform:scale(1.0); }
+            58% { opacity:0; transform:scale(1.0); }
+            99% { opacity:0; transform:scale(0.85); }
+            100%{ opacity:0; transform:scale(0.85); }
+        }
+        body > *:not(#skeleton-bg):not(#main-footer) { position: relative; z-index: 1; }
+        #main-footer { z-index: 1000; }
     </style>
 </head>
 <body>
+
+<!-- SKELETON BACKGROUND -->
+<div id="skeleton-bg" aria-hidden="true">
+  <div class="sk-layer sk-layer-1"></div>
+  <div class="sk-layer sk-layer-2"></div>
+  <div class="sk-layer sk-layer-3"></div>
+</div>
 
 <header class="header-top">
     <div id="top-bar-brand" style="display:flex; align-items:center; gap:9px; flex:1;">
@@ -383,24 +446,35 @@
         <span class="profile-display-address" id="mc-display-address">—</span>
     </div>
 
-    <button id="btn-installer">
-        <span class="material-icons">get_app</span>
-        Ajoute LCDrop sou ekran w
-    </button>
-
-    <!-- ─── TOGGLE NOTIFICATION ─── -->
-    <div class="notif-toggle-card">
-        <div class="notif-toggle-left">
-            <span class="material-icons">notifications_active</span>
-            <div>
-                <div class="notif-toggle-label">Notifikasyon</div>
-                <div class="notif-toggle-sub" id="notif-status-text">Chajman...</div>
+    <!-- ─── TOGGLES : NOTIFIKASYON & ENSTALASYON ─── -->
+    <div class="toggles-row">
+        <div class="notif-toggle-card">
+            <div class="notif-toggle-left">
+                <span class="material-icons">notifications_active</span>
+                <div>
+                    <div class="notif-toggle-label">Notifikasyon</div>
+                    <div class="notif-toggle-sub" id="notif-status-text">Chajman...</div>
+                </div>
             </div>
+            <label class="switch">
+                <input type="checkbox" id="notif-toggle-input">
+                <span class="slider"></span>
+            </label>
         </div>
-        <label class="switch">
-            <input type="checkbox" id="notif-toggle-input">
-            <span class="slider"></span>
-        </label>
+
+        <div class="notif-toggle-card">
+            <div class="notif-toggle-left">
+                <span class="material-icons" id="install-toggle-icon">get_app</span>
+                <div>
+                    <div class="notif-toggle-label">Enstalasyon</div>
+                    <div class="notif-toggle-sub" id="install-status-text">Chajman...</div>
+                </div>
+            </div>
+            <label class="switch">
+                <input type="checkbox" id="install-toggle-input">
+                <span class="slider"></span>
+            </label>
+        </div>
     </div>
 
     <h2 class="section-title">Enfòmasyon pèsonèl</h2>
@@ -612,7 +686,7 @@
             await navigator.serviceWorker.register('/firebase-messaging-sw.js');
             await getToken(messaging, { vapidKey: 'BP9kFGPwxqYaXOC-Ip3AY6L2eBMs0og181TRWEL03ROFvVf-0Onw3QibLba06Q5dZnjlQh7381JplG838ygul70' });
             localStorage.setItem(NOTIF_PERM_KEY, 'true');
-            updateToggleUI(true, 'Aktif — ou pral resevwa mizajou');
+            updateToggleUI(true, 'Ou ka resevwa notifikasyon sèvis lan kounya');
             return true;
         } catch (err) {
             console.log('Notification enable error:', err);
@@ -748,6 +822,7 @@
         updateUI(profile);
         updateBadgeUI();
         initNotifToggle();
+        initInstallToggle();
         // Marquer la visite — efface le badge NEW dans index.html définitivement
         localStorage.setItem('lcd_moncompte_visited', 'true');
 
@@ -805,6 +880,9 @@
                 const merged   = Object.assign({}, existing, profileData);
                 localStorage.setItem(userStorageKey, JSON.stringify(merged));
                 localStorage.setItem('lcd_user_registered', 'true');
+                if (!localStorage.getItem('lcd_account_created')) {
+                    localStorage.setItem('lcd_account_created', new Date().toISOString());
+                }
 
                 const saveBtn      = document.getElementById('save-profile-btn');
                 const originalText = saveBtn.textContent;
@@ -840,25 +918,98 @@
         }
     });
 
-    // ── A2HS Install Button ──
+    // ── Enstalasyon / Dezenstale App (A2HS) ──
     let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        const btn = document.getElementById('btn-installer');
-        if (btn) btn.style.display = 'flex';
-    });
+    let isAppInstalled = false;
 
-    const btnInstaller = document.getElementById('btn-installer');
-    if (btnInstaller) {
-        btnInstaller.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
+    function detectStandalone() {
+        return window.matchMedia('(display-mode: standalone)').matches
+            || window.navigator.standalone === true; // iOS
+    }
+
+    function updateInstallToggleUI(state, statusText) {
+        // state: 'installed' | 'available' | 'unavailable'
+        const toggle   = document.getElementById('install-toggle-input');
+        const statusEl = document.getElementById('install-status-text');
+        const iconEl   = document.getElementById('install-toggle-icon');
+        if (!toggle) return;
+
+        if (statusEl) statusEl.textContent = statusText;
+
+        if (state === 'installed') {
+            toggle.checked  = true;
+            toggle.disabled = false;
+            if (iconEl) iconEl.textContent = 'check_circle';
+        } else if (state === 'available') {
+            toggle.checked  = false;
+            toggle.disabled = false;
+            if (iconEl) iconEl.textContent = 'get_app';
+        } else {
+            toggle.checked  = false;
+            toggle.disabled = true;
+            if (iconEl) iconEl.textContent = 'get_app';
+        }
+    }
+
+    function initInstallToggle() {
+        const toggle = document.getElementById('install-toggle-input');
+        if (!toggle) return;
+
+        isAppInstalled = detectStandalone();
+
+        if (isAppInstalled) {
+            updateInstallToggleUI('installed', 'Aplikasyon enstale sou aparèy ou');
+        } else if (deferredPrompt) {
+            updateInstallToggleUI('available', 'Klike pou ajoute LCDrop sou ekran w');
+        } else {
+            updateInstallToggleUI('unavailable', 'Pa disponib kounye a sou navigatè sa');
+        }
+
+        toggle.addEventListener('change', async function() {
+            if (isAppInstalled) {
+                // Dezenstalasyon — pa posib pwogramatikman, gide itilizatè a
+                this.checked = true;
+                alert('Pou dezenstale LCDrop, kenbe icon aplikasyon an sou ekran telefòn ou epi chwazi "Dezenstale" oswa "Retire".');
+                return;
+            }
+
+            if (!deferredPrompt) {
+                this.checked = false;
+                alert('Navigatè sa pa pèmèt enstalasyon dirèkt. Ouvri meni navigatè a epi chwazi "Ajoute sou ekran prensipal".');
+                return;
+            }
+
+            this.disabled = true;
+            const statusEl = document.getElementById('install-status-text');
+            if (statusEl) statusEl.textContent = 'Ap enstale...';
+
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             deferredPrompt = null;
-            if (outcome === 'accepted') btnInstaller.style.display = 'none';
+            this.disabled = false;
+
+            if (outcome === 'accepted') {
+                updateInstallToggleUI('installed', 'Aplikasyon enstale sou aparèy ou');
+            } else {
+                updateInstallToggleUI('available', 'Klike pou ajoute LCDrop sou ekran w');
+            }
         });
     }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        if (!isAppInstalled) updateInstallToggleUI('available', 'Klike pou ajoute LCDrop sou ekran w');
+    });
+
+    window.addEventListener('appinstalled', () => {
+        isAppInstalled  = true;
+        deferredPrompt  = null;
+        updateInstallToggleUI('installed', 'Aplikasyon enstale sou aparèy ou');
+    });
+
+    initInstallToggle();
+
 </script>
 
 </body>
