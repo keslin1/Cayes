@@ -673,13 +673,13 @@
     // ── Toggle Notification ──
     async function enableNotifications() {
         if (!messaging) {
-            updateToggleUI(false, 'Navigatè ou pa sipòte notifikasyon');
+            updateToggleUI(false, 'Navigatè w lan pa sipòte notifikasyon');
             return false;
         }
         try {
             const permission = await Notification.requestPermission();
             if (permission !== 'granted') {
-                updateToggleUI(false, 'Ou refize notifikasyon yo');
+                updateToggleUI(false, 'Ou refize resevwa notifikasyon');
                 localStorage.setItem(NOTIF_PERM_KEY, 'false');
                 return false;
             }
@@ -690,7 +690,7 @@
             return true;
         } catch (err) {
             console.log('Notification enable error:', err);
-            updateToggleUI(false, 'Pa ka aktive notifikasyon yo');
+            updateToggleUI(false, 'Paka aktive notifikasyon yo');
             localStorage.setItem(NOTIF_PERM_KEY, 'false');
             return false;
         }
@@ -714,24 +714,24 @@
         const isCurrentlyOn = currentPerm === 'granted' && userPref !== 'false';
 
         if (currentPerm === 'denied') {
-            updateToggleUI(false, 'Bloke — chanje nan paramèt navigatè ou');
+            updateToggleUI(false, 'Bloke — chanje sa nan paramèt navigatè w');
             toggle.disabled = true;
         } else if (isCurrentlyOn) {
-            updateToggleUI(true, 'Aktif — ou pral resevwa mizajou');
+            updateToggleUI(true, 'Ou ka resevwa notifikasyon kounyea');
         } else {
-            updateToggleUI(false, 'Klike pou aktive notifikasyon yo');
+            updateToggleUI(false, 'Aktive notifikasyon aplikasyon an');
         }
 
         toggle.addEventListener('change', async function() {
             if (this.checked) {
                 this.disabled = true;
-                if (statusEl) statusEl.textContent = 'Ap aktive...';
+                if (statusEl) statusEl.textContent = 'Lap aktive...';
                 const success = await enableNotifications();
                 this.disabled = false;
                 if (!success) this.checked = false;
             } else {
                 localStorage.setItem(NOTIF_PERM_KEY, 'false');
-                updateToggleUI(false, 'Dezaktive — ou p ap resevwa mizajou');
+                updateToggleUI(false, 'Dezaktive! Ou pap resevwa notifikasyon ankò');
             }
         });
     }
