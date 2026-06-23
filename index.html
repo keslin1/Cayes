@@ -170,63 +170,57 @@
 <!-- ===== BLOC TRACKING LCD ===== -->
 <div id="lcd-tracking-bloc">
 
-  <!-- Statut dynamique -->
-  <div class="ltb-statut-row">
-    <span class="ltb-statut-dot-wrap" id="ltb-statut-dot-wrap">
-      <span class="ltb-statut-dot" id="ltb-statut-dot"></span>
-    </span>
-    <span class="ltb-statut-text" id="ltb-statut-text">Chajman...</span>
+  <!-- Rectangle bleu marine : statut + note + barre de progression -->
+  <div class="ltb-progress-box">
+
+    <!-- Statut dynamique -->
+    <div class="ltb-statut-row">
+      <span class="ltb-statut-dot-wrap" id="ltb-statut-dot-wrap">
+        <span class="ltb-statut-dot" id="ltb-statut-dot"></span>
+      </span>
+      <span class="ltb-statut-text" id="ltb-statut-text">Chajman...</span>
+    </div>
+
+    <!-- Note info -->
+    <div class="ltb-note-info">
+      ℹ️ <strong>Vwayaj chak mwa.</strong> Koli w yo gen ase tan pou ekspedye, pou yo disponib yon sèl kou.
+    </div>
+
+    <div class="ltb-inner-divider"></div>
+
+    <div class="ltb-progress-title" onclick="ouvrirGalerie()">Pwogresyon vwayaj la &rsaquo;</div>
+    <div class="ltb-progress-track-wrap">
+      <!-- Barre de fond grise -->
+      <div class="ltb-progress-rail"></div>
+      <!-- Barre verte remplie dynamiquement -->
+      <div class="ltb-progress-fill" id="ltb-progress-fill"></div>
+      <!-- Les 5 étapes -->
+      <div class="ltb-progress-steps">
+        <div class="ltb-pstep" id="ltb-step-0">
+          <div class="ltb-pstep-node"></div>
+          <div class="ltb-pstep-label">Voye koli w<br><span class="ltb-pstep-date" id="ltb-date-0"></span></div>
+        </div>
+        <div class="ltb-pstep" id="ltb-step-1">
+          <div class="ltb-pstep-node"></div>
+          <div class="ltb-pstep-label">Chajman<br><span class="ltb-pstep-date" id="ltb-date-1"></span></div>
+        </div>
+        <div class="ltb-pstep" id="ltb-step-2">
+          <div class="ltb-pstep-node"></div>
+          <div class="ltb-pstep-label">Vwayaj<br><span class="ltb-pstep-date" id="ltb-date-2"></span></div>
+        </div>
+        <div class="ltb-pstep" id="ltb-step-3">
+          <div class="ltb-pstep-node"></div>
+          <div class="ltb-pstep-label">Koli disponib<br><span class="ltb-pstep-date" id="ltb-date-3"></span></div>
+        </div>
+        <div class="ltb-pstep" id="ltb-step-4">
+          <div class="ltb-pstep-node"></div>
+          <div class="ltb-pstep-label">Kòmantè</div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- Note info -->
-  <div class="ltb-note-info">
-    ℹ️ <strong>Vwayaj chak mwa.</strong> Koli w yo gen ase tan pou ekspedye, pou yo disponib yon sèl kou.
-  </div>
-
-  <div class="ltb-divider"></div>
-
-  <!-- Timeline 4 étapes -->
-  <div class="ltb-timeline">
-    <div class="ltb-step" id="ltb-step-0">
-      <div class="ltb-step-dot"></div>
-      <div class="ltb-step-label">Voye koli w yo kounya</div>
-      <div class="ltb-step-date" id="ltb-date-0"></div>
-    </div>
-    <div class="ltb-connector" id="ltb-conn-0"></div>
-    <div class="ltb-step" id="ltb-step-1">
-      <div class="ltb-step-dot"></div>
-      <div class="ltb-step-label">Nap fè chajman</div>
-      <div class="ltb-step-date" id="ltb-date-1"></div>
-    </div>
-    <div class="ltb-connector" id="ltb-conn-1"></div>
-    <div class="ltb-step" id="ltb-step-2">
-      <div class="ltb-step-dot"></div>
-      <div class="ltb-step-label">Vwayaj kòmanse</div>
-      <div class="ltb-step-date" id="ltb-date-2"></div>
-    </div>
-    <div class="ltb-connector" id="ltb-conn-2"></div>
-    <div class="ltb-step" id="ltb-step-3">
-      <div class="ltb-step-dot"></div>
-      <div class="ltb-step-label">Koli disponib</div>
-      <div class="ltb-step-date" id="ltb-date-3"></div>
-    </div>
-    <div class="ltb-connector" id="ltb-conn-3"></div>
-    <div class="ltb-step" id="ltb-step-4">
-      <div class="ltb-step-dot"></div>
-      <div class="ltb-step-label">Kòmantè</div>
-    </div>
-  </div>
-
-  <div class="ltb-divider"></div>
-
-  <!-- Bouton détails (galerie preuves) -->
-  <button class="ltb-detail-btn" onclick="ouvrirGalerie()">
-    Détails occasion récente &rsaquo;
-  </button>
-
-  <div class="ltb-divider"></div>
-
-  <!-- Section annonces -->
+  <!-- Section annonces — fond blanc -->
   <div class="ltb-annonces">
     <div class="ltb-annonce-row">
       <span class="ltb-annonce-icon">📢</span>

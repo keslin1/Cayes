@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 390;
+let   baseLikes      = 527;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -670,48 +670,61 @@ function initLCDTrackingBloc() {
   var dotWrap   = document.getElementById('ltb-statut-dot-wrap');
   var statut, dotClass, isPulse = false;
 
+  // Dates intermédiaires calculées
+  var depa5 = new Date(dates.depa); depa5.setDate(depa5.getDate() + 5);   // depa+5j = fin vol / début dedwanman
+  var depa9 = new Date(dates.depa); depa9.setDate(depa9.getDate() + 9);   // depa+9j = fin dedwanman / kamyon pati
+
   if (today < dates.ramase) {
     statut   = 'Nou ouvri pou resevwa koli';
     dotClass = 'ltb-dot-live';
-    isPulse  = true; // pulsation orange — fenêtre d'envoi ouverte
+    isPulse  = true;
   } else if (today.getTime() === dates.ramase.getTime()) {
     statut   = 'Dènye jou nap resevwa koli';
     dotClass = 'ltb-dot-live';
-    isPulse  = true; // pulsation orange — dernier jour
+    isPulse  = true;
   } else if (today <= dates.depa) {
     statut   = 'Preparasyon pou vwayaj';
     dotClass = 'ltb-dot-live';
-    isPulse  = true; // pulsation orange — en préparation
-  } else if (today <= dates.disponib) {
+    isPulse  = true;
+  } else if (today <= depa5) {
+    // Vol en cours — jusqu'à 5 jours après départ
     statut   = 'Nou nan lè a ✈';
     dotClass = 'ltb-dot-live';
-    isPulse  = true; // pulsation orange — en transit
+    isPulse  = true;
+  } else if (today <= depa9) {
+    // Dédouanement — 4 jours (depa+5 → depa+9)
+    statut   = 'Pwosesis dedwànman 🛃';
+    dotClass = 'ltb-dot-blue';
+    isPulse  = true;
+  } else if (today < dates.disponib) {
+    // Camion en route vers Les Cayes
+    statut   = 'Kamyon nou nan wout pou aux Cayes 🚛';
+    dotClass = 'ltb-dot-blue';
+    isPulse  = true;
   } else if (today <= dates.komante) {
-    statut   = 'Koli disponib aux Cayes';
-    dotClass = 'ltb-dot-kaki';
-    isPulse  = false; // pas de pulsation — colis arrivés, fenèt avis ouvè
-  } else {
+    // Disponible — fenêt avis 5 jours
     statut   = 'Koli disponib aux Cayes';
     dotClass = 'ltb-dot-kaki';
     isPulse  = false;
+  } else {
+    // Fenêt fermée → cycle suivant géré par calcLCDDates
+    statut   = 'Nou ouvri pou resevwa koli';
+    dotClass = 'ltb-dot-live';
+    isPulse  = true;
   }
 
   if (statutEl)  statutEl.textContent = statut;
   if (statutDot) statutDot.className  = 'ltb-statut-dot ' + dotClass;
   if (dotWrap)   dotWrap.classList.toggle('ltb-dot-pulse', isPulse);
 
-  // Colorier les étapes selon progression — logique dynamique
-  // Règle : toutes les étapes passées = vert kaki (done)
-  //         première étape non encore atteinte = rose (active)
-  //         les suivantes = grisé (futur)
-  // Étape 4 "Kòmantè" : suit immédiatement l'étape 3 (koli disponib) —
-  //         dès que "Koli disponib" est vert, "Kòmantè" devient vert aussi.
+  // Colorier les étapes selon progression
+  // Règle : étapes passées = vert (done), première future = vert vide (active), reste = gris
   var steps     = [0, 1, 2, 3];
   var stepDates = [dates.limiteCmd, dates.ramase, dates.depa, dates.disponib];
 
-  // Trouver le premier step non accompli (sera coloré en rose)
   var activeStepFound = false;
   var step3Done = today >= dates.disponib;
+  var doneCount = 0; // combien d'étapes sont "done" parmi les 5
 
   steps.forEach(function (i) {
     var step = document.getElementById('ltb-step-' + i);
@@ -719,39 +732,45 @@ function initLCDTrackingBloc() {
     step.classList.remove('ltb-step-done', 'ltb-step-active');
 
     if (today >= stepDates[i]) {
-      // Date passée → vert kaki (done)
       step.classList.add('ltb-step-done');
+      doneCount++;
     } else if (!activeStepFound) {
-      // Première étape non atteinte → rose (active = prochaine cible)
       step.classList.add('ltb-step-active');
       activeStepFound = true;
-      // Pas de classe pour les suivantes → elles restent grises (défaut CSS)
     }
   });
 
-  // Étape 4 "Kòmantè" — vert dès que l'étape 3 (koli disponib) est verte
+  // Étape 4 "Kòmantè" — vert dès que étape 3 est verte
   var step4 = document.getElementById('ltb-step-4');
   if (step4) {
     step4.classList.remove('ltb-step-done', 'ltb-step-active');
-    if (step3Done) step4.classList.add('ltb-step-done');
+    if (step3Done) { step4.classList.add('ltb-step-done'); doneCount++; }
+    else if (!activeStepFound) { step4.classList.add('ltb-step-active'); }
   }
 
-  // Connecteurs actifs
-  for (var c = 0; c <= 2; c++) {
+  // Anciens connecteurs — ignorés (display:none en CSS), garder pour compatibilité
+  for (var c = 0; c <= 3; c++) {
     var conn = document.getElementById('ltb-conn-' + c);
-    if (!conn) continue;
-    conn.classList.remove('ltb-conn-done');
-    var nextDate = stepDates[c + 1];
-    if (nextDate && today >= nextDate) {
-      conn.classList.add('ltb-conn-done');
-    }
+    if (conn) { conn.classList.remove('ltb-conn-done'); }
   }
 
-  // Connecteur 3 (entre "koli disponib" et "kòmantè") — vert en même temps que l'étape 3
-  var conn3 = document.getElementById('ltb-conn-3');
-  if (conn3) {
-    conn3.classList.remove('ltb-conn-done');
-    if (step3Done) conn3.classList.add('ltb-conn-done');
+  // Calculer la largeur de la barre de progression verte
+  // La barre va de l'étape 0 (left 10%) jusqu'à la dernière étape done
+  // 5 étapes réparties à : 10%, 32.5%, 55%, 77.5%, 90%
+  // Chaque segment = ~22.5% de la barre totale (80% de largeur totale / 4 segments)
+  var segmentWidth = 20; // % entre chaque étape sur 80% de rail
+  var fillPct = 0;
+  if (doneCount > 0) {
+    // La barre s'étend jusqu'au centre de la dernière étape done
+    // Étape 0 = position 0%, étape 4 = position 100% du rail
+    fillPct = Math.min(100, ((doneCount - 1) / 4) * 100);
+  }
+  var fillEl = document.getElementById('ltb-progress-fill');
+  if (fillEl) {
+    // Rail couvre de left:10% à right:10% = 80% de la largeur totale
+    // Convertir fillPct du rail en % de la largeur totale du conteneur
+    var fillWidth = (fillPct / 100) * 80; // en % du conteneur
+    fillEl.style.width = fillWidth + '%';
   }
 }
 
