@@ -111,50 +111,96 @@ body {
 
 
 
-/* ── INSTALL BANNER ── */
-#install-banner {
+/* ── MODALE INSTALL A2HS ── */
+.install-modal-overlay {
   position: fixed;
-  bottom: 120px; left: 15px; right: 15px;
-  background: rgba(0, 120, 160, 0.18);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(0,188,212,0.35);
-  color: var(--bleu-marin);
-  padding: 10px 16px;
-  border-radius: 14px;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  z-index: 500;
-  box-shadow: 0 4px 18px rgba(0,120,160,0.18);
+  justify-content: center;
+  padding: 20px;
+  animation: fadeInOverlay .3s ease;
+}
+.install-modal-overlay.hidden { display: none !important; }
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* Animation clignotement toutes les 3s */
-.install-blink {
-  animation: installBlink 3s ease-in-out infinite;
+.install-modal-card {
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 32px 24px 28px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+  animation: slideUpCard .35s ease;
 }
 
-@keyframes installBlink {
-  0%, 70%, 100% { opacity: 1; }
-  85%           { opacity: 0.3; }
+@keyframes slideUpCard {
+  from { transform: translateY(40px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
 }
 
-.install-info { display: flex; flex-direction: column; gap: 2px; }
-.install-info strong { font-size: 14px; font-weight: 800; color: var(--bleu-marin); }
-.install-info span   { font-size: 12px; color: #555; }
+.install-modal-logo {
+  width: 78px;
+  height: 78px;
+  border-radius: 18px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.14);
+}
 
-#install-btn {
-  background: #6E0B14;
-  color: white;
+.install-modal-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--bleu-marin);
+  margin: 0 0 10px;
+}
+
+.install-modal-desc {
+  font-size: 0.88rem;
+  color: #555;
+  line-height: 1.55;
+  margin: 0 0 18px;
+}
+
+.install-modal-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.install-modal-perks span {
+  background: #f0f5ff;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  color: var(--bleu-marin);
+  font-weight: 600;
+}
+
+.install-modal-cta {
+  width: 100%;
+  background: linear-gradient(135deg, var(--bleu-marin), #2e4a8a);
+  color: #ffffff;
   border: none;
-  padding: 9px 16px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 13px;
+  border-radius: 14px;
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 800;
   cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(0,31,63,0.35);
+  transition: transform .15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.install-modal-cta:active { transform: scale(0.97); }
 
 /* ── NOTIFIKASYON DEMANN AVIS (koli disponib) ── */
 .avis-prompt-banner {

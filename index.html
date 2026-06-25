@@ -28,13 +28,24 @@
   </div>
 </div>
 
-<!-- ===== BANNER ENSTALE — affiche après 30s si pas installé ===== -->
-<div id="install-banner" class="hidden install-blink">
-  <div class="install-info">
-    <strong>Enstale aplikasyon an</strong>
-    <span>Pou gen sèvis lan sou telefòn ou</span>
+<!-- ===== MODALE INSTALL A2HS — affiche après 30s si pas installé ===== -->
+<div id="install-modal" class="install-modal-overlay hidden">
+  <div class="install-modal-card">
+    <img src="lescayesdropshipping.png" alt="LCD" class="install-modal-logo">
+    <h2 class="install-modal-title">Enstale Aplikasyon an</h2>
+    <p class="install-modal-desc">
+      Ajoute <strong>Les Cayes Dropshipping</strong> sou ekran dakèy telefòn ou pou swiv koli w yo, resevwa notifikasyon, epi jwi sèvis la pi vit.
+    </p>
+    <div class="install-modal-perks">
+      <span>⚡ Rapid &amp; San Reklam</span>
+      <span>📦 Swiv koli w yo</span>
+      <span>🔔 Notifikasyon an tan reyèl</span>
+    </div>
+    <button id="install-modal-btn" class="install-modal-cta">
+      <span class="material-icons" style="vertical-align:middle;font-size:20px;margin-right:6px;">download</span>
+      Enstale Kounye a
+    </button>
   </div>
-  <button id="install-btn">Enstale</button>
 </div>
 
 <!-- ===== TOP BAR ===== -->
@@ -592,40 +603,37 @@
         window.location.href = 'pwofil.html';
     };
 
-    // ── initKiyesDrawer supprimé (menu Kiyès X ye retiré) ──
-
-    // ── A2HS Install Banner — afficher après 30s si pas encore installé ──
+    // ── A2HS Install Modal — afficher après 30s si pas encore installé ──
     let deferredPrompt = null;
-    const isAlreadyInstalled = window.matchMedia('(display-mode: standalone)').matches || !!window.navigator.standalone;
+    const isAlreadyInstalled = window.matchMedia('(display-mode: standalone)').matches
+                             || !!window.navigator.standalone;
 
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
         if (!isAlreadyInstalled) {
             setTimeout(() => {
-                const banner = document.getElementById('install-banner');
-                if (banner) banner.classList.remove('hidden');
+                const modal = document.getElementById('install-modal');
+                if (modal) modal.classList.remove('hidden');
             }, 30000);
         }
     });
 
-    const installBtn = document.getElementById('install-btn');
-    if (installBtn) {
-        installBtn.addEventListener('click', async () => {
+    const installModalBtn = document.getElementById('install-modal-btn');
+    if (installModalBtn) {
+        installModalBtn.addEventListener('click', async () => {
             if (!deferredPrompt) return;
             deferredPrompt.prompt();
             const { outcome } = await deferredPrompt.userChoice;
             deferredPrompt = null;
-            if (outcome === 'accepted') {
-                const banner = document.getElementById('install-banner');
-                if (banner) banner.classList.add('hidden');
-            }
+            const modal = document.getElementById('install-modal');
+            if (modal) modal.classList.add('hidden');
         });
     }
 
     window.addEventListener('appinstalled', () => {
-        const banner = document.getElementById('install-banner');
-        if (banner) banner.classList.add('hidden');
+        const modal = document.getElementById('install-modal');
+        if (modal) modal.classList.add('hidden');
     });
 </script>
 
