@@ -785,18 +785,15 @@ window.initPulsingDots = initPulsingDots;
 function calcLCDHistPrevMonth() {
   var today = new Date();
   var y = today.getFullYear();
-  var m = today.getMonth() - 1; // mois précédent
+  var m = today.getMonth() - 1;
   if (m < 0) { m = 11; y--; }
 
-  // Chargement : premier samedi >= 11 du mois
   var ramase = new Date(y, m, 11);
   while (ramase.getDay() !== 6) ramase.setDate(ramase.getDate() + 1);
 
-  // Départ : lundi suivant le chargement
   var depa = new Date(ramase);
   depa.setDate(depa.getDate() + 2);
 
-  // Disponibilité : premier dimanche >= depa + 10
   var minDisp = new Date(depa);
   minDisp.setDate(minDisp.getDate() + 10);
   var disponib = new Date(minDisp);
@@ -806,8 +803,7 @@ function calcLCDHistPrevMonth() {
     while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() - 1);
   }
 
-  var diffMs  = disponib - depa;
-  var diffJou = Math.round(diffMs / (1000 * 60 * 60 * 24));
+  var diffJou = Math.round((disponib - depa) / (1000 * 60 * 60 * 24));
 
   return {
     mois     : KT_MOIS[m],
@@ -822,7 +818,7 @@ window.ouvrirGalerie = function () {
   var grid  = document.getElementById('galerie-grid');
   if (!modal || !grid) return;
 
-  // ── Titre et recap dynamiques : mois qu'on vient de quitter ──
+  // ── Titre et recap dynamiques : mois précédent ──
   var hist    = calcLCDHistPrevMonth();
   var titreEl = document.getElementById('galerie-titre');
   if (titreEl) titreEl.textContent = '📦 Prèv Livrezon mwa ' + hist.mois;
