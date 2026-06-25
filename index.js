@@ -781,17 +781,51 @@ function initPulsingDots() {
 window.initPulsingDots = initPulsingDots;
 
 // ── GALERIE LIVREZON ─────────────────────────────────────────────
-// Données okazyon pasé — mete ajou chak mwa
-var LCD_HIST = {
-  depa     : '16 Me 2026',
-  disponib : '31 Me 2026',
-  jou      : '13'
-};
+// Calcul automatique des données du mois précédent (même logique que calcLCDDates)
+function calcLCDHistPrevMonth() {
+  var today = new Date();
+  var y = today.getFullYear();
+  var m = today.getMonth() - 1; // mois précédent
+  if (m < 0) { m = 11; y--; }
+
+  // Chargement : premier samedi >= 11 du mois
+  var ramase = new Date(y, m, 11);
+  while (ramase.getDay() !== 6) ramase.setDate(ramase.getDate() + 1);
+
+  // Départ : lundi suivant le chargement
+  var depa = new Date(ramase);
+  depa.setDate(depa.getDate() + 2);
+
+  // Disponibilité : premier dimanche >= depa + 10
+  var minDisp = new Date(depa);
+  minDisp.setDate(minDisp.getDate() + 10);
+  var disponib = new Date(minDisp);
+  while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() + 1);
+  if (disponib.getMonth() !== m) {
+    disponib = new Date(y, m + 1, 0);
+    while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() - 1);
+  }
+
+  var diffMs  = disponib - depa;
+  var diffJou = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+  return {
+    mois     : KT_MOIS[m],
+    depa     : depa.getDate() + ' ' + KT_MOIS[m] + ' ' + y,
+    disponib : disponib.getDate() + ' ' + KT_MOIS[m] + ' ' + y,
+    jou      : diffJou
+  };
+}
 
 window.ouvrirGalerie = function () {
   var modal = document.getElementById('galerie-modal');
   var grid  = document.getElementById('galerie-grid');
   if (!modal || !grid) return;
+
+  // ── Titre et recap dynamiques : mois qu'on vient de quitter ──
+  var hist    = calcLCDHistPrevMonth();
+  var titreEl = document.getElementById('galerie-titre');
+  if (titreEl) titreEl.textContent = '📦 Prèv Livrezon mwa ' + hist.mois;
 
   // Phrase d'annonce automatique
   var annonceDates  = calcLCDDates();
@@ -807,9 +841,9 @@ window.ouvrirGalerie = function () {
   var elDepa = document.getElementById('gal-hist-depa');
   var elDisp = document.getElementById('gal-hist-disponib');
   var elJou  = document.getElementById('gal-hist-jou');
-  if (elDepa) elDepa.textContent = LCD_HIST.depa;
-  if (elDisp) elDisp.textContent = LCD_HIST.disponib;
-  if (elJou)  elJou.textContent  = LCD_HIST.jou + ' jou ✅';
+  if (elDepa) elDepa.textContent = hist.depa;
+  if (elDisp) elDisp.textContent = hist.disponib;
+  if (elJou)  elJou.textContent  = hist.jou + ' jou ✅';
 
   // Générer les 4 vignettes
   grid.innerHTML = '';
