@@ -698,7 +698,7 @@ function initLCDTrackingBloc() {
     isPulse  = true;
   } else if (today < dates.disponib) {
     // Camion en route vers Les Cayes
-    statut   = 'Kamyon nou nan wout pou aux Cayes 🚛';
+    statut   = 'Depouyman - stock dsiponib nan biwo';
     dotClass = 'ltb-dot-blue';
     isPulse  = true;
   } else if (today <= dates.komante) {
