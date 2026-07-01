@@ -675,6 +675,12 @@ function initLCDTrackingBloc() {
   if (el3) el3.textContent = formatDateKT(dates.disponib);
   // Étape 4 "Kòmantè" — pas de date affichée
 
+  // Mesaj anons : "Plase kòmand ou yo... avan le [X mwa]" — dat anbakman (ramase)
+  var deadlineEl = document.getElementById('ltb-deadline-day');
+  if (deadlineEl) {
+    deadlineEl.textContent = dates.ramase.getDate() + ' ' + KT_MOIS[dates.ramase.getMonth()];
+  }
+
   // Statut dynamique
   var statutEl  = document.getElementById('ltb-statut-text');
   var statutDot = document.getElementById('ltb-statut-dot');
