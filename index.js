@@ -604,17 +604,6 @@ function calcLCDDates() {
   var today = new Date(); today.setHours(0,0,0,0);
 
   function computeForMonth(y, m) {
-    // ── Egzepsyon SIKÈL JIYÈ 2026 (dat espesyal pou mwa sa a sèlman) ──
-    if (y === 2026 && m === 6) {
-      var ramaseJ   = new Date(2026, 6, 4);  // Samdi 4 jiyè — anbakman
-      var limiteJ   = new Date(2026, 6, 3);  // Vandredi 3 jiyè — dènye jou pou resevwa koli
-      var depaJ     = new Date(2026, 6, 6);  // Lendi 6 jiyè — kòmansman vwayaj
-      var disponibJ = new Date(2026, 6, 19); // Dimanch 19 jiyè — disponib
-      var komanteJ  = new Date(disponibJ);
-      komanteJ.setDate(komanteJ.getDate() + 5);
-      return { ramase: ramaseJ, depa: depaJ, disponib: disponibJ, komante: komanteJ, limiteCmd: limiteJ };
-    }
-
     // Chargement : premier samedi >= 11 du mois (entre le 11 et le 17)
     var ramase = new Date(y, m, 11);
     while (ramase.getDay() !== 6) ramase.setDate(ramase.getDate() + 1);
