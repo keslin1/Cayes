@@ -202,6 +202,84 @@ body {
 }
 .install-modal-cta:active { transform: scale(0.97); }
 
+/* ── MODALE ANNONS OKAZYON JIYÈ AN ── */
+.okazyon-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeInOverlay .3s ease;
+}
+
+.okazyon-modal-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 34px 24px 26px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35);
+  animation: slideUpCard .35s ease;
+  border-top: 5px solid #d98a1f;
+}
+
+.okazyon-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f2f2f2;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+}
+.okazyon-modal-close .material-icons { font-size: 18px; }
+
+.okazyon-modal-emoji {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.okazyon-modal-title {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #b56a12;
+  letter-spacing: 0.3px;
+  margin: 0 0 14px;
+}
+
+.okazyon-modal-desc {
+  font-size: 0.92rem;
+  color: #444;
+  line-height: 1.6;
+  margin: 0 0 22px;
+}
+
+.okazyon-modal-cta {
+  width: 100%;
+  background: linear-gradient(135deg, #d98a1f, #b56a12);
+  color: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 0.98rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(181,106,18,0.35);
+  transition: transform .15s;
+}
+.okazyon-modal-cta:active { transform: scale(0.97); }
+
 /* ── NOTIFIKASYON DEMANN AVIS (koli disponib) ── */
 .avis-prompt-banner {
   display: flex;

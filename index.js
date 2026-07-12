@@ -603,10 +603,27 @@ function formatDateKT(d) {
 function calcLCDDates() {
   var today = new Date(); today.setHours(0,0,0,0);
 
+  // ── EKSEPSYON PONKTYÈL ────────────────────────────────────────
+  // Chajman jiyè 2026 te dwe fèt 11 jiyè selon règ jeneral la, men li
+  // deplase pou 18 jiyè (yon semèn pita). Sa deplase otomatikman
+  // Vwayaj (depa) pou 20 jiyè, ak Disponibilite pou 2 out — swiv menm
+  // fòmil ki anba a (depa = ramase+2, disponib = premye dimanch >= depa+10).
+  // Retire antre sa a nan objè a apre out 2026 si li pa nesesè ankò.
+  var RAMASE_EXCEPTIONS = {
+    '2026-6': new Date(2026, 6, 18) // kle = 'ane-mwa' (mwa 0-indexed) : jiyè 2026
+  };
+
   function computeForMonth(y, m) {
+    var exceptionKey = y + '-' + m;
+
     // Chargement : premier samedi >= 11 du mois (entre le 11 et le 17)
-    var ramase = new Date(y, m, 11);
-    while (ramase.getDay() !== 6) ramase.setDate(ramase.getDate() + 1);
+    // sof si yon eksepsyon defini pi wo a ranplase l.
+    var ramase = RAMASE_EXCEPTIONS[exceptionKey]
+      ? new Date(RAMASE_EXCEPTIONS[exceptionKey])
+      : new Date(y, m, 11);
+    if (!RAMASE_EXCEPTIONS[exceptionKey]) {
+      while (ramase.getDay() !== 6) ramase.setDate(ramase.getDate() + 1);
+    }
 
     // Départ : lundi suivant le chargement
     var depa = new Date(ramase);
@@ -617,11 +634,13 @@ function calcLCDDates() {
     limiteCmd.setDate(limiteCmd.getDate() - 1);
 
     // Disponibilité : premier dimanche >= depa + 10, dans le même mois
+    // (sof pou yon eksepsyon kote disponibilite a gen dwa tonbe nan mwa
+    // apre a — se ka jiyè 2026 la, kote disponib se 2 out).
     var minDisp = new Date(depa);
     minDisp.setDate(minDisp.getDate() + 10);
     var disponib = new Date(minDisp);
     while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() + 1);
-    if (disponib.getMonth() !== m) {
+    if (!RAMASE_EXCEPTIONS[exceptionKey] && disponib.getMonth() !== m) {
       disponib = new Date(y, m + 1, 0);
       while (disponib.getDay() !== 0) disponib.setDate(disponib.getDate() - 1);
     }
@@ -1165,7 +1184,36 @@ function syncDrawerAvatar() {
   }
 }
 
-// ── INICIALIZASYON JENERAL ───────────────────────────────────────
+// ── MODALE ANNONS OKAZYON JIYÈ AN ────────────────────────────────
+// Afiche sou paj akèy la pandan 5 jou, chak fwa itilizatè a rive sou
+// paj la (menm si li fèmen l anvan) — pa gen okenn flag ki anpeche l
+// reafiche pandan fenèt 5 jou a. Apre fenèt la fini, li disparèt nèt.
+// Pou chanje dat/mesaj pou yon lòt okazyon pita, ajiste konstant yo.
+var OKAZYON_JIYE_START = new Date(2026, 6, 12); // 12 Jiyè 2026, 00:00
+var OKAZYON_JIYE_DAYS  = 5;
+
+window.fermenOkazyonJiyeModal = function () {
+  var modal = document.getElementById('okazyon-jiye-modal');
+  if (modal) modal.style.display = 'none';
+};
+
+function initOkazyonJiyeModal() {
+  var modal = document.getElementById('okazyon-jiye-modal');
+  if (!modal) return;
+
+  var now = new Date();
+  var end = new Date(OKAZYON_JIYE_START);
+  end.setDate(end.getDate() + OKAZYON_JIYE_DAYS);
+
+  if (now >= OKAZYON_JIYE_START && now < end) {
+    modal.style.display = 'flex';
+  } else {
+    modal.style.display = 'none';
+  }
+}
+window.initOkazyonJiyeModal = initOkazyonJiyeModal;
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
   // 1. Badge NEW tranzaksyon
@@ -1188,6 +1236,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 5b. Tracking bloc LCD dates (calcul automatique)
   initLCDTrackingBloc();
+
+  // 5b-bis. Modale annons OKAZYON JIYÈ AN (5 jou)
+  initOkazyonJiyeModal();
 
   // 5c. Notifikasyon demann avis (koli disponib)
   // initAvisPromptBanner(); // dezaktive — fenèt demann avis retire
