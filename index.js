@@ -1184,35 +1184,6 @@ function syncDrawerAvatar() {
   }
 }
 
-// ── MODALE ANNONS OKAZYON JIYÈ AN ────────────────────────────────
-// Afiche sou paj akèy la pandan 5 jou, chak fwa itilizatè a rive sou
-// paj la (menm si li fèmen l anvan) — pa gen okenn flag ki anpeche l
-// reafiche pandan fenèt 5 jou a. Apre fenèt la fini, li disparèt nèt.
-// Pou chanje dat/mesaj pou yon lòt okazyon pita, ajiste konstant yo.
-var OKAZYON_JIYE_START = new Date(2026, 6, 12); // 12 Jiyè 2026, 00:00
-var OKAZYON_JIYE_DAYS  = 5;
-
-window.fermenOkazyonJiyeModal = function () {
-  var modal = document.getElementById('okazyon-jiye-modal');
-  if (modal) modal.style.display = 'none';
-};
-
-function initOkazyonJiyeModal() {
-  var modal = document.getElementById('okazyon-jiye-modal');
-  if (!modal) return;
-
-  var now = new Date();
-  var end = new Date(OKAZYON_JIYE_START);
-  end.setDate(end.getDate() + OKAZYON_JIYE_DAYS);
-
-  if (now >= OKAZYON_JIYE_START && now < end) {
-    modal.style.display = 'flex';
-  } else {
-    modal.style.display = 'none';
-  }
-}
-window.initOkazyonJiyeModal = initOkazyonJiyeModal;
-
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -1236,9 +1207,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // 5b. Tracking bloc LCD dates (calcul automatique)
   initLCDTrackingBloc();
-
-  // 5b-bis. Modale annons OKAZYON JIYÈ AN (5 jou)
-  initOkazyonJiyeModal();
 
   // 5c. Notifikasyon demann avis (koli disponib)
   // initAvisPromptBanner(); // dezaktive — fenèt demann avis retire
