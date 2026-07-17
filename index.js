@@ -446,21 +446,29 @@ function aficheAvis() {
   var votes     = JSON.parse(localStorage.getItem('avis_votes') || '{}');
   var toutAvis  = localAvis.concat(simulationAvis);
 
-  // Construire le HTML de chaque carte
-  function buildCard(a) {
-    var isUser       = localAvis.some(function (la) { return la.id === a.id; });
+  if (!toutAvis.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  // Construire le HTML d'une carte. `suffix` garantit un id DOM unique
+  // pour la copie dupliquée (utilisée pour la boucle du marquee) ;
+  // seule la copie originale (`interactive`) reste cliquable.
+  function buildCard(a, suffix, interactive) {
+    var isUser       = interactive && localAvis.some(function (la) { return la.id === a.id; });
     var starsAffiche = votes[a.id] !== undefined ? votes[a.id] : (a.stars || 0);
     var dateAffiche  = formatDateRelative(a.publishedAt || a.id);
-    var starsHTML    = buildStars(a.id, starsAffiche, true);
+    var starsHTML    = buildStars(a.id, starsAffiche, interactive);
     var initials     = getInitials(a.non);
+    var domId        = 'comment-' + a.id + (suffix ? '-' + suffix : '');
 
-    return '<div class="comment-card" id="comment-' + a.id + '">'
+    return '<div class="comment-card" id="' + domId + '"' + (suffix ? ' aria-hidden="true"' : '') + '>'
       + '<div class="comment-author">'
       + '<div class="comment-avatar">' + initials + '</div>'
       + '<span class="comment-name">' + a.non + '</span>'
       + starsHTML
       + '</div>'
-      + '<p class="comment-text" id="text-' + a.id + '">' + a.text + '</p>'
+      + '<p class="comment-text">' + a.text + '</p>'
       + '<div class="comment-footer">'
       + '<span class="comment-date">' + dateAffiche + '</span>'
       + (isUser
@@ -473,107 +481,37 @@ function aficheAvis() {
       + '</div>';
   }
 
-  // Créer les groupes de 2
-  var groupCount = Math.ceil(toutAvis.length / 2);
-  var groupsHTML = '';
-  for (var g = 0; g < groupCount; g++) {
-    var cardA = toutAvis[g * 2];
-    var cardB = toutAvis[g * 2 + 1];
-    groupsHTML += '<div class="avis-group" data-group="' + g + '">'
-      + buildCard(cardA)
-      + (cardB ? buildCard(cardB) : '')
-      + '</div>';
-  }
+  // Copie originale (interactive) + copie dupliquée (pour boucle sans coupure)
+  var originalHTML  = toutAvis.map(function (a) { return buildCard(a, '', true); }).join('');
+  var duplicateHTML = toutAvis.map(function (a) { return buildCard(a, 'dup', false); }).join('');
 
-  container.innerHTML = '<div id="avis-carousel-wrap">' + groupsHTML + '</div>';
+  container.innerHTML = '<div class="avis-marquee-track" id="avis-marquee-track">'
+    + originalHTML + duplicateHTML
+    + '</div>';
 
-  // Démarrer la rotation
-  startAvisRotation();
+  initAvisMarquee(toutAvis.length);
 }
 
-// ── ANIMATION CARROUSEL AVIS (groupes de 2, 8s, fondu croisé) ────
-var _avisRotInterval = null;
+// ── MARQUEE AVIS — défilement horizontal continu vers la gauche ──
+// La piste contient les avis en double (set A + set B identique) et
+// glisse de translateX(0) à translateX(-50%) : quand le set A sort
+// entièrement de vue, le set B est visuellement à sa place de départ,
+// ce qui crée une boucle infinie parfaitement fluide, sans saut ni
+// interruption. La durée est calée sur ~7s par avis.
+var AVIS_SECONDES_PAR_AVIS = 7;
 
-function startAvisRotation() {
-  if (_avisRotInterval) { clearInterval(_avisRotInterval); _avisRotInterval = null; }
+function initAvisMarquee(nbAvis) {
+  var track = document.getElementById('avis-marquee-track');
+  if (!track) return;
 
-  var wrap = document.getElementById('avis-carousel-wrap');
-  if (!wrap) return;
-
-  var groups    = wrap.querySelectorAll('.avis-group');
-  var total     = groups.length;
-  if (total < 2) {
-    // Un seul groupe : tout afficher directement, pas d'animation
-    if (groups[0]) groups[0].style.opacity = '1';
+  if (!nbAvis || nbAvis < 2) {
+    // Un seul avis : rien à faire défiler
+    track.style.animation = 'none';
     return;
   }
 
-  var current   = 0;
-  var isPaused  = false;
-
-  // Initialiser : premier groupe visible, les autres cachés
-  groups.forEach(function (g, i) {
-    g.style.transition = 'none';
-    g.style.opacity    = i === 0 ? '1' : '0';
-    g.style.position   = i === 0 ? 'relative' : 'absolute';
-    g.style.top        = '0';
-    g.style.left       = '0';
-    g.style.width      = '100%';
-  });
-
-  // Pause au survol
-  var section = document.getElementById('avis-clients');
-  if (section) {
-    section.addEventListener('mouseenter', function () { isPaused = true; });
-    section.addEventListener('mouseleave', function () { isPaused = false; });
-  }
-
-  _avisRotInterval = setInterval(function () {
-    if (isPaused) return;
-
-    var wrap2 = document.getElementById('avis-carousel-wrap');
-    if (!wrap2) { clearInterval(_avisRotInterval); return; }
-    var grps = wrap2.querySelectorAll('.avis-group');
-    if (!grps.length) return;
-
-    var next = (current + 1) % grps.length;
-
-    // Préparer le prochain groupe (déjà invisible en absolute)
-    grps[next].style.position   = 'absolute';
-    grps[next].style.top        = '0';
-    grps[next].style.left       = '0';
-    grps[next].style.width      = '100%';
-    grps[next].style.opacity    = '0';
-    grps[next].style.transition = 'none';
-
-    // Forcer reflow
-    void grps[next].offsetWidth;
-
-    // Fondu croisé : prochain entre, actuel sort
-    grps[next].style.transition = 'opacity 0.8s ease';
-    grps[current].style.transition = 'opacity 0.8s ease';
-    grps[next].style.opacity    = '1';
-    grps[current].style.opacity = '0';
-
-    // Après l'animation, repositionner
-    var outgoing = current;
-    setTimeout(function () {
-      var w = document.getElementById('avis-carousel-wrap');
-      if (!w) return;
-      var gs = w.querySelectorAll('.avis-group');
-      if (gs[next]) {
-        gs[next].style.position = 'relative';
-        gs[next].style.top      = '';
-        gs[next].style.left     = '';
-        gs[next].style.width    = '';
-      }
-      if (gs[outgoing]) {
-        gs[outgoing].style.position = 'absolute';
-      }
-    }, 850);
-
-    current = next;
-  }, 8000);
+  var duree = nbAvis * AVIS_SECONDES_PAR_AVIS;
+  track.style.animationDuration = duree + 's';
 }
 
 // ── FLIP CARD OKAZYON ─────────────────────────────────────────────

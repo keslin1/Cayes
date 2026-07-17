@@ -958,37 +958,49 @@ body {
 .avis-rating-bar-fill      { height: 100%; width: 90%; background: linear-gradient(90deg, #FFD700, #ffc107); border-radius: 0 2px 2px 0; }
 
 #comments-container {
-  padding: 10px 14px 0;
+  padding: 14px 0;
   position: relative;
   overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+          mask-image: linear-gradient(90deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
 }
 
-/* ── CARROUSEL AVIS — système par groupes de 2 ── */
-#avis-carousel-wrap {
-  position: relative;
-  min-height: 180px; /* espace réservé pendant les transitions */
-  overflow: hidden;
-}
-
-.avis-group {
+/* ── MARQUEE AVIS — défilement horizontal infini fluide ── */
+.avis-marquee-track {
   display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* Wrapper de défilement animé — conservé pour compat */
-#avis-scroll-track {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
+  align-items: stretch;
+  gap: 14px;
+  width: max-content;
+  animation-name: avisMarqueeScroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
   will-change: transform;
+}
+
+/* Pause au survol / focus pour laisser lire un avis */
+#comments-container:hover .avis-marquee-track,
+#comments-container:focus-within .avis-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes avisMarqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .avis-marquee-track { animation: none; }
 }
 
 /* Chaque carte */
 #comments-container .comment-card {
-  border-bottom: 1px solid #f0f0f0;
-  padding: 14px 0;
-  transition: opacity 0.6s ease;
+  flex: 0 0 auto;
+  width: 250px;
+  border: 1px solid #f0f0f0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
 
 .comment-author { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -1004,12 +1016,16 @@ body {
 .comment-author span { color: #004D40; font-size: 14px; }
 
 .comment-text {
-  font-size: 0.85em; color: #555; margin-top: 8px; line-height: 1.5; padding-left: 42px;
+  font-size: 0.85em; color: #555; margin-top: 8px; line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .comment-footer {
   display: flex; justify-content: space-between; align-items: center;
-  margin-top: 6px; padding-left: 42px;
+  margin-top: 10px;
 }
 
 .comment-date { font-size: 0.72em; color: #aaa; font-style: italic; }
