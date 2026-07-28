@@ -870,43 +870,14 @@ window.ajouterAvis = function () {
   if (isNewAvis) sendAvisNotification(userName, profile.email, text);
 };
 
-// ── Notifikasyon Web3Forms lè yon kliyan kite yon avis ───────────
+// ── Notifikasyon /api/review lè yon kliyan kite yon avis ───────────
 function sendAvisNotification(userName, userEmail, avisText) {
-  var createdRaw = localStorage.getItem('lcd_account_created');
-  var createdStr = 'Pa disponib';
-  if (createdRaw) {
-    try {
-      var cd = new Date(createdRaw);
-      createdStr = cd.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
-                 + ' à ' + cd.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
-    } catch (e) { /* ignore */ }
-  }
-
-  var now     = new Date();
-  var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
-              + ' à ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
-
-  var payload = {
-    access_key: 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a',
-    subject:    'Nouvo avis kliyan : ' + userName,
-    from_name:  userName,
-    replyto:    userEmail || 'noreply@lescayesdropshipping.com',
-    message:    'Yon kliyan kite yon avis sou aplikasyon an.\n\n'
-              + '———————————————\n'
-              + 'Non kliyan      : ' + userName + '\n'
-              + 'Imel kliyan     : ' + (userEmail || 'pa disponib') + '\n'
-              + 'Kont kreye le   : ' + createdStr + '\n'
-              + 'Dat avis        : ' + dateStr + '\n'
-              + '———————————————\n'
-              + 'Avis :\n' + avisText
-  };
-
-  fetch('https://api.web3forms.com/submit', {
+  fetch('/api/review', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify(payload)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userName: userName, userEmail: userEmail, text: avisText, stars: 0 })
   }).catch(function (err) {
-    console.log('Web3Forms avis notification error:', err);
+    console.log('/api/review notification error:', err);
   });
 }
 

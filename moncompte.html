@@ -896,14 +896,13 @@
                     } catch (err) { console.log('Firestore write error:', err); }
                 }
 
-                // Envoi Web3Forms
-                const formData = new FormData();
-                formData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
-                formData.append('subject',    'Mizajou Pwofil LCDrop: ' + profileData.nom);
-                Object.keys(profileData).forEach(k => formData.append(k, profileData[k]));
-
+                // Envoi vers la Serverless Function Vercel (Supabase + email de confirmation)
                 try {
-                    const response = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: formData });
+                    const response = await fetch('/api/register', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(Object.assign({ uid: user ? user.uid : null }, profileData))
+                    });
                     if (response.ok) { alert('Pwofil ou anrejistre ak siksè !'); }
                     else { alert('Done yo sove nan telefòn ou, men gen yon pwoblèm rezo.'); }
                 } catch (err) {
