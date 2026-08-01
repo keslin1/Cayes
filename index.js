@@ -531,7 +531,7 @@ function getLastSaturdayOfMonth(year, month) {
   return lastSat;
 }
 
-var KT_MOIS = ['Janvye', 'Fevriye', 'Mas', 'Avril', 'Me', 'Jen', 'Jiyè', 'Ut', 'Septanm', 'Oktòb', 'Novanm', 'Desanm'];
+var KT_MOIS = ['Janvye', 'Fevriye', 'Mas', 'Avril', 'Me', 'Jen', 'Jiyè', 'Dawout', 'Septanm', 'Oktòb', 'Novanm', 'Desanm'];
 var KT_JOU  = ['Dimanch', 'Lendi', 'Madi', 'Mèkredi', 'Jedi', 'Vandredi', 'Samdi'];
 
 function formatDateKT(d) {
@@ -547,8 +547,14 @@ function calcLCDDates() {
   // Vwayaj (depa) pou 20 jiyè, ak Disponibilite pou 2 out — swiv menm
   // fòmil ki anba a (depa = ramase+2, disponib = premye dimanch >= depa+10).
   // Retire antre sa a nan objè a apre out 2026 si li pa nesesè ankò.
+  //
+  // Chajman dawout 2026 te dwe fèt 15 dawout selon règ jeneral la (premye
+  // samdi >= 11), men li deplase pou 10 dawout. Sa deplase otomatikman
+  // Vwayaj (depa) ak Disponibilite selon menm fòmil la.
+  // Retire antre sa a nan objè a apre dawout 2026 si li pa nesesè ankò.
   var RAMASE_EXCEPTIONS = {
-    '2026-6': new Date(2026, 6, 18) // kle = 'ane-mwa' (mwa 0-indexed) : jiyè 2026
+    '2026-6': new Date(2026, 6, 18), // kle = 'ane-mwa' (mwa 0-indexed) : jiyè 2026
+    '2026-7': new Date(2026, 7, 10)  // dawout 2026
   };
 
   function computeForMonth(y, m) {
