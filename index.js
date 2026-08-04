@@ -1066,6 +1066,52 @@ window.invCapture = function () {
     });
 };
 
+// ── BLOKAJ AKSÈ: okazyon Jiyè pa reyisi, kont a rebou 20 jou pou Out ──
+function initLockdownOverlay() {
+  var overlay = document.getElementById('lockdown-overlay');
+  if (!overlay) return;
+
+  // Dat depa: 4 Out 2026. Dat fen: 20 jou apre (24 Out 2026).
+  var LOCKDOWN_START = new Date('2026-08-04T00:00:00');
+  var LOCKDOWN_DAYS  = 20;
+  var endTime = LOCKDOWN_START.getTime() + LOCKDOWN_DAYS * 24 * 60 * 60 * 1000;
+
+  var elDays    = document.getElementById('lockdown-days');
+  var elHours   = document.getElementById('lockdown-hours');
+  var elMinutes = document.getElementById('lockdown-minutes');
+  var elSeconds = document.getElementById('lockdown-seconds');
+
+  function pad(n) { return n < 10 ? '0' + n : String(n); }
+
+  function updateLockdown() {
+    var remaining = endTime - Date.now();
+
+    if (remaining <= 0) {
+      // Peryòd la fini: retire blokaj la, otorize aksè platfòm nan
+      overlay.classList.add('hidden');
+      document.body.style.overflow = '';
+      clearInterval(timerId);
+      return;
+    }
+
+    // Blokaj aktif: anpeche defile paj la dèyè fenèt la
+    document.body.style.overflow = 'hidden';
+
+    var days    = Math.floor(remaining / 86400000);
+    var hours   = Math.floor((remaining % 86400000) / 3600000);
+    var minutes = Math.floor((remaining % 3600000) / 60000);
+    var seconds = Math.floor((remaining % 60000) / 1000);
+
+    if (elDays)    elDays.textContent    = days;
+    if (elHours)   elHours.textContent   = pad(hours);
+    if (elMinutes) elMinutes.textContent = pad(minutes);
+    if (elSeconds) elSeconds.textContent = pad(seconds);
+  }
+
+  updateLockdown();
+  var timerId = setInterval(updateLockdown, 1000);
+}
+
 // ── OFFRE PREMYE KÒMAND (15 jou) ────────────────────────────────
 function initPromoFirstOrder() {
   var PROMO_KEY    = 'lcd_promo_start';
@@ -1130,6 +1176,9 @@ function syncDrawerAvatar() {
 
 
 document.addEventListener('DOMContentLoaded', function () {
+
+  // 0. Blokaj aksè — okazyon Jiyè pa reyisi
+  initLockdownOverlay();
 
   // 1. Badge NEW tranzaksyon
   var newBadge = document.getElementById('new-badge');
