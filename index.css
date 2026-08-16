@@ -94,7 +94,7 @@ body {
   backface-visibility: hidden;
 }
 
-#hamburger-btn, #top-bar-bell {
+#top-bar-bell {
   width: 38px; height: 38px; border-radius: 10px; background: #f0f0f0;
   border: none; display: flex; align-items: center; justify-content: center;
   cursor: pointer; color: var(--bleu-marin); position: relative;
@@ -110,109 +110,6 @@ body {
 }
 
 
-
-/* ── BLOKAJ AKSÈ (okazyon Jiyè pa reyisi) ── */
-.lockdown-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100000;
-  background: rgba(0, 10, 30, 0.92);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  animation: fadeInOverlay .3s ease;
-}
-.lockdown-overlay.hidden { display: none !important; }
-
-.lockdown-card {
-  background: #ffffff;
-  border-radius: 22px;
-  padding: 34px 24px 30px;
-  max-width: 360px;
-  width: 100%;
-  text-align: center;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.45);
-  animation: slideUpCard .35s ease;
-}
-
-.lockdown-logo {
-  width: 70px;
-  height: 70px;
-  border-radius: 16px;
-  margin-bottom: 14px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.14);
-}
-
-.lockdown-title {
-  font-size: 1.25rem;
-  font-weight: 900;
-  color: var(--rouge, #d32f2f);
-  margin: 0 0 12px;
-  letter-spacing: 0.2px;
-}
-
-.lockdown-desc {
-  font-size: 0.88rem;
-  color: #555;
-  line-height: 1.55;
-  margin: 0 0 20px;
-}
-
-.lockdown-countdown {
-  background: #f0f5ff;
-  border-radius: 16px;
-  padding: 16px 12px;
-  margin-bottom: 18px;
-}
-
-.lockdown-countdown-label {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--bleu-marin);
-  margin-bottom: 10px;
-}
-
-.lockdown-countdown-timer {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.lockdown-unit {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 8px 10px;
-  min-width: 52px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-}
-
-.lockdown-unit span {
-  display: block;
-  font-size: 1.15rem;
-  font-weight: 900;
-  color: var(--bleu-marin);
-  line-height: 1;
-}
-
-.lockdown-unit small {
-  display: block;
-  font-size: 0.62rem;
-  color: #888;
-  font-weight: 600;
-  margin-top: 3px;
-  text-transform: uppercase;
-}
-
-.lockdown-warning {
-  background: #fff3f0;
-  border: 1px solid #ffd6cc;
-  border-radius: 12px;
-  padding: 12px 14px;
-  font-size: 0.82rem;
-  color: #b3401f;
-  line-height: 1.5;
-}
 
 /* ── MODALE INSTALL A2HS ── */
 .install-modal-overlay {
@@ -374,332 +271,109 @@ body {
 }
 .avis-prompt-close .material-icons { font-size: 16px; }
 
-/* ── DRAWER & OVERLAY ── */
-.drw-section-lbl {
-  font-size: 11px;
-  font-weight: 800;
-  color: var(--gris-fonce);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 20px 16px 8px;
-}
-
-#drawer-overlay, #inv-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.42);
-  z-index: 700; opacity: 0; visibility: hidden; transition: 0.3s;
-}
-
-#drawer-overlay.open, #inv-overlay.open { opacity: 1; visibility: visible; }
-
-#app-drawer {
-  position: fixed; top: 0; left: 0; width: 285px; height: 100%;
-  background: var(--white); z-index: 800; transform: translateX(-100%);
-  transition: transform 0.33s cubic-bezier(0.4,0,0.2,1);
-  display: flex; flex-direction: column; box-shadow: 3px 0 20px rgba(0,0,0,0.12);
-}
-
-#app-drawer.open { transform: translateX(0); }
-
-.drw-head {
-  background: linear-gradient(135deg, var(--bleu-marin) 0%, var(--bleu-clair) 100%);
-  padding: 40px 16px 20px;
+/* ── MENU RAPID — boutons colorés (façon "Join Prime / Whole Foods") ── */
+#quick-nav {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  position: relative;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 14px 16px 4px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
+#quick-nav::-webkit-scrollbar { display: none; }
 
-.drw-info { display: flex; flex-direction: column; }
-
-.drawer-head-name { font-size: 14px; font-weight: 900; color: var(--white); line-height: 1.2; }
-.drw-loc          { font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 400; }
-.drw-logo         { width: 50px; height: 50px; border-radius: 13px; background: white; padding: 4px; }
-.drw-body         { flex: 1; overflow-y: auto; padding: 8px 0; }
-
-.drw-item {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 12px 16px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--texte);
-  text-decoration: none;
-  transition: background 0.2s;
-  cursor: pointer;
-}
-
-.drw-icon {
-  width: 38px; height: 38px; border-radius: 10px;
-  background: rgba(46,204,113,0.1); color: var(--vert-menu);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-}
-
-/* Kiyès item — accent spécial */
-.drw-item-kiyès { background: rgba(143,188,143,0.08); }
-.drw-item-kiyès:hover { background: rgba(143,188,143,0.16); }
-.drw-icon-kiyès {
-  background: rgba(143,188,143,0.2);
-  color: var(--kaki);
-}
-.drw-item-kiyès .drw-label { color: var(--vert-menu); font-weight: 800; }
-
-.drw-label  { flex: 1; font-size: 13px; font-weight: 700; }
-.drw-arrow  { color: #bbb; font-size: 18px !important; margin-left: auto; }
-
-.drw-tarif {
-  padding: 15px 16px;
-  font-size: 13px; font-weight: 700; color: #333;
-  display: flex; align-items: center; gap: 8px;
-}
-
-.drw-logout { color: var(--rouge) !important; margin-top: 10px; }
-.drw-logout .drw-icon { background: rgba(231,76,60,0.1); color: var(--rouge); }
-
-.drw-divider { height: 1px; background: #eee; margin: 10px 16px; }
-
-.drw-close-btn {
-  position: absolute; top: 15px; right: 15px;
-  width: 32px; height: 32px; border-radius: 50%;
-  background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);
-  color: var(--white); display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: 0.2s;
-}
-.drw-close-btn:active { background: rgba(255,255,255,0.4); transform: scale(0.9); }
-
-.drw-footer-ver { font-size: 11px; color: #aaa; text-align: center; padding: 12px; }
-
-
-/* ── BLOC TRACKING LCD ── */
-
-#lcd-tracking-bloc {
-  margin: 0;
-  width: 100%;
-  background: transparent;
-  border: none;
-  padding: 14px 16px 0;
-  font-family: sans-serif;
-  color: #222;
-}
-
-.ltb-header         { display: none; }
-.ltb-transporteur-label,
-.ltb-transporteur-name { display: none; }
-
-.ltb-divider { display: none; }
-
-/* ── Statut ── */
-.ltb-statut-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 15px;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 6px;
-}
-
-.ltb-statut-dot-wrap {
-  position: relative;
-  width: 14px;
-  height: 14px;
+.qn-pill {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 22px;
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: transform 0.15s;
+}
+.qn-pill:active { transform: scale(0.95); }
+.qn-pill .material-icons { font-size: 17px; }
+
+.qn-pill { position: relative; }
+
+.qn-pill-1 { background: #ffffff; color: var(--bleu-marin); border: 2px solid var(--bleu-marin); }
+.qn-pill-2 { background: var(--vert-menu); color: #ffffff; }
+.qn-pill-3 { background: #8e44ad; color: #ffffff; }
+.qn-pill-4 { background: var(--bleu-clair); color: #ffffff; }
+.qn-pill-5 { background: #e67e22; color: #ffffff; }
+.qn-pill-6 { background: var(--rouge); color: #ffffff; }
+
+.qn-badge-new {
+  position: absolute; top: -6px; right: -4px;
+  background: #e74c3c; color: #fff; border-radius: 4px;
+  padding: 1px 4px; font-size: 8px; font-weight: 900;
+  letter-spacing: 0.3px; line-height: 14px;
+  animation: pulseBadge 1.2s ease-out infinite;
+}
+.qn-badge-count {
+  position: absolute; top: -6px; right: -4px;
+  background: red; color: #fff; border-radius: 50%;
+  padding: 2px 6px; font-size: 10px; font-weight: bold;
 }
 
-.ltb-statut-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  position: relative;
-  z-index: 1;
-}
-
-.ltb-statut-dot-wrap.ltb-dot-pulse::before {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  background: #FF8C00;
-  opacity: 0.4;
-  animation: ltbDotPulse 1.5s ease-out infinite;
-}
-
-@keyframes ltbDotPulse {
-  0%   { transform: scale(0.8); opacity: 0.5; }
-  70%  { transform: scale(1.8); opacity: 0; }
-  100% { transform: scale(0.8); opacity: 0; }
-}
-
-.ltb-dot-live   { background: #FF8C00; }
-.ltb-dot-orange { background: #e67e22; }
-.ltb-dot-blue   { background: #2980b9; }
-.ltb-dot-kaki   { background: #004D40; }
-
-/* Note info — blanc sur bleu marine */
-.ltb-note-info {
-  font-size: 12px;
-  color: rgba(255,255,255,0.75);
-  line-height: 1.5;
-  margin-bottom: 10px;
-}
-
-.ltb-note-info strong {
-  color: #fff;
-}
-
-/* Séparateur interne dans le bloc bleu */
-.ltb-inner-divider {
-  height: 1px;
-  background: rgba(255,255,255,0.15);
-  margin: 10px 0 12px;
-}
-
-/* ── Rectangle progress — full-bleed, dégradé bleu marine comme avis-kliyan ── */
-.ltb-progress-box {
+/* ── STATI LCD — ligne unique, fond blanc, style "livraison" ── */
+#lcd-status-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
   width: 100vw;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, var(--bleu-marin) 0%, #003d7a 100%);
-  padding: 14px 20px 20px;
+  background: #ffffff;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 14px 20px;
   margin: 0;
 }
-
-/* Titre jaune — lien vers galerie */
-.ltb-progress-title {
-  font-size: 12px;
-  font-weight: 800;
-  color: #FFD700;
-  margin-bottom: 16px;
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: rgba(255,215,0,0.35);
-  display: inline-block;
+.lcd-status-gif {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  object-fit: contain;
 }
-
-/* Conteneur de la barre et des étapes */
-.ltb-progress-track-wrap {
-  position: relative;
-  padding-bottom: 34px;
-}
-
-/* Rail gris translucide */
-.ltb-progress-rail {
-  position: absolute;
-  top: 11px;
-  left: 10%;
-  right: 10%;
-  height: 3px;
-  background: rgba(255,255,255,0.18);
-  border-radius: 3px;
-  z-index: 0;
-}
-
-/* Barre verte de progression */
-.ltb-progress-fill {
-  position: absolute;
-  top: 11px;
-  left: 10%;
-  height: 3px;
-  background: #4CAF50;
-  border-radius: 3px;
-  z-index: 1;
-  transition: width 0.6s ease;
-  width: 0%;
-}
-
-/* Rangée étapes */
-.ltb-progress-steps {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.ltb-pstep {
+.lcd-status-body {
   display: flex;
   flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.lcd-status-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #111;
+  letter-spacing: 0.01em;
+}
+.lcd-status-badge {
+  display: inline-flex;
   align-items: center;
-  flex: 1;
-  text-align: center;
+  gap: 5px;
+  align-self: flex-start;
+  background: var(--vert-menu);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding: 5px 10px;
+  border-radius: 7px;
 }
-
-/* Nœud gris par défaut */
-.ltb-pstep-node {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.1);
-  border: 2.5px solid rgba(255,255,255,0.28);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-bottom: 7px;
-  position: relative;
-  z-index: 2;
-  transition: background 0.3s, border-color 0.3s;
+.lcd-status-badge .material-icons {
+  font-size: 14px;
 }
-
-/* Étape accomplie — vert + ✓ */
-.ltb-pstep.ltb-step-done .ltb-pstep-node {
-  background: #4CAF50;
-  border-color: #4CAF50;
+.lcd-status-badge .lcd-status-info {
+  font-size: 13px;
+  opacity: 0.85;
 }
-.ltb-pstep.ltb-step-done .ltb-pstep-node::after {
-  content: "✓";
-  font-size: 12px;
-  font-weight: 900;
-  color: #fff;
-  line-height: 1;
-}
-
-/* Étape active — bordure jaune */
-.ltb-pstep.ltb-step-active .ltb-pstep-node {
-  background: rgba(255,255,255,0.06);
-  border-color: #FFD700;
-  box-shadow: 0 0 0 3px rgba(255,215,0,0.18);
-}
-
-/* Labels */
-.ltb-pstep-label {
-  font-size: 9.5px;
-  color: rgba(255,255,255,0.4);
-  font-weight: 500;
-  line-height: 1.35;
-  max-width: 56px;
-}
-.ltb-pstep.ltb-step-done .ltb-pstep-label {
-  color: rgba(255,255,255,0.88);
-  font-weight: 700;
-}
-.ltb-pstep.ltb-step-active .ltb-pstep-label {
-  color: #FFD700;
-  font-weight: 700;
-}
-
-/* Dates */
-.ltb-pstep-date {
-  display: block;
-  font-size: 8.5px;
-  color: rgba(255,255,255,0.3);
-  margin-top: 2px;
-  font-weight: 500;
-}
-.ltb-pstep.ltb-step-done .ltb-pstep-date { color: #4CAF50; }
-.ltb-pstep.ltb-step-active .ltb-pstep-date { color: #FFD700; }
-
-/* Connecteurs masqués */
-.ltb-connector { display: none; }
-
-/* Bouton détails masqué */
-.ltb-detail-btn { display: none; }
 
 /* ── Annonces — fond blanc, style zone boutons like ── */
 .ltb-annonces {
@@ -754,56 +428,6 @@ body {
 @keyframes ltbTickerScroll {
   0%   { transform: translateX(100%); }
   100% { transform: translateX(-100%); }
-}
-
-/* ── Recap galerie okazyon pasé ── */
-.galerie-recap {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #f9f9f9;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 10px 14px;
-  margin-bottom: 14px;
-  gap: 6px;
-}
-
-.galerie-recap-row {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  flex: 1;
-}
-
-.galerie-recap-label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #999;
-  letter-spacing: 0.06em;
-}
-
-.galerie-recap-val {
-  font-size: 12px;
-  font-weight: 700;
-  color: #222;
-}
-
-.galerie-recap-badge {
-  color: #556B2F;
-  background: rgba(85,107,47,0.1);
-  border-radius: 20px;
-  padding: 2px 10px;
-  font-size: 11px;
-}
-
-.galerie-recap-sep {
-  width: 1px;
-  height: 32px;
-  background: #e0e0e0;
-  flex-shrink: 0;
 }
 
 /* Boutons réaction (remis) */
@@ -880,138 +504,58 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ── MODAL GALERIE ── */
-#galerie-modal {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,0.72);
-  z-index: 9000;
-  display: flex; align-items: center; justify-content: center;
-  padding: 16px;
-}
-
-.galerie-inner {
-  background: #fff; border-radius: 16px;
-  padding: 20px 16px 24px; width: 100%; max-width: 420px;
-  position: relative; max-height: 90vh; overflow-y: auto;
-}
-
-.galerie-close {
-  position: absolute; top: 12px; right: 14px;
-  background: #f0f0f0; border: none; border-radius: 50%;
-  width: 30px; height: 30px; font-size: 14px; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; font-weight: 700;
-}
-
-.galerie-titre {
-  font-size: 1em; font-weight: 900; color: var(--bleu-marin);
-  margin-bottom: 16px; text-align: center;
-}
-
-.galerie-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-.galerie-grid img {
-  width: 100%; aspect-ratio: 1/1; object-fit: cover; border-radius: 10px;
-  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-}
-
-.galerie-grid img:hover { transform: scale(1.04); box-shadow: 0 4px 16px rgba(0,0,0,0.22); }
-
-/* ── LIGHTBOX ── */
-#lightbox {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.9);
-  z-index: 9500; display: flex; align-items: center; justify-content: center; padding: 20px;
-}
-
-#lightbox-img {
-  max-width: 100%; max-height: 90vh; border-radius: 10px;
-  object-fit: contain; box-shadow: 0 0 40px rgba(0,0,0,0.8);
-}
-
-/* ── Compatibilité ancien code ── */
-#info-livrezon-container { display: none; }
-
-.info-title {
-  margin: 0;
-  font-size: 0.9em;
-  font-weight: bold;
-  text-transform: uppercase;
-  opacity: 0.85;
-  color: #ffffff;
-}
-
-.info-detail {
-  color: #FFD700;
-  font-size: 1.3em;
-  font-weight: 900;
-  margin: 5px 0;
-}
-
-.info-sub {
-  margin: 0;
-  font-size: 0.75em;
-  line-height: 1.4;
-  color: rgba(255,255,255,0.85);
-  font-weight: normal;
-}
-
-/* ── CAROUSEL BANNER ── */
+/* ── CAROUSEL BANNER — format portrait, style "peek" (Amazon-like) ── */
 #banner-carousel {
-  overflow-x: scroll;
-  height: 120px;
   position: relative;
-  margin: 20px 0;
+  margin: 18px 0 10px;
   padding: 0;
+}
+
+.carousel-container {
+  display: flex;
+  gap: 12px;
+  overflow-x: scroll;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  padding: 0 16px;
 }
 
-#banner-carousel::-webkit-scrollbar { display: none; }
-
-.carousel-container { height: 100%; display: flex; }
+.carousel-container::-webkit-scrollbar { display: none; }
 
 .carousel-item {
-  min-width: 100vw;
+  flex: 0 0 auto;
+  width: 78vw;
+  max-width: 340px;
+  aspect-ratio: 3 / 4.6;
   background-size: cover;
   background-position: center;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   color: var(--blanc-fond);
-  text-align: center;
-  padding: 15px 25px;
+  text-align: left;
+  padding: 0;
   position: relative;
-  border-radius: 0px;
-  margin-right: 0;
-  flex-shrink: 0;
+  border-radius: 18px;
+  overflow: hidden;
   scroll-snap-align: start;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.16);
 }
 
-.carousel-item::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: rgba(0,0,0,0.55);
-  z-index: 1;
-  border-radius: 0px;
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
 }
 
-.banner-text { position: relative; z-index: 2; text-align: center; width: 100%; }
-
-.banner-text h1 {
-  font-size: 1.1em;
-  text-shadow: 1px 1px 3px #000;
-  margin: 0;
-  font-weight: 900;
-  text-transform: uppercase;
+.cdot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #d8d8d8;
+  transition: background 0.2s, transform 0.2s;
 }
-
-.banner-text p {
-  font-size: 0.75em;
-  margin-top: 5px;
-  text-shadow: 1px 1px 2px #000;
-}
+.cdot.active { background: var(--bleu-marin); transform: scale(1.3); }
 
 /* ── AVIS KLIYAN ── */
 #avis-clients {
@@ -1058,7 +602,7 @@ body {
 .avis-score-count { font-size: 10px; color: rgba(255,255,255,0.7); white-space: nowrap; }
 
 .avis-rating-bar-container { height: 4px; background: #eee; margin: 0; }
-.avis-rating-bar-fill      { height: 100%; width: 90%; background: linear-gradient(90deg, #FFD700, #ffc107); border-radius: 0 2px 2px 0; }
+.avis-rating-bar-fill      { height: 100%; width: 100%; background: linear-gradient(90deg, #FFD700, #ffc107); border-radius: 0 2px 2px 0; }
 
 #comments-container {
   padding: 14px 0;
@@ -1247,44 +791,9 @@ body {
 .contact-info-footer p        { margin: 10px 0; font-size: 0.85em; color: #e0e0e0; }
 .contact-info-footer strong   { color: #FF8C00; display: block; margin-bottom: 4px; text-transform: uppercase; font-size: 0.9em; }
 
-/* ── FOOTER NAVIGATION — suppression couleur bleue et soulignement ── */
-#main-footer {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: fixed;
-  bottom: 0; left: 0;
-  width: 100%;
-  height: 60px;
-  background-color: var(--blanc-fond);
-  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-  z-index: 1000;
-}
-
-#main-footer a,
-#main-footer a:visited,
-#main-footer a:hover,
-#main-footer a:active {
-  text-decoration: none;
-  color: inherit;
-}
-
-.nav-item {
-  text-align: center;
-  font-size: 0.75em;
-  padding: 5px;
-  position: relative;
-  color: #004D40;
-  text-decoration: none;
-}
-
-#main-footer .material-icons      { color: #004D40; font-size: 24px; }
-.nav-item.active .material-icons  { color: var(--kaki); }
-.nav-item p                       { margin: 0; }
-
 /* ── WHATSAPP FAB ── */
 #whatsapp-fab {
-  position: fixed; bottom: 80px; right: 18px;
+  position: fixed; bottom: 20px; right: 18px;
   width: 58px; height: 58px; border-radius: 50%;
   background: #25D366; border: none; cursor: pointer;
   z-index: 999; box-shadow: 0 4px 16px rgba(37,211,102,0.45);

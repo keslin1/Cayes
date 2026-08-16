@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 527;
+let   baseLikes      = 766;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -260,18 +260,13 @@ function initBannerCarousel() {
 
   var items      = container.querySelectorAll('.carousel-item');
   var totalItems = items.length;
-  var scrollAmount = 0;
+  var index      = 0;
 
   setInterval(function () {
-    var itemWidth = items[0].offsetWidth;
-    if (scrollAmount >= itemWidth * (totalItems - 1)) {
-      scrollAmount = 0;
-      carousel.scrollTo({ left: 0, behavior: 'smooth' });
-    } else {
-      scrollAmount += itemWidth;
-      carousel.scrollTo({ left: scrollAmount, behavior: 'smooth' });
-    }
-  }, 10000);
+    var step = items[1] ? (items[1].offsetLeft - items[0].offsetLeft) : items[0].offsetWidth;
+    index = (index + 1) % totalItems;
+    carousel.scrollTo({ left: step * index, behavior: 'smooth' });
+  }, 6000);
 }
 
 // ── MODALS ───────────────────────────────────────────────────────
@@ -350,36 +345,26 @@ function getRefDate(daysAgo, minutesAgo) {
   return d.getTime();
 }
 
-function formatDateRelative(timestamp) {
-  var now        = Date.now();
-  var diffMs     = now - timestamp;
-  var diffMin    = Math.floor(diffMs / 60000);
-  var diffHours  = Math.floor(diffMs / 3600000);
-  var diffDays   = Math.floor(diffMs / 86400000);
-  var diffWeeks  = Math.floor(diffDays / 7);
-  var diffMonths = Math.floor(diffDays / 30);
+function formatDatePublished(timestamp) {
+  var d  = new Date(timestamp);
+  var dd = String(d.getDate()).padStart(2, '0');
+  var mm = String(d.getMonth() + 1).padStart(2, '0');
+  var yy = String(d.getFullYear()).slice(-2);
+  return dd + '/' + mm + '/' + yy;
+}
 
-  if (diffMin < 2)      return 'kounye a';
-  if (diffMin < 60)     return 'sa gen ' + diffMin + ' minit';
-  if (diffHours < 24)   return 'sa gen ' + diffHours + ' è';
-  if (diffDays === 1)   return 'yè';
-  if (diffDays === 2)   return 'avan-yè';
-  if (diffDays < 7)     return diffDays + ' jou pase';
-  if (diffWeeks === 1)  return '1 semèn pase';
-  if (diffWeeks < 5)    return diffWeeks + ' semèn pase';
-  if (diffMonths === 1) return '1 mwa pase';
-  if (diffMonths < 12)  return diffMonths + ' mwa pase';
-  return 'plis pase 1 an';
+function fixedDate(y, m, d) {
+  return new Date(y, m - 1, d).getTime();
 }
 
 var simulationAvis = [
-  { id: 101, non: "Valpare B.",     stars: 5, text: "impotan pou biznis mw, psk ak ansyen transpo an m patka rantre kob m envesti yo.",                                    publishedAt: getRefDate(3) },
-  { id: 102, non: "Claire Suze D.", stars: 5, text: "Pinga warehouse sa vin bay pwob nn mesye Thomas!",                                                                    publishedAt: getRefDate(1) },
-  { id: 103, non: "Steeve P.",      stars: 4, text: "m swete aprè 4,90 lan pa gen lòt frè, bon bgy.",                                                                      publishedAt: getRefDate(5) },
-  { id: 104, non: "Samuel H.",      stars: 5, text: "Ou konn sa wap f an mister Thomas, nou avèw 👍. Livrezon an yon ti jan long, men nap avanse brother.",               publishedAt: getRefDate(0, 45) },
-  { id: 105, non: "Laika V.",       stars: 4, text: "Ebyen gen espwa pou store mwen an la 😂🤣.",                                                                           publishedAt: getRefDate(21) },
-  { id: 106, non: "Tania S.",       stars: 2, text: "Nanpwen anak, asistans red red. Machandiz mw rive an plizye okazyon, men yo rive san manke anyen.",                   publishedAt: getRefDate(59) },
-  { id: 107, non: "Ricardo J.",     stars: 1, text: "Okazyn chak mwa sèlman ki pwoblm pu mw, men pou pri a, sekirite; pa gen plenyen.",                                    publishedAt: getRefDate(2) }
+  { id: 101, non: "Valpare B.",     stars: 5, text: "impotan pou biznis mw, psk ak ansyen transpo an m patka rantre kob m envesti yo.",                                    publishedAt: fixedDate(2025, 11, 14) },
+  { id: 102, non: "Claire Suze D.", stars: 5, text: "Pinga warehouse sa vin bay pwob nn mesye Thomas!",                                                                    publishedAt: fixedDate(2025, 11, 29) },
+  { id: 103, non: "Steeve P.",      stars: 4, text: "m swete aprè 4,90 lan pa gen lòt frè, bon bgy.",                                                                      publishedAt: fixedDate(2025, 12, 10) },
+  { id: 104, non: "Samuel H.",      stars: 5, text: "Ou konn sa wap f an mister Thomas, nou avèw 👍. Livrezon an yon ti jan long, men nap avanse brother.",               publishedAt: fixedDate(2026, 1, 5) },
+  { id: 105, non: "Laika V.",       stars: 4, text: "Ebyen gen espwa pou store mwen an la 😂🤣.",                                                                           publishedAt: fixedDate(2026, 1, 18) },
+  { id: 106, non: "Tania S.",       stars: 2, text: "Nanpwen anak, asistans red red. Machandiz mw rive an plizye okazyon, men yo rive san manke anyen.",                   publishedAt: fixedDate(2026, 2, 2) },
+  { id: 107, non: "Ricardo J.",     stars: 1, text: "Okazyn chak mwa sèlman ki pwoblm pu mw, men pou pri a, sekirite; pa gen plenyen.",                                    publishedAt: fixedDate(2026, 2, 11) }
 ];
 
 function buildStars(avisId, currentStars, isInteractive) {
@@ -457,7 +442,7 @@ function aficheAvis() {
   function buildCard(a, suffix, interactive) {
     var isUser       = interactive && localAvis.some(function (la) { return la.id === a.id; });
     var starsAffiche = votes[a.id] !== undefined ? votes[a.id] : (a.stars || 0);
-    var dateAffiche  = formatDateRelative(a.publishedAt || a.id);
+    var dateAffiche  = formatDatePublished(a.publishedAt || a.id);
     var starsHTML    = buildStars(a.id, starsAffiche, interactive);
     var initials     = getInitials(a.non);
     var domId        = 'comment-' + a.id + (suffix ? '-' + suffix : '');
@@ -531,7 +516,7 @@ function getLastSaturdayOfMonth(year, month) {
   return lastSat;
 }
 
-var KT_MOIS = ['Janvye', 'Fevriye', 'Mas', 'Avril', 'Me', 'Jen', 'Jiyè', 'Dawout', 'Septanm', 'Oktòb', 'Novanm', 'Desanm'];
+var KT_MOIS = ['Janvye', 'Fevriye', 'Mas', 'Avril', 'Me', 'Jen', 'Jiyè', 'Ut', 'Septanm', 'Oktòb', 'Novanm', 'Desanm'];
 var KT_JOU  = ['Dimanch', 'Lendi', 'Madi', 'Mèkredi', 'Jedi', 'Vandredi', 'Samdi'];
 
 function formatDateKT(d) {
@@ -547,14 +532,8 @@ function calcLCDDates() {
   // Vwayaj (depa) pou 20 jiyè, ak Disponibilite pou 2 out — swiv menm
   // fòmil ki anba a (depa = ramase+2, disponib = premye dimanch >= depa+10).
   // Retire antre sa a nan objè a apre out 2026 si li pa nesesè ankò.
-  //
-  // Chajman dawout 2026 te dwe fèt 15 dawout selon règ jeneral la (premye
-  // samdi >= 11), men li deplase pou 10 dawout. Sa deplase otomatikman
-  // Vwayaj (depa) ak Disponibilite selon menm fòmil la.
-  // Retire antre sa a nan objè a apre dawout 2026 si li pa nesesè ankò.
   var RAMASE_EXCEPTIONS = {
-    '2026-6': new Date(2026, 6, 18), // kle = 'ane-mwa' (mwa 0-indexed) : jiyè 2026
-    '2026-7': new Date(2026, 7, 10)  // dawout 2026
+    '2026-6': new Date(2026, 6, 18) // kle = 'ane-mwa' (mwa 0-indexed) : jiyè 2026
   };
 
   function computeForMonth(y, m) {
@@ -1066,52 +1045,6 @@ window.invCapture = function () {
     });
 };
 
-// ── BLOKAJ AKSÈ: okazyon Jiyè pa reyisi, kont a rebou 20 jou pou Out ──
-function initLockdownOverlay() {
-  var overlay = document.getElementById('lockdown-overlay');
-  if (!overlay) return;
-
-  // Dat depa: 4 Out 2026. Dat fen: 20 jou apre (24 Out 2026).
-  var LOCKDOWN_START = new Date('2026-08-04T00:00:00');
-  var LOCKDOWN_DAYS  = 20;
-  var endTime = LOCKDOWN_START.getTime() + LOCKDOWN_DAYS * 24 * 60 * 60 * 1000;
-
-  var elDays    = document.getElementById('lockdown-days');
-  var elHours   = document.getElementById('lockdown-hours');
-  var elMinutes = document.getElementById('lockdown-minutes');
-  var elSeconds = document.getElementById('lockdown-seconds');
-
-  function pad(n) { return n < 10 ? '0' + n : String(n); }
-
-  function updateLockdown() {
-    var remaining = endTime - Date.now();
-
-    if (remaining <= 0) {
-      // Peryòd la fini: retire blokaj la, otorize aksè platfòm nan
-      overlay.classList.add('hidden');
-      document.body.style.overflow = '';
-      clearInterval(timerId);
-      return;
-    }
-
-    // Blokaj aktif: anpeche defile paj la dèyè fenèt la
-    document.body.style.overflow = 'hidden';
-
-    var days    = Math.floor(remaining / 86400000);
-    var hours   = Math.floor((remaining % 86400000) / 3600000);
-    var minutes = Math.floor((remaining % 3600000) / 60000);
-    var seconds = Math.floor((remaining % 60000) / 1000);
-
-    if (elDays)    elDays.textContent    = days;
-    if (elHours)   elHours.textContent   = pad(hours);
-    if (elMinutes) elMinutes.textContent = pad(minutes);
-    if (elSeconds) elSeconds.textContent = pad(seconds);
-  }
-
-  updateLockdown();
-  var timerId = setInterval(updateLockdown, 1000);
-}
-
 // ── OFFRE PREMYE KÒMAND (15 jou) ────────────────────────────────
 function initPromoFirstOrder() {
   var PROMO_KEY    = 'lcd_promo_start';
@@ -1176,9 +1109,6 @@ function syncDrawerAvatar() {
 
 
 document.addEventListener('DOMContentLoaded', function () {
-
-  // 0. Blokaj aksè — okazyon Jiyè pa reyisi
-  initLockdownOverlay();
 
   // 1. Badge NEW tranzaksyon
   var newBadge = document.getElementById('new-badge');
