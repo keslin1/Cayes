@@ -202,74 +202,6 @@ body {
 }
 .install-modal-cta:active { transform: scale(0.97); }
 
-/* ── NOTIFIKASYON DEMANN AVIS (koli disponib) ── */
-.avis-prompt-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  background: linear-gradient(135deg, #fff8ed 0%, #fef0f5 100%);
-  border: 1px solid rgba(233,30,140,0.18);
-  border-radius: 14px;
-  padding: 12px 14px;
-  margin: 10px 0 14px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-  animation: avisPromptIn 0.35s ease-out;
-}
-@keyframes avisPromptIn {
-  from { opacity: 0; transform: translateY(-8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.avis-prompt-icon {
-  flex-shrink: 0;
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: rgba(233,30,140,0.12);
-  display: flex; align-items: center; justify-content: center;
-}
-.avis-prompt-icon .material-icons { color: #e91e8c; font-size: 20px; }
-.avis-prompt-text { flex: 1; min-width: 0; }
-.avis-prompt-text strong {
-  display: block;
-  font-size: 13px;
-  font-weight: 800;
-  color: var(--bleu-marin);
-  margin-bottom: 2px;
-}
-.avis-prompt-text p {
-  font-size: 12px;
-  color: #555;
-  line-height: 1.4;
-  margin: 0;
-}
-.avis-prompt-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.avis-prompt-ok {
-  background: #e91e8c;
-  color: #fff;
-  border: none;
-  padding: 7px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  white-space: nowrap;
-}
-.avis-prompt-close {
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: #aaa;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.avis-prompt-close .material-icons { font-size: 16px; }
 
 /* ── MENU RAPID — boutons colorés (façon "Join Prime / Whole Foods") ── */
 #quick-nav {
@@ -359,14 +291,15 @@ body {
   align-items: center;
   gap: 5px;
   align-self: flex-start;
-  background: var(--vert-menu);
-  color: #ffffff;
+  background: linear-gradient(135deg, #b8860b, #ffffff);
+  color: #000000;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.02em;
   padding: 5px 10px;
   border-radius: 7px;
 }
+
 .lcd-status-badge .material-icons {
   font-size: 14px;
 }
@@ -518,7 +451,7 @@ body {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 0 16px;
+  padding: 0 16px 0 32px;
 }
 
 .carousel-container::-webkit-scrollbar { display: none; }
