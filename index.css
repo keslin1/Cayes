@@ -451,7 +451,8 @@ body {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 0 16px;
+  padding: 0 16px 0 16px !important;
+  scroll-padding-left: 16px;
 }
 
 .carousel-container::-webkit-scrollbar { display: none; }
