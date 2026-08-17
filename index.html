@@ -383,7 +383,8 @@
 <!-- ===== SYNC POINTS CAROUSEL PORTRAIT ===== -->
 <script>
 (function () {
-  var carousel = document.getElementById('banner-carousel');
+  var section = document.getElementById('banner-carousel');
+  var carousel = section ? section.querySelector('.carousel-container') : null;
   var dotsWrap = document.getElementById('carousel-dots');
   if (!carousel || !dotsWrap) return;
   var dots = dotsWrap.querySelectorAll('.cdot');
