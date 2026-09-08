@@ -307,19 +307,6 @@
         }
         .ra-input:focus { border-color: #00b9ff; background: rgba(0,185,255,0.07); }
         .ra-input::placeholder { color: rgba(255,255,255,0.3); }
-        .ra-photo-label {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            background: rgba(255,255,255,0.06); border: 2px dashed rgba(0,185,255,0.35);
-            border-radius: 10px; padding: 18px; cursor: pointer;
-            font-size: 0.9em; color: rgba(255,255,255,0.6); transition: all 0.25s;
-        }
-        .ra-photo-label:hover { background: rgba(0,185,255,0.1); border-color: #00b9ff; color: #fff; }
-        .ra-photo-label .material-icons { font-size: 28px; color: #00b9ff; }
-        #ra-photo-preview {
-            display: none; width: 100%; max-height: 180px; object-fit: contain;
-            border-radius: 8px; border: 1px solid rgba(0,185,255,0.3); margin-top: 8px;
-        }
-        .ra-photo-name { font-size: 0.78em; color: #00b9ff; margin-top: 6px; display: none; }
         .ra-submit-btn {
             width: 100%; padding: 15px; border-radius: 10px; border: none;
             background: linear-gradient(135deg, #0082c8, #00b9ff);
@@ -684,16 +671,6 @@
                 <label class="ra-label">🏷️ Wisetag ou</label>
                 <input type="text" id="ra-wisetag" class="ra-input" placeholder="@VotreWiseTag">
             </div>
-            <div>
-                <label class="ra-label">📸 Foto prèv tranzaksyon Natcash ou</label>
-                <label class="ra-photo-label" for="ra-photo-input">
-                    <span class="material-icons">photo_camera</span>
-                    <span id="ra-photo-text">Klike pou ajoute foto a</span>
-                </label>
-                <input type="file" id="ra-photo-input" accept="image/*" style="display:none" onchange="handleRaPhoto(this)">
-                <img id="ra-photo-preview" alt="Aperçu foto">
-                <div class="ra-photo-name" id="ra-photo-name"></div>
-            </div>
 
             <button class="ra-submit-btn" id="ra-submit-btn" onclick="submitRechajAnliy()">
                 <span class="material-icons" style="vertical-align:middle; font-size:18px; margin-right:6px;">send</span>
@@ -708,13 +685,6 @@
     </div>
 </div>
 
-<!-- ===== FOOTER ===== -->
-<footer id="main-footer">
-    <a href="index.html" class="nav-item"><span class="material-icons">home</span><p>Akèy</p></a>
-    <a href="decouvrir.html" class="nav-item"><span class="material-icons">info</span><p>Règ</p></a>
-    <a href="transaction.html" class="nav-item active"><span class="material-icons">list_alt</span><p>Tranzaksyon</p></a>
-    <a href="moncompte.html" class="nav-item"><span class="material-icons">person</span><p>Kont mwen</p></a>
-</footer>
 
 <!-- Chart.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -1020,11 +990,6 @@ function calculateWiseTotal() {
 // =====================================================
 // RECHAJ ANLIY — MODAL + ENVOI EMAIL
 // =====================================================
-var raPhotoBase64 = null;
-var raPhotoMime   = null;
-var raPhotoName   = null;
-var raPhotoFile   = null;
-
 function openRechajAnliy() {
     var usd = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
     if (usd <= 0) {
@@ -1044,15 +1009,9 @@ function openRechajAnliy() {
     // Reset form
     document.getElementById('ra-email').value    = '';
     document.getElementById('ra-wisetag').value  = '';
-    document.getElementById('ra-photo-input').value = '';
-    document.getElementById('ra-photo-preview').style.display = 'none';
-    document.getElementById('ra-photo-name').style.display    = 'none';
-    document.getElementById('ra-photo-name').textContent      = '';
-    document.getElementById('ra-photo-text').textContent      = 'Klike pou ajoute foto a';
     document.getElementById('ra-success-msg').style.display   = 'none';
     document.getElementById('ra-submit-btn').style.display    = 'block';
     document.getElementById('ra-submit-btn').disabled         = false;
-    raPhotoBase64 = null; raPhotoMime = null; raPhotoName = null;
 
     document.getElementById('rechaj-anliy-modal').style.display = 'block';
 }
@@ -1066,84 +1025,6 @@ window.addEventListener('click', function(e) {
     if (e.target === m) closeRechajAnliy();
 });
 
-function handleRaPhoto(input) {
-    if (!input.files || !input.files[0]) return;
-    var file = input.files[0];
-    raPhotoMime = file.type;
-    raPhotoName = file.name;
-
-    document.getElementById('ra-photo-text').textContent = file.name;
-    document.getElementById('ra-photo-name').textContent = '⏳ Ap prepare foto a...';
-    document.getElementById('ra-photo-name').style.display = 'block';
-
-    compressRaPhoto(file, function(compressedFile) {
-        raPhotoFile = compressedFile;
-
-        var sizeKb = Math.round(compressedFile.size / 1024);
-        document.getElementById('ra-photo-name').textContent = '✅ ' + file.name + ' (' + sizeKb + ' Ko)';
-
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            raPhotoBase64 = e.target.result.split(',')[1];
-            var preview = document.getElementById('ra-photo-preview');
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        };
-        reader.readAsDataURL(compressedFile);
-    });
-}
-
-// Redui dimansyon ak pwa imaj la anvan l voye bay Web3Forms
-// (foto kamera telefòn yo souvan twò gwo, sa fè soumisyon an echwe)
-function compressRaPhoto(file, callback) {
-    // Si se pa yon imaj (ex: PDF), voye l jan li ye
-    if (!file.type || file.type.indexOf('image/') !== 0) {
-        callback(file);
-        return;
-    }
-
-    var img = new Image();
-    var url = URL.createObjectURL(file);
-
-    img.onload = function() {
-        URL.revokeObjectURL(url);
-
-        var MAX_DIM = 1600;
-        var width   = img.width;
-        var height  = img.height;
-
-        if (width > MAX_DIM || height > MAX_DIM) {
-            if (width >= height) {
-                height = Math.round(height * (MAX_DIM / width));
-                width  = MAX_DIM;
-            } else {
-                width  = Math.round(width * (MAX_DIM / height));
-                height = MAX_DIM;
-            }
-        }
-
-        var canvas = document.createElement('canvas');
-        canvas.width  = width;
-        canvas.height = height;
-        var ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        canvas.toBlob(function(blob) {
-            if (!blob) { callback(file); return; }
-            var compressedFile = new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' });
-            // Si lè konprime a pi gwo pase orijinal la (ka rive sou ti imaj), kenbe orijinal la
-            callback(compressedFile.size < file.size ? compressedFile : file);
-        }, 'image/jpeg', 0.75);
-    };
-
-    img.onerror = function() {
-        URL.revokeObjectURL(url);
-        callback(file);
-    };
-
-    img.src = url;
-}
-
 function submitRechajAnliy() {
     var usd     = parseFloat(document.getElementById('wiseUsdAmount').value) || 0;
     var frais   = getWiseFee(usd);
@@ -1153,7 +1034,6 @@ function submitRechajAnliy() {
 
     if (!email)   { alert('Tanpri antre imel ou.'); return; }
     if (!wisetag) { alert('Tanpri antre Wisetag ou.'); return; }
-    if (!raPhotoFile) { alert('Tanpri ajoute foto prèv pèman Natcash ou a.'); return; }
 
     var btn = document.getElementById('ra-submit-btn');
     btn.disabled = true;
@@ -1163,8 +1043,12 @@ function submitRechajAnliy() {
     var dateStr = now.toLocaleDateString('fr-HT', { day: '2-digit', month: '2-digit', year: 'numeric' })
                 + ' à ' + now.toLocaleTimeString('fr-HT', { hour: '2-digit', minute: '2-digit' });
 
+    var appProfile = JSON.parse(localStorage.getItem('user_profile_data') || '{}');
+    var appUserName = (appProfile.nom || '').trim() || 'Itilizatè enkoni';
+
     var message = 'Bonswa,\n\nmwen swete rechaje kat mwen, mwen voye done yo pou nou; map tann feedback nou svp\n\n'
                   + '———————————————\n'
+                  + 'Non itilizatè (App) : ' + appUserName + '\n'
                   + 'Imel kliyan : ' + email + '\n'
                   + 'Wisetag     : ' + wisetag + '\n'
                   + 'Kantite USD : ' + usd.toFixed(2) + ' $\n'
@@ -1175,8 +1059,8 @@ function submitRechajAnliy() {
 
     var formData = new FormData();
     formData.append('access_key', 'a2d5b024-731b-4a8c-a5d4-d46a64e4f60a');
-    formData.append('subject',    'Rechaj Wise pou ' + usd.toFixed(2) + ' $');
-    formData.append('from_name',  wisetag);
+    formData.append('subject',    'Rechaj Wise pou ' + usd.toFixed(2) + ' $ — ' + appUserName);
+    formData.append('from_name',  appUserName);
     formData.append('replyto',    email);
     formData.append('message',    message);
     formData.append('email',      email);
@@ -1184,7 +1068,6 @@ function submitRechajAnliy() {
     formData.append('montant_usd', usd.toFixed(2));
     formData.append('frais_wise',  frais.toFixed(2));
     formData.append('montant_htg', htg.toString());
-    formData.append('attachment', raPhotoFile, raPhotoFile.name);
 
     fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -1216,9 +1099,7 @@ function submitRechajAnliy() {
         btn.textContent = 'Konfime tranzaksyon an';
 
         var msg = err && err.message;
-        if (msg === 'PAYLOAD_TOO_LARGE') {
-            alert('Foto a twò gwo pou l ka voye. Tanpri eseye pran yon lòt foto oswa chwazi yon foto ki gen pi piti pwa, epi eseye ankò.');
-        } else if (msg && msg.indexOf('HTTP_') === 0) {
+        if (msg && msg.indexOf('HTTP_') === 0) {
             alert('Web3Forms voye yon erè (' + msg.replace('HTTP_', '') + '). Tanpri eseye ankò nan kèk minit.');
         } else {
             alert('Yon erè te pase pandan n ap voye done yo. Tanpri verifye koneksyon entènèt ou epi eseye ankò.');
