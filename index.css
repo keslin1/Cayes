@@ -764,3 +764,18 @@ body {
 
 
 
+
+/* ── Badge "NOUVO" sur les nouveaux avis ── */
+.comment-nouvo {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: #e53935;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+.comment-date:has(.comment-nouvo) { color: #e53935; font-weight: 700; }

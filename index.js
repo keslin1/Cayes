@@ -260,13 +260,52 @@ function initBannerCarousel() {
 
   var items      = container.querySelectorAll('.carousel-item');
   var totalItems = items.length;
-  var index      = 0;
+  if (totalItems < 2) return;
+  var DELAI      = 8000; // 8 secondes entre chaque affiche
 
-  setInterval(function () {
-    var step = items[1] ? (items[1].offsetLeft - items[0].offsetLeft) : items[0].offsetWidth;
-    index = (index + 1) % totalItems;
-    carousel.scrollTo({ left: step * index, behavior: 'smooth' });
-  }, 6000);
+  // Copie de la 1re affiche placée à la fin : après la dernière affiche,
+  // on avance vers cette copie puis on revient (sans saut visible) à la vraie 1re.
+  var clone = items[0].cloneNode(true);
+  clone.classList.remove('active');
+  clone.setAttribute('aria-hidden', 'true');
+  container.appendChild(clone);
+
+  function getStep() {
+    return container.children[1].offsetLeft - container.children[0].offsetLeft;
+  }
+  function currentIndex() {
+    return Math.round(container.scrollLeft / getStep());
+  }
+
+  var timer;
+  function planifier() {
+    clearTimeout(timer);
+    timer = setTimeout(avancer, DELAI);
+  }
+  function avancer() {
+    var next = Math.min(currentIndex() + 1, totalItems);
+    container.scrollTo({ left: getStep() * next, behavior: 'smooth' });
+    planifier();
+  }
+
+  // Quand on arrive sur la copie (fin de boucle), retour instantané à la 1re affiche
+  var scrollEnd;
+  container.addEventListener('scroll', function () {
+    clearTimeout(scrollEnd);
+    scrollEnd = setTimeout(function () {
+      if (currentIndex() >= totalItems) {
+        container.style.scrollSnapType = 'none';
+        container.scrollLeft = 0;
+        requestAnimationFrame(function () { container.style.scrollSnapType = ''; });
+      }
+    }, 150);
+  }, { passive: true });
+
+  // Si la personne swipe elle-même, on repart de zéro pour 8 s
+  container.addEventListener('touchstart', function () { clearTimeout(timer); }, { passive: true });
+  container.addEventListener('touchend', planifier, { passive: true });
+
+  planifier();
 }
 
 // ── MODALS ───────────────────────────────────────────────────────
@@ -357,7 +396,13 @@ function fixedDate(y, m, d) {
   return new Date(y, m - 1, d).getTime();
 }
 
+// Date de fin du badge "NOUVO" + date "resàmman" : 2 mois après la publication (3 nov. 2026 -> 3 jan. 2027)
+var NOUVO_JISKA = new Date(2027, 0, 3).getTime();
+
 var simulationAvis = [
+  { id: 110, non: "Wilner C.",  stars: 4, text: "Si nou pa pran koli USA ankò, dim non souple ! Sa fè 2 fwa m rate okazyon, se container magazen nou privilejye - koli pam yo menm pa vini!", publishedAt: fixedDate(2026, 11, 3), nouvoJiska: NOUVO_JISKA },
+  { id: 109, non: "Nadège L.",  stars: 3, text: "Okazyon an pa chak mwa ankò non sa k' pase mr Thomas !", publishedAt: fixedDate(2026, 11, 2), nouvoJiska: NOUVO_JISKA },
+  { id: 108, non: "Frantz M.",  stars: 5, text: "Sèl pwoblèm mw, se paske m wè nou sote okazyon kounya nou te konn disponib chak mwa. Men aprèsa, tout bagay OK cargo m yo pa janm manke anyen.", publishedAt: fixedDate(2026, 11, 1), nouvoJiska: NOUVO_JISKA },
   { id: 101, non: "Valpare B.",     stars: 5, text: "impotan pou biznis mw, psk ak ansyen transpo an m patka rantre kob m envesti yo.",                                    publishedAt: fixedDate(2025, 11, 14) },
   { id: 102, non: "Claire Suze D.", stars: 5, text: "Pinga warehouse sa vin bay pwob nn mesye Thomas!",                                                                    publishedAt: fixedDate(2025, 11, 29) },
   { id: 103, non: "Steeve P.",      stars: 4, text: "m swete aprè 4,90 lan pa gen lòt frè, bon bgy.",                                                                      publishedAt: fixedDate(2025, 12, 10) },
@@ -442,7 +487,8 @@ function aficheAvis() {
   function buildCard(a, suffix, interactive) {
     var isUser       = interactive && localAvis.some(function (la) { return la.id === a.id; });
     var starsAffiche = votes[a.id] !== undefined ? votes[a.id] : (a.stars || 0);
-    var dateAffiche  = formatDatePublished(a.publishedAt || a.id);
+    var isNouvo      = !!a.nouvoJiska && Date.now() < a.nouvoJiska;
+    var dateAffiche  = isNouvo ? 'resàmman' : formatDatePublished(a.publishedAt || a.id);
     var starsHTML    = buildStars(a.id, starsAffiche, interactive);
     var initials     = getInitials(a.non);
     var domId        = 'comment-' + a.id + (suffix ? '-' + suffix : '');
@@ -455,7 +501,7 @@ function aficheAvis() {
       + '</div>'
       + '<p class="comment-text">' + a.text + '</p>'
       + '<div class="comment-footer">'
-      + '<span class="comment-date">' + dateAffiche + '</span>'
+      + '<span class="comment-date">' + (isNouvo ? '<span class="comment-nouvo">NOUVO</span>' : '') + dateAffiche + '</span>'
       + (isUser
           ? '<div class="user-actions">'
             + '<button onclick="prepareEdit(' + a.id + ')">Modifye</button>'
