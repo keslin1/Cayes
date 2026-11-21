@@ -7,7 +7,7 @@
 
 const MESSAGE_KEY    = 'lcd_user_messages';
 const userStorageKey = 'user_profile_data';
-let   baseLikes      = 766;
+let   baseLikes      = 1087;
 
 // ── PAGE LOADER (tranzisyon ant paj) ────────────────────────────
 window.goTo = function (url) {
@@ -396,13 +396,7 @@ function fixedDate(y, m, d) {
   return new Date(y, m - 1, d).getTime();
 }
 
-// Date de fin du badge "NOUVO" + date "resàmman" : 2 mois après la publication (3 nov. 2026 -> 3 jan. 2027)
-var NOUVO_JISKA = new Date(2027, 0, 3).getTime();
-
 var simulationAvis = [
-  { id: 110, non: "Wilner C.",  stars: 4, text: "Si nou pa pran koli USA ankò, dim non souple ! Sa fè 2 fwa m rate okazyon, se container magazen nou privilejye - koli pam yo menm pa vini!", publishedAt: fixedDate(2026, 11, 3), nouvoJiska: NOUVO_JISKA },
-  { id: 109, non: "Nadège L.",  stars: 3, text: "Okazyon an pa chak mwa ankò non sa k' pase mr Thomas !", publishedAt: fixedDate(2026, 11, 2), nouvoJiska: NOUVO_JISKA },
-  { id: 108, non: "Frantz M.",  stars: 5, text: "Sèl pwoblèm mw, se paske m wè nou sote okazyon kounya nou te konn disponib chak mwa. Men aprèsa, tout bagay OK cargo m yo pa janm manke anyen.", publishedAt: fixedDate(2026, 11, 1), nouvoJiska: NOUVO_JISKA },
   { id: 101, non: "Valpare B.",     stars: 5, text: "impotan pou biznis mw, psk ak ansyen transpo an m patka rantre kob m envesti yo.",                                    publishedAt: fixedDate(2025, 11, 14) },
   { id: 102, non: "Claire Suze D.", stars: 5, text: "Pinga warehouse sa vin bay pwob nn mesye Thomas!",                                                                    publishedAt: fixedDate(2025, 11, 29) },
   { id: 103, non: "Steeve P.",      stars: 4, text: "m swete aprè 4,90 lan pa gen lòt frè, bon bgy.",                                                                      publishedAt: fixedDate(2025, 12, 10) },
@@ -516,33 +510,109 @@ function aficheAvis() {
   var originalHTML  = toutAvis.map(function (a) { return buildCard(a, '', true); }).join('');
   var duplicateHTML = toutAvis.map(function (a) { return buildCard(a, 'dup', false); }).join('');
 
+  var prevScroll = container.scrollLeft;
   container.innerHTML = '<div class="avis-marquee-track" id="avis-marquee-track">'
     + originalHTML + duplicateHTML
     + '</div>';
+  container.scrollLeft = prevScroll;
 
   initAvisMarquee(toutAvis.length);
 }
 
-// ── MARQUEE AVIS — défilement horizontal continu vers la gauche ──
-// La piste contient les avis en double (set A + set B identique) et
-// glisse de translateX(0) à translateX(-50%) : quand le set A sort
-// entièrement de vue, le set B est visuellement à sa place de départ,
-// ce qui crée une boucle infinie parfaitement fluide, sans saut ni
-// interruption. La durée est calée sur ~7s par avis.
+// ── MARQUEE AVIS — défilement auto + glissement au doigt ─────────
+// La piste contient les avis en double (set A + set B identique).
+// Le conteneur défile nativement (overflow-x) : un script avance
+// scrollLeft en continu vers la gauche (~7 s par avis) et revient
+// d'une "période" en arrière quand le set A est sorti, ce qui donne
+// une boucle infinie sans saut. Dès que l'utilisateur touche / glisse,
+// l'auto-défilement se met en pause, puis reprend ~2 s après la fin
+// du geste (inertie comprise). On peut glisser dans les deux sens.
 var AVIS_SECONDES_PAR_AVIS = 7;
+var AVIS_REPRISE_MS = 2000;
+var avisMq = { raf: 0, paused: false, timer: 0, bound: false, hover: false,
+               pos: 0, last: 0, period: 0, speed: 0, auto: false };
+
+function avisMqPeriod() {
+  var track = document.getElementById('avis-marquee-track');
+  if (!track) return 0;
+  var cards = track.querySelectorAll('.comment-card');
+  var n = cards.length / 2;
+  if (!n || !cards[n]) return 0;
+  return cards[n].offsetLeft - cards[0].offsetLeft;
+}
+
+function avisMqPause() {
+  avisMq.paused = true;
+  clearTimeout(avisMq.timer);
+}
+
+function avisMqResumeLater() {
+  clearTimeout(avisMq.timer);
+  avisMq.timer = setTimeout(function () {
+    var c = document.getElementById('comments-container');
+    if (c) avisMq.pos = c.scrollLeft;
+    avisMq.last = 0;
+    avisMq.paused = false;
+  }, AVIS_REPRISE_MS);
+}
 
 function initAvisMarquee(nbAvis) {
+  var container = document.getElementById('comments-container');
   var track = document.getElementById('avis-marquee-track');
-  if (!track) return;
+  if (!container || !track) return;
 
-  if (!nbAvis || nbAvis < 2) {
-    // Un seul avis : rien à faire défiler
-    track.style.animation = 'none';
-    return;
+  cancelAnimationFrame(avisMq.raf);
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  avisMq.period = avisMqPeriod();
+  avisMq.auto = !reduce && nbAvis >= 2 && avisMq.period > 0;
+  avisMq.speed = avisMq.auto ? avisMq.period / (nbAvis * AVIS_SECONDES_PAR_AVIS) : 0; // px / s
+  avisMq.pos = container.scrollLeft;
+  avisMq.last = 0;
+
+  if (!avisMq.bound) {
+    avisMq.bound = true;
+
+    // Début du geste : pause (le doigt arrête le défilement)
+    container.addEventListener('touchstart', avisMqPause, { passive: true });
+    container.addEventListener('touchend', avisMqResumeLater, { passive: true });
+    container.addEventListener('touchcancel', avisMqResumeLater, { passive: true });
+    container.addEventListener('wheel', function () { avisMqPause(); avisMqResumeLater(); }, { passive: true });
+
+    // Pause au survol (ordinateur seulement)
+    if (window.matchMedia && window.matchMedia('(hover: hover)').matches) {
+      container.addEventListener('mouseenter', function () { avisMq.hover = true; });
+      container.addEventListener('mouseleave', function () { avisMq.hover = false; avisMq.last = 0; });
+    }
+
+    // Pendant un geste / l'inertie : boucle infinie dans les deux sens
+    container.addEventListener('scroll', function () {
+      if (!avisMq.paused) return;               // scroll causé par le script : on ignore
+      var p = avisMq.period;
+      if (p > 0) {
+        if (container.scrollLeft >= p) container.scrollLeft -= p;
+        else if (container.scrollLeft <= 0) container.scrollLeft += p;
+      }
+      avisMq.pos = container.scrollLeft;
+      avisMqResumeLater();                      // repousse la reprise tant que ça bouge
+    }, { passive: true });
+
+    window.addEventListener('resize', function () { avisMq.period = avisMqPeriod(); });
   }
 
-  var duree = nbAvis * AVIS_SECONDES_PAR_AVIS;
-  track.style.animationDuration = duree + 's';
+  if (!avisMq.auto) return;
+
+  function step(ts) {
+    avisMq.raf = requestAnimationFrame(step);
+    if (avisMq.paused || avisMq.hover || document.hidden) { avisMq.last = 0; return; }
+    if (!avisMq.last) { avisMq.last = ts; return; }
+    var dt = Math.min(ts - avisMq.last, 100) / 1000;
+    avisMq.last = ts;
+    avisMq.pos += avisMq.speed * dt;
+    if (avisMq.pos >= avisMq.period) avisMq.pos -= avisMq.period;
+    container.scrollLeft = avisMq.pos;
+  }
+  avisMq.raf = requestAnimationFrame(step);
 }
 
 // ── FLIP CARD OKAZYON ─────────────────────────────────────────────
